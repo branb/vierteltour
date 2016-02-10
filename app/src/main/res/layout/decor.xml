@@ -1,0 +1,42 @@
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- The main content view -->
+   <LinearLayout
+        android:id="@+id/drawer_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    </LinearLayout>
+    <!-- The navigation drawer -->
+    <RelativeLayout
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:id="@+id/drawer"
+        android:orientation="vertical"
+        android:background="@color/ColorPrimary"
+        android:layout_gravity="start">
+
+        <ImageButton
+            android:id="@+id/leftarrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/pfeil_links"
+            android:layout_centerVertical="true"/>
+
+    <ListView
+        android:id="@+id/drawerlist"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:background="@color/ColorPrimary"
+        android:paddingTop="15dp"
+        android:divider="#666"
+        android:dividerHeight="0dp"
+        />
+    </RelativeLayout>
+</android.support.v4.widget.DrawerLayout>

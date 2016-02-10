@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ColorPrimary"
+    android:id="@+id/rellayout">
+
+<ImageButton
+    android:id="@+id/arrowdown"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/pfeil_runter"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:id="@+id/stationtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/arrowdown"
+        android:text="Stationenname (x/y)"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="fill_parent"
+        android:layout_height="1.5dp"
+        android:background="#20000000"
+        android:layout_below="@+id/stationtitle"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"/>
+
+    <RelativeLayout android:id="@+id/listitem"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_below="@+id/divider1">
+   <ImageView
+        android:id="@+id/routenbild"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/ic_drawer"
+        />
+    <TextView
+        android:id="@+id/routenname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/routenbild"
+        android:text="Tourenname"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/routeninfo1"
+        android:layout_toRightOf="@+id/routenbild"
+        android:layout_below="@+id/routenname"
+        android:text="Toureninfo1"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/routeninfo2"
+        android:layout_toRightOf="@+id/routenbild"
+        android:layout_below="@+id/routeninfo1"
+        android:text="Toureninfo2"/>
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="fill_parent"
+        android:layout_height="1.5dp"
+        android:background="#20000000"
+        android:layout_below="@+id/routeninfo2"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"/>
+</RelativeLayout>
+
+    <TextView
+        android:id="@+id/stationenbeschreibung"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hier kommt die Stationenbeschreibung hin!"
+        android:layout_below="@+id/listitem"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ImagePager"
+        android:layout_below="@+id/stationenbeschreibung"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/seek_bar"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+         />
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stationenbeschreibung"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@+id/play_button"
+        android:layout_marginRight="45dp"
+        />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/play_button"
+        android:src="@drawable/play_hell"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/stationenbeschreibung"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:00"
+        android:textColor="#ffffff"
+        android:id="@+id/textView"
+        android:layout_below="@+id/stationenbeschreibung"
+        android:layout_marginTop="32dp"
+        android:paddingRight="20dp"
+        android:layout_alignParentRight="true"
+        />
+
+    <VideoView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/videoView"
+        android:layout_below="@+id/stationenbeschreibung"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        />
+
+</RelativeLayout>
+    </ScrollView>

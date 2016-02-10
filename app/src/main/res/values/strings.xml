@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">ViertelTour-App</string>
+    <string name="title_activity_maps">ViertelTour</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="tourenliste">Tourenliste</string>
+    <string name="platzhalter">Text</string>
+    <string name="page_number_1d">Page #%d</string>
+    <string name="title_activity_navigation_drower">NavigationDrower</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>

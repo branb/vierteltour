@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="route1">#FF0000</color>
+    <color name="route1g">#1FFF0000</color>
+    <color name="route2">#00FF00</color>
+    <color name="route2g">#1F00FF00</color>
+
+    <color name="ColorPrimary">#E6EBE0</color>
+    <color name="ColorPrimaryDark">#E64A19</color>
+    <color name="oelberg">#FF5D59</color>
+    <color name="ns">#CB8B6F</color>
+    <color name="derort">#FFC557</color>
+    <color name="fortschrott">#FFFFAB</color>
+    <color name="moose">#D2F898</color>
+    <color name="baeumeimtal">#AADFA6</color>
+    <color name="baeumeaufberg">#696C9C</color>
+    <color name="einblicke">#8AAFE2</color>
+    <color name="black">#353535</color>
+    <color name="grey">#BABDB5</color>
+    <color name="white">#E6EBE0</color>
+
+</resources>

@@ -1,0 +1,610 @@
+<tour>
+	<info>
+		<name>Heilsgeschichte des Ölbergs</name>
+		<author>Bazon Brock</author>
+		<description>Der Kunsttheoretiker und Künstler Bazon Brock ist emeritierter Professor für Ästhetik und Kulturvermittlung an der Bergischen Universität Wuppertal. Brocks Vorträge sind legendär und kombinieren dabei Gedankenkonstrukte neu. In seinem Vortrag über die „Heilsgeschichte des Ölbergs“ spricht Brock in diesem Vortrag über die mythologischen und religiösen Ursprünge der Städtearchitektur Wuppertals. Er stellt dabei heraus, dass die Topografie der Stadt, der Heilsgeschichte, nachempfunden ist. Die Städte an der Wupper und die Umgebung haben, laut Brock, durch ihre Technologiegeschichte die Religion verwirklicht und somit die Mythologie wirklich werden lassen.
+		</description>
+		<length>0 km</length>
+		<time>22:21 Min</time>
+		<image>XXX</image>
+		<color>#FF5D59</color>
+	</info>
+	<stations>
+		<station>
+			<id></id>
+			<title>TITLE</title>
+			<number>1</number>
+			<description></description>
+			<image>i</image>
+			<video>v</video>
+			<audio>a</audio>
+			<coordinates>0,0</coordinates>
+		</station>
+		<station>
+			<id></id>
+			<title></title>
+			<number></number>
+			<description></description>
+			<image>i</image>
+			<video>v</video>
+			<audio>a</audio>
+			<coordinates>0,0</coordinates>
+		</station>
+	</stations>
+</tour>
+
+
+<tour>
+<info>
+	<name>Der Ort</name>
+	<author>Gunda Gottschalk und Ute Völker</author>
+	<description>Persönliche Tour zur musikalischen Geschichte des Luisenviertels erzählt aus der Sicht der beiden Improvisationsmusikerinnen Gunda Gottschalk und Ute Völker.</description>
+	<length>1.5 km</length>
+	<time>20 Min</time>
+	<image>XXX</image>
+	<color>#FFE882</color>
+</info>
+<stations>
+	<station>
+		<id></id>
+		<title>Der Ort</title>
+		<number>1</number>
+		<description>Der Ort ist eine Plattform für Künstler der Improvisationsmusik ehemals geleitet von Peter Kowald. </description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>0,0</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Minibar/ehemaliges Fundus</title>
+		<number>2</number>
+		<description>Das ehemalige Fundus (heute Minibar) war der Treffpunkt für verschiedenste Künstler, Musiker und Kreative der Nachtszene Wuppertals.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>0,0</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Sophienkirche</title>
+		<number>3</number>
+		<description>Die Sophienkirche ist ein weiterer wichtiger Klangraum Wuppertals. Die Reihe "Unerhört" findet dort regelmäßig statt.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>0,0</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Weinladen EST EST EST</title>
+		<number>4</number>
+		<description>Im Weinladen EST EST EST gibt es nicht nur guten Wein, sondern auch diverse musikalische und künstlerische Events.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>0,0</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Apotheke</title>
+		<number>5</number>
+		<description>Gunda Gottschalk und Ute Völker leiten die Musikapotheke, welche als ihr Proberaum dient. Jeder ist herzlich eingeladen vorbeizukommen, wenn dort musikalisch improvisiert wird.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>0,0</coordinates>
+	</station>
+
+</stations>
+</tour>
+
+
+
+
+
+
+<tour>
+<info>
+	<name>Fortschrott</name>
+	<author>Wolfgang Suchner und Rudi Rodhe</author>
+	<description>In dieser Tour durch Wuppertal Elberfeld bis zum Ölberg werden Sie von  den ehemaligen Straßenmusikern und Mitglieder der Band „Fortschrott“ geführt. Konsumrebellion, Solidarisierung mit Minderheiten, der Wandel von Straßenmusik und politische Aktionen sind Themen dieser musikalischen Tour.</description>
+	<length>1.3 km</length>
+	<time>18:07 Min</time>
+	<image>XXX</image>
+	<color>#FFFFAB</color>
+</info>
+<stations>
+	<station>
+		<id></id>
+		<title>Stammspielplatz und polizeiliche Gewalt</title>
+		<number>1</number>
+		<description>1982 werden die Straßenmusiker der Band Fortschrott an Ihrem Stammspielplatz verhaftet. Die Stadt Wuppertal hatte kein Interesse an kulturellen und musikalischen Zusammentreffen an einem Ort an dem  eingekauft und konsumiert werden soll.</description>
+		<image>i_04_01_01</image>
+		<video>v_04_01</video>
+		<audio>a_04_01</audio>
+		<coordinates>51.25686,7.1452</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Gründung "Fortschrott"</title>
+		<number>2</number>
+		<description>In einem geheimen Hinterzimmer der Fonghi-Bar treffen sich Musikstudenten um einen Weg zu finden ihre politischen Interessen einem breiten Publikum präsentieren zu können - Sie gründen eine Band.</description>
+		<image>i_04_02_01</image>
+		<video>v</video>
+		<audio>a_04_02</audio>
+		<coordinates>51.256637,7.140223</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Italien und Live-Skandal</title>
+		<number>3</number>
+		<description>In Zusammenarbeit mit dem Satiremagazin „Italien“ plant und inszeniert die Gruppe Fortschrott eine Revolte im öffentlich rechtlichen Fernsehen live. Im Anschluss können Sie sich einen Mitschnitt des Live-Auftrittes anschauen unter folgendem Link: https://www.youtube.com/watch?v=aG3rh45C3hM</description>
+		<image>i_04_03_01</image>
+		<video>v</video>
+		<audio>a_04_03</audio>
+		<coordinates>51.256114,7.138965</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Rotzfreche Asphaltkultur</title>
+		<number>4</number>
+		<description>RAK Treffen in ganz Deutschland führen zum Austausch musikalischer und politischer Haltungen. Im Vordergrund steht die kritische Auseinandersetzung mit den führenden Kräften und den Einfluss, der durch Musik geleistet werden kann.</description>
+		<image>i_04_04_01</image>
+		<video>v</video>
+		<audio>a_04_04</audio>
+		<coordinates>51.25759,7.13971</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Hausbesetzung</title>
+		<number>5</number>
+		<description>In der Nordstadt soll Mitte der 80er Jahre durch einen Flächensanierungsplan die Hälfte aller Häuser abgerissen werden. Durch Hausbesetzungen, Demonstrationen und Musik wird sich erfolgreich gewehrt.</description>
+		<image>i_04_05_01</image>
+		<video>v</video>
+		<audio>a_04_05</audio>
+		<coordinates>51.259446,7.13527</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Fußweg</title>
+		<number>6</number>
+		<description>Rudi Rodhe und Wolfgang Suchner begleiten Sie auf dem Fußweg von der Hedwigstraße zum Schusterplatz.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a_04_06</audio>
+		<coordinates>51.259446,7.13527</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>1. Mai Demos</title>
+		<number>7</number>
+		<description>Die 1.Mai Demos des DGB langweilen die musikalische Juged der 70er Jahre. Der Drang für kulturelle Vielfalt und ein lebendiges Miteinander zu sorgen, führt zur Gründung einer eigenen Demo zum Tag der Arbeiterbewegung. Mit Erfolg?</description>
+		<image>i_04_07_01</image>
+		<video>v</video>
+		<audio>a_04_07</audio>
+		<coordinates>51.258409,7.134908</coordinates>
+	</station>
+
+</stations>
+</tour>
+
+
+
+
+
+
+
+
+
+
+
+
+<tour>
+<info>
+	<name>Moose und Flechten</name>
+	<author>Dr. Hega Moelleken</author>
+	<description>Eine kleine Tour vom Ölberg zum Luisenviertel. Unterwegs gibt es einige Moose und Flechten zu entdecken, die zum Beispiel als Indikatoren für die Umweltverschmutzung gelten. </description>
+	<length>1.0 km</length>
+	<time>15 Min</time>
+	<image>XXX</image>
+	<color>#D2F898</color>
+</info>
+<stations>
+	<station>
+		<id></id>
+		<title>Startpunkt Schusterplatz auf dem Ölberg</title>
+		<number>1</number>
+		<description>Die Tour beginnt auf dem Schusterplatz auf dem Ölberg. Umgeben von schönen, alten Häusern aus der Gründerzeit befindet sich der Schusterplatz. </description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25792003384936,7.135917004197836</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Alte Linde auf dem Schusterplatz</title>
+		<number>2</number>
+		<description>Auf dem Schusterplatz findet man einen alten Lindenbestand. Auf den Bäumen und auch auf der Laterne vor den Bäumen lassen sich Moose und Flechten finden.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25830274585401,7.135584410279989</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Mauer an der Gertrudenstraße</title>
+		<number>3</number>
+		<description>Auf dem Weg bergab ins Luisenviertel findet man eine Mauer, die mit Moosen und Flechten bewachsen ist. Außerdem findet man hier eine ungewöhnliche Farnart.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25777903388661,7.137826737016439</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Tippen Tappen Tönchen</title>
+		<number>4</number>
+		<description>Entlang der bekannten Treppe Tipen-Tappen-Tönchen findet man Moose und Flechten, die vorallem als Nitratanzeiger gelten. </description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.2578352,7.139323999999988</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Laurentiusplatz</title>
+		<number>5</number>
+		<description>Die alten Bäume auf dem Laurentiusplatz im Luisenviertel sind mit Moosen und Flechten bewachsen. Dies ist der Endpunkt der Tour.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.256422726443695,7.139296587556601</coordinates>
+	</station>
+
+</stations>
+</tour>
+
+
+
+
+
+
+
+
+<tour>
+<info>
+	<name>Moose und Flechten Tour 2</name>
+	<author>Dr. Hega Moelleken</author>
+	<description>Eine kleine Tour um den Johannisberg und die Historische Stadthalle. Von dort geht es entlang der Wupper bis zur Bundesallebrücke und wieder zurück zum Startpunkt.</description>
+	<length>1.5 km</length>
+	<time>15 Min</time>
+	<image>XXX</image>
+	<color>#D2F898</color>
+</info>
+<stations>
+	<station>
+		<id></id>
+		<title>Startpunkt hinter der historischen Stadthalle</title>
+		<number>1</number>
+		<description>Die Tour beginnt in einem kleinen Park hinter der Historischen Stadthalle.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25369959643055,7.142688659951091</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Alter Baumbstand hinter der historischen Stadthalle</title>
+		<number>2</number>
+		<description>In dem kleinen Park hinter der Historischen Stadthalle gibt es einen alten Baumbestand, der mit Moosen und Flechten bewachsen ist.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25369959643055,7.142688659951091</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Walter-Hammer-Ufer</title>
+		<number>3</number>
+		<description>Entlang des Walter-Hammer-Ufers führt ein kleiner Weg ins Tal hinunter. Die Bäume und die Mauer entlang des Weges sind mit Moosen und Flechten bewachsen. Von hier hat man einen guten Blick auf die Schwebebahn.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.2538182998,7.140054730698466</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Bundesalleebrücke</title>
+		<number>4</number>
+		<description>An der Mauer der Bundesalleebrücke wachsen Moose und Flechten. Von hier aus geht die Tour zurück zur Historischen Stadthalle.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25489848722922,7.141973830293864</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Aufgang zur Historischen Stadthalle</title>
+		<number>5</number>
+		<description>Der Aufgang zurück zur Historischen Stadthalle führt an einer hohen Mauer vorbei, an der die Moose und Flechten zu sehen sind, die man bis dahin auf der Tour kennengelernt hat.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25407944640351,7.142984583042562</coordinates>
+	</station>
+
+</stations>
+</tour>
+
+
+<tour>
+<info>
+	<name>Bäume im Tal</name>
+	<author>Prof. Dr. Getrud Lohaus</author>
+	<description>Mit den Baum Touren erfahren Sie allerlei wissenswertes über unsere heimischen Baumarten. Beide Touren führen durch eine der grünsten Städten des Landes: Wuppertal. Die erste Tour beginnt an der Wupper, leitet Sie an Cafés vorbei, weiter zur Kasinostraße und endet am Laurentiusplatz mit der Kirche St. Laurentius. </description>
+	<length>1.5 km</length>
+	<time>32 Min</time>
+	<image>XXX</image>
+	<color>#AADFA6</color>
+</info>
+<stations>
+	<station>
+		<id></id>
+		<title>Vogel-Kirsche</title>
+		<number>1</number>
+		<description>Die Vogel-Kirsche (Prunus Avium) liegt an der Schlossbleiche und an der Brücke Bismarckufer und ist im Sommer durch seine roten Früchte leicht zu erkennen.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25568916230469,7.145679742097855</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Silberbruch-Weide und Schwarz-Erle</title>
+		<number>2</number>
+		<description>Gegenüber der Bankstraße liegen praktisch nebeneinander zwei Bäume, die zu Flussauengewächsen gehören: Die Silberbruch-Weide (Salix x rubens) erkennt man an ihren typisch länglich geformten Blätter an den herabhängenden Ästen.  Die Schwarz-Erle (Alnus glutinosa) ist nur wenige Meter weiter anzutreffen. Sie macht man durch ihre rundlichen Blätter aus.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25584091199185,7.1445780247449875</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Gewöhnliche Esche</title>
+		<number>3</number>
+		<description>Die Gewöhnliche Esche (Fraxinus excelsior) ist kein Flussauengewächs, liegt aber auch an der Wupper vor einer der Schwebebahnstützen. Sie hat gefiederten und gesägte Blätter.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25584863376535,7.144223302602768</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Gewöhnliche Platane</title>
+		<number>4</number>
+		<description>Wendet man sich von der Wupper ab und nähert sich der Straße, so fallen die großen Gewöhnlichen Platanen (Platanus x hispanica) sofort ins Auge. Sie sind leicht an ihrer abgeblätterten Rinde zu erkennen. </description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25578988118632,7.143627852201462</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Blutbuche und Sommer-Linde</title>
+		<number>5</number>
+		<description>Auf der anderen Straßenseite ist ein Parkplatz in dessen Mitte eine Grünfläche mit zwei Bäumen liegt. Der erste Baum ist eine sehr große Blutbuche (Fagus sylvatica purpurea) mit ihrem rötlichbraunen Laub. Daneben steht die Sommer-Linde (Tilia platyphyllos) mit grünen herzförmigen Blättern.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25636733184862,7.1431370079517365</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Yulan-Magnolie und Tulpenbaum</title>
+		<number>6</number>
+		<description>Durch eine Unterführung an einer Fußgängerzone stehen die Yulan-Magnolie (Magnolia denudata) mit ihren ovalen Blättern und der Tulpenbaum (Liriodendron tulipifera), dessen Blätter eine sehr ungewöhnliche Form haben. Die Yulan-Magnolie kommt ursprünglich aus Asien und der Tulpenbaum ist aus Amerika, aber beide gehören zu den Magnoliengewächsen.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25686755940827,7.1426863968372345</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Europäische Stechpalme</title>
+		<number>7</number>
+		<description>Richtung Friedrich-Ebert-Straße steht auf dem Platz eine kleinere Europäische Stechpalme (Ilex aquifolium) mit den bekannten stacheligen Blättern. Die Stechpalme behält das ganze Jahr über ihre Blätter.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.256786986209356,7.14230015873909</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Stiel-Eiche</title>
+		<number>8</number>
+		<description>Neben der Stechpalme steht eine große Stiel-Eiche (Quercus robur), die leicht an ihren Blättern mit den eichentypischen Rundungen zu erkennen ist. Zu unterscheiden ist die Stiel-Eiche von der Trauben-Eiche durch ihren sehr kurzen Blattstiel.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25682727282647,7.142313569784164</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Drüsiger Götterbaum</title>
+		<number>9</number>
+		<description>Auf der anderen Seite der Friedrich-Ebert-Straße steht ein Drüsigen Götterbaum (Ailanthus altissima) mit großen, langen Fiederblättern. Er gilt als inversive Baumart, die sich sehr schnell verbreitet. </description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25676180705573,7.141718119382858</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Amerikanischer Amberbaum</title>
+		<number>10</number>
+		<description>Auf der anderen Straßenseite sieht man einen Amerikanischen Amberbaum (Liquidambar styraciflua) mit sternförmigen Bättern. Der beliebte Stadtbaum stammt wie sein Name sagt, aus Amerika.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25677355732913,7.141372114419937</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Winter-Linde</title>
+		<number>11</number>
+		<description>Auf dem Laurentiusplatz finden sich viele Winter-Linden (Tilia cordata), die den Platz schmücken. Die Winter-Linde hat kleinere Blätter als ihre Verwandte, die Sommer-Linde.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25636397459827,7.140291184186935</coordinates>
+	</station>
+</stations>
+</tour>
+
+
+
+
+
+
+
+<tour version="0.1">
+<info>
+	<name>Bäume auf dem Ölberg</name>
+	<author>Prof. Dr. Gertrud Lohaus</author>
+	<description>Ein wenig bergig wird es mit der zweiten Baum Tour, die sich rund um essbare Früchte der Baume drehen wird. Hinter der Laurentiuskirche beginnt die Tour und führt über die Treppe Tippen-Tappen-Tönchen und weiter die Gertudenstraße hoch und endet an einer kleine Grünfäche mit vielen frucht- und nusstragenden Bäumen.</description>
+	<length>0.5 km</length>
+	<time>24 Min</time>
+	<image>XXX</image>
+	<color>#69BC9C</color>
+</info>
+<stations>
+	<station>
+		<id></id>
+		<title>Gewöhnliche Mehlbeere</title>
+		<number>1</number>
+		<description>Hinter der Laurentiuskirche steht der erste Baum mit essbaren Früchten. Die Mehlbeere (Sorbus aria) hat eiförmige Blätter, die auf der Unterseite behaart sind.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.2572217440871,7.1392156183719635</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Hainbuche</title>
+		<number>2</number>
+		<description>Wenn Sie die ersten Stufen der Treppe “Tippen-Tappen-Tönchen“ hinaufgestiegen sind, können Sie hinter dem Zaun eine  Hainbuche (Carpinus betulus) betrachten.  Ihre Blätter sind gesägt und nicht glatt wie beispielsweise bei der Rotbuche.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25779246247312,7.139435559511185</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Fächer-Ahorn</title>
+		<number>3</number>
+		<description>Hinter einem Zaun liegt ein kleiner Fächer-Ahorn (Acer palmatum), der ab der Hälfte der Treppe sichtbar wird. Dieser Ahorn mit den schönen Blättern stammt nicht aus Deutschland, sondern aus asiatischen Ländern wie China und Korea.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.2578646410584,7.139277309179306</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Ess-Kastanie</title>
+		<number>4</number>
+
+		<description>Auf der Gertruden-Straße hinter dem Zaun wächste eine große Ess-Kastanie (Castanea sativa). Der Baum mit den länglichen und gesägten Blättern trägt Nussfrüchte, die als Maronen bekannt sind.
+
+			Zusatzinfo: Wollen Sie auf dem Weg zu Station 5 erfahren, warum es so wenige Ahorn-Arten in Deutschland gibt?
+			Hören Sie es sich hier an!
+		</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25789317674694,7.138872295618057</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Über das Artensterben der Ahörner</title>
+		<number>5</number>
+		<description>Die Gertruden-Straße entlang gegangen sehen Sie schon von Weitem den Spitz-Ahorn (Acer platanoides). Seine Blätter unterscheiden sich von den Blättern des Berg-Ahorn unter anderem dadurch, dass sie nicht gesägt sind.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.257763926722085,7.1385423839092255</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Spitz-Ahorn</title>
+		<number>6</number>
+		<description>An der Ecke Marienstraße, an der Ecke zur Wirkerstraße, ist ein großer Berg-Ahorn (Acer pseudoplatanus) zu erkennen. Der Fachbegriff des Berg-Ahorns soll seine Ähnlichkeit mit der Platane deutlich machen.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.258321209949095,7.137287110090256</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Berg-Ahorn</title>
+		<number>7</number>
+		<description>Über die sechs Stufen im kleinen Park angekommen können Sie vor sich zwei große Baume erkennen. Der erste Baum ist ein Kultur-Apfel (Malus domestica) und gehört wie viele fruchttragenden Bäume zu den Roseengewächsen.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25900101919652,7.136474400758743</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Kultur-Apfel</title>
+		<number>8</number>
+		<description>Neben dem Apfelbaum steht eine Kultur-Birne (Pyrus communis). Durch die Blätter lässt sich ein Birnen-Baum für einen Laien nur schwerlich vom Apfel-Baum unterscheiden. Im Herbst ist dies durch die Früchte wesentlich leichter.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25944582721376,7.136262506246567</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Kultur-Birne</title>
+		<number>9</number>
+		<description> Am Ende des Weges, bevor es weiter nach rechts geht, ist ein Strach zu sehen, der Nussfrüchte trägt. Die Gewöhnliche Hasel (Corylus avellana) erkennt man an ihren rundlichen Blättern.</description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25949114703426,7.1362195909023285</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Gewöhnliche Hasel</title>
+		<number>10</number>
+		<description>Die Echte Walnuss (Juglans regia) ist leicht zu erblicken. Sie ist ein großer Baum, mit Blätter, die sich aus mehreren getrennten Blättchen (Fiederblättchen) zusammensetzt.  Schon im Sommer kann man die grünverpackten Walnüsse am Baum erkennen. </description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25957362525118,7.136106267571449</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Echte Walnuss</title>
+		<number>11</number>
+		<description>Auch die Vogelbeere (Sorbus aucuparia) hat wie die Walnuss Fiederblätter und steht nicht weit von dem großen Nussbaum entfernt.  Im Sommer bekommt die Vogelbeere ihre roten Früchte. Sie wird auch Eberesche genannt. </description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.259893987919746,7.136367112398148</coordinates>
+	</station>
+	<station>
+		<id></id>
+		<title>Vogelbeere</title>
+		<number>12</number>
+		<description></description>
+		<image>i</image>
+		<video>v</video>
+		<audio>a</audio>
+		<coordinates>51.25996952019277,7.136289328336716</coordinates>
+	</station>
+</stations>
+</tour>
+
+
