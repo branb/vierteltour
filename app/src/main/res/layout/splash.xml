@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Splash"
+    android:background="#e6ebe0"
+    android:layout_alignParentBottom="true"
+    android:layout_marginBottom="-7dp">
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:background="#e6ebe0"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:progress="20"
+        android:progressTint="#ff5d59" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WUPPERTAL"
+        android:id="@+id/textView"
+        android:layout_above="@+id/progressBar"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Viertel"
+        android:textColor="#ff5d59"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/videoView"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#ff5d59"
+        android:text="Tour"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp" />
+
+    <VideoView
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:id="@+id/videoView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="#e6ebe0" />
+
+</RelativeLayout>
