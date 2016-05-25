@@ -1,5 +1,6 @@
 package com.uni_wuppertal.iad.vierteltour;
 
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -10,8 +11,10 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Vector;
 
@@ -34,21 +37,36 @@ public class XmlParser{
 
   public XmlPullParser parser;
   public XmlPullParserFactory parserFactory;
-  public InputStream inputStream;
+  public FileInputStream inputStream;
   public String text;
-
   public Tour tour;
   public List<Tour> ListTouren;
   public StationInfo tourInfo;
   public List<Station> stations;
   public List<LatLng> track;
+  private File tourXmlFile;
 
 
   public XmlParser( FragmentActivity context ){
-    int resourceId = context.getResources()
-                            .getIdentifier( "tour", "raw", context.getPackageName() );
-    inputStream = context.getResources()
-                         .openRawResource( resourceId );
+    // Load tour data from external storage
+    String state = Environment.getExternalStorageState();
+    if( Environment.MEDIA_MOUNTED.equals( state ) ){
+      System.out.println( "ExternalFilesDir: " + context.getExternalFilesDir( null ) );
+
+      // Get path for the file on external storage.  If external
+      // storage is not currently mounted this will fail.
+      tourXmlFile = new File( context.getExternalFilesDir( null ), "tour.xml" );
+      if( tourXmlFile.exists() ){
+        System.out.println( "File found: " + tourXmlFile.toString() );
+
+        try{
+          inputStream = new FileInputStream( tourXmlFile );
+        } catch( FileNotFoundException ex ){
+          System.out.println( "File not found: " + tourXmlFile.toString() );
+        }
+
+      }
+    }
 
     ListTouren = new Vector<>();
     try{
@@ -146,38 +164,54 @@ public class XmlParser{
   }
 
   public void parseTrack( FragmentActivity context, Tour t ){
-    int resourceId = context.getResources()
-                            .getIdentifier( "track_" + t.trkid, "raw", context.getPackageName() );
-    InputStream inputStreamTrack = context.getResources()
-                                          .openRawResource( resourceId );
+    File trackXmlFile;
+    FileInputStream inputStream;
 
-    try{
-      XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-      XmlPullParser parser = factory.newPullParser();
-      parser.setInput( inputStreamTrack, null );
+    // Load tour data from external storage
+    String state = Environment.getExternalStorageState();
+    if( Environment.MEDIA_MOUNTED.equals( state ) ){
+      // Get path for the file on external storage.  If external
+      // storage is not currently mounted this will fail.
+      trackXmlFile = new File( context.getExternalFilesDir( null ), "track_" + t.trkid + ".gpx" );
+      if( trackXmlFile.exists() ){
+        try{
+          inputStream = new FileInputStream( trackXmlFile );
+
+          try{
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = factory.newPullParser();
+            parser.setInput( inputStream, null );
 
 
-      int eventType = parser.getEventType();
-      while( eventType != XmlPullParser.END_DOCUMENT ){
-        if( eventType == XmlPullParser.START_TAG ){
-          if( parser.getName()
-                    .equals( "trkpt" ) ){
-            Double lat = Double.parseDouble( parser.getAttributeValue( null, "lat" ) );
-            Double lon = Double.parseDouble( parser.getAttributeValue( null, "lon" ) );
-            LatLng latlng = new LatLng( lat, lon );
-            t.track.add( latlng );
+            int eventType = parser.getEventType();
+            while( eventType != XmlPullParser.END_DOCUMENT ){
+              if( eventType == XmlPullParser.START_TAG ){
+                if( parser.getName()
+                          .equals( "trkpt" ) ){
+                  Double lat = Double.parseDouble( parser.getAttributeValue( null, "lat" ) );
+                  Double lon = Double.parseDouble( parser.getAttributeValue( null, "lon" ) );
+                  LatLng latlng = new LatLng( lat, lon );
+                  t.track.add( latlng );
+                }
+              }
+              if( eventType == XmlPullParser.TEXT ){
+              }
+              if( eventType == XmlPullParser.END_TAG ){
+              }
+              eventType = parser.next();
+            }
+          } catch( XmlPullParserException | IOException e ){
+            e.printStackTrace();
           }
-        }
-        if( eventType == XmlPullParser.TEXT ){
-        }
-        if( eventType == XmlPullParser.END_TAG ){
 
+        } catch( FileNotFoundException ex ){
+          System.out.println( "File not found: " + tourXmlFile.toString() );
         }
-        eventType = parser.next();
+
       }
-    } catch( XmlPullParserException | IOException e ){
-      e.printStackTrace();
     }
+
   }
+
 
 }
