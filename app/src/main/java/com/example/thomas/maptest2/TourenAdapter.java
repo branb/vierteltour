@@ -25,11 +25,11 @@ public class TourenAdapter extends BaseAdapter {
 
     Context context;
     List<RowItem> rowItem;
-    XmlParser parser;
+    XmlParser2 parser;
 
     private SlidingUpPanelLayout mLayout;
 
-    TourenAdapter(Context context, List<RowItem> rowItem, XmlParser parse) {
+    TourenAdapter(Context context, List<RowItem> rowItem, XmlParser2 parse) {
         this.context = context;
         this.rowItem = rowItem;
         this.parser = parse;
@@ -74,7 +74,7 @@ public class TourenAdapter extends BaseAdapter {
         View divider = (View) convertView.findViewById(R.id.divider);
 
         //Setzt jeweilige Informationen an die richtigen Views
-        convertView.setBackgroundColor(Color.parseColor(parser.ListTour.get(position).info.color));
+        convertView.setBackgroundColor(Color.parseColor(parser.ListTouren.get(position).info.color));
         RowItem row_pos = rowItem.get(position);
 
         imgIcon.setImageResource(row_pos.getIcon());
