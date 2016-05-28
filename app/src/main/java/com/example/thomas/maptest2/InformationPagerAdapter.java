@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 
 /**
@@ -34,9 +35,9 @@ public class InformationPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View itemView = LayoutInflater.from(mContext).inflate(R.layout.information, container, false);
+        View itemView = LayoutInflater.from(mContext).inflate(R.layout.gallerypageritem, container, false);
 
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.imageScreenGallery);
+        ImageView imageView = (ImageView) itemView.findViewById(R.id.img_pager_item);
         imageView.setImageResource(mResources[position]);
 
         container.addView(itemView);

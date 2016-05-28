@@ -13,12 +13,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -47,9 +49,9 @@ public class Information extends Activity {
     VideoView vid;
     TextView duration, gallerytitle, durationGallery;
     double timeElapsed = 0;
-    int videoId, audioId, imgId, page=0;
+    int videoId, audioId, imgId[], page=0, dotsCount;
     String video, audio, img;
-    ImageView p;
+    ImageView image, dots[];
     Intent myIntent2;
     Bundle b;
     RelativeLayout layout;
@@ -57,7 +59,9 @@ public class Information extends Activity {
     TextView title, routenname, prof, info2, description;
     OrientationEventListener changed;
     ViewFlipper vf;
-
+    ViewPager imagePager;
+    InformationPagerAdapter mAdapter;
+    LinearLayout pager_indicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,9 +122,35 @@ public class Information extends Activity {
         description.setText(desc);
         videoId = getResources().getIdentifier(video, "raw", getPackageName());
         audioId = getResources().getIdentifier(audio, "raw", getPackageName());
-        imgId = getResources().getIdentifier(img, "drawable", getPackageName());
 
-    }
+        //Temporäres einlesen mehrerer Bilder gleichzeitig
+        //Später über XML Parser zu realisieren
+        int i=0;
+        char[] stringArray = img.toCharArray();
+        String neueString = "";
+        boolean erg=true;
+
+        int count=1;
+        for(int j=0;j<stringArray.length;j++)
+        {    if(String.valueOf(stringArray[j]).equals(","))
+        {   count++;}}
+        imgId = new int[count];
+
+            while(erg)
+        {String tmp="";
+            erg=false;
+            for(int j=0;j<stringArray.length;j++)
+            {    if(String.valueOf(stringArray[j]).equals(","))
+                {   char[] tmpArray = new char[stringArray.length-j-1];
+                    for(int k=0;k<stringArray.length-j-1;k++)
+                    {tmpArray[k]=stringArray[k+j+1];}
+                    stringArray=tmpArray;
+                    erg=true;
+                    break;}
+            else{tmp += String.valueOf(stringArray[j]).toString();}}
+        imgId[i] = getResources().getIdentifier(tmp, "drawable", getPackageName());
+        i++;
+    }}
 
     public void getInit() {
         initAll();
@@ -133,30 +163,12 @@ public class Information extends Activity {
         {audio();}
 
         if(videoId!=0)
-            {//if(imgId!=0)
+            {video();}
 
-
-        p.setVisibility(View.VISIBLE);
-        p.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vf.showNext();
-                play_button.setImageResource(R.drawable.play_hell);
-                button_status = false;
-                finished=true;
-                if(player.isPlaying())player.pause();
-                page=1;
-                start=true;
-                vid.start();
-                seekUpdation2();
+    else if(imgId[0]!=0)
+        {//image.setImageResource(imgId[0]);
+        //image.setVisibility(View.VISIBLE);
             }
-        });
-
-        video();}
-
-    else if(imgId!=0)
-        {p.setImageResource(imgId);
-        p.setVisibility(View.VISIBLE);}
     }
 
 
@@ -253,8 +265,9 @@ public class Information extends Activity {
      if(videoId==0)
      {vid.setVisibility(View.GONE);}
 
-     if(imgId==0)
-     {p.setVisibility(View.GONE);}
+     if(imgId[0]==0)
+     {//image.setVisibility(View.GONE);
+     }
     }
 
  /*   @Override
@@ -302,6 +315,7 @@ public class Information extends Activity {
 
     public void initAll()
     {//Init
+
         ImageButton arrdwn = (ImageButton) findViewById(R.id.arrowdown);
         arrdwn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -314,13 +328,61 @@ public class Information extends Activity {
         duration = (TextView)findViewById(R.id.duration);
         duration.setTextColor(Color.GRAY);
         vid = (VideoView)findViewById(R.id.videoViewGallery);
-        p = (ImageView)findViewById(R.id.imageScreen);
+       // image = (ImageView)findViewById(R.id.imageScreen);
         gallerytitle = (TextView) findViewById(R.id.titleGallery);
         x_button = (ImageButton) findViewById(R.id.x_button);
         seekbarGallery = (SeekBar) findViewById(R.id.seek_barGallery);
         play_buttonGallery = (ImageButton) findViewById(R.id.play_buttonGallery);
         durationGallery = (TextView)findViewById(R.id.durationGallery);
+        imagePager = (ViewPager) findViewById(R.id.ImagePager);
+        mAdapter = new InformationPagerAdapter(this, imgId);
+        pager_indicator = (LinearLayout) findViewById(R.id.viewPagerCountDots);
+        imagePager.setAdapter(mAdapter);
+        imagePager.setCurrentItem(0);
+        imagePager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < dotsCount; i++) {
+                    dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));
+                }
+
+                dots[position].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
+                findViewById(android.R.id.content).invalidate();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
+        setUiPageViewController();
     }
+
+    private void setUiPageViewController() {
+
+        dotsCount = mAdapter.getCount();
+        dots = new ImageView[dotsCount];
+
+        for (int i = 0; i < dotsCount; i++) {
+            dots[i] = new ImageView(this);
+            dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+
+            params.setMargins(4, 0, 4, 0);
+
+            pager_indicator.addView(dots[i], params);
+        }
+
+        dots[0].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
+        findViewById(android.R.id.content).invalidate();
+
+    }
+
 
 
     public void audio()
@@ -413,12 +475,27 @@ public class Information extends Activity {
                 p.setVisibility(View.VISIBLE);
             }
         });*/
+
+       /* image.setVisibility(View.VISIBLE);
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vf.showNext();
+                play_button.setImageResource(R.drawable.play_hell);
+                button_status = false;
+                finished=true;
+                if(player.isPlaying())player.pause();
+                page=1;
+                start=true;
+                vid.start();
+                seekUpdation2();
+            }
+        });*/
     }
 
-    public void image()
+    public void images()
     {
-       /* p.setImageResource(imgId);
-        p.setVisibility(View.INVISIBLE);}*/
+
 
     }
 

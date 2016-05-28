@@ -103,14 +103,18 @@
             />
 
         <android.support.v4.view.ViewPager
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/ImagePager"
-            android:layout_below="@+id/stationenbeschreibung"/>
+            android:layout_below="@+id/seek_bar"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="90dp"/>
 
-    <ImageView
+        <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/imageScreen"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/stationenbeschreibung"
@@ -164,6 +168,16 @@
             android:layout_marginBottom="30dp"
             android:visibility="gone"
             />
+
+        <LinearLayout
+            android:id="@+id/viewPagerCountDots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="55dp"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
 
