@@ -39,12 +39,12 @@ public class Information extends Activity implements View.OnClickListener {
     //ViewPager mPager;
     //InformationAdapter mAdapter;
     SeekBar seekbar;
-    ImageButton play_button;
+    ImageButton play_button, x_button;
     MediaPlayer player;
     boolean button_status = false, finished=false;  //Variable für Status des Play-Buttons
     Handler seekHandler = new Handler();
     VideoView vid;
-    TextView duration;
+    TextView duration, gallerytitle;
     double timeElapsed = 0;
     int videoId, audioId, imgId;
     String video, audio, img;
@@ -55,6 +55,7 @@ public class Information extends Activity implements View.OnClickListener {
     String station, farbe, autor, tourname, laenge, desc, zeit, size, number;
     TextView title, routenname, prof, info2, description;
     OrientationEventListener changed;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,28 +128,11 @@ public class Information extends Activity implements View.OnClickListener {
         vid = (VideoView)findViewById(R.id.videoView);
         p = (ImageView)findViewById(R.id.imageScreen);
 
-        //Landscape/Portrait change
-        changed = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL){
-            @Override
-            public void onOrientationChanged(int arg0)
-            {if(arg0>=90 && arg0<=270)
-            {   Toast.makeText(getApplicationContext(), "PORTRAIT",
-                    Toast.LENGTH_LONG).show();}}
-        };
-        if (changed.canDetectOrientation()){changed.enable();}
-
-      /*  if(getResources().getDisplayMetrics().widthPixels>getResources().getDisplayMetrics().
-                heightPixels)
-        {
-            Toast.makeText(this,"Screen switched to Landscape mode",Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            Toast.makeText(this,"Screen switched to Portrait mode",Toast.LENGTH_SHORT).show();
-        }*/
 
 
+        initOrientation();
         hide();
+
         if(audioId!=0)
         {
         play_button.setOnClickListener((View.OnClickListener) this);
@@ -156,7 +140,7 @@ public class Information extends Activity implements View.OnClickListener {
         seekbar.getProgressDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC);
         seekbar.setMax(player.getDuration());
         seekbar.setOnSeekBarChangeListener(customSeekBarListener);
-        seekbar.getThumb().mutate().setAlpha(0);
+        seekbar.getThumb().mutate().setAlpha(0);//seekbar.getthumb ist pin auf der seekbar
             player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
                 @Override
@@ -173,7 +157,7 @@ public class Information extends Activity implements View.OnClickListener {
             });
 
 
-        }            //seekbar.getthumb ist pin auf der seekbar
+        }
         if(videoId!=0)
             {if(imgId!=0)
              {
@@ -192,7 +176,10 @@ public class Information extends Activity implements View.OnClickListener {
                     vid.pause();
                     return false;
                 } else {
-                    vid.start();
+                   //CHANGE HERE
+                   setContentView(R.layout.gallery);
+                    gallerymode();
+                    // vid.start();
                     return false;
                 }}
 
@@ -314,5 +301,29 @@ public class Information extends Activity implements View.OnClickListener {
     }
 */
 
+    public void initOrientation()
+    {//Landscape/Portrait change
+        changed = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL){
+            @Override
+            public void onOrientationChanged(int arg0)
+            {if(arg0>=90 && arg0<=270)
+            {   Toast.makeText(getApplicationContext(), "PORTRAIT",
+                    Toast.LENGTH_LONG).show();}}
+        };
+        if (changed.canDetectOrientation()){changed.enable();}}
+
+
+    public void gallerymode()
+    {
+        gallerytitle = (TextView) findViewById(R.id.titleGallery);
+        x_button = (ImageButton) findViewById(R.id.x_button);
+        gallerytitle.setText(station);
+        x_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.information);
+            }
+        });
+    }
 
 }

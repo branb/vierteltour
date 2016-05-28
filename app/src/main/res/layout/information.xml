@@ -98,17 +98,17 @@
             android:id="@+id/ImagePager"
             android:layout_below="@+id/stationenbeschreibung"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageScreen"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/stationenbeschreibung"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="30dp"
-            />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageScreen"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/stationenbeschreibung"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="30dp"
+        />
 
         <SeekBar
             android:id="@+id/seek_bar"
