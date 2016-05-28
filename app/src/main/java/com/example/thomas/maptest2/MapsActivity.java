@@ -347,14 +347,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                 hideInfo(false);
             }
         });
-        ImageButton eyebtn = (ImageButton) findViewById(R.id.eyebtn);           //Circle Button
-        eyebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Auge gedrueckt", Toast.LENGTH_SHORT)
-                        .show();
-            }
-        });
+
+
         ImageButton arrowbtn = (ImageButton) findViewById(R.id.arrowbtn);       //Top Twin Button
         arrowbtn.setOnClickListener(new View.OnClickListener() {
             @Override
