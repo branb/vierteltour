@@ -25,6 +25,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+import android.widget.ViewFlipper;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -35,18 +36,18 @@ import java.util.concurrent.TimeUnit;
 
 //Zur Zeit lässt sich Audio nur abspielen, wenn Pfad zu einer Datei vorhanden ist.
 
-public class Information extends Activity implements View.OnClickListener {
+public class Information extends Activity {
     //ViewPager mPager;
     //InformationAdapter mAdapter;
-    SeekBar seekbar;
-    ImageButton play_button, x_button;
+    SeekBar seekbar, seekbarGallery;
+    ImageButton play_button, x_button, play_buttonGallery;
     MediaPlayer player;
-    boolean button_status = false, finished=false;  //Variable für Status des Play-Buttons
+    boolean button_status = false, finished=false, start=true;  //Variable für Status des Play-Buttons
     Handler seekHandler = new Handler();
     VideoView vid;
-    TextView duration, gallerytitle;
+    TextView duration, gallerytitle, durationGallery;
     double timeElapsed = 0;
-    int videoId, audioId, imgId;
+    int videoId, audioId, imgId, page=0;
     String video, audio, img;
     ImageView p;
     Intent myIntent2;
@@ -55,19 +56,14 @@ public class Information extends Activity implements View.OnClickListener {
     String station, farbe, autor, tourname, laenge, desc, zeit, size, number;
     TextView title, routenname, prof, info2, description;
     OrientationEventListener changed;
+    ViewFlipper vf;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.information);
-        ImageButton arrdwn = (ImageButton) findViewById(R.id.arrowdown);
-        arrdwn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        vf = (ViewFlipper) findViewById( R.id.viewFlipper );
         parseData();
         getInit();
 
@@ -77,7 +73,7 @@ public class Information extends Activity implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if(page==0){super.onBackPressed();
         overridePendingTransition(R.anim.map_in, R.anim.fade_out);
         if(audioId!=0)
         {player.stop();
@@ -85,6 +81,13 @@ public class Information extends Activity implements View.OnClickListener {
         player=null;}
         if(videoId!=0)
         {vid.stopPlayback();}}
+    else if(page==1)
+        {
+            vf.showPrevious();
+            start=false;
+            vid.pause();
+            page=0;
+        }}
 
     public void parseData(){
         myIntent2 = getIntent();
@@ -120,89 +123,41 @@ public class Information extends Activity implements View.OnClickListener {
     }
 
     public void getInit() {
-        //Init
-        seekbar = (SeekBar) findViewById(R.id.seek_bar);
-        play_button = (ImageButton) findViewById(R.id.play_button);
-        duration = (TextView)findViewById(R.id.duration);
-        duration.setTextColor(Color.GRAY);
-        vid = (VideoView)findViewById(R.id.videoView);
-        p = (ImageView)findViewById(R.id.imageScreen);
+        initAll();
 
-
-
+        gallerymode();
         initOrientation();
         hide();
 
         if(audioId!=0)
-        {
-        play_button.setOnClickListener((View.OnClickListener) this);
-        player = MediaPlayer.create(this, audioId);
-        seekbar.getProgressDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC);
-        seekbar.setMax(player.getDuration());
-        seekbar.setOnSeekBarChangeListener(customSeekBarListener);
-        seekbar.getThumb().mutate().setAlpha(0);//seekbar.getthumb ist pin auf der seekbar
-            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        {audio();}
 
-                @Override
-                public void onCompletion(MediaPlayer player) {
-                    finished=true;
-                    seekbar.setProgress(0);
-                    duration.setText("0:00");
-
-                    player.pause();
-                    play_button.setImageResource(R.drawable.play_hell);
-                    button_status = false;
-                }
-
-            });
-
-
-        }
         if(videoId!=0)
-            {if(imgId!=0)
-             {
-              p.setImageResource(imgId);
-              p.setVisibility(View.INVISIBLE);}
+            {//if(imgId!=0)
 
 
-        vid.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videoId));
-        vid.requestFocus();
-        //vid.setMediaController(new MediaController(this));
-        vid.seekTo(1);
-        vid.setOnTouchListener(new View.OnTouchListener() {
+        p.setVisibility(View.VISIBLE);
+        p.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent motionEvent) {
-                if (vid.isPlaying()) {
-                    vid.pause();
-                    return false;
-                } else {
-                   //CHANGE HERE
-                   setContentView(R.layout.gallery);
-                    gallerymode();
-                    // vid.start();
-                    return false;
-                }}
-
+            public void onClick(View v) {
+                vf.showNext();
+                play_button.setImageResource(R.drawable.play_hell);
+                button_status = false;
+                finished=true;
+                if(player.isPlaying())player.pause();
+                page=1;
+                start=true;
+                vid.start();
+                seekUpdation2();
+            }
         });
 
- /*       vid.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                vid.setZOrderOnTop(true);
-                vid.setVisibility(View.GONE);
-                p.setVisibility(View.VISIBLE);
-            }
-        });*/
+        video();}
 
-
-
-    }
     else if(imgId!=0)
         {p.setImageResource(imgId);
         p.setVisibility(View.VISIBLE);}
     }
-
-
 
 
 
@@ -213,11 +168,18 @@ public class Information extends Activity implements View.OnClickListener {
         }
     };
 
+    Runnable run2 = new Runnable() {
+        @Override
+        public void run() {
+            seekUpdation2();
+        }
+    };
+
+
 
     public void seekUpdation() {
         if(player!=null && !finished)
-        {
-         seekbar.setProgress(player.getCurrentPosition());
+        {seekbar.setProgress(player.getCurrentPosition());
          timeElapsed = player.getCurrentPosition();
          duration.setText(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
 /*      if(player.getCurrentPosition()<10000) {
@@ -229,7 +191,25 @@ public class Information extends Activity implements View.OnClickListener {
             p.setImageResource(R.drawable.pic2);
         }
 */
-        seekHandler.postDelayed(run, 1);}
+        seekHandler.postDelayed(run, 100);}
+    }
+
+    public void seekUpdation2() {
+       if(vid!=null && start)
+        {   seekbarGallery.setMax(vid.getDuration());
+            seekbarGallery.setProgress(vid.getCurrentPosition());
+            timeElapsed = vid.getCurrentPosition();
+            durationGallery.setText(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
+/*      if(player.getCurrentPosition()<10000) {
+            ImageView p = (ImageView)findViewById(R.id.imageView);
+            p.setImageResource(R.drawable.pic1);
+        }
+        else {
+            ImageView p = (ImageView)findViewById(R.id.imageView);
+            p.setImageResource(R.drawable.pic2);
+        }
+*/
+            seekHandler.postDelayed(run2, 100);}
     }
 
 
@@ -246,29 +226,23 @@ public class Information extends Activity implements View.OnClickListener {
         public void onStopTrackingTouch(SeekBar seekBar) {}
     };
 
-
+    public SeekBar.OnSeekBarChangeListener customSeekBarListener2 = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if(fromUser) {
+                vid.seekTo(progress);
+            }
+        }
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {}
+    };
 
 
 
     //@Override
-    public void onClick(View play) {
-        switch (play.getId()) {
-            case R.id.play_button:
-                if(button_status == false) {
-                    finished=false;
-                    player.start();
-                    play_button.setImageResource(R.drawable.stop_hell);
-                    button_status = true;
-                    seekUpdation();
-                }
-                else {
-                    player.pause();
-                    play_button.setImageResource(R.drawable.play_hell);
-                    button_status = false;
-                }
-                break;
-        }
-    }
+
 
     public void hide()
     {if(audioId==0)
@@ -277,14 +251,10 @@ public class Information extends Activity implements View.OnClickListener {
           duration.setVisibility(View.GONE);}
 
      if(videoId==0)
-     {
-         vid.setVisibility(View.GONE);
-     }
+     {vid.setVisibility(View.GONE);}
 
      if(imgId==0)
-     {
-         p.setVisibility(View.GONE);
-     }
+     {p.setVisibility(View.GONE);}
     }
 
  /*   @Override
@@ -315,15 +285,141 @@ public class Information extends Activity implements View.OnClickListener {
 
     public void gallerymode()
     {
-        gallerytitle = (TextView) findViewById(R.id.titleGallery);
-        x_button = (ImageButton) findViewById(R.id.x_button);
         gallerytitle.setText(station);
         x_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.information);
+                vid.pause();
+                start=false;
+                page=0;
+                vf.showPrevious();
+
             }
         });
+
+
+    }
+
+    public void initAll()
+    {//Init
+        ImageButton arrdwn = (ImageButton) findViewById(R.id.arrowdown);
+        arrdwn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        seekbar = (SeekBar) findViewById(R.id.seek_bar);
+        play_button = (ImageButton) findViewById(R.id.play_button);
+        duration = (TextView)findViewById(R.id.duration);
+        duration.setTextColor(Color.GRAY);
+        vid = (VideoView)findViewById(R.id.videoViewGallery);
+        p = (ImageView)findViewById(R.id.imageScreen);
+        gallerytitle = (TextView) findViewById(R.id.titleGallery);
+        x_button = (ImageButton) findViewById(R.id.x_button);
+        seekbarGallery = (SeekBar) findViewById(R.id.seek_barGallery);
+        play_buttonGallery = (ImageButton) findViewById(R.id.play_buttonGallery);
+        durationGallery = (TextView)findViewById(R.id.durationGallery);
+    }
+
+
+    public void audio()
+    { play_button.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View play) {
+            switch (play.getId()) {
+                case R.id.play_button:
+                    if(button_status == false) {
+                        finished=false;
+                        player.start();
+                        play_button.setImageResource(R.drawable.stop_hell);
+                        button_status = true;
+                        seekUpdation();
+                    }
+                    else {
+                        player.pause();
+                        play_button.setImageResource(R.drawable.play_hell);
+                        button_status = false;
+                    }
+                    break;
+            }
+
+        }
+    });
+        player = MediaPlayer.create(this, audioId);
+        seekbar.getProgressDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC);
+        seekbar.setMax(player.getDuration());
+        seekbar.setOnSeekBarChangeListener(customSeekBarListener);
+        seekbar.getThumb().mutate().setAlpha(0);//seekbar.getthumb ist pin auf der seekbar
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+            @Override
+            public void onCompletion(MediaPlayer player) {
+                finished=true;
+                seekbar.setProgress(0);
+                duration.setText("0:00");
+
+                player.pause();
+                play_button.setImageResource(R.drawable.play_hell);
+                button_status = false;
+            }
+
+        });
+
+    }
+
+    public void video()
+    {vid.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videoId));
+        vid.requestFocus();
+        //vid.setMediaController(new MediaController(this));
+        play_buttonGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (vid.isPlaying()) {
+                    start=false;
+                    vid.pause();
+                    play_buttonGallery.setImageResource(R.drawable.play_hell);
+                } else {
+                    start=true;
+                    vid.start();
+                    play_buttonGallery.setImageResource(R.drawable.stop_hell);
+                    seekUpdation2();
+                }
+            }
+        });
+
+        seekbarGallery.setOnSeekBarChangeListener(customSeekBarListener2);
+        vid.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent motionEvent) {
+                if (vid.isPlaying()) {
+                    start=false;
+                    vid.pause();
+                    play_buttonGallery.setImageResource(R.drawable.play_hell);
+                    return false;
+                } else {
+                    start=true;
+                    vid.start();
+                    play_buttonGallery.setImageResource(R.drawable.stop_hell);
+                    seekUpdation2();
+                    return false;
+                }}});
+
+     /*       vid.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                vid.setZOrderOnTop(true);
+                vid.setVisibility(View.GONE);
+                p.setVisibility(View.VISIBLE);
+            }
+        });*/
+    }
+
+    public void image()
+    {
+       /* p.setImageResource(imgId);
+        p.setVisibility(View.INVISIBLE);}*/
+
     }
 
 }
