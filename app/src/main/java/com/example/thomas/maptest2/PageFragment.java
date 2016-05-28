@@ -37,7 +37,6 @@ public class PageFragment extends Fragment {
         img.add(marked.stations.get(pageNumber).image);
         aud.add(marked.stations.get(pageNumber).audio);
         vid.add(marked.stations.get(pageNumber).video);
-        System.out.println(marked.stations.get(pageNumber).description);
         TOURNAME = marked.info.name;
         AUTOR = marked.info.author;
         TIME = marked.info.time;

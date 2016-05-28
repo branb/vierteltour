@@ -73,7 +73,6 @@ public class Information extends Activity implements View.OnClickListener {
         super.onBackPressed();
         overridePendingTransition(R.anim.map_in, R.anim.fade_out);
         player.stop();
-        vid.stopPlayback();
     }
 
     public void parseData(){
@@ -206,15 +205,13 @@ public class Information extends Activity implements View.OnClickListener {
         switch (play.getId()) {
             case R.id.play_button:
                 if(button_status == false) {
-                    //Toast.makeText(getApplicationContext(), "Playing...", Toast.LENGTH_SHORT).show();
-                    player.start();
+                 //   player.start();
                     play_button.setImageResource(R.drawable.stop_hell);
                     button_status = true;
                 }
                 else {
-                    player.pause();
+                 //   player.pause();
                     play_button.setImageResource(R.drawable.play_hell);
-                    //Toast.makeText(getApplicationContext(), "Paused...", Toast.LENGTH_SHORT).show();
                     button_status = false;
                 }
                 break;

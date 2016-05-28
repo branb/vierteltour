@@ -140,8 +140,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         marked = -1;        //keine Tour ausgewählt
         parse = new XmlParser(this);
 
-        //System.out.println(parse.ListTour.get(7).info.name);
-
         initPager();
         initSupl();     //init SlidingUpPanelLayout
         initBtns();     //init Buttons right side, panel
@@ -158,8 +156,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        //loadKml();
-        //routeUndMarkerZeichnen();
         zeichnePolyLines();
         findMyLocation();
 
@@ -172,7 +168,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                 for (Tour t : tour.ListTouren) {
                     if (PolyUtil.isLocationOnPath(clickCoords, t.polylines.getPoints(), true, 20)) {
                         // clicked track and marker become no alpha value
-                        System.out.println("tip tip");
                         t.polylines.color(Color.parseColor(t.info.color));
                         for (MarkerOptions m : t.ListMarker)
                             m.alpha(1.0f);
@@ -251,72 +246,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
     }
 
-    public void loadKml() {
-        InputStream is = this.getResources().openRawResource(R.raw.route);
-        String text= null;
-        String name= null;
-        String color = null;
-        String route = null;
-        String stationen = null;
-
-        try {
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            factory.setNamespaceAware(true);
-            XmlPullParser parser = factory.newPullParser();
-            parser.setInput(is, null);
-
-            int event = parser.getEventType();
-
-            while (event != XmlPullParser.END_DOCUMENT) {
-
-                if (event == XmlPullParser.START_TAG) {
-                    switch (parser.getName()){
-                        case("name"):
-                            parser.next();
-                            name = parser.getText();
-                            System.out.println("name: "+name);
-                            break;
-                        case("color"):
-                            parser.next();  // Weiter zum Inhalt Color
-                            text = parser.getText();
-                            color = text;
-                            System.out.println("color: " + text);
-                            break;
-                        case("coordinates"):
-                            String LatLngElement;
-                            parser.next();  // Weiter zum Inhalt Coordinaten
-                            route = parser.getText();
-                            break;
-                        case("stations"):
-                            parser.next();
-                            stationen = parser.getText();   // Stationen werden gelsen
-                            break;
-                    }
-                }
-
-                if(event == XmlPullParser.END_TAG)
-                    if(parser.getName().equals("stations")){
-                        routen.add(new Route2(route,color,stationen,name,this));
-                        System.out.println("neu");
-                    }
-                event = parser.next();
-            }
-        } catch (XmlPullParserException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void routeUndMarkerZeichnen(){
-        mMap.clear();
-        // Default Route Zeichnen
-        for (Route2 r : routen) {
-            mMap.addPolyline(r.lines);
-            for(MarkerOptions m : r.markerList) {
-                //m.alpha(1.0f);
-                mMap.addMarker(m);
-            }
-        }
-    }
 
     public int addPage(int position) {
         if ((position >= 0) && (position < parse.ListTour.get(marked).stations.size())) {
@@ -327,8 +256,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             return -1;
         }
     }
-
-
 
 
 
