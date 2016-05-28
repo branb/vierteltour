@@ -91,7 +91,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     private LatLng wuppertal;
 
-    private XmlParser parse;
     private XmlParser2 tour;
     private int marked;         //marked für Tour ausgewählt: -1 für nicht ausgewählt, 0-xxx für ausgewählte Tour
     private RelativeLayout panel;
@@ -138,9 +137,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         marked = -1;        //keine Tour ausgewählt
-        parse = new XmlParser(this);
-
-        //System.out.println(parse.ListTour.get(7).info.name);
+        tour = new XmlParser2(this);
 
         initPager();
         initSupl();     //init SlidingUpPanelLayout
@@ -149,7 +146,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         initActionBar();    //init ActionBar
         initDrawer();       //init Drawer
 
-        tour = new XmlParser2(this);
+
 
     }
 
@@ -158,36 +155,34 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        //loadKml();
-        //routeUndMarkerZeichnen();
         zeichnePolyLines();
         findMyLocation();
 
         wuppertal = new LatLng(51.256972, 7.139341);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wuppertal, CurrentZoom));
 
+        //tmpcut, klar machen wie jede Tour zusammenhängt mit markern und co, siehe XML, tourliste, supl liste
         final GoogleMap.OnMapClickListener listener = new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng clickCoords) {
-                for (Tour t : tour.ListTouren) {
-                    if (PolyUtil.isLocationOnPath(clickCoords, t.polylines.getPoints(), true, 20)) {
+               if(mLayout.getPanelState()==SlidingUpPanelLayout.PanelState.COLLAPSED)
+               { int tmp=0;
+                for (int i=0;i<tour.ListTouren.size();i++) {
+                    if (PolyUtil.isLocationOnPath(clickCoords, tour.ListTouren.get(i).polylines.getPoints(), true, 20) && tmp==0) {
                         // clicked track and marker become no alpha value
-                        System.out.println("tip tip");
-                        t.polylines.color(Color.parseColor(t.info.color));
-                        for (MarkerOptions m : t.ListMarker)
-                            m.alpha(1.0f);
+                        markedTour(i);
+                        showInfo(true);
+                        tmp=1;
                         // no clicked tracks and marker become alpha value
-                    } else {
-                        String s = t.info.color;
-                        s = s.substring(1, 7);
-                        s = "#30" + s; // #xx (Hex) Transparenz Stufe
-                        t.polylines.color(Color.parseColor(s));
-                        for (MarkerOptions m : t.ListMarker)
-                            m.alpha(0.3f);
                     }
+                    else {transparentTour(i);}
+                }
+                if(tmp==0)
+                {
+                    resetTour();
                 }
                 updatePolylines();
-            }
+            }}
         };
         mMap.setOnMapClickListener(listener);
 
@@ -200,6 +195,31 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         });
 
     }
+
+    public void transparentTour(int i)
+    {String s = tour.ListTouren.get(i).info.color;
+        s = "#30" + s.substring(1, 7); // #xx (Hex) Transparenz Stufe
+        tour.ListTouren.get(i).polylines.color(Color.parseColor(s));
+        for (MarkerOptions m : tour.ListTouren.get(i).ListMarker)
+            m.alpha(0.3f);}
+
+    public void markedTour(int i)
+    { tour.ListTouren.get(i).polylines.color(Color.parseColor(tour.ListTouren.get(i).info.color));
+        for (MarkerOptions m : tour.ListTouren.get(i).ListMarker)
+        m.alpha(1.0f);
+        marked=i;
+
+    }
+
+    public void resetTour()
+    {for (Tour t : tour.ListTouren) {
+        t.polylines.color(Color.parseColor(t.info.color));
+        for (MarkerOptions m :  t.ListMarker)
+        {m.alpha(1.0f);}}
+        marked=-1;
+        hideInfo(false);
+    updatePolylines();}
+
 
     public void findMyLocation(){
         locationListener = new LocationListener() {
@@ -245,90 +265,20 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         for(Tour t : tour.ListTouren){
             t.makePolylines();
             mMap.addPolyline(t.polylines);
-            for(MarkerOptions m : t.ListMarker){
+            for(MarkerOptions m : t.ListMarker) {
                 mMap.addMarker(m);
-            }
-        }
-    }
+            }}}
 
-    public void loadKml() {
-        InputStream is = this.getResources().openRawResource(R.raw.route);
-        String text= null;
-        String name= null;
-        String color = null;
-        String route = null;
-        String stationen = null;
-
-        try {
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            factory.setNamespaceAware(true);
-            XmlPullParser parser = factory.newPullParser();
-            parser.setInput(is, null);
-
-            int event = parser.getEventType();
-
-            while (event != XmlPullParser.END_DOCUMENT) {
-
-                if (event == XmlPullParser.START_TAG) {
-                    switch (parser.getName()){
-                        case("name"):
-                            parser.next();
-                            name = parser.getText();
-                            System.out.println("name: "+name);
-                            break;
-                        case("color"):
-                            parser.next();  // Weiter zum Inhalt Color
-                            text = parser.getText();
-                            color = text;
-                            System.out.println("color: " + text);
-                            break;
-                        case("coordinates"):
-                            String LatLngElement;
-                            parser.next();  // Weiter zum Inhalt Coordinaten
-                            route = parser.getText();
-                            break;
-                        case("stations"):
-                            parser.next();
-                            stationen = parser.getText();   // Stationen werden gelsen
-                            break;
-                    }
-                }
-
-                if(event == XmlPullParser.END_TAG)
-                    if(parser.getName().equals("stations")){
-                        routen.add(new Route2(route,color,stationen,name,this));
-                        System.out.println("neu");
-                    }
-                event = parser.next();
-            }
-        } catch (XmlPullParserException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void routeUndMarkerZeichnen(){
-        mMap.clear();
-        // Default Route Zeichnen
-        for (Route2 r : routen) {
-            mMap.addPolyline(r.lines);
-            for(MarkerOptions m : r.markerList) {
-                //m.alpha(1.0f);
-                mMap.addMarker(m);
-            }
-        }
-    }
 
     public int addPage(int position) {
-        if ((position >= 0) && (position < parse.ListTour.get(marked).stations.size())) {
-            pageradapter.addFragment(position, parse.ListTour.get(marked));
+        if ((position >= 0) && (position < tour.ListTouren.get(marked).stations.size())) {
+            pageradapter.addFragment(position, tour.ListTouren.get(marked));
             pageradapter.notifyDataSetChanged();
             return position;
         } else {
             return -1;
         }
     }
-
-
 
 
 
@@ -341,7 +291,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             pageradapter.notifyDataSetChanged();}
 
 
-        for(int i=0;i<parse.ListTour.get(marked).stations.size()-1;i++)
+        for(int i=0;i<tour.ListTouren.get(marked).stations.size();i++)
         {addPage(i);}
 
         ImageButton xbtn = (ImageButton) findViewById(R.id.btn_x);      //ActionBar Button: Right
@@ -350,7 +300,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);   //Hide Slider
         xbtn.setVisibility(View.VISIBLE);
         title.setVisibility(View.VISIBLE);
-        title.setText(parse.ListTour.get(marked).info.name);
+        title.setText(tour.ListTouren.get(marked).info.name);
         mPager.setVisibility(View.VISIBLE);
 
     }
@@ -380,18 +330,23 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                     item.setSelected(false);
                 }
                 rowItems.get(position).setSelected(true); //Nur das Angeklickte wird vergrößert
-                marked = position;
+                for(int i=0;i<tour.ListTouren.size();i++)
+                {if(i==position)markedTour(i);
+                else transparentTour(i);}
+
+                updatePolylines();
+
                 adapter.notifyDataSetChanged();
             }
         });
         rowItems = new ArrayList<RowItem>();
 
-        for (int i = 0; i < parse.ListTour.size(); i++) {
-            RowItem items = new RowItem(parse.ListTour.get(i).info.name , parse.ListTour.get(i).info.author, parse.ListTour.get(i).info.time+ "/" + parse.ListTour.get(i).info.length, menuIcons[i], parse.ListTour.get(i).info.description);
+        for (int i = 0; i < tour.ListTouren.size(); i++) {
+            RowItem items = new RowItem(tour.ListTouren.get(i).info.name , tour.ListTouren.get(i).info.author, tour.ListTouren.get(i).info.time+ "/" + tour.ListTouren.get(i).info.length, menuIcons[i], tour.ListTouren.get(i).info.description);
 
             rowItems.add(items);
         }
-        adapter = new TourenAdapter(this, rowItems, parse);
+        adapter = new TourenAdapter(this, rowItems, tour);
         lv.setAdapter(adapter);
     }
 
@@ -417,17 +372,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         imgbtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideInfo(false);
+                resetTour();
             }
         });
-        ImageButton eyebtn = (ImageButton) findViewById(R.id.eyebtn);           //Circle Button
-        eyebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Auge gedrueckt", Toast.LENGTH_SHORT)
-                        .show();
-            }
-        });
+
+
         ImageButton arrowbtn = (ImageButton) findViewById(R.id.arrowbtn);       //Top Twin Button
         arrowbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -688,9 +637,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             subtext1.setVisibility(View.VISIBLE);
             subtext2.setVisibility(View.VISIBLE);
         if(marked>=0)
-        {     tourenliste.setText(parse.ListTour.get(marked).info.name);
-            subtext1.setText(parse.ListTour.get(marked).info.author);
-           subtext2.setText(parse.ListTour.get(marked).info.time + "/" + parse.ListTour.get(marked).info.length);
+        {     tourenliste.setText(tour.ListTouren.get(marked).info.name);
+            subtext1.setText(tour.ListTouren.get(marked).info.author);
+           subtext2.setText(tour.ListTouren.get(marked).info.time + "/" + tour.ListTouren.get(marked).info.length);
         }
         else{tourenliste.setText("Tourenliste");}}
 

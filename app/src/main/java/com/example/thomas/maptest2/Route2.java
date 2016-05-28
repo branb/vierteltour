@@ -45,7 +45,7 @@ public class Route2 extends FragmentActivity {
 
         lines.color(Color.parseColor(c));
 
-        // Parse Route
+        // Parse
         StringTokenizer tok = new StringTokenizer(routeString,", ");
         tok.nextToken();    // Erstes Element (Return) überspringen
         while(tok.hasMoreTokens()) {
@@ -68,7 +68,6 @@ public class Route2 extends FragmentActivity {
             Double lng = Double.parseDouble(LatLngElement);
             String iconName = "marker_"+name;
             int id = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
-            System.out.println(iconName);
             Bitmap icon = BitmapFactory.decodeResource(context.getResources(),id);
             MarkerOptions marker = new MarkerOptions();
             marker.position(new LatLng(lng,lat));

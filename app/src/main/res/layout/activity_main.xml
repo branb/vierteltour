@@ -33,25 +33,13 @@
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/eyebtn"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:src="@drawable/ar_modus"
-                    android:background="@drawable/roundbutton"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="75dp"
-                    android:layout_marginRight="15dp"/>
-
-                <ImageButton
                     android:id="@+id/arrowbtn"
                     android:layout_width="30dp"
                     android:layout_height="45dp"
-                    android:layout_below="@+id/eyebtn"
                     android:src="@drawable/google_navi_dunkel"
                     android:background="@drawable/roundtop"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="45dp"
+                    android:layout_marginTop="165dp"
                     android:layout_marginRight="22.5dp"/>
                 <ImageButton
                     android:id="@+id/tarbtn"

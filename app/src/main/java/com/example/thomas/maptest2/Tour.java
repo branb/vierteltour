@@ -54,7 +54,6 @@ public class Tour {
             marker.position(station.latlng);
             marker.icon(BitmapDescriptorFactory.fromBitmap(icon));
             ListMarker.add(marker);
-            System.out.println("TrackID: "+trkid+"Marker: "+marker);
         }
     }
 

@@ -58,7 +58,6 @@ public class XmlParser2 {
             int eventType = parser.getEventType();
             while(eventType!=XmlPullParser.END_DOCUMENT){
                 if(eventType==XmlPullParser.START_TAG){
-                    //System.out.println(parser.getName());
                     switch (parser.getName()){
                         case("tour"):
                             tour = new Tour();
@@ -78,7 +77,6 @@ public class XmlParser2 {
                         // Tour
                         case("trkid"):
                             trkid = Integer.parseInt(text);
-                            //System.out.println("gelesen: "+text);
                             break;
                         // TourInfo
                         case("name"):
@@ -105,7 +103,6 @@ public class XmlParser2 {
                         // construct TourInfo
                         case("info"):
                             tourInfo = new StationInfo(name,author,description,length,time,image,color);
-                            //System.out.println(tourInfo);
                             break;
 
                         // Station
@@ -131,12 +128,10 @@ public class XmlParser2 {
                         case("station"):
                             Station station = new Station(id,title,number,description,image,video,audio,coordinates);
                             stations.add(station);
-                            //System.out.println(station);
                             break;
                         case("tour"):
                             tour = new Tour(tourInfo,stations,trkid,context);
                             ListTouren.add(tour);
-                            //System.out.println(tour);
                             parseTrack(context, tour);
                             break;
                     }
@@ -167,11 +162,9 @@ public class XmlParser2 {
                         Double lon = Double.parseDouble(parser.getAttributeValue(null, "lon"));
                         LatLng latlng = new LatLng(lat,lon);
                         t.track.add(latlng);
-                        //System.out.println(latlng);
                     }
                 }
                 if (eventType == XmlPullParser.TEXT){
-                    //System.out.println(parser.getText());
                 }
                 if (eventType == XmlPullParser.END_TAG){
 

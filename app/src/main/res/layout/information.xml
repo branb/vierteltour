@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+<ViewFlipper
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/viewFlipper">
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -93,22 +103,26 @@
             />
 
         <android.support.v4.view.ViewPager
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/ImagePager"
-            android:layout_below="@+id/stationenbeschreibung"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/stationenbeschreibung"
+            android:layout_below="@+id/seek_bar"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="30dp"
-            />
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="90dp"/>
+
+        <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageScreen"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/stationenbeschreibung"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="30dp"
+        />
 
         <SeekBar
             android:id="@+id/seek_bar"
@@ -135,7 +149,7 @@
             android:layout_height="wrap_content"
             android:text="0:00"
             android:textColor="#ffffff"
-            android:id="@+id/textView"
+            android:id="@+id/duration"
             android:layout_below="@+id/stationenbeschreibung"
             android:layout_marginTop="32dp"
             android:layout_marginRight="20dp"
@@ -152,6 +166,119 @@
             android:layout_marginRight="30dp"
             android:layout_marginTop="60dp"
             android:layout_marginBottom="30dp"
+            android:visibility="gone"
+            />
+
+        <LinearLayout
+            android:id="@+id/viewPagerCountDots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="55dp"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#000000">
+
+
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/x_button"
+            android:src="@drawable/beenden_hell"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="#000000"
+            />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageScreenGallery"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="30dp"
+            android:background="#000000"
+            android:visibility="visible"
+            />
+
+        <VideoView
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:id="@+id/videoViewGallery"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            />
+
+        <android.support.v4.view.ViewPager
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:id="@+id/ImagePagerGallery"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/titleGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/videoViewGallery"
+            android:textColor="#ffffff"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"/>
+
+        <SeekBar
+            android:id="@+id/seek_barGallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_toRightOf="@+id/play_buttonGallery"
+            android:layout_marginRight="45dp"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/play_buttonGallery"
+            android:src="@drawable/stop_hell"
+            android:background="#000000"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="32dp"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0:00"
+            android:textColor="#ffffff"
+            android:id="@+id/durationGallery"
+            android:layout_marginBottom="32dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
             />
 
     </RelativeLayout>
+
+</ViewFlipper>
+</RelativeLayout>

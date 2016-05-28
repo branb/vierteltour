@@ -15,6 +15,9 @@ import android.widget.VideoView;
 /**
  * Created by Jannis on 18.02.16.
  */
+
+//Vorerst nicht benötigt, ist für Splashscreen zuständig, eigentlich in AndroidManifest als Launcher ausgewählt
+
 public class Splash extends Activity {
 
 
