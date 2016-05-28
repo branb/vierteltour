@@ -59,7 +59,7 @@ public class Information extends Activity {
     TextView title, routenname, prof, info2, description;
     OrientationEventListener changed;
     ViewFlipper vf;
-    ViewPager imagePager;
+    ViewPager imagePager, imagePagerGallery;
     InformationPagerAdapter mAdapter;
     LinearLayout pager_indicator;
 
@@ -125,7 +125,8 @@ public class Information extends Activity {
 
         //Temporäres einlesen mehrerer Bilder gleichzeitig
         //Später über XML Parser zu realisieren
-        int i=0;
+        if(img!="")
+        {int i=0;
         char[] stringArray = img.toCharArray();
         String neueString = "";
         boolean erg=true;
@@ -150,7 +151,7 @@ public class Information extends Activity {
             else{tmp += String.valueOf(stringArray[j]).toString();}}
         imgId[i] = getResources().getIdentifier(tmp, "drawable", getPackageName());
         i++;
-    }}
+    }}}
 
     public void getInit() {
         initAll();
@@ -163,12 +164,10 @@ public class Information extends Activity {
         {audio();}
 
         if(videoId!=0)
-            {video();}
+        {video();}
 
-    else if(imgId[0]!=0)
-        {//image.setImageResource(imgId[0]);
-        //image.setVisibility(View.VISIBLE);
-            }
+        if(imgId[0]!=0)
+        {images();}
     }
 
 
@@ -266,8 +265,7 @@ public class Information extends Activity {
      {vid.setVisibility(View.GONE);}
 
      if(imgId[0]==0)
-     {//image.setVisibility(View.GONE);
-     }
+     {imagePager.setVisibility(View.GONE);}
     }
 
  /*   @Override
@@ -338,25 +336,8 @@ public class Information extends Activity {
         mAdapter = new InformationPagerAdapter(this, imgId);
         pager_indicator = (LinearLayout) findViewById(R.id.viewPagerCountDots);
         imagePager.setAdapter(mAdapter);
-        imagePager.setCurrentItem(0);
-        imagePager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-            @Override
-            public void onPageSelected(int position) {
-                for (int i = 0; i < dotsCount; i++) {
-                    dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));
-                }
-
-                dots[position].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
-                findViewById(android.R.id.content).invalidate();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {}
-        });
-        setUiPageViewController();
+        imagePagerGallery = (ViewPager) findViewById(R.id.ImagePagerGallery);
+        imagePagerGallery.setAdapter(mAdapter);
     }
 
     private void setUiPageViewController() {
@@ -379,7 +360,7 @@ public class Information extends Activity {
         }
 
         dots[0].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
-        findViewById(android.R.id.content).invalidate();
+
 
     }
 
@@ -495,8 +476,26 @@ public class Information extends Activity {
 
     public void images()
     {
+        imagePager.setCurrentItem(0);
 
+        if(imgId.length>1)
+        {imagePager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < dotsCount; i++) {
+                    dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));
+                }
+
+                dots[position].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
+            setUiPageViewController();
 
     }
-
-}
+}}

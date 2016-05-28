@@ -220,7 +220,16 @@
             android:id="@+id/videoViewGallery"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:visibility="gone"
             />
+
+        <android.support.v4.view.ViewPager
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:id="@+id/ImagePagerGallery"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/titleGallery"
@@ -240,6 +249,7 @@
             android:layout_toRightOf="@+id/play_buttonGallery"
             android:layout_marginRight="45dp"
             android:layout_alignParentBottom="true"
+            android:visibility="gone"
             />
 
         <ImageButton
@@ -252,7 +262,8 @@
             android:layout_alignParentStart="true"
             android:layout_marginBottom="32dp"
             android:layout_marginLeft="20dp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -264,6 +275,7 @@
             android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:visibility="gone"
             />
 
     </RelativeLayout>
