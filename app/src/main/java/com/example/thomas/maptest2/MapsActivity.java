@@ -162,15 +162,21 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         wuppertal = new LatLng(51.256972, 7.139341);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wuppertal, CurrentZoom));
 
+        //tmpcut, klar machen wie jede Tour zusammenhängt mit markern und co, siehe XML, tourliste, supl liste
         final GoogleMap.OnMapClickListener listener = new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng clickCoords) {
+                int tmp=0;
                 for (Tour t : tour.ListTouren) {
-                    if (PolyUtil.isLocationOnPath(clickCoords, t.polylines.getPoints(), true, 20)) {
+                    if (PolyUtil.isLocationOnPath(clickCoords, t.polylines.getPoints(), true, 20) && tmp==0) {
                         // clicked track and marker become no alpha value
                         t.polylines.color(Color.parseColor(t.info.color));
                         for (MarkerOptions m : t.ListMarker)
                             m.alpha(1.0f);
+                            marked=t.trkid-2;
+                        showInfo(true);
+                        System.out.println(marked);
+                            tmp=1;
                         // no clicked tracks and marker become alpha value
                     } else {
                         String s = t.info.color;
@@ -181,6 +187,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                             m.alpha(0.3f);
                     }
                 }
+                if(tmp==0)
+                {
+                    for (Tour t : tour.ListTouren) {
+                        for (MarkerOptions m :  t.ListMarker)
+                        {m.alpha(1.0f);}}}
                 updatePolylines();
             }
         };
