@@ -45,7 +45,7 @@ public class Route2 extends FragmentActivity {
 
         lines.color(Color.parseColor(c));
 
-        // Parse Route
+        // Parse
         StringTokenizer tok = new StringTokenizer(routeString,", ");
         tok.nextToken();    // Erstes Element (Return) überspringen
         while(tok.hasMoreTokens()) {
