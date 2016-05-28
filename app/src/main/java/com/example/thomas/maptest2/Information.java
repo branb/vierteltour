@@ -30,13 +30,16 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Kevin on 28.12.2015.
  */
+
+//Zur Zeit lässt sich Audio nur abspielen, wenn Pfad zu einer Datei vorhanden ist.
+
 public class Information extends Activity implements View.OnClickListener {
     //ViewPager mPager;
     //InformationAdapter mAdapter;
     SeekBar seekbar;
     ImageButton play_button;
     MediaPlayer player;
-    boolean button_status = false;  //Variable für Status des Play-Buttons
+    boolean button_status = false, finished=false;  //Variable für Status des Play-Buttons
     Handler seekHandler = new Handler();
     VideoView vid;
     TextView duration;
@@ -62,8 +65,11 @@ public class Information extends Activity implements View.OnClickListener {
             }
         });
         parseData();
-        getInit();
-        seekUpdation();
+
+        System.out.println("VID: " + videoId + " \nAUD:" + audioId + "\nIMG:" + imgId);
+
+        if(audioId!=0 || videoId!=0 || imgId!=0 )
+        {getInit();}
     }
 
 
@@ -72,8 +78,12 @@ public class Information extends Activity implements View.OnClickListener {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.map_in, R.anim.fade_out);
-        player.stop();
-    }
+        if(audioId!=0)
+        {player.stop();
+        player.release();
+        player=null;}
+        if(videoId!=0)
+        {vid.stopPlayback();}}
 
     public void parseData(){
         myIntent2 = getIntent();
@@ -107,18 +117,48 @@ public class Information extends Activity implements View.OnClickListener {
     }
 
     public void getInit() {
+        //Init
         seekbar = (SeekBar) findViewById(R.id.seek_bar);
         play_button = (ImageButton) findViewById(R.id.play_button);
+        duration = (TextView)findViewById(R.id.duration);
+        duration.setTextColor(Color.GRAY);
+        vid = (VideoView)findViewById(R.id.videoView);
+        p = (ImageView)findViewById(R.id.imageScreen);
+
+
+        hide();
+        if(audioId!=0)
+        {
         play_button.setOnClickListener((View.OnClickListener) this);
         player = MediaPlayer.create(this, audioId);
-        seekbar.getProgressDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        seekbar.getProgressDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC);
         seekbar.setMax(player.getDuration());
         seekbar.setOnSeekBarChangeListener(customSeekBarListener);
         seekbar.getThumb().mutate().setAlpha(0);
-        p = (ImageView)findViewById(R.id.imageView);
-        p.setImageResource(imgId);
-        p.setVisibility(View.INVISIBLE);
-        vid = (VideoView)findViewById(R.id.videoView);
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                @Override
+                public void onCompletion(MediaPlayer player) {
+                    finished=true;
+                    seekbar.setProgress(0);
+                    duration.setText("0:00");
+
+                    player.pause();
+                    play_button.setImageResource(R.drawable.play_hell);
+                    button_status = false;
+                }
+
+            });
+
+
+        }            //seekbar.getthumb ist pin auf der seekbar
+        if(videoId!=0)
+            {if(imgId!=0)
+             {
+              p.setImageResource(imgId);
+              p.setVisibility(View.INVISIBLE);}
+
+
         vid.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videoId));
         vid.requestFocus();
         //vid.setMediaController(new MediaController(this));
@@ -132,26 +172,27 @@ public class Information extends Activity implements View.OnClickListener {
                 } else {
                     vid.start();
                     return false;
-                }
-            }
+                }}
+
         });
-        vid.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+ /*       vid.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 vid.setZOrderOnTop(true);
                 vid.setVisibility(View.GONE);
                 p.setVisibility(View.VISIBLE);
             }
-        });
-        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                player.stop();
-                player.release();
-                player = null;
-            }
-        });
-        duration = (TextView)findViewById(R.id.textView);
+        });*/
+
+
+
+    }
+    else if(imgId!=0)
+        {p.setImageResource(imgId);
+        p.setVisibility(View.VISIBLE);
+            System.out.println("test");}
+        System.out.println(imgId);
     }
 
 
@@ -167,10 +208,11 @@ public class Information extends Activity implements View.OnClickListener {
 
 
     public void seekUpdation() {
-        seekbar.setMax(player.getDuration());
-        seekbar.setProgress(player.getCurrentPosition());
-        timeElapsed = player.getCurrentPosition();
-        duration.setText(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
+        if(player!=null && !finished)
+        {
+         seekbar.setProgress(player.getCurrentPosition());
+         timeElapsed = player.getCurrentPosition();
+         duration.setText(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
 /*      if(player.getCurrentPosition()<10000) {
             ImageView p = (ImageView)findViewById(R.id.imageView);
             p.setImageResource(R.drawable.pic1);
@@ -179,7 +221,8 @@ public class Information extends Activity implements View.OnClickListener {
             ImageView p = (ImageView)findViewById(R.id.imageView);
             p.setImageResource(R.drawable.pic2);
         }
-*/        seekHandler.postDelayed(run, 1);
+*/
+        seekHandler.postDelayed(run, 1);}
     }
 
 
@@ -205,17 +248,38 @@ public class Information extends Activity implements View.OnClickListener {
         switch (play.getId()) {
             case R.id.play_button:
                 if(button_status == false) {
-                 //   player.start();
+                    finished=false;
+                    player.start();
                     play_button.setImageResource(R.drawable.stop_hell);
                     button_status = true;
+                    seekUpdation();
                 }
                 else {
-                 //   player.pause();
+                    player.pause();
                     play_button.setImageResource(R.drawable.play_hell);
                     button_status = false;
                 }
                 break;
         }
     }
+
+    public void hide()
+    {if(audioId==0)
+         {seekbar.setVisibility(View.GONE);
+          play_button.setVisibility(View.GONE);
+          duration.setVisibility(View.GONE);}
+
+     if(videoId==0)
+     {
+         vid.setVisibility(View.GONE);
+     }
+
+     if(imgId==0)
+     {
+         p.setVisibility(View.GONE);
+     }
+    }
+
+
 
 }

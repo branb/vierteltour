@@ -291,7 +291,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             pageradapter.notifyDataSetChanged();}
 
 
-        for(int i=0;i<tour.ListTouren.get(marked).stations.size()-1;i++)
+        for(int i=0;i<tour.ListTouren.get(marked).stations.size();i++)
         {addPage(i);}
 
         ImageButton xbtn = (ImageButton) findViewById(R.id.btn_x);      //ActionBar Button: Right
