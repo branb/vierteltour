@@ -7,12 +7,14 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -50,8 +52,9 @@ public class Information extends Activity implements View.OnClickListener {
     Intent myIntent2;
     Bundle b;
     RelativeLayout layout;
-    String station, farbe, autor, tourname, laenge, desc, zeit;
+    String station, farbe, autor, tourname, laenge, desc, zeit, size, number;
     TextView title, routenname, prof, info2, description;
+    OrientationEventListener changed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +68,8 @@ public class Information extends Activity implements View.OnClickListener {
             }
         });
         parseData();
+        getInit();
 
-        System.out.println("VID: " + videoId + " \nAUD:" + audioId + "\nIMG:" + imgId);
-
-        if(audioId!=0 || videoId!=0 || imgId!=0 )
-        {getInit();}
     }
 
 
@@ -95,13 +95,15 @@ public class Information extends Activity implements View.OnClickListener {
         laenge = (String) b.get("laenge");
         farbe = (String) b.get("farbe");
         desc = (String) b.get("desc");
+        size = (String) b.get("size");
+        number = (String) b.get("pos");
         img = (String) b.get("img");
         audio = (String) b.get("audio");
         video = (String) b.get("video");
         layout = (RelativeLayout) findViewById(R.id.rellayout);
         layout.setBackgroundColor(Color.parseColor(farbe));
         title = (TextView)findViewById(R.id.stationtitle);
-        title.setText(station);
+        title.setText(station + "  (" + number + "/" + size + ")");
         routenname = (TextView)findViewById(R.id.routenname);
         routenname.setText(tourname);
         prof = (TextView) findViewById(R.id.routeninfo1);
@@ -124,6 +126,26 @@ public class Information extends Activity implements View.OnClickListener {
         duration.setTextColor(Color.GRAY);
         vid = (VideoView)findViewById(R.id.videoView);
         p = (ImageView)findViewById(R.id.imageScreen);
+
+        //Landscape/Portrait change
+        changed = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL){
+            @Override
+            public void onOrientationChanged(int arg0)
+            {if(arg0>=90 && arg0<=270)
+            {   Toast.makeText(getApplicationContext(), "PORTRAIT",
+                    Toast.LENGTH_LONG).show();}}
+        };
+        if (changed.canDetectOrientation()){changed.enable();}
+
+      /*  if(getResources().getDisplayMetrics().widthPixels>getResources().getDisplayMetrics().
+                heightPixels)
+        {
+            Toast.makeText(this,"Screen switched to Landscape mode",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(this,"Screen switched to Portrait mode",Toast.LENGTH_SHORT).show();
+        }*/
 
 
         hide();
@@ -190,9 +212,7 @@ public class Information extends Activity implements View.OnClickListener {
     }
     else if(imgId!=0)
         {p.setImageResource(imgId);
-        p.setVisibility(View.VISIBLE);
-            System.out.println("test");}
-        System.out.println(imgId);
+        p.setVisibility(View.VISIBLE);}
     }
 
 
@@ -280,6 +300,19 @@ public class Information extends Activity implements View.OnClickListener {
      }
     }
 
+ /*   @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Toast.makeText(this, "PORTRAIT",
+                    Toast.LENGTH_LONG).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "LANDSCAPE",
+                    Toast.LENGTH_LONG).show();
+        }
+
+    }
+*/
 
 
 }

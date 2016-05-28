@@ -16,8 +16,8 @@ import java.util.ArrayList;
  * Created by Kevin on 28.12.2015.
  */
 public class PageFragment extends Fragment {
-    private static final String ARG_PAGE_NUMBER = "pageNumber", TITLE = "title", STATIONNAME = "stationname", SIZE="size";
-    private static String TOURNAME, AUTOR, TIME, LENGHT, COLOR, DESCRIPTION;
+    private static final String ARG_PAGE_NUMBER = "pageNumber", TITLE = "title", STATIONNAME = "stationname";
+    private static String TOURNAME, AUTOR, TIME, LENGHT, COLOR, DESCRIPTION, SIZE;
     private TextView title;
     private int position;
     private static ArrayList<String> descriptions = new ArrayList<>();
@@ -42,6 +42,7 @@ public class PageFragment extends Fragment {
         TIME = marked.info.time;
         LENGHT = marked.info.length;
         COLOR = marked.info.color;
+        SIZE = "" + marked.stations.size();
         return fragment;
     }
 
@@ -75,6 +76,8 @@ public class PageFragment extends Fragment {
                     myIntent.putExtra("laenge", LENGHT);
                     myIntent.putExtra("farbe", COLOR);
                     myIntent.putExtra("desc", descriptions.get(position));
+                    myIntent.putExtra("size", SIZE);
+                    myIntent.putExtra("pos", "" + (position+1));
                     myIntent.putExtra("img", img.get(position));
                     myIntent.putExtra("audio", aud.get(position));
                     myIntent.putExtra("video", vid.get(position));
