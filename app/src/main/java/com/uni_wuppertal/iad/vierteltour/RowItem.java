@@ -1,4 +1,4 @@
-package com.example.thomas.maptest2;
+package com.uni_wuppertal.iad.vierteltour;
 
 //Definiert eine Klasse mit wichtigen Variablen pro Zeile der Liste
 public class RowItem{

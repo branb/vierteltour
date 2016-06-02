@@ -1,4 +1,4 @@
-package com.example.thomas.maptest2;
+package com.uni_wuppertal.iad.vierteltour;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

@@ -1,4 +1,4 @@
-package com.example.thomas.maptest2;
+package com.uni_wuppertal.iad.vierteltour;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
