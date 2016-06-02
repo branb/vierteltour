@@ -25,10 +25,7 @@ import android.widget.ViewFlipper;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by Kevin on 28.12.2015.
- */
-
+// TODO: Ist der Kommentar noch aktuell? Falls ja, bitte entfernen und entsprechend committen
 //Zur Zeit lässt sich Audio nur abspielen, wenn Pfad zu einer Datei vorhanden ist.
 
 public class Information extends Activity{
@@ -87,6 +84,7 @@ public class Information extends Activity{
   ViewPager imagePager, imagePagerGallery;
   InformationPagerAdapter mAdapter;
   LinearLayout pager_indicator;
+
   Runnable run = new Runnable(){
     @Override
     public void run(){
@@ -163,7 +161,7 @@ public class Information extends Activity{
 
     //Temporäres einlesen mehrerer Bilder gleichzeitig
     //Später über XML Parser zu realisieren
-    if( img != "" ){
+    if( !img.isEmpty() ){
       int i = 0;
       char[] stringArray = img.toCharArray();
       String neueString = "";
@@ -171,8 +169,7 @@ public class Information extends Activity{
 
       int count = 1;
       for( int j = 0; j < stringArray.length; j++ ){
-        if( String.valueOf( stringArray[j] )
-                  .equals( "," ) ){
+        if( String.valueOf( stringArray[j] ).equals( "," ) ){
           count++;
         }
       }
@@ -297,8 +294,7 @@ public class Information extends Activity{
       @Override
       public void onOrientationChanged( int arg0 ){
         if( arg0 >= 90 && arg0 <= 270 ){
-          Toast.makeText( getApplicationContext(), "PORTRAIT",
-                          Toast.LENGTH_LONG )
+          Toast.makeText( getApplicationContext(), "PORTRAIT", Toast.LENGTH_LONG )
                .show();
         }
       }
@@ -318,9 +314,8 @@ public class Information extends Activity{
         start = false;
         page = 0;
         vf.showPrevious();
-
       }
-    } );
+    });
 
 
   }
@@ -333,7 +328,7 @@ public class Information extends Activity{
       public void onClick( View v ){
         onBackPressed();
       }
-    } );
+    });
     seekbar = (SeekBar) findViewById( R.id.seek_bar );
     play_button = (ImageButton) findViewById( R.id.play_button );
     duration = (TextView) findViewById( R.id.duration );
@@ -384,7 +379,7 @@ public class Information extends Activity{
       public void onClick( View play ){
         switch( play.getId() ){
           case R.id.play_button:
-            if( button_status == false ){
+            if( !button_status ){
               finished = false;
               player.start();
               play_button.setImageResource( R.drawable.stop_hell );
@@ -409,7 +404,6 @@ public class Information extends Activity{
            .mutate()
            .setAlpha( 0 );//seekbar.getthumb ist pin auf der seekbar
     player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){
-
       @Override
       public void onCompletion( MediaPlayer player ){
         finished = true;
@@ -421,7 +415,7 @@ public class Information extends Activity{
         button_status = false;
       }
 
-    } );
+    });
 
   }
 
@@ -443,7 +437,7 @@ public class Information extends Activity{
           seekUpdation2();
         }
       }
-    } );
+    });
 
     seekbarGallery.setOnSeekBarChangeListener( customSeekBarListener2 );
     vid.setOnTouchListener( new View.OnTouchListener(){
@@ -462,7 +456,7 @@ public class Information extends Activity{
           return false;
         }
       }
-    } );
+    });
 
      /*       vid.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -511,7 +505,7 @@ public class Information extends Activity{
         @Override
         public void onPageScrollStateChanged( int state ){
         }
-      } );
+      });
       setUiPageViewController();
 
     }

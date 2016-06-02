@@ -8,12 +8,8 @@ import android.view.LayoutInflater;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Kevin on 31.01.2016.
- */
 public class PagerAdapter extends FragmentPagerAdapter{
   List<PageFragment> fragments = new ArrayList<PageFragment>();
-  ;
   private LayoutInflater mInflater;
 
   public PagerAdapter( FragmentManager fm, Context context ){

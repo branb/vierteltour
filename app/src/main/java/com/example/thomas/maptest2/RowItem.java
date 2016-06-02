@@ -1,9 +1,5 @@
 package com.example.thomas.maptest2;
 
-/**
- * Created by Kevin on 27.11.2015.
- */
-
 //Definiert eine Klasse mit wichtigen Variablen pro Zeile der Liste
 public class RowItem{
 
@@ -59,8 +55,6 @@ public class RowItem{
     this.addinfo = addinfo;
   }
 
-  //  public ImageButton getbtn() {return imgbtn;}
-
   public boolean isSelected(){
     return isSelected;
   }
@@ -68,5 +62,4 @@ public class RowItem{
   public void setSelected( boolean isSelected ){
     this.isSelected = isSelected;
   }
-  //   public void setVisibleAddInfo(int txt) {txt.setVisibility(View.VISIBLE);}
 }

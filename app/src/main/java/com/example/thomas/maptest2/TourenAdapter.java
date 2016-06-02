@@ -15,21 +15,16 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.List;
 
-/**
- * Created by Kevin on 27.11.2015.
- */
-
 //Die Schnittstelle zwischen Liste als xml und java mit definiertem Aussehen
-
 public class TourenAdapter extends BaseAdapter{
 
   Context context;
   List<RowItem> rowItem;
-  XmlParser2 parser;
+  XmlParser parser;
 
   private SlidingUpPanelLayout mLayout;
 
-  TourenAdapter( Context context, List<RowItem> rowItem, XmlParser2 parse ){
+  TourenAdapter( Context context, List<RowItem> rowItem, XmlParser parse ){
     this.context = context;
     this.rowItem = rowItem;
     this.parser = parse;
@@ -38,30 +33,24 @@ public class TourenAdapter extends BaseAdapter{
   //zaehlt Anzahl an Zeilen in Liste
   @Override
   public int getCount(){
-
     return rowItem.size();
   }
 
   @Override
   public Object getItem( int position ){
-
     return rowItem.get( position );
   }
 
   @Override
   public long getItemId( int position ){
-
     return rowItem.indexOf( getItem( position ) );
   }
 
   //erzeugt Aussehen der Liste
   @Override
   public View getView( final int position, View convertView, ViewGroup parent ){
-
-
     if( convertView == null ){
-      LayoutInflater mInflater = (LayoutInflater) context
-        .getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
+      LayoutInflater mInflater = (LayoutInflater) context.getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
       convertView = mInflater.inflate( R.layout.touren_list_single, null );
     }
 
@@ -71,7 +60,7 @@ public class TourenAdapter extends BaseAdapter{
     TextView subtxtTitle2 = (TextView) convertView.findViewById( R.id.subtxt2 );
     TextView addInfo = (TextView) convertView.findViewById( R.id.addinfo );
     ImageButton startbtn = (ImageButton) convertView.findViewById( R.id.zumstartlist );
-    View divider = (View) convertView.findViewById( R.id.divider );
+    View divider = convertView.findViewById( R.id.divider );
 
     //Setzt jeweilige Informationen an die richtigen Views
     convertView.setBackgroundColor( Color.parseColor( parser.ListTouren.get( position ).info.color ) );
@@ -94,8 +83,6 @@ public class TourenAdapter extends BaseAdapter{
     }
 
     return convertView;
-
   }
-
 
 }

@@ -4,9 +4,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.StringTokenizer;
 
-/**
- * Created by thomas on 27.01.16.
- */
 public class Station{
   public String id;
   public String title;

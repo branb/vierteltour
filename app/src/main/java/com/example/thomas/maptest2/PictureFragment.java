@@ -2,9 +2,6 @@ package com.example.thomas.maptest2;
 
 import android.support.v4.app.Fragment;
 
-/**
- * Created by Kevin on 29.01.2016.
- */
 public class PictureFragment extends Fragment{
   /*private static final String ARG_PICTURE_NUMBER = "pictureNumber";
   private int imageResourceId;

@@ -13,9 +13,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.List;
 import java.util.Vector;
 
-/**
- * Created by thomas on 27.01.16.
- */
 public class Tour{
   public int trkid;
   public StationInfo info;
@@ -42,8 +39,6 @@ public class Tour{
     ListMarker = new Vector<>();
 
     makeMarker( context );
-
-
   }
 
   public void makeMarker( FragmentActivity context ){
@@ -69,7 +64,6 @@ public class Tour{
     for( LatLng point : track ){
       s = s + point;
     }
-
 
     return s;
   }

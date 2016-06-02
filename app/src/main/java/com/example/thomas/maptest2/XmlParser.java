@@ -13,10 +13,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Vector;
 
-/**
- * Created by thomas on 30.01.16.
- */
-public class XmlParser2{
+public class XmlParser{
 
   public int trkid;
   public String name;
@@ -45,7 +42,7 @@ public class XmlParser2{
   public List<LatLng> track;
 
 
-  public XmlParser2( FragmentActivity context ){
+  public XmlParser( FragmentActivity context ){
     int resourceId = context.getResources()
                             .getIdentifier( "tour", "raw", context.getPackageName() );
     inputStream = context.getResources()
@@ -180,6 +177,5 @@ public class XmlParser2{
       e.printStackTrace();
     }
   }
-
 
 }

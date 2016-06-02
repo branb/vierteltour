@@ -54,36 +54,33 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public LocationListener locationListener;
   public MarkerOptions CurrentMarker;
   public int CurrentZoom = 15;
-  int[] menuIcons = new int[]{
-    R.drawable.ic_drawer,
-    R.drawable.ic_drawer,
-    R.drawable.ic_drawer,
-    R.drawable.ic_drawer,
-    R.drawable.ic_drawer,
-    R.drawable.ic_drawer,
-    R.drawable.ic_drawer,
-    R.drawable.ic_drawer
+  int[] menuIcons = new int[]{ R.drawable.ic_drawer,
+                               R.drawable.ic_drawer,
+                               R.drawable.ic_drawer,
+                               R.drawable.ic_drawer,
+                               R.drawable.ic_drawer,
+                               R.drawable.ic_drawer,
+                               R.drawable.ic_drawer,
+                               R.drawable.ic_drawer
   };
-  int[] drawerIcons = new int[]{
-    R.drawable.einstellungen,
-    R.drawable.hilfe,
-    R.drawable.about,
-    R.drawable.karte
+  int[] drawerIcons = new int[]{ R.drawable.einstellungen,
+                                 R.drawable.hilfe,
+                                 R.drawable.about,
+                                 R.drawable.karte
   };
-  String[] drawertitles = new String[]{
-    "Einstellungen",
-    "Hilfe",
-    "About",
-    "Karte"
+  String[] drawertitles = new String[]{ "Einstellungen",
+                                        "Hilfe",
+                                        "About",
+                                        "Karte"
   };
-  String[] drawersubtitles = new String[]{
-    " ",
-    " ",
-    " ",
-    "hell / dunkel"
+  String[] drawersubtitles = new String[]{ " ",
+                                           " ",
+                                           " ",
+                                           "hell / dunkel"
   };
+
   private GoogleMap mMap;
-  private List<Route2> routen = new Vector<>();
+  private List<Route> routen = new Vector<>();
   private ActionBar actionBar;
   private DrawerLayout mDrawerLayout;
   private ListView mDrawerList;
@@ -97,7 +94,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private List<RowItem> rowItems;
   private List<DrawerItem> drawerItems;
   private LatLng wuppertal;
-  private XmlParser2 tour;
+  private XmlParser tour;
   private int marked;         //marked für Tour ausgewählt: -1 für nicht ausgewählt, 0-xxx für ausgewählte Tour
   private RelativeLayout panel;
 
@@ -111,16 +108,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mapFragment.getMapAsync( this );
 
     marked = -1;        //keine Tour ausgewählt
-    tour = new XmlParser2( this );
+    tour = new XmlParser( this );
 
     initPager();
-    initSupl();     //init SlidingUpPanelLayout
-    initBtns();     //init Buttons right side, panel
-    moveDrawerToTop();  //set Drawer over ActionBar
-    initActionBar();    //init ActionBar
-    initDrawer();       //init Drawer
-
-
+    initSupl();
+    initBtns();
+    moveDrawerToTop();
+    initActionBar();
+    initDrawer();
   }
 
 
@@ -312,8 +307,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     lv.setOnItemClickListener( new AdapterView.OnItemClickListener(){
       @Override
-      public void onItemClick( AdapterView<?> parent, View view, int position,
-                               long id ){
+      public void onItemClick( AdapterView<?> parent, View view, int position, long id ){
         for( RowItem item : rowItems ){     //Alle Listenelemente werden verkleinert
           item.setSelected( false );
         }
@@ -331,7 +325,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
         adapter.notifyDataSetChanged();
       }
-    } );
+    });
     rowItems = new ArrayList<RowItem>();
 
     for( int i = 0; i < tour.ListTouren.size(); i++ ){
@@ -360,14 +354,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onClick( View v ){
         swapToViewPager( v );
       }
-    } );
+    });
     ImageButton imgbtn1 = (ImageButton) findViewById( R.id.x );               //SUPL Button top left
     imgbtn1.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
         resetTour();
       }
-    } );
+    });
 
 
     ImageButton arrowbtn = (ImageButton) findViewById( R.id.arrowbtn );       //Top Twin Button
@@ -393,24 +387,21 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
 
       }
-    } );
+    });
     ImageButton tarbtn = (ImageButton) findViewById( R.id.tarbtn );           //Bot Twin Button
     tarbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-        // GPS-Signal ist da
-        if( MyLocation != null ){
+        if( MyLocation != null ){ // GPS-Signal ist da
           Toast.makeText( getApplicationContext(), "Signal da!", Toast.LENGTH_SHORT )
                .show();
           mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, CurrentZoom ) );
-        }
-        // GPS-Signal nicht da
-        else {
+        } else { // GPS-Signal nicht da
           Toast.makeText( getApplicationContext(), "Kein Signal", Toast.LENGTH_SHORT )
                .show();
         }
       }
-    } );
+    });
   }
 
   @Override
@@ -473,15 +464,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     actionBar.setDisplayHomeAsUpEnabled( false );
     actionBar.setHomeButtonEnabled( false );
     actionBar.setDisplayShowCustomEnabled( true );     //Deaktiviert alle Buttons und setzt CostumActionBar
-    View view = getLayoutInflater().inflate( R.layout.toolbar,
-                                             null );
-    android.support.v7.app.ActionBar.LayoutParams layoutParams = new android.support.v7.app.ActionBar.LayoutParams( android.support.v7.app.ActionBar.LayoutParams.MATCH_PARENT,
-                                                                                                                    android.support.v7.app.ActionBar.LayoutParams.MATCH_PARENT );
+    View view = getLayoutInflater().inflate( R.layout.toolbar, null );
+    android.support.v7.app.ActionBar.LayoutParams layoutParams = new android.support.v7.app.ActionBar.LayoutParams( android.support.v7.app.ActionBar.LayoutParams.MATCH_PARENT, android.support.v7.app.ActionBar.LayoutParams.MATCH_PARENT );
     actionBar.setCustomView( view, layoutParams );
     Toolbar parent = (Toolbar) view.getParent();
     parent.setContentInsetsAbsolute( 0, 0 );           //Vermeidet Fehler, dass CostumActionBar zu schmal wird
 
-    initActionBarBtn();                              //Initialisiert die Knöpfe der CostumActionBar
+    initActionBarBtn();
     actionBar.setElevation( 0 );
   }
 
@@ -489,7 +478,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     ImageButton homebtn = (ImageButton) findViewById( R.id.homebtn );     //ActionBar Button: Right
     ImageButton xbtn = (ImageButton) findViewById( R.id.btn_x );          //ActionBar Title
     homebtn.setOnClickListener( new View.OnClickListener(){
-
       @Override
       public void onClick( View v ){
         if( mDrawerLayout.isDrawerOpen( mDrawer ) ){
@@ -498,14 +486,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           mDrawerLayout.openDrawer( mDrawer );
         }
       }
-    } );
+    });
     xbtn.setOnClickListener( new View.OnClickListener(){
-
       @Override
       public void onClick( View v ){
         swapToSupl();
       }
-    } );
+    });
   }
 
   private void initDrawer(){
@@ -538,7 +525,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         //  ftx.commit();
       }
 
-    } );
+    });
 
     ImageButton leftbtn = (ImageButton) findViewById( R.id.leftarrow );
     leftbtn.setOnClickListener( new View.OnClickListener(){
@@ -546,7 +533,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onClick( View v ){
         mDrawerLayout.closeDrawer( mDrawer );
       }
-    } );
+    });
   }
 
   private DrawerLayout.DrawerListener createDrawerToggle(){
@@ -686,7 +673,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if( mLayout != null && mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED )      //Wenn SUPL geöffnet, und zurück gedrückt wird, schließe nur SUPL
     {
       mLayout.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );
-      ;
     } else if( mPager.getVisibility() == View.VISIBLE ){
       swapToSupl();
     } else if( getFragmentManager().getBackStackEntryCount() == 0 ){

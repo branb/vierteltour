@@ -8,10 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-
-/**
- * Created by Wasim on 11-06-2015.
- */
 public class InformationPagerAdapter extends PagerAdapter{
 
   private Context mContext;
@@ -29,7 +25,7 @@ public class InformationPagerAdapter extends PagerAdapter{
 
   @Override
   public boolean isViewFromObject( View view, Object object ){
-    return view == ((LinearLayout) object);
+    return view == object;
   }
 
   @Override

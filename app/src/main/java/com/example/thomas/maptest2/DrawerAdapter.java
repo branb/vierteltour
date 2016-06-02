@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by Kevin on 16.12.2015.
- */
 public class DrawerAdapter extends BaseAdapter{
   Context context;
   List<DrawerItem> drawerItem;
@@ -26,29 +23,24 @@ public class DrawerAdapter extends BaseAdapter{
   //zaehlt Anzahl an Zeilen in Liste
   @Override
   public int getCount(){
-
     return drawerItem.size();
   }
 
   @Override
   public Object getItem( int position ){
-
     return drawerItem.get( position );
   }
 
   @Override
   public long getItemId( int position ){
-
     return drawerItem.indexOf( getItem( position ) );
   }
 
   //erzeugt Aussehen der Liste
   @Override
   public View getView( final int position, View convertView, ViewGroup parent ){
-
     if( convertView == null ){
-      LayoutInflater mInflater = (LayoutInflater) context
-        .getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
+      LayoutInflater mInflater = (LayoutInflater) context.getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
       convertView = mInflater.inflate( R.layout.drawer_list_single, null );
     }
 

@@ -1,6 +1,5 @@
 package com.example.thomas.maptest2;
 
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -15,10 +14,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-/**
- * Created by thomas on 29.11.15.
- */
-public class Route2 extends FragmentActivity{
+public class Route extends FragmentActivity{
   String name;
   String color;
   String routeString;
@@ -30,7 +26,7 @@ public class Route2 extends FragmentActivity{
   FragmentActivity context;
 
 
-  public Route2( String r, String c, String s, String n, FragmentActivity fr ){
+  public Route( String r, String c, String s, String n, FragmentActivity fr ){
     route = new Vector<>();
     lines = new PolylineOptions();
     stationen = new Vector<>();

@@ -12,9 +12,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by Kevin on 28.12.2015.
- */
 public class PageFragment extends Fragment{
   private static final String ARG_PAGE_NUMBER = "pageNumber", TITLE = "title", STATIONNAME = "stationname";
   private static String TOURNAME, AUTOR, TIME, LENGHT, COLOR, DESCRIPTION, SIZE;

@@ -1,8 +1,5 @@
 package com.example.thomas.maptest2;
 
-/**
- * Created by Kevin on 16.12.2015.
- */
 public class DrawerItem{
   private String subtitle, title;
   private int icon;
@@ -36,4 +33,5 @@ public class DrawerItem{
   public void setSubtitle( String subtitle ){
     this.subtitle = subtitle;
   }
+
 }
