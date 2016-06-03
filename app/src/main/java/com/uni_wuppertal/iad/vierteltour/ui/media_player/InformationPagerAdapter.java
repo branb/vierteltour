@@ -2,11 +2,14 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ViewFlipper;
 
 import com.uni_wuppertal.iad.vierteltour.R;
 
@@ -14,10 +17,12 @@ public class InformationPagerAdapter extends PagerAdapter{
 
   private Context mContext;
   private int[] mResources;
+  private ViewFlipper vf;
 
   public InformationPagerAdapter( Context mContext, int[] mResources ){
     this.mContext = mContext;
     this.mResources = mResources;
+
   }
 
   @Override
@@ -35,10 +40,25 @@ public class InformationPagerAdapter extends PagerAdapter{
     View itemView = LayoutInflater.from( mContext )
                                   .inflate( R.layout.gallerypageritem, container, false );
 
+    int pos = position;
     ImageView imageView = (ImageView) itemView.findViewById( R.id.img_pager_item );
     imageView.setImageResource( mResources[position] );
 
     container.addView( itemView );
+
+    imageView.setOnClickListener(new View.OnClickListener()
+    {
+      @Override
+      public void onClick(View v)
+      { v.setContent
+        System.out.println("TEST");
+        vf = (ViewFlipper) findViewById( R.id.viewFlipper );
+        vf.showNext();
+
+
+      }
+    });
+
 
     return itemView;
   }

@@ -105,7 +105,6 @@ public class InformationActivity extends Activity{
     vf = (ViewFlipper) findViewById( R.id.viewFlipper );
     parseData();
     getInit();
-
   }
 
   @Override
@@ -175,6 +174,8 @@ public class InformationActivity extends Activity{
       }
       imgId = new int[count];
 
+
+      //Temporaer
       while( erg ){
         String tmp = "";
         erg = false;
