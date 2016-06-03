@@ -27,8 +27,6 @@ import com.uni_wuppertal.iad.vierteltour.R;
 
 import java.util.concurrent.TimeUnit;
 
-// TODO: Ist der Kommentar noch aktuell? Falls ja, bitte entfernen und entsprechend committen
-//Zur Zeit lässt sich Audio nur abspielen, wenn Pfad zu einer Datei vorhanden ist.
 
 public class InformationActivity extends Activity{
   //ViewPager mPager;
