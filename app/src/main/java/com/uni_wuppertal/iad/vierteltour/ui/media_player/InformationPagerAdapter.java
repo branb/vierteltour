@@ -19,10 +19,10 @@ public class InformationPagerAdapter extends PagerAdapter{
   private int[] mResources;
   private ViewFlipper vf;
 
-  public InformationPagerAdapter( Context mContext, int[] mResources ){
+  public InformationPagerAdapter( Context mContext, int[] mResources , ViewFlipper vf){
     this.mContext = mContext;
     this.mResources = mResources;
-
+    this.vf = vf;
   }
 
   @Override
@@ -50,12 +50,7 @@ public class InformationPagerAdapter extends PagerAdapter{
     {
       @Override
       public void onClick(View v)
-      { v.setContent
-        System.out.println("TEST");
-        vf = (ViewFlipper) findViewById( R.id.viewFlipper );
-        vf.showNext();
-
-
+      {vf.showNext();
       }
     });
 

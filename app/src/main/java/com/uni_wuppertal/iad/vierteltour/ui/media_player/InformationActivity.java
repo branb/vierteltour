@@ -29,11 +29,11 @@ import java.util.concurrent.TimeUnit;
 
 
 public class InformationActivity extends Activity{
-  //ViewPager mPager;
-  //InformationAdapter mAdapter;
+
   SeekBar seekbar, seekbarGallery;
   ImageButton play_button, x_button, play_buttonGallery;
   MediaPlayer player;
+  int isimages=-1;
   public SeekBar.OnSeekBarChangeListener customSeekBarListener = new SeekBar.OnSeekBarChangeListener(){
     @Override
     public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
@@ -158,6 +158,7 @@ public class InformationActivity extends Activity{
     videoId = getResources().getIdentifier( video, "raw", getPackageName() );
     audioId = getResources().getIdentifier( audio, "raw", getPackageName() );
 
+    System.out.println("VIDEO" + videoId);
     //Temporäres einlesen mehrerer Bilder gleichzeitig
     //Später über XML Parser zu realisieren
     if( !img.isEmpty() ){
@@ -225,15 +226,7 @@ public class InformationActivity extends Activity{
       seekbar.setProgress( player.getCurrentPosition() );
       timeElapsed = player.getCurrentPosition();
       duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
-/*      if(player.getCurrentPosition()<10000) {
-            ImageView p = (ImageView)findViewById(R.id.imageView);
-            p.setImageResource(R.drawable.pic1);
-        }
-        else {
-            ImageView p = (ImageView)findViewById(R.id.imageView);
-            p.setImageResource(R.drawable.pic2);
-        }
-*/
+
       seekHandler.postDelayed( run, 100 );
     }
   }
@@ -244,15 +237,7 @@ public class InformationActivity extends Activity{
       seekbarGallery.setProgress( vid.getCurrentPosition() );
       timeElapsed = vid.getCurrentPosition();
       durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
-/*      if(player.getCurrentPosition()<10000) {
-            ImageView p = (ImageView)findViewById(R.id.imageView);
-            p.setImageResource(R.drawable.pic1);
-        }
-        else {
-            ImageView p = (ImageView)findViewById(R.id.imageView);
-            p.setImageResource(R.drawable.pic2);
-        }
-*/
+
       seekHandler.postDelayed( run2, 100 );
     }
   }
@@ -268,11 +253,12 @@ public class InformationActivity extends Activity{
     }
 
     if( videoId == 0 ){
-      vid.setVisibility( View.GONE );
+      vid.setVisibility( View.INVISIBLE );
     }
 
     if( imgId[0] == 0 ){
       imagePager.setVisibility( View.GONE );
+      imagePagerGallery.setVisibility(View.GONE);
     }
   }
 
@@ -335,14 +321,14 @@ public class InformationActivity extends Activity{
     duration = (TextView) findViewById( R.id.duration );
     duration.setTextColor( Color.GRAY );
     vid = (VideoView) findViewById( R.id.videoViewGallery );
-    // image = (ImageView)findViewById(R.id.imageScreen);
+     image = (ImageView)findViewById(R.id.imageScreen);
     gallerytitle = (TextView) findViewById( R.id.titleGallery );
     x_button = (ImageButton) findViewById( R.id.x_button );
     seekbarGallery = (SeekBar) findViewById( R.id.seek_barGallery );
     play_buttonGallery = (ImageButton) findViewById( R.id.play_buttonGallery );
     durationGallery = (TextView) findViewById( R.id.durationGallery );
     imagePager = (ViewPager) findViewById( R.id.ImagePager );
-    mAdapter = new InformationPagerAdapter( this, imgId );
+    mAdapter = new InformationPagerAdapter( this, imgId , vf);
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
     imagePager.setAdapter( mAdapter );
     imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
@@ -423,6 +409,10 @@ public class InformationActivity extends Activity{
   public void video(){
     vid.setVideoURI( Uri.parse( "android.resource://" + getPackageName() + "/" + videoId ) );
     vid.requestFocus();
+    vid.setVisibility(View.VISIBLE);
+    seekbarGallery.setVisibility(View.VISIBLE);
+    durationGallery.setVisibility(View.VISIBLE);
+    play_buttonGallery.setVisibility(View.VISIBLE);
     //vid.setMediaController(new MediaController(this));
     play_buttonGallery.setOnClickListener( new View.OnClickListener(){
       @Override
@@ -468,7 +458,8 @@ public class InformationActivity extends Activity{
             }
         });*/
 
-       /* image.setVisibility(View.VISIBLE);
+        image.setVisibility(View.VISIBLE);
+        image.setImageResource(R.drawable.i_04_01_01);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -482,20 +473,26 @@ public class InformationActivity extends Activity{
                 vid.start();
                 seekUpdation2();
             }
-        });*/
+        });
   }
 
   public void images(){
     imagePager.setCurrentItem( 0 );
 
     if( imgId.length > 1 ){
-      imagePager.setOnPageChangeListener( new ViewPager.OnPageChangeListener(){
+      isimages=0;
+        imagePager.setOnPageChangeListener( new ViewPager.OnPageChangeListener(){
         @Override
         public void onPageScrolled( int position, float positionOffset, int positionOffsetPixels ){
+
         }
 
         @Override
         public void onPageSelected( int position ){
+          isimages=position;
+          imagePagerGallery.setCurrentItem(position);
+          System.out.println(imagePagerGallery.getCurrentItem() + "    " + imagePagerGallery.getId());
+
           for( int i = 0; i < dotsCount; i++ ){
             dots[i].setImageDrawable( getResources().getDrawable( R.drawable.nonselecteditem ) );
           }
@@ -508,7 +505,8 @@ public class InformationActivity extends Activity{
         }
       });
       setUiPageViewController();
-
     }
   }
+
+
 }

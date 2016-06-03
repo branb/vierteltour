@@ -157,19 +157,6 @@
             android:layout_alignParentRight="true"
             />
 
-        <VideoView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/videoView"
-            android:layout_below="@+id/stationenbeschreibung"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="30dp"
-            android:visibility="gone"
-            />
-
         <LinearLayout
             android:id="@+id/viewPagerCountDots"
             android:layout_width="match_parent"
@@ -201,36 +188,22 @@
             android:background="#000000"
             />
 
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageScreenGallery"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="30dp"
-            android:background="#000000"
-            android:visibility="visible"
-            />
-
         <VideoView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="300dp"
             android:id="@+id/videoViewGallery"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:visibility="gone"
+            android:visibility="invisible"
             />
 
         <android.support.v4.view.ViewPager
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="300dp"
             android:id="@+id/ImagePagerGallery"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <TextView
             android:id="@+id/titleGallery"
