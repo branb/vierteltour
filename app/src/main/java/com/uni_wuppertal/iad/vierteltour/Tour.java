@@ -9,6 +9,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.uni_wuppertal.iad.vierteltour.component.map.Station;
+import com.uni_wuppertal.iad.vierteltour.component.map.StationInfo;
 
 import java.util.List;
 import java.util.Vector;

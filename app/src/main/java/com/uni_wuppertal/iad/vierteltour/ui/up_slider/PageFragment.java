@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.ui.up_slider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.uni_wuppertal.iad.vierteltour.ui.media_player.InformationActivity;
+import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.Tour;
 
 import java.util.ArrayList;
 
@@ -66,7 +70,7 @@ public class PageFragment extends Fragment{
       btItem.setOnClickListener( new View.OnClickListener(){
         @Override
         public void onClick( View v ){
-          Intent myIntent = new Intent( getActivity(), Information.class );
+          Intent myIntent = new Intent( getActivity(), InformationActivity.class );
 
           //myIntent.putExtra("key", arguments.getInt(ARG_PAGE_NUMBER)); //Optional parameters
           myIntent.putExtra( "station", title.getText() );

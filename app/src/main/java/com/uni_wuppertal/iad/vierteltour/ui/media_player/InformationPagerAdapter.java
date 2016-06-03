@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.uni_wuppertal.iad.vierteltour.R;
 
 public class InformationPagerAdapter extends PagerAdapter{
 

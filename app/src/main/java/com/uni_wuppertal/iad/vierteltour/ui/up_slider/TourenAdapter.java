@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.ui.up_slider;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.XmlParser;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class TourenAdapter extends BaseAdapter{
 
   private SlidingUpPanelLayout mLayout;
 
-  TourenAdapter( Context context, List<RowItem> rowItem, XmlParser parse ){
+  public TourenAdapter( Context context, List<RowItem> rowItem, XmlParser parse ){
     this.context = context;
     this.rowItem = rowItem;
     this.parser = parse;

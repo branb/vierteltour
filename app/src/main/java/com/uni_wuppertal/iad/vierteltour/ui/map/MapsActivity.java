@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 
 import android.content.Context;
@@ -40,6 +40,15 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.PolyUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.uni_wuppertal.iad.vierteltour.ui.up_slider.PagerAdapter;
+import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.Route;
+import com.uni_wuppertal.iad.vierteltour.ui.up_slider.RowItem;
+import com.uni_wuppertal.iad.vierteltour.Tour;
+import com.uni_wuppertal.iad.vierteltour.ui.up_slider.TourenAdapter;
+import com.uni_wuppertal.iad.vierteltour.XmlParser;
+import com.uni_wuppertal.iad.vierteltour.ui.up_slider.DrawerAdapter;
+import com.uni_wuppertal.iad.vierteltour.ui.up_slider.DrawerItem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,15 +1,18 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.ui.up_slider;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 
+import com.uni_wuppertal.iad.vierteltour.Tour;
+import com.uni_wuppertal.iad.vierteltour.ui.up_slider.PageFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PagerAdapter extends FragmentPagerAdapter{
-  List<PageFragment> fragments = new ArrayList<PageFragment>();
+  public List<PageFragment> fragments = new ArrayList<PageFragment>();
   private LayoutInflater mInflater;
 
   public PagerAdapter( FragmentManager fm, Context context ){

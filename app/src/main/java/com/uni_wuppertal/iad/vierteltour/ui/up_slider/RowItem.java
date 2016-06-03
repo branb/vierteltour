@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.ui.up_slider;
 
 //Definiert eine Klasse mit wichtigen Variablen pro Zeile der Liste
 public class RowItem{

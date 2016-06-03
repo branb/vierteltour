@@ -3,6 +3,8 @@ package com.uni_wuppertal.iad.vierteltour;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.uni_wuppertal.iad.vierteltour.component.map.Station;
+import com.uni_wuppertal.iad.vierteltour.component.map.StationInfo;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

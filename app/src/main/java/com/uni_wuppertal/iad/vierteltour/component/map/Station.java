@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.component.map;
 
 import com.google.android.gms.maps.model.LatLng;
 

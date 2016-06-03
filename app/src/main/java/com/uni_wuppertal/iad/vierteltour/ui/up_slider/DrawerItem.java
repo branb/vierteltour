@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.ui.up_slider;
 
 public class DrawerItem{
   private String subtitle, title;

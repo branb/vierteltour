@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.ui.up_slider;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,13 +9,15 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.uni_wuppertal.iad.vierteltour.R;
+
 import java.util.List;
 
 public class DrawerAdapter extends BaseAdapter{
   Context context;
   List<DrawerItem> drawerItem;
 
-  DrawerAdapter( Context context, List<DrawerItem> drawerItem ){
+  public DrawerAdapter( Context context, List<DrawerItem> drawerItem ){
     this.context = context;
     this.drawerItem = drawerItem;
   }

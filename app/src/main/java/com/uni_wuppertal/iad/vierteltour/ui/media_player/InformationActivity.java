@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,12 +23,14 @@ import android.widget.Toast;
 import android.widget.VideoView;
 import android.widget.ViewFlipper;
 
+import com.uni_wuppertal.iad.vierteltour.R;
+
 import java.util.concurrent.TimeUnit;
 
 // TODO: Ist der Kommentar noch aktuell? Falls ja, bitte entfernen und entsprechend committen
 //Zur Zeit lässt sich Audio nur abspielen, wenn Pfad zu einer Datei vorhanden ist.
 
-public class Information extends Activity{
+public class InformationActivity extends Activity{
   //ViewPager mPager;
   //InformationAdapter mAdapter;
   SeekBar seekbar, seekbarGallery;
