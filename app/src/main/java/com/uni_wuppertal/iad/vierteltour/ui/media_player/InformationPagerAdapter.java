@@ -17,12 +17,12 @@ public class InformationPagerAdapter extends PagerAdapter{
 
   private Context mContext;
   private int[] mResources;
-  private ViewFlipper vf;
+  private InformationActivity infoAct;
 
-  public InformationPagerAdapter( Context mContext, int[] mResources , ViewFlipper vf){
+  public InformationPagerAdapter( Context mContext, int[] mResources , InformationActivity infoAct){
     this.mContext = mContext;
     this.mResources = mResources;
-    this.vf = vf;
+    this.infoAct= infoAct;
   }
 
   @Override
@@ -50,7 +50,8 @@ public class InformationPagerAdapter extends PagerAdapter{
     {
       @Override
       public void onClick(View v)
-      {vf.showNext();
+      {infoAct.vf.showNext();
+        infoAct.page=1;
       }
     });
 

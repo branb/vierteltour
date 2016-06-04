@@ -224,8 +224,11 @@ public class InformationActivity extends Activity{
   public void seekUpdation(){
     if( player != null && !finished ){
       seekbar.setProgress( player.getCurrentPosition() );
+      if(videoId==0)seekbarGallery.setProgress(player.getCurrentPosition());
       timeElapsed = player.getCurrentPosition();
+
       duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
+      if(videoId==0)durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
 
       seekHandler.postDelayed( run, 100 );
     }
@@ -328,7 +331,7 @@ public class InformationActivity extends Activity{
     play_buttonGallery = (ImageButton) findViewById( R.id.play_buttonGallery );
     durationGallery = (TextView) findViewById( R.id.durationGallery );
     imagePager = (ViewPager) findViewById( R.id.ImagePager );
-    mAdapter = new InformationPagerAdapter( this, imgId , vf);
+    mAdapter = new InformationPagerAdapter( this, imgId, this);
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
     imagePager.setAdapter( mAdapter );
     imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
@@ -370,11 +373,36 @@ public class InformationActivity extends Activity{
               finished = false;
               player.start();
               play_button.setImageResource( R.drawable.stop_hell );
+              play_buttonGallery.setImageResource( R.drawable.stop_hell );
               button_status = true;
               seekUpdation();
             } else {
               player.pause();
               play_button.setImageResource( R.drawable.play_hell );
+              play_buttonGallery.setImageResource( R.drawable.play_hell );
+              button_status = false;
+            }
+            break;
+        }
+
+      }
+    } );
+    play_buttonGallery.setOnClickListener( new View.OnClickListener(){
+      @Override
+      public void onClick( View play ){
+        switch( play.getId() ){
+          case R.id.play_buttonGallery:
+            if( !button_status ){
+              finished = false;
+              player.start();
+              play_button.setImageResource( R.drawable.stop_hell );
+              play_buttonGallery.setImageResource( R.drawable.stop_hell );
+              button_status = true;
+              seekUpdation();
+            } else {
+              player.pause();
+              play_button.setImageResource( R.drawable.play_hell );
+              play_buttonGallery.setImageResource( R.drawable.play_hell );
               button_status = false;
             }
             break;
@@ -383,26 +411,30 @@ public class InformationActivity extends Activity{
       }
     } );
     player = MediaPlayer.create( this, audioId );
-    seekbar.getProgressDrawable()
-           .setColorFilter( Color.GRAY, PorterDuff.Mode.SRC );
+    seekbar.getProgressDrawable().setColorFilter( Color.GRAY, PorterDuff.Mode.SRC );
+    seekbarGallery.getProgressDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC);
     seekbar.setMax( player.getDuration() );
+    seekbarGallery.setMax(player.getDuration());
     seekbar.setOnSeekBarChangeListener( customSeekBarListener );
-    seekbar.getThumb()
-           .mutate()
-           .setAlpha( 0 );//seekbar.getthumb ist pin auf der seekbar
+  //  seekbar.getThumb().mutate().setAlpha( 0 );//seekbar.getthumb ist pin auf der seekbar
     player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){
       @Override
       public void onCompletion( MediaPlayer player ){
         finished = true;
         seekbar.setProgress( 0 );
+        seekbarGallery.setProgress(0);
         duration.setText( "0:00" );
+        durationGallery.setText("0:00");
 
         player.pause();
         play_button.setImageResource( R.drawable.play_hell );
+        play_buttonGallery.setImageResource(R.drawable.play_hell);
         button_status = false;
       }
 
     });
+
+    seekbarGallery.setOnSeekBarChangeListener( customSeekBarListener );
 
   }
 
@@ -410,9 +442,6 @@ public class InformationActivity extends Activity{
     vid.setVideoURI( Uri.parse( "android.resource://" + getPackageName() + "/" + videoId ) );
     vid.requestFocus();
     vid.setVisibility(View.VISIBLE);
-    seekbarGallery.setVisibility(View.VISIBLE);
-    durationGallery.setVisibility(View.VISIBLE);
-    play_buttonGallery.setVisibility(View.VISIBLE);
     //vid.setMediaController(new MediaController(this));
     play_buttonGallery.setOnClickListener( new View.OnClickListener(){
       @Override
