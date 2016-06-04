@@ -40,7 +40,6 @@ public class InformationPagerAdapter extends PagerAdapter{
     View itemView = LayoutInflater.from( mContext )
                                   .inflate( R.layout.gallerypageritem, container, false );
 
-    int pos = position;
     ImageView imageView = (ImageView) itemView.findViewById( R.id.img_pager_item );
     imageView.setImageResource( mResources[position] );
 
