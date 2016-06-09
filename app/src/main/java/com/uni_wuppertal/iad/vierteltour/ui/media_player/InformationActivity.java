@@ -2,6 +2,7 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.hardware.SensorManager;
@@ -69,7 +70,7 @@ public class InformationActivity extends Activity{
     public void onStopTrackingTouch( SeekBar seekBar ){
     }
   };
-  TextView duration, gallerytitle, durationGallery;
+  TextView duration, gallerytitle, gallerytitletop, durationGallery;
   double timeElapsed = 0;
   int videoId, audioId, imgId[], page = 0, dotsCount;
   String video, audio, img;
@@ -284,10 +285,15 @@ public class InformationActivity extends Activity{
       @Override
       public void onOrientationChanged( int arg0 ){
         if( arg0 >= 90 && arg0 <= 270 ){
-          Toast.makeText( getApplicationContext(), "PORTRAIT", Toast.LENGTH_LONG )
-               .show();
+          gallerytitletop.setVisibility(View.VISIBLE);
+          gallerytitle.setVisibility(View.GONE);}
+          else
+          {gallerytitletop.setVisibility(View.GONE);
+            gallerytitle.setVisibility(View.VISIBLE);}
+       //   setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+       //   setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-      }
+
     };
     if( changed.canDetectOrientation() ){
       changed.enable();
@@ -297,6 +303,7 @@ public class InformationActivity extends Activity{
 
   public void gallerymode(){
     gallerytitle.setText( station );
+    gallerytitletop.setText( station );
     x_button.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
@@ -326,6 +333,7 @@ public class InformationActivity extends Activity{
     vid = (VideoView) findViewById( R.id.videoViewGallery );
      image = (ImageView)findViewById(R.id.imageScreen);
     gallerytitle = (TextView) findViewById( R.id.titleGallery );
+    gallerytitletop = (TextView) findViewById(R.id.titleGalleryTop);
     x_button = (ImageButton) findViewById( R.id.x_button );
     seekbarGallery = (SeekBar) findViewById( R.id.seek_barGallery );
     play_buttonGallery = (ImageButton) findViewById( R.id.play_buttonGallery );
