@@ -287,7 +287,7 @@ public class InformationActivity extends Activity{
         if( arg0 == 90 ){
           gallerytitletop.setVisibility(View.VISIBLE);
           gallerytitle.setVisibility(View.GONE);
-
+          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
           }
 
 
@@ -296,18 +296,16 @@ public class InformationActivity extends Activity{
         else if(arg0==270){
             gallerytitletop.setVisibility(View.VISIBLE);
             gallerytitle.setVisibility(View.GONE);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
           }
 
           else if(arg0==0)
           {
               gallerytitletop.setVisibility(View.GONE);
               gallerytitle.setVisibility(View.VISIBLE);
+              setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
 
-
-
-
-       //   setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
     };
