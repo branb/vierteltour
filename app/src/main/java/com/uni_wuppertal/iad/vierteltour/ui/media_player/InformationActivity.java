@@ -3,6 +3,7 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.hardware.SensorManager;
@@ -14,6 +15,8 @@ import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +37,8 @@ public class InformationActivity extends Activity{
   SeekBar seekbar, seekbarGallery;
   ImageButton play_button, x_button, play_buttonGallery;
   MediaPlayer player;
+  Singletonint singlepage;
+
   int isimages=-1;
   public SeekBar.OnSeekBarChangeListener customSeekBarListener = new SeekBar.OnSeekBarChangeListener(){
     @Override
@@ -85,6 +90,7 @@ public class InformationActivity extends Activity{
   ViewPager imagePager, imagePagerGallery;
   InformationPagerAdapter mAdapter;
   LinearLayout pager_indicator;
+  RelativeLayout relGalleryBot, relGalleryTop;
 
   Runnable run = new Runnable(){
     @Override
@@ -103,9 +109,27 @@ public class InformationActivity extends Activity{
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
     setContentView( R.layout.information );
+
     vf = (ViewFlipper) findViewById( R.id.viewFlipper );
+
+    if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
+    {vf.setDisplayedChild(1);
+    page=1;}
     parseData();
-    getInit();
+    getInit();}
+
+  @Override
+  protected void onDestroy()
+  {super.onDestroy();
+   changed.disable();
+    if( audioId != 0 ){
+    player.stop();
+  player.release();
+  player = null;}
+    if( videoId != 0 ){
+      vid.stopPlayback();
+    }
+
   }
 
   @Override
@@ -113,15 +137,10 @@ public class InformationActivity extends Activity{
     if( page == 0 ){
       super.onBackPressed();
       overridePendingTransition( R.anim.map_in, R.anim.fade_out );
-      if( audioId != 0 ){
-        player.stop();
-        player.release();
-        player = null;
+      singlepage.INSTANCE.setPage(0);
       }
-      if( videoId != 0 ){
-        vid.stopPlayback();
-      }
-    } else if( page == 1 ){
+
+     else if( page == 1 ){
       vf.setDisplayedChild(0);
       start = false;
       vid.pause();
@@ -144,6 +163,10 @@ public class InformationActivity extends Activity{
     img = (String) b.get( "img" );
     audio = (String) b.get( "audio" );
     video = (String) b.get( "video" );
+
+
+    page = singlepage.INSTANCE.getPage();
+
     layout = (RelativeLayout) findViewById( R.id.rellayout );
     layout.setBackgroundColor( Color.parseColor( farbe ) );
     title = (TextView) findViewById( R.id.stationtitle );
@@ -283,26 +306,30 @@ public class InformationActivity extends Activity{
     changed = new OrientationEventListener( this, SensorManager.SENSOR_DELAY_NORMAL ){
       @Override
       public void onOrientationChanged( int arg0 ){
-
-        if( arg0 == 90 ){
+        System.out.println("PAGE: " + page);
+        System.out.println("SINGLETON PAGE: " + singlepage.INSTANCE.getPage());
+        if( arg0 == 90  && page==1){
           gallerytitletop.setVisibility(View.VISIBLE);
           gallerytitle.setVisibility(View.GONE);
+          singlepage.INSTANCE.setPage(1);
           setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
           }
 
 
         else if(arg0==180){}
 
-        else if(arg0==270){
+        else if(arg0==270 && page==1){
             gallerytitletop.setVisibility(View.VISIBLE);
             gallerytitle.setVisibility(View.GONE);
+            singlepage.INSTANCE.setPage(1);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
           }
 
-          else if(arg0==0)
+          else if(arg0==0 && getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
           {
               gallerytitletop.setVisibility(View.GONE);
               gallerytitle.setVisibility(View.VISIBLE);
+              singlepage.INSTANCE.setPage(1);
               setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
 
@@ -324,10 +351,17 @@ public class InformationActivity extends Activity{
         vid.pause();
         start = false;
         page = 0;
-        vf.setDisplayedChild(0);
+
+        if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
+        { singlepage.INSTANCE.setPage(0);
+          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
+        else{
+        vf.setDisplayedChild(0);}
       }
     });
 
+    if (page==1)
+    {vf.setDisplayedChild(1);}
 
   }
 
@@ -343,7 +377,7 @@ public class InformationActivity extends Activity{
     seekbar = (SeekBar) findViewById( R.id.seek_bar );
     play_button = (ImageButton) findViewById( R.id.play_button );
     duration = (TextView) findViewById( R.id.duration );
-    //duration.setTextColor( Color.GRAY );
+    duration.setTextColor( Color.GRAY );
     vid = (VideoView) findViewById( R.id.videoViewGallery );
      image = (ImageView)findViewById(R.id.imageScreen);
     gallerytitle = (TextView) findViewById( R.id.titleGallery );
@@ -352,12 +386,16 @@ public class InformationActivity extends Activity{
     seekbarGallery = (SeekBar) findViewById( R.id.seek_barGallery );
     play_buttonGallery = (ImageButton) findViewById( R.id.play_buttonGallery );
     durationGallery = (TextView) findViewById( R.id.durationGallery );
+    relGalleryBot = (RelativeLayout) findViewById(R.id.relativeBot);
+    relGalleryTop = (RelativeLayout) findViewById(R.id.relativeTop);
     imagePager = (ViewPager) findViewById( R.id.ImagePager );
     mAdapter = new InformationPagerAdapter( this, imgId, this);
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
     imagePager.setAdapter( mAdapter );
     imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
     imagePagerGallery.setAdapter( mAdapter );
+
+
   }
 
   private void setUiPageViewController(){
@@ -486,18 +524,20 @@ public class InformationActivity extends Activity{
     vid.setOnTouchListener( new View.OnTouchListener(){
       @Override
       public boolean onTouch( View v, MotionEvent motionEvent ){
-        if( vid.isPlaying() ){
+        if( vid.isPlaying() && getResources().getConfiguration().orientation== Configuration.ORIENTATION_PORTRAIT){
           start = false;
           vid.pause();
           play_buttonGallery.setImageResource( R.drawable.play_hell );
-          return false;
-        } else {
+
+        }
+        else if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE)
+        {mediaplayerbars();}
+        else {
           start = true;
           vid.start();
           play_buttonGallery.setImageResource( R.drawable.stop_hell );
-          seekUpdation2();
-          return false;
-        }
+          seekUpdation2();}
+        return false;
       }
     });
 
@@ -561,5 +601,24 @@ public class InformationActivity extends Activity{
     }
   }
 
+  public void mediaplayerbars()
+  {if (relGalleryBot.getVisibility() != View.GONE) {
+    Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_down);
+    Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_up);
+    relGalleryBot.startAnimation(slide1);
+    relGalleryTop.startAnimation(slide2);
+    relGalleryBot.setVisibility(View.GONE);
+    relGalleryTop.setVisibility(View.GONE);
+
+  }
+  else if(relGalleryBot.getVisibility() != View.VISIBLE){
+    Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_up);
+    Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_down);
+    relGalleryBot.startAnimation(slide1);
+    relGalleryTop.startAnimation(slide2);
+    relGalleryBot.setVisibility(View.VISIBLE);
+    relGalleryTop.setVisibility(View.VISIBLE);
+
+  }}
 
 }

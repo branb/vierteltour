@@ -1,6 +1,7 @@
 package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -51,6 +52,9 @@ public class InformationPagerAdapter extends PagerAdapter{
       public void onClick(View v)
       {infoAct.vf.setDisplayedChild(1);
         infoAct.page=1;
+
+       if(mContext.getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE)
+      {infoAct.mediaplayerbars();}
       }
     });
 
