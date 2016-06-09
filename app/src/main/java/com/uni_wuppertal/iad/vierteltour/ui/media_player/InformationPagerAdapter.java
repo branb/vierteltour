@@ -49,7 +49,7 @@ public class InformationPagerAdapter extends PagerAdapter{
     {
       @Override
       public void onClick(View v)
-      {infoAct.vf.showNext();
+      {infoAct.vf.setDisplayedChild(1);
         infoAct.page=1;
       }
     });

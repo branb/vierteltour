@@ -122,7 +122,7 @@ public class InformationActivity extends Activity{
         vid.stopPlayback();
       }
     } else if( page == 1 ){
-      vf.showPrevious();
+      vf.setDisplayedChild(0);
       start = false;
       vid.pause();
       page = 0;
@@ -283,13 +283,30 @@ public class InformationActivity extends Activity{
     changed = new OrientationEventListener( this, SensorManager.SENSOR_DELAY_NORMAL ){
       @Override
       public void onOrientationChanged( int arg0 ){
-        if( arg0 >= 90 && arg0 <= 270 ){
+
+        if( arg0 == 90 ){
           gallerytitletop.setVisibility(View.VISIBLE);
-          gallerytitle.setVisibility(View.GONE);}
-          else
-          {gallerytitletop.setVisibility(View.GONE);
-            gallerytitle.setVisibility(View.VISIBLE);}
-       //   setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+          gallerytitle.setVisibility(View.GONE);
+
+          }
+
+
+        else if(arg0==180){}
+
+        else if(arg0==270){
+            gallerytitletop.setVisibility(View.VISIBLE);
+            gallerytitle.setVisibility(View.GONE);
+          }
+
+          else if(arg0==0)
+          {
+              gallerytitletop.setVisibility(View.GONE);
+              gallerytitle.setVisibility(View.VISIBLE);
+            }
+
+
+
+
        //   setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
@@ -309,7 +326,7 @@ public class InformationActivity extends Activity{
         vid.pause();
         start = false;
         page = 0;
-        vf.showPrevious();
+        vf.setDisplayedChild(0);
       }
     });
 
@@ -328,7 +345,7 @@ public class InformationActivity extends Activity{
     seekbar = (SeekBar) findViewById( R.id.seek_bar );
     play_button = (ImageButton) findViewById( R.id.play_button );
     duration = (TextView) findViewById( R.id.duration );
-    duration.setTextColor( Color.GRAY );
+    //duration.setTextColor( Color.GRAY );
     vid = (VideoView) findViewById( R.id.videoViewGallery );
      image = (ImageView)findViewById(R.id.imageScreen);
     gallerytitle = (TextView) findViewById( R.id.titleGallery );
@@ -501,7 +518,7 @@ public class InformationActivity extends Activity{
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vf.showNext();
+                vf.setDisplayedChild(1);
                 play_button.setImageResource(R.drawable.play_hell);
                 button_status = false;
                 finished=true;
