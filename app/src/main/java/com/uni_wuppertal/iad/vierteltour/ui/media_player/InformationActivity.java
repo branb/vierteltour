@@ -159,7 +159,6 @@ public class InformationActivity extends Activity{
     videoId = getResources().getIdentifier( video, "raw", getPackageName() );
     audioId = getResources().getIdentifier( audio, "raw", getPackageName() );
 
-    System.out.println("VIDEO" + videoId);
     //Temporäres einlesen mehrerer Bilder gleichzeitig
     //Später über XML Parser zu realisieren
     if( !img.isEmpty() ){
@@ -424,6 +423,7 @@ public class InformationActivity extends Activity{
     seekbar.setMax( player.getDuration() );
     seekbarGallery.setMax(player.getDuration());
     seekbar.setOnSeekBarChangeListener( customSeekBarListener );
+
   //  seekbar.getThumb().mutate().setAlpha( 0 );//seekbar.getthumb ist pin auf der seekbar
     player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){
       @Override
@@ -486,14 +486,15 @@ public class InformationActivity extends Activity{
       }
     });
 
-     /*       vid.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            vid.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                vid.setZOrderOnTop(true);
-                vid.setVisibility(View.GONE);
-                p.setVisibility(View.VISIBLE);
+                play_buttonGallery.setImageResource(R.drawable.play_hell);
+                start=false;
+                durationGallery.setText("0:00");
+                seekbarGallery.setProgress(0);
             }
-        });*/
+        });
 
         image.setVisibility(View.VISIBLE);
         image.setImageResource(R.drawable.i_04_01_01);
@@ -515,7 +516,7 @@ public class InformationActivity extends Activity{
 
   public void images(){
     imagePager.setCurrentItem( 0 );
-
+    play_buttonGallery.setImageResource(R.drawable.play_hell);
     if( imgId.length > 1 ){
       isimages=0;
         imagePager.setOnPageChangeListener( new ViewPager.OnPageChangeListener(){
