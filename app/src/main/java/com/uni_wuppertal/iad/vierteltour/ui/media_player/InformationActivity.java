@@ -145,6 +145,9 @@ public class InformationActivity extends Activity{
       start = false;
       vid.pause();
       page = 0;
+      if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
+      { singlepage.INSTANCE.setPage(0);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
     }
   }
 
