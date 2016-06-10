@@ -304,9 +304,11 @@ public class InformationActivity extends Activity{
     changed = new OrientationEventListener( this, SensorManager.SENSOR_DELAY_NORMAL ){
       @Override
       public void onOrientationChanged( int arg0 ){
-        if( arg0 == 90  && page==1){
-          gallerytitletop.setVisibility(View.VISIBLE);
-          gallerytitle.setVisibility(View.GONE);
+        arg0= arg0%360;
+
+
+        if( arg0>=87 && arg0<=93  && page==1 ){
+
           singlepage.INSTANCE.setPage(1);
           if(audioId!=0)
           {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
@@ -320,9 +322,8 @@ public class InformationActivity extends Activity{
 
         else if(arg0==180){}
 
-        else if(arg0==270 && page==1){
-            gallerytitletop.setVisibility(View.VISIBLE);
-            gallerytitle.setVisibility(View.GONE);
+        else if(arg0>=267  && arg0<=273 && page==1){
+
             singlepage.INSTANCE.setPage(1);
           if(audioId!=0)
           {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
@@ -333,10 +334,9 @@ public class InformationActivity extends Activity{
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
           }
 
-          else if(arg0==0 && getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
+          else if((arg0>=357 || arg0<=3) && getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
           {
-              gallerytitletop.setVisibility(View.GONE);
-              gallerytitle.setVisibility(View.VISIBLE);
+
               singlepage.INSTANCE.setPage(1);
             if(audioId!=0)
             {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
@@ -356,32 +356,29 @@ public class InformationActivity extends Activity{
 
   public void gallerymode(){
     gallerytitle.setText( station );
-    gallerytitletop.setText( station );
+    if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
+    {gallerytitletop.setText( station );
+      gallerytitletop.setVisibility(View.VISIBLE);
+    gallerytitle.setVisibility(View.GONE);}
+
+
+
     x_button.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
         vid.pause();
         start = false;
         page = 0;
-
+        singlepage.INSTANCE.setPage(0);
+        if(audioId!=0)
+        {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
+          singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
+        if(videoId!=0)
+        {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
+          singlepage.INSTANCE.setPlaying(vid.isPlaying());}
         if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-        { singlepage.INSTANCE.setPage(0);
-          if(audioId!=0)
-          {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
-            singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
-          if(videoId!=0)
-          {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
-            singlepage.INSTANCE.setPlaying(vid.isPlaying());}
-          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
-        else{
-        vf.setDisplayedChild(0);
-          singlepage.INSTANCE.setPage(0);
-          if(audioId!=0)
-          {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
-            singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
-          if(videoId!=0)
-          {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
-            singlepage.INSTANCE.setPlaying(vid.isPlaying());}}
+        {setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
+        else{vf.setDisplayedChild(0);}
       }
     });
 
