@@ -1,17 +1,21 @@
 package com.uni_wuppertal.iad.vierteltour;
 
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.uni_wuppertal.iad.vierteltour.component.map.Station;
 import com.uni_wuppertal.iad.vierteltour.component.map.StationInfo;
+import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Vector;
 
@@ -34,9 +38,7 @@ public class XmlParser{
 
   public XmlPullParser parser;
   public XmlPullParserFactory parserFactory;
-  public InputStream inputStream;
   public String text;
-
   public Tour tour;
   public List<Tour> ListTouren;
   public StationInfo tourInfo;
@@ -45,10 +47,8 @@ public class XmlParser{
 
 
   public XmlParser( FragmentActivity context ){
-    int resourceId = context.getResources()
-                            .getIdentifier( "tour", "raw", context.getPackageName() );
-    inputStream = context.getResources()
-                         .openRawResource( resourceId );
+    FileInputStream inputStream = OurStorage.getInstance( context )
+                                            .getFile( "tour.xml" );
 
     ListTouren = new Vector<>();
     try{
@@ -146,16 +146,13 @@ public class XmlParser{
   }
 
   public void parseTrack( FragmentActivity context, Tour t ){
-    int resourceId = context.getResources()
-                            .getIdentifier( "track_" + t.trkid, "raw", context.getPackageName() );
-    InputStream inputStreamTrack = context.getResources()
-                                          .openRawResource( resourceId );
+    FileInputStream inputStream = OurStorage.getInstance( context )
+                                            .getFile( "track_" + t.trkid + ".gpx" );
 
     try{
       XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
       XmlPullParser parser = factory.newPullParser();
-      parser.setInput( inputStreamTrack, null );
-
+      parser.setInput( inputStream, null );
 
       int eventType = parser.getEventType();
       while( eventType != XmlPullParser.END_DOCUMENT ){
@@ -171,13 +168,14 @@ public class XmlParser{
         if( eventType == XmlPullParser.TEXT ){
         }
         if( eventType == XmlPullParser.END_TAG ){
-
         }
         eventType = parser.next();
       }
     } catch( XmlPullParserException | IOException e ){
       e.printStackTrace();
     }
+
   }
+
 
 }

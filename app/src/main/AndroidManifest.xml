@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.uni_wuppertal.iad.vierteltour">
+    package="com.uni_wuppertal.iad.vierteltour"
+    android:installLocation="preferExternal">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -11,7 +12,14 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application
+    <!--
+      Tour data will be stored on external storage and needs proper permissions. Write implicitly
+      includes read permissions as well.
+    -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
+  <application
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
