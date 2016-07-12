@@ -83,4 +83,21 @@ public class OurStorage extends ContextWrapper{
     return stream;
   }
 
+
+  /** Returns the absolute filepath to the given filename, the latter including subfolders
+   *
+   * @param path
+   * @return The absolute path if the file was found, null else
+   */
+  public String getPathToFile( String path ){
+    String pathToFile = null;
+
+    File file = new File( externalFilesDir, path );
+
+    if( isExternalStorageMounted() && file.exists() ){
+      pathToFile = file.getAbsolutePath();
+    }
+
+    return pathToFile;
+  }
 }
