@@ -3,6 +3,7 @@ package com.uni_wuppertal.iad.vierteltour.utility;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,7 +40,7 @@ public class OurStorage extends ContextWrapper{
 
     if( isExternalStorageMounted() ) {
       externalFilesDir = getExternalFilesDir( null );
-      System.out.println( "(OurStorage) External storage mounted at: " + externalFilesDir );
+      Log.d( "OurStorage", "External storage mounted at: " + externalFilesDir );
     }
   }
 
@@ -55,7 +56,8 @@ public class OurStorage extends ContextWrapper{
       return true;
     } else {
       // TODO: Throw exception and inform user about this
-      System.out.println( "External Storage not available! " );
+      // TODO: For some weird reason, if you use this method in a context with an invalid filename, the return statement will be executed but NOT the Log.e one. Neither should the mounted state be affected by an invalid filename nor should the Log.e statement be skipped - makes no sense at all.
+      Log.e( "OurStorage", "External Storage not available!" );
       return false;
     }
   }
@@ -67,17 +69,20 @@ public class OurStorage extends ContextWrapper{
    * @return a FileInputStream if the file was found, null else
    */
   public FileInputStream getFile( String path ){
+    if( !isFileAccessible( path ) ){
+      return null;
+    }
+
     File file = new File( externalFilesDir, path );
     FileInputStream stream = null;
 
-    if( isExternalStorageMounted() && file.exists() ){
-      System.out.println( "(OurStorage) File found: " + file.toString() );
+    try{
+      stream = new FileInputStream( file );
 
-      try{
-        stream = new FileInputStream( file );
-      } catch( FileNotFoundException ex ){
-        System.out.println( "(OurStorage) File not found: " + file.toString() );
-      }
+      Log.d( "OurStorage", "File found: " + file.toString() );
+    } catch( FileNotFoundException ex ){
+      // If - for whatever reason - our previous check failed and the file REALLY can't be found
+      Log.wtf( "OurStorage|Exception", "File '" + file.toString() + "' REALLY not found! DaFUQ?" );
     }
 
     return stream;
@@ -90,14 +95,46 @@ public class OurStorage extends ContextWrapper{
    * @return The absolute path if the file was found, null else
    */
   public String getPathToFile( String path ){
-    String pathToFile = null;
+    String pathToFile;
 
-    File file = new File( externalFilesDir, path );
-
-    if( isExternalStorageMounted() && file.exists() ){
+    if( !isFileAccessible( path ) ){
+      return null;
+    } else {
+      File file = new File( externalFilesDir, path );
       pathToFile = file.getAbsolutePath();
+      Log.d( "OurStorage", "File found: " + file.toString() );
     }
 
     return pathToFile;
   }
+
+
+  /**
+   * Helper method to check if a file exists and is readable. Only for internal use.
+   *
+   * @param path The path to our file, relative to our application storage
+   * @return true if application storage is available and file exists / is readable, false else
+   */
+  protected boolean isFileAccessible( String path ){
+    File file = new File( externalFilesDir, path );
+
+    if( !isExternalStorageMounted() ){
+      Log.e( "OurStorage", "External Storage not available!" );
+      return false;
+    }
+
+    if( !file.exists() ){
+      Log.e( "OurStorage", "File '" + file.toString() + "' not found!" );
+      return false;
+    }
+
+    if( !file.canRead() ){
+      Log.e( "OurStorage", "Can't read '" + file.toString() + "'!" );
+      return false;
+    }
+
+    return true;
+  }
+
+
 }
