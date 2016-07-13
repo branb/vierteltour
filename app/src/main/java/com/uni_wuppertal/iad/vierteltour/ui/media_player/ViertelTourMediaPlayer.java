@@ -25,10 +25,8 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
   /** The main constructor.
    *
    */
-  private ViertelTourMediaPlayer( Context context){
+  private ViertelTourMediaPlayer( Context context ){
     this.context = context;
-
-    //super.;
   }
 }
 
