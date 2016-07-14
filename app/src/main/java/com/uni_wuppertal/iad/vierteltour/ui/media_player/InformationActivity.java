@@ -475,7 +475,7 @@ public class InformationActivity extends Activity{
         duration.setText( "0:00" );
         durationGallery.setText("0:00");
 
-        player.pause();
+        //player.pause();
         play_button.setImageResource( R.drawable.play_hell );
         play_buttonGallery.setImageResource(R.drawable.play_hell);
       }
