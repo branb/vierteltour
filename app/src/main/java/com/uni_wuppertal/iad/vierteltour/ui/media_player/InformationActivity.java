@@ -78,7 +78,7 @@ public class InformationActivity extends Activity{
   };
   TextView duration, gallerytitle, gallerytitletop, durationGallery;
   double timeElapsed = 0;
-  int videoId, audioId, page = 0, dotsCount;
+  int audioId, page = 0, dotsCount;
   String video, audio, stationImagePaths[];
   ImageView image, dots[];
   Intent myIntent2;
@@ -128,7 +128,7 @@ public class InformationActivity extends Activity{
   player.release();
   player = null;
     finished=true;}
-    if( videoId != 0 ){
+    if( !video.isEmpty() ){
       vid.stopPlayback();
       vid=null;
       start=false;
@@ -154,7 +154,7 @@ public class InformationActivity extends Activity{
         if(audioId!=0)
         {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
           singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
-        if(videoId!=0)
+        if( !video.isEmpty() )
         {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
           singlepage.INSTANCE.setPlaying(vid.isPlaying());}
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
@@ -203,7 +203,6 @@ public class InformationActivity extends Activity{
     info2.setText( zeit + "/" + laenge );
     description = (TextView) findViewById( R.id.stationenbeschreibung );
     description.setText( desc );
-    videoId = getResources().getIdentifier( video, "raw", getPackageName() );
     audioId = getResources().getIdentifier( audio, "raw", getPackageName() );
   }
 
@@ -218,7 +217,7 @@ public class InformationActivity extends Activity{
       audio();
     }
 
-    if( videoId != 0 ){
+    if( !video.isEmpty() ){
       video();
     }
 
@@ -230,11 +229,11 @@ public class InformationActivity extends Activity{
   public void seekUpdation(){
     if( player != null && !finished ){
       seekbar.setProgress( player.getCurrentPosition() );
-      if(videoId==0)seekbarGallery.setProgress(player.getCurrentPosition());
+      if( video.isEmpty() )seekbarGallery.setProgress(player.getCurrentPosition());
       timeElapsed = player.getCurrentPosition();
 
       duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
-      if(videoId==0)durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
+      if( video.isEmpty() )durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
       seekHandler.postDelayed( run, 100 );
     }
   }
@@ -261,7 +260,7 @@ public class InformationActivity extends Activity{
       duration.setVisibility( View.GONE );
     }
 
-    if( videoId == 0 ){
+    if( video.isEmpty() ){
       vid.setVisibility( View.INVISIBLE );
     }
 
@@ -284,7 +283,7 @@ public class InformationActivity extends Activity{
           if(audioId!=0)
           {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
            singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
-          if(videoId!=0)
+          if( !video.isEmpty() )
           {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
             singlepage.INSTANCE.setPlaying(vid.isPlaying());}
           setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
@@ -299,7 +298,7 @@ public class InformationActivity extends Activity{
           if(audioId!=0)
           {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
             singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
-          if(videoId!=0)
+          if( !video.isEmpty() )
           {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
             singlepage.INSTANCE.setPlaying(vid.isPlaying());}
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -312,7 +311,7 @@ public class InformationActivity extends Activity{
             if(audioId!=0)
             {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
               singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
-              if(videoId!=0)
+              if( !video.isEmpty())
               {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
               singlepage.INSTANCE.setPlaying(vid.isPlaying());}
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -344,7 +343,7 @@ public class InformationActivity extends Activity{
         if(audioId!=0)
         {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
           singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
-        if(videoId!=0)
+        if( !video.isEmpty() )
         {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
           singlepage.INSTANCE.setPlaying(vid.isPlaying());}
         if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
@@ -502,7 +501,7 @@ public class InformationActivity extends Activity{
   public void video(){
 
 
-    vid.setVideoURI( Uri.parse( "android.resource://" + getPackageName() + "/" + videoId ) );
+    vid.setVideoPath( OurStorage.getInstance( this).getPathToFile( video ) );
     vid.requestFocus();
     vid.setVisibility(View.VISIBLE);
     if(singlepage.INSTANCE.getPlaying() && singlepage.INSTANCE.getTime()>0)
