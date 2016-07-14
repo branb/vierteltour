@@ -69,9 +69,11 @@ public class XmlParser{
               break;
           }
 
-        }
-        if( eventType == XmlPullParser.TEXT ){
-          text = parser.getText();
+          eventType = parser.next();
+
+          if( eventType == XmlPullParser.TEXT ){
+            text = parser.getText();
+          }
         }
         if( eventType == XmlPullParser.END_TAG ){
           switch( parser.getName() ){
@@ -136,6 +138,8 @@ public class XmlParser{
               parseTrack( context, tour );
               break;
           }
+
+          text = "";
         }
         eventType = parser.next();
       }
