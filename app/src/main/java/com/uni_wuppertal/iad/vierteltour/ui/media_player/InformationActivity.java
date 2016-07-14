@@ -37,7 +37,7 @@ public class InformationActivity extends Activity{
 
   SeekBar seekbar, seekbarGallery;
   ImageButton play_button, x_button, play_buttonGallery;
-  MediaPlayer player;
+  ViertelTourMediaPlayer player;
   Singletonint singlepage;
 
   int isimages=-1;
@@ -78,7 +78,7 @@ public class InformationActivity extends Activity{
   };
   TextView duration, gallerytitle, gallerytitletop, durationGallery;
   double timeElapsed = 0;
-  int audioId, page = 0, dotsCount;
+  int page = 0, dotsCount;
   String video, audio, stationImagePaths[];
   ImageView image, dots[];
   Intent myIntent2;
@@ -123,9 +123,9 @@ public class InformationActivity extends Activity{
   protected void onDestroy()
   {super.onDestroy();
    changed.disable();
-    if( audioId != 0 ){
+    if( !audio.isEmpty() ){
     player.stop();
-  player.release();
+    player.reset();
   player = null;
     finished=true;}
     if( !video.isEmpty() ){
@@ -151,7 +151,7 @@ public class InformationActivity extends Activity{
       page = 0;
       if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
       { singlepage.INSTANCE.setPage(0);
-        if(audioId!=0)
+        if( !audio.isEmpty() )
         {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
           singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
         if( !video.isEmpty() )
@@ -203,7 +203,6 @@ public class InformationActivity extends Activity{
     info2.setText( zeit + "/" + laenge );
     description = (TextView) findViewById( R.id.stationenbeschreibung );
     description.setText( desc );
-    audioId = getResources().getIdentifier( audio, "raw", getPackageName() );
   }
 
   public void getInit(){
@@ -213,7 +212,7 @@ public class InformationActivity extends Activity{
     initOrientation();
     hide();
 
-    if( audioId != 0 ){
+    if( !audio.isEmpty() ){
       audio();
     }
 
@@ -254,7 +253,7 @@ public class InformationActivity extends Activity{
   //@Override
 
   public void hide(){
-    if( audioId == 0 ){
+    if( audio.isEmpty() ){
       seekbar.setVisibility( View.GONE );
       play_button.setVisibility( View.GONE );
       duration.setVisibility( View.GONE );
@@ -280,7 +279,7 @@ public class InformationActivity extends Activity{
         if( arg0>=87 && arg0<=93  && page==1 ){
 
           singlepage.INSTANCE.setPage(1);
-          if(audioId!=0)
+          if( !audio.isEmpty() )
           {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
            singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
           if( !video.isEmpty() )
@@ -295,7 +294,7 @@ public class InformationActivity extends Activity{
         else if(arg0>=267  && arg0<=273 && page==1){
 
             singlepage.INSTANCE.setPage(1);
-          if(audioId!=0)
+          if( !audio.isEmpty() )
           {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
             singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
           if( !video.isEmpty() )
@@ -308,7 +307,7 @@ public class InformationActivity extends Activity{
           {
 
               singlepage.INSTANCE.setPage(1);
-            if(audioId!=0)
+            if( !audio.isEmpty() )
             {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
               singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
               if( !video.isEmpty())
@@ -340,7 +339,7 @@ public class InformationActivity extends Activity{
         start = false;
         page = 0;
         singlepage.INSTANCE.setPage(0);
-        if(audioId!=0)
+        if( !audio.isEmpty() )
         {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
           singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
         if( !video.isEmpty() )
@@ -456,7 +455,9 @@ public class InformationActivity extends Activity{
             break;
         }}});
 
-    player = MediaPlayer.create( this, audioId );
+    player = ViertelTourMediaPlayer.getInstance( this );
+    player.loadAudio( audio );
+
     seekbar.getProgressDrawable().setColorFilter( Color.GRAY, PorterDuff.Mode.SRC );
     seekbarGallery.getProgressDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC);
     seekbar.setMax( player.getDuration() );
