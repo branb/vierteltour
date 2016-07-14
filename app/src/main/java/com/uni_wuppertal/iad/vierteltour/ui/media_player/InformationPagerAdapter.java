@@ -2,6 +2,9 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 
 import android.content.Context;
 import android.content.res.Configuration;
+
+import android.net.Uri;
+
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -13,22 +16,26 @@ import android.widget.LinearLayout;
 import android.widget.ViewFlipper;
 
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
+
+import java.io.File;
 
 public class InformationPagerAdapter extends PagerAdapter{
 
   private Context mContext;
-  private int[] mResources;
   private InformationActivity infoAct;
 
-  public InformationPagerAdapter( Context mContext, int[] mResources , InformationActivity infoAct){
+  private String[] stationImagePaths;
+
+  public InformationPagerAdapter( Context mContext, String[] stationImagePaths , InformationActivity infoAct){
     this.mContext = mContext;
-    this.mResources = mResources;
+    this.stationImagePaths = stationImagePaths;
     this.infoAct= infoAct;
   }
 
   @Override
   public int getCount(){
-    return mResources.length;
+    return stationImagePaths.length;
   }
 
   @Override
@@ -42,7 +49,7 @@ public class InformationPagerAdapter extends PagerAdapter{
                                   .inflate( R.layout.gallerypageritem, container, false );
 
     ImageView imageView = (ImageView) itemView.findViewById( R.id.img_pager_item );
-    imageView.setImageResource( mResources[position] );
+    imageView.setImageURI( Uri.fromFile( new File(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths[position])) ) );
 
     container.addView( itemView );
 

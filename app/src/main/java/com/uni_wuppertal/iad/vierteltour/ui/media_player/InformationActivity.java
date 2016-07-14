@@ -28,6 +28,7 @@ import android.widget.VideoView;
 import android.widget.ViewFlipper;
 
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
 import java.util.concurrent.TimeUnit;
 
@@ -77,8 +78,8 @@ public class InformationActivity extends Activity{
   };
   TextView duration, gallerytitle, gallerytitletop, durationGallery;
   double timeElapsed = 0;
-  int videoId, audioId, imgId[], page = 0, dotsCount;
-  String video, audio, img;
+  int videoId, audioId, page = 0, dotsCount;
+  String video, audio, stationImagePaths[];
   ImageView image, dots[];
   Intent myIntent2;
   Bundle b;
@@ -172,7 +173,18 @@ public class InformationActivity extends Activity{
     desc = (String) b.get( "desc" );
     size = (String) b.get( "size" );
     number = (String) b.get( "pos" );
-    img = (String) b.get( "img" );
+
+    // Currently in the format "img1.jpg,img2.jpg,..."
+    // TODO: Convert XML-entry to have one <image>-tag per image entry
+    String imagesFromXML = (String) b.get( "img" );
+
+    if( !imagesFromXML.isEmpty() ){
+      this.stationImagePaths = imagesFromXML.split( "," );
+    } else {
+      this.stationImagePaths = new String[0];
+    }
+
+
     audio = (String) b.get( "audio" );
     video = (String) b.get( "video" );
 
@@ -193,47 +205,6 @@ public class InformationActivity extends Activity{
     description.setText( desc );
     videoId = getResources().getIdentifier( video, "raw", getPackageName() );
     audioId = getResources().getIdentifier( audio, "raw", getPackageName() );
-
-    //Temporäres einlesen mehrerer Bilder gleichzeitig
-    //Später über XML Parser zu realisieren
-    if( !img.isEmpty() ){
-      int i = 0;
-      char[] stringArray = img.toCharArray();
-      String neueString = "";
-      boolean erg = true;
-
-      int count = 1;
-      for( int j = 0; j < stringArray.length; j++ ){
-        if( String.valueOf( stringArray[j] ).equals( "," ) ){
-          count++;
-        }
-      }
-      imgId = new int[count];
-
-
-      //Temporaer
-      while( erg ){
-        String tmp = "";
-        erg = false;
-        for( int j = 0; j < stringArray.length; j++ ){
-          if( String.valueOf( stringArray[j] )
-                    .equals( "," ) ){
-            char[] tmpArray = new char[stringArray.length - j - 1];
-            for( int k = 0; k < stringArray.length - j - 1; k++ ){
-              tmpArray[k] = stringArray[k + j + 1];
-            }
-            stringArray = tmpArray;
-            erg = true;
-            break;
-          } else {
-            tmp += String.valueOf( stringArray[j] )
-                         .toString();
-          }
-        }
-        imgId[i] = getResources().getIdentifier( tmp, "drawable", getPackageName() );
-        i++;
-      }
-    }
   }
 
   public void getInit(){
@@ -251,7 +222,7 @@ public class InformationActivity extends Activity{
       video();
     }
 
-    if( imgId[0] != 0 ){
+    if( stationImagePaths.length != 0 ){
       images();
     }
   }
@@ -294,7 +265,7 @@ public class InformationActivity extends Activity{
       vid.setVisibility( View.INVISIBLE );
     }
 
-    if( imgId[0] == 0 ){
+    if( stationImagePaths.length == 0 ){
       imagePager.setVisibility( View.GONE );
       imagePagerGallery.setVisibility(View.GONE);
     }
@@ -411,7 +382,7 @@ public class InformationActivity extends Activity{
     relGalleryBot = (RelativeLayout) findViewById(R.id.relativeBot);
     relGalleryTop = (RelativeLayout) findViewById(R.id.relativeTop);
     imagePager = (ViewPager) findViewById( R.id.ImagePager );
-    mAdapter = new InformationPagerAdapter( this, imgId, this);
+    mAdapter = new InformationPagerAdapter( this, stationImagePaths, this);
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
     imagePager.setAdapter( mAdapter );
     imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
@@ -616,7 +587,7 @@ public class InformationActivity extends Activity{
   public void images(){
     imagePager.setCurrentItem( 0 );
    //
-    if( imgId.length > 1 ){
+    if( stationImagePaths.length > 1 ){
       isimages=0;
         imagePager.setOnPageChangeListener( new ViewPager.OnPageChangeListener(){
         @Override
