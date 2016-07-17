@@ -45,6 +45,11 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
    * @return True if the file could be loaded, false else
    */
   public boolean loadAudio( String path ){
+    if( isPlaying() ){
+      stop();
+      reset();
+    }
+
     FileInputStream inputStream = OurStorage.getInstance( this.context ).getFile( path );
 
     if( inputStream == null ){

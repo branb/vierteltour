@@ -123,11 +123,6 @@ public class InformationActivity extends Activity{
   protected void onDestroy()
   {super.onDestroy();
    changed.disable();
-    if( !audio.isEmpty() ){
-    player.stop();
-    player.reset();
-  player = null;
-    finished=true;}
     if( !video.isEmpty() ){
       vid.stopPlayback();
       vid=null;
