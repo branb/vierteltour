@@ -7,9 +7,9 @@ import android.widget.SeekBar;
 /**
  * Created by Kevin-Laptop on 04.06.2016.
  */
-public class CustomSeekBar extends SeekBar {
+public class ViertelTourSeekBar extends SeekBar {
 
-  public CustomSeekBar(Context context) {
+  public ViertelTourSeekBar(Context context) {
     super(context);
 
   }
