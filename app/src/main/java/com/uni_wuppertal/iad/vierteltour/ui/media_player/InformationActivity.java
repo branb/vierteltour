@@ -61,47 +61,6 @@ public class InformationActivity extends Activity{
   LinearLayout pager_indicator;
   RelativeLayout relGalleryBot, relGalleryTop;    //Layout im Gallerymode für Informationen
 
-
-
-  //Custom Class Seekbar start
-  public SeekBar.OnSeekBarChangeListener customSeekBarListener = new SeekBar.OnSeekBarChangeListener(){
-    @Override
-    public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
-      if( fromUser ){
-        player.seekTo( progress );
-      }
-    }
-
-    @Override
-    public void onStartTrackingTouch( SeekBar seekBar ){
-    }
-
-    @Override
-    public void onStopTrackingTouch( SeekBar seekBar ){
-    }
-  };
-
-  public SeekBar.OnSeekBarChangeListener customSeekBarListener2 = new SeekBar.OnSeekBarChangeListener(){
-    @Override
-    public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
-      if( fromUser ){
-        vid.seekTo( progress );
-      }
-    }
-
-    @Override
-    public void onStartTrackingTouch( SeekBar seekBar ){
-    }
-
-    @Override
-    public void onStopTrackingTouch( SeekBar seekBar ){
-    }
-  };
-  //Custom Class Seekbar stop
-
-
-
-
   //Runnables zuständig für Aktualisierung der fortgeschrittenen Zeit der Player
   Runnable run = new Runnable(){
     @Override
@@ -125,9 +84,6 @@ public class InformationActivity extends Activity{
     getInit();        //Initialisierung
 
 
-    if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-    {vf.setDisplayedChild(1);
-    page=1;}
 
 
     }
@@ -391,9 +347,9 @@ public class InformationActivity extends Activity{
       }
     });
 
-    if (page==1)
-    {vf.setDisplayedChild(1);}
-
+    if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT || page == 1)
+    {page=1;
+     vf.setDisplayedChild(1);}
   }
 
 
@@ -424,6 +380,38 @@ public class InformationActivity extends Activity{
   //TODO: Check audio, video and images method
   //TODO: Remove Audio Seekbar in Gallery mode
   public void audio(){
+    player = ViertelTourMediaPlayer.getInstance( this );
+
+    //number soll später mit id ersetzt werden, leider wurde id bis jetzt noch nicht gesetzt
+    //Wenn die gleiche Station geöffnet wird, soll audio nicht neu geladen werden
+    if(singlepage.INSTANCE.getId() != Integer.parseInt(number))
+    { player.loadAudio( audio );
+      singlepage.INSTANCE.setId(Integer.parseInt(number));}
+
+    else if(player.isPlaying())
+    {startaudio = true;
+      play_button.setImageResource( R.drawable.stop_hell );
+      seekUpdationAudio();}
+
+
+    //CustomKlasse Seekbar
+    seekbar.getProgressDrawable().setColorFilter( Color.GRAY, PorterDuff.Mode.SRC );
+    seekbar.setMax( player.getDuration() );
+  //  seekbar.getThumb().mutate().setAlpha( 0 );//seekbar.getthumb ist pin auf der seekbar
+
+
+
+    player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){
+      @Override
+      public void onCompletion( MediaPlayer player ){
+        startaudio = false;
+        seekbar.setProgress(0);
+        duration.setText("0:00");
+        play_button.setImageResource(R.drawable.play_hell);
+      }
+
+    });
+
     play_button.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View play ){
@@ -438,58 +426,7 @@ public class InformationActivity extends Activity{
               startaudio=false;
               player.pause();
               play_button.setImageResource( R.drawable.play_hell );
-            }
-            break;
-        }
-
-      }
-    } );
-    play_buttonGallery.setOnClickListener( new View.OnClickListener(){
-      @Override
-      public void onClick( View play ){
-        switch( play.getId() ){
-          case R.id.play_buttonGallery:
-            if( !player.isPlaying() ){
-              startaudio = true;
-              player.start();
-              play_button.setImageResource( R.drawable.stop_hell );
-              seekUpdationAudio();
-            } else {
-              startaudio=false;
-              player.pause();
-              play_button.setImageResource( R.drawable.play_hell );
-            }
-            break;
-        }}});
-
-
-    player = ViertelTourMediaPlayer.getInstance( this );
-
-    //number soll später mit id ersetzt werden, leider wurde id bis jetzt noch nicht gesetzt
-    if(singlepage.INSTANCE.getId() != Integer.parseInt(number))
-    { player.loadAudio( audio );
-      singlepage.INSTANCE.setId(Integer.parseInt(number));}
-
-    else if(player.isPlaying())
-    {startaudio = true;
-      play_button.setImageResource( R.drawable.stop_hell );
-      seekUpdationAudio();}
-
-
-    //CustomKlasse
-    seekbar.getProgressDrawable().setColorFilter( Color.GRAY, PorterDuff.Mode.SRC );
-    seekbar.setMax( player.getDuration() );
-  //  seekbar.getThumb().mutate().setAlpha( 0 );//seekbar.getthumb ist pin auf der seekbar
-    player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){
-      @Override
-      public void onCompletion( MediaPlayer player ){
-        startaudio = false;
-        seekbar.setProgress(0);
-        duration.setText("0:00");
-        play_button.setImageResource(R.drawable.play_hell);
-      }
-
-    });
+            }break;}}});
   }
 
 
@@ -635,5 +572,43 @@ public class InformationActivity extends Activity{
   {seekbarGallery.setVisibility(View.VISIBLE);
     play_buttonGallery.setVisibility(View.VISIBLE);
     durationGallery.setVisibility(View.VISIBLE);}
+
+
+
+  //Custom Class Seekbar start
+  public SeekBar.OnSeekBarChangeListener customSeekBarListener = new SeekBar.OnSeekBarChangeListener(){
+    @Override
+    public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
+      if( fromUser ){
+        player.seekTo( progress );
+      }
+    }
+
+    @Override
+    public void onStartTrackingTouch( SeekBar seekBar ){
+    }
+
+    @Override
+    public void onStopTrackingTouch( SeekBar seekBar ){
+    }
+  };
+
+  public SeekBar.OnSeekBarChangeListener customSeekBarListener2 = new SeekBar.OnSeekBarChangeListener(){
+    @Override
+    public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
+      if( fromUser ){
+        vid.seekTo( progress );
+      }
+    }
+
+    @Override
+    public void onStartTrackingTouch( SeekBar seekBar ){
+    }
+
+    @Override
+    public void onStopTrackingTouch( SeekBar seekBar ){
+    }
+  };
+  //Custom Class Seekbar stop
 
 }
