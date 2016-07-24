@@ -28,6 +28,7 @@ import android.widget.VideoView;
 import android.widget.ViewFlipper;
 
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
 import java.util.concurrent.TimeUnit;
@@ -59,7 +60,7 @@ public class InformationActivity extends Activity{
   ViewPager imagePager, imagePagerGallery;    //Slidebare Gallery
   InformationPagerAdapter mAdapter;
   LinearLayout pager_indicator;
-  RelativeLayout relGalleryBot, relGalleryTop;    //Layout im Gallerymode für Informationen
+  RelativeLayout relGalleryBot, relGalleryTop; //Layout im Gallerymode für Informationen
 
   //Runnables zuständig für Aktualisierung der fortgeschrittenen Zeit der Player
   Runnable run = new Runnable(){
@@ -98,9 +99,14 @@ public class InformationActivity extends Activity{
   public void onBackPressed(){
     if( page == 0 ){
       startaudio=false;
+
       super.onBackPressed();
       overridePendingTransition( R.anim.map_in, R.anim.fade_out );
       singlepage.INSTANCE.reset();
+      if(player.isPlaying()==true)
+      {MapsActivity.audiobar.setVisibility(View.VISIBLE);}
+      else
+      {MapsActivity.audiobar.setVisibility(View.GONE);}
     }
 
      else if( page == 1 ){
@@ -125,17 +131,11 @@ public class InformationActivity extends Activity{
     initOrientation();
     hide();
 
-    if( !audio.isEmpty() ){
-      audio();
-    }
+    if( !audio.isEmpty() ){audio();}
 
-    if( !video.isEmpty() ){
-      video();
-    }
+    if( !video.isEmpty() ){video();}
 
-    if( stationImagePaths.length != 0 ){
-      images();
-    }
+    if( stationImagePaths.length != 0 ){images();}
   }
 
 
@@ -217,6 +217,8 @@ public class InformationActivity extends Activity{
     imagePagerGallery.setAdapter( mAdapter );
     seekbar.setOnSeekBarChangeListener(customSeekBarListener);
     seekbarGallery.setOnSeekBarChangeListener(customSeekBarListener);
+
+
   }
 
 
@@ -226,11 +228,9 @@ public class InformationActivity extends Activity{
       System.out.println("111");
 
       seekbar.setProgress( player.getCurrentPosition() );
-      if( video.isEmpty() )seekbarGallery.setProgress(player.getCurrentPosition());
       timeElapsed = player.getCurrentPosition();
 
       duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
-      if( video.isEmpty() )durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
       seekHandler.postDelayed( run, 100 );
     }
   }
@@ -317,11 +317,15 @@ public class InformationActivity extends Activity{
   public void audio(){
     player = ViertelTourMediaPlayer.getInstance( this );
 
+
+
     //number soll später mit id ersetzt werden, leider wurde id bis jetzt noch nicht gesetzt
     //Wenn die gleiche Station geöffnet wird, soll audio nicht neu geladen werden
     if(singlepage.INSTANCE.getId() != Integer.parseInt(number))
     { player.loadAudio( audio );
       singlepage.INSTANCE.setId(Integer.parseInt(number));}
+
+
 
     else if(player.isPlaying())
     {startaudio = true;
@@ -329,11 +333,16 @@ public class InformationActivity extends Activity{
       seekUpdationAudio();}
 
 
+
     //CustomKlasse Seekbar
     seekbar.getProgressDrawable().setColorFilter( Color.GRAY, PorterDuff.Mode.SRC );
     seekbar.setMax( player.getDuration() );
   //  seekbar.getThumb().mutate().setAlpha( 0 );//seekbar.getthumb ist pin auf der seekbar
 
+    seekbar.setProgress( player.getCurrentPosition() );
+    timeElapsed = player.getCurrentPosition();
+
+    duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
 
 
     player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){

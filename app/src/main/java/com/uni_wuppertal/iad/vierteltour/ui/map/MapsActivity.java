@@ -19,6 +19,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.PolyUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.ui.up_slider.PagerAdapter;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.Route;
@@ -106,6 +108,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private XmlParser tour;
   private int marked;         //marked für Tour ausgewählt: -1 für nicht ausgewählt, 0-xxx für ausgewählte Tour
   private RelativeLayout panel;
+  public static RelativeLayout audiobar;
+
 
   @Override
   protected void onCreate( Bundle savedInstanceState ){
@@ -118,6 +122,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     marked = -1;        //keine Tour ausgewählt
     tour = new XmlParser( this );
+
+
 
     initPager();
     initSupl();
@@ -353,6 +359,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mPager = (ViewPager) findViewById( R.id.pager );
     pageradapter = new PagerAdapter( getSupportFragmentManager(), this );
     mPager.setAdapter( pageradapter );
+    audiobar = (RelativeLayout) findViewById(R.id.audiobar);
+    audiobar.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        mPager.;
+      }});
   }
 
 
