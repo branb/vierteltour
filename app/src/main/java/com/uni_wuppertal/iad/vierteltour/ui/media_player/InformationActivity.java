@@ -82,11 +82,7 @@ public class InformationActivity extends Activity{
 
     parseData();      //übergibt Daten von MapsActivity
     getInit();        //Initialisierung
-
-
-
-
-    }
+   }
 
   @Override
   protected void onDestroy()
@@ -96,9 +92,7 @@ public class InformationActivity extends Activity{
       vid.stopPlayback();
       vid=null;
       startvideo=false;
-    }
-
-  }
+    }}
 
   @Override
   public void onBackPressed(){
@@ -107,7 +101,7 @@ public class InformationActivity extends Activity{
       super.onBackPressed();
       overridePendingTransition( R.anim.map_in, R.anim.fade_out );
       singlepage.INSTANCE.reset();
-      }
+    }
 
      else if( page == 1 ){
       vf.setDisplayedChild(0);
@@ -224,8 +218,6 @@ public class InformationActivity extends Activity{
   }
 
 
-
-
   //Audioupdater
   public void seekUpdationAudio(){
     if( player != null && startaudio ){
@@ -275,54 +267,6 @@ public class InformationActivity extends Activity{
   }
 
 
-//EIGENE KLASSE Orientation, zusätzlich muss geprüft werden, ob bildschirm gedreht werden darf und empfindlichkeit anpassung
-  public void initOrientation(){//Landscape/Portrait change
-    orientation = new OrientationEventListener( this, SensorManager.SENSOR_DELAY_NORMAL ){
-      @Override
-      public void onOrientationChanged( int arg0 ){
-        arg0= arg0%360;
-
-//TODO: Check orientation with variables and permission of orientation
-        if( arg0>=87 && arg0<=93  && page==1 ){
-
-          singlepage.INSTANCE.setPage(1);
-          if( !video.isEmpty() )
-          {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
-            singlepage.INSTANCE.setPlaying(vid.isPlaying());}
-          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-          }
-
-
-        else if(arg0==180){}
-
-        else if(arg0>=267  && arg0<=273 && page==1){
-
-            singlepage.INSTANCE.setPage(1);
-          if( !video.isEmpty() )
-          {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
-            singlepage.INSTANCE.setPlaying(vid.isPlaying());}
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-          }
-
-          else if((arg0>=357 || arg0<=3) && getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-          {
-
-              singlepage.INSTANCE.setPage(1);
-              if( !video.isEmpty())
-              {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
-              singlepage.INSTANCE.setPlaying(vid.isPlaying());}
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            }
-        }
-    };
-    if( orientation.canDetectOrientation() ){
-      orientation.enable();
-    }
-  }
-
-
-
-
   public void gallerymode(){
     gallerytitle.setText( station );
     if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
@@ -334,16 +278,7 @@ public class InformationActivity extends Activity{
     x_button.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-        vid.pause();
-        startvideo = false;
-        page = 0;
-        singlepage.INSTANCE.setPage(0);
-        if( !video.isEmpty() )
-        {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
-          singlepage.INSTANCE.setPlaying(vid.isPlaying());}
-        if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-        {setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
-        else{vf.setDisplayedChild(0);}
+        onBackPressed();
       }
     });
 
@@ -378,7 +313,6 @@ public class InformationActivity extends Activity{
   }
 
   //TODO: Check audio, video and images method
-  //TODO: Remove Audio Seekbar in Gallery mode
   public void audio(){
     player = ViertelTourMediaPlayer.getInstance( this );
 
@@ -436,7 +370,7 @@ public class InformationActivity extends Activity{
     vid.setVideoPath( OurStorage.getInstance( this).getPathToFile( video ) );
     vid.requestFocus();
     vid.setVisibility(View.VISIBLE);
-    showGalleryBar();
+    showGalleryVideoBar();
     if(singlepage.INSTANCE.getPlaying() && singlepage.INSTANCE.getTime()>0)
     {play_buttonGallery.setImageResource(R.drawable.stop_hell);
 
@@ -474,8 +408,9 @@ public class InformationActivity extends Activity{
           play_buttonGallery.setImageResource( R.drawable.play_hell );
 
         }
-        else if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE)
-        {mediaplayerbars();}
+        else if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE && vid != null)
+        {mediaplayerbars();
+           }
         else {
           startvideo = true;
           vid.start();
@@ -508,7 +443,7 @@ public class InformationActivity extends Activity{
                 page=1;
                 startvideo=true;
                 vid.seekTo((int) singlepage.INSTANCE.getTime());
-               play_buttonGallery.setImageResource(R.drawable.stop_hell);
+                play_buttonGallery.setImageResource(R.drawable.stop_hell);
                 vid.start();
 
                 seekbarGallery.setProgress((int) singlepage.INSTANCE.getTime());
@@ -518,38 +453,18 @@ public class InformationActivity extends Activity{
   }
 
   public void images(){
-    imagePager.setCurrentItem( 0 );
-   //
     if( stationImagePaths.length > 1 ){
       isimages=0;
-        imagePager.setOnPageChangeListener( new ViewPager.OnPageChangeListener(){
-        @Override
-        public void onPageScrolled( int position, float positionOffset, int positionOffsetPixels ){
-
-        }
-
-        @Override
-        public void onPageSelected( int position ){
-          isimages=position;
-          imagePagerGallery.setCurrentItem(position);
-
-          for( int i = 0; i < dotsCount; i++ ){
-            dots[i].setImageDrawable( getResources().getDrawable( R.drawable.nonselecteditem ) );
-          }
-
-          dots[position].setImageDrawable( getResources().getDrawable( R.drawable.selecteditem ) );
-        }
-
-        @Override
-        public void onPageScrollStateChanged( int state ){
-        }
-      });
+        imagePager.setOnPageChangeListener(pagechangelisten);
+        imagePagerGallery.setOnPageChangeListener(pagechangelisten);
       setUiPageViewController();
     }
   }
 
+
+
   public void mediaplayerbars()
-  {if (relGalleryBot.getVisibility() != View.GONE) {
+  {if (relGalleryBot.getVisibility() == View.VISIBLE) {
     Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_down);
     Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_up);
     relGalleryBot.startAnimation(slide1);
@@ -558,20 +473,23 @@ public class InformationActivity extends Activity{
     relGalleryTop.setVisibility(View.GONE);
 
   }
-  else if(relGalleryBot.getVisibility() != View.VISIBLE){
+  else if(relGalleryBot.getVisibility() == View.GONE){
     Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_up);
     Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_down);
     relGalleryBot.startAnimation(slide1);
     relGalleryTop.startAnimation(slide2);
     relGalleryBot.setVisibility(View.VISIBLE);
     relGalleryTop.setVisibility(View.VISIBLE);
-
   }}
 
-  public void showGalleryBar()
+  public void showGalleryVideoBar()
   {seekbarGallery.setVisibility(View.VISIBLE);
     play_buttonGallery.setVisibility(View.VISIBLE);
     durationGallery.setVisibility(View.VISIBLE);}
+
+
+
+
 
 
 
@@ -610,5 +528,77 @@ public class InformationActivity extends Activity{
     }
   };
   //Custom Class Seekbar stop
+
+  //EIGENE KLASSE Orientation, zusätzlich muss geprüft werden, ob bildschirm gedreht werden darf und empfindlichkeit anpassung
+  public void initOrientation(){//Landscape/Portrait change
+    orientation = new OrientationEventListener( this, SensorManager.SENSOR_DELAY_NORMAL ){
+      @Override
+      public void onOrientationChanged( int arg0 ){
+        arg0= arg0%360;
+
+//TODO: Check orientation with variables and permission of orientation  //AFTER VIDEOPLAYER CHANGE
+        if( arg0>=87 && arg0<=93  && page==1 ){
+
+          singlepage.INSTANCE.setPage(1);
+          if( !video.isEmpty() )
+          {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
+            singlepage.INSTANCE.setPlaying(vid.isPlaying());}
+          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+        }
+
+
+        else if(arg0==180){}
+
+        else if(arg0>=267  && arg0<=273 && page==1){
+
+          singlepage.INSTANCE.setPage(1);
+          if( !video.isEmpty() )
+          {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
+            singlepage.INSTANCE.setPlaying(vid.isPlaying());}
+          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
+        else if((arg0>=357 || arg0<=3) && getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
+        {
+
+          singlepage.INSTANCE.setPage(1);
+          if( !video.isEmpty())
+          {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
+            singlepage.INSTANCE.setPlaying(vid.isPlaying());}
+          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+      }
+    };
+    if( orientation.canDetectOrientation() ){
+      orientation.enable();
+    }
+  }
+//Orientation end
+
+  //ViewPager.OnPageChangeListener
+  ViewPager.OnPageChangeListener pagechangelisten = new ViewPager.OnPageChangeListener(){
+    @Override
+    public void onPageScrolled( int position, float positionOffset, int positionOffsetPixels ){
+
+    }
+
+    @Override
+    public void onPageSelected( int position ){
+      isimages=position;
+      imagePagerGallery.setCurrentItem(position);
+      imagePager.setCurrentItem(position);
+
+      for( int i = 0; i < dotsCount; i++ ){
+        dots[i].setImageDrawable( getResources().getDrawable( R.drawable.nonselecteditem ) );
+      }
+
+      dots[position].setImageDrawable( getResources().getDrawable( R.drawable.selecteditem ) );
+    }
+
+    @Override
+    public void onPageScrollStateChanged( int state ){
+    }
+  };
+  //Viewpager.onPageChangeListener end
 
 }

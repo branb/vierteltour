@@ -209,7 +209,8 @@
         android:layout_alignParentTop="true"
         android:background="#70000000"
         android:animateLayoutChanges="true"
-        android:id="@+id/relativeTop">
+        android:id="@+id/relativeTop"
+        android:visibility="gone">
 
         <ImageButton
           android:layout_width="wrap_content"
@@ -240,7 +241,8 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="#70000000"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        android:visibility="gone">
 
         <SeekBar
           android:id="@+id/seek_barGallery"

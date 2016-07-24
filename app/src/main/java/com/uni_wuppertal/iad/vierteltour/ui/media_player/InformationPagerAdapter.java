@@ -60,8 +60,6 @@ public class InformationPagerAdapter extends PagerAdapter{
       {infoAct.vf.setDisplayedChild(1);
         infoAct.page=1;
 
-       if(mContext.getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE)
-      {infoAct.mediaplayerbars();}
       }
     });
 
