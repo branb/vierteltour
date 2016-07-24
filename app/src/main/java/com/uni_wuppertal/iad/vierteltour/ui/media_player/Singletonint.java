@@ -21,11 +21,11 @@ public enum Singletonint {
       id=-1;
     }
 
-    public boolean getPlayingAudio() {return playingAudio;}
-    public void setPlayingAudio(boolean p) {this.playingAudio = p;}
+  //  public boolean getPlayingAudio() {return playingAudio;}
+  //  public void setPlayingAudio(boolean p) {this.playingAudio = p;}
 
-    public double getTimeAudio() {return timeAudio;}
-    public void setTimeAudio(double time) {this.timeAudio = time;}
+  //  public double getTimeAudio() {return timeAudio;}
+  //  public void setTimeAudio(double time) {this.timeAudio = time;}
 
     public boolean getPlaying() {return playing;}
     public void setPlaying(boolean p)  {this.playing = p;}

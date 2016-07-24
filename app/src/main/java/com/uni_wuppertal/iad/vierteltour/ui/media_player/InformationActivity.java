@@ -160,9 +160,6 @@ public class InformationActivity extends Activity{
       page = 0;
       if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
       { singlepage.INSTANCE.setPage(0);
-        if( !audio.isEmpty() )
-        {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
-          singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
         if( !video.isEmpty() )
         {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
           singlepage.INSTANCE.setPlaying(vid.isPlaying());}
@@ -333,9 +330,6 @@ public class InformationActivity extends Activity{
         if( arg0>=87 && arg0<=93  && page==1 ){
 
           singlepage.INSTANCE.setPage(1);
-          if( !audio.isEmpty() )
-          {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
-           singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
           if( !video.isEmpty() )
           {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
             singlepage.INSTANCE.setPlaying(vid.isPlaying());}
@@ -348,9 +342,6 @@ public class InformationActivity extends Activity{
         else if(arg0>=267  && arg0<=273 && page==1){
 
             singlepage.INSTANCE.setPage(1);
-          if( !audio.isEmpty() )
-          {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
-            singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
           if( !video.isEmpty() )
           {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
             singlepage.INSTANCE.setPlaying(vid.isPlaying());}
@@ -361,9 +352,6 @@ public class InformationActivity extends Activity{
           {
 
               singlepage.INSTANCE.setPage(1);
-            if( !audio.isEmpty() )
-            {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
-              singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
               if( !video.isEmpty())
               {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
               singlepage.INSTANCE.setPlaying(vid.isPlaying());}
@@ -394,9 +382,6 @@ public class InformationActivity extends Activity{
         startvideo = false;
         page = 0;
         singlepage.INSTANCE.setPage(0);
-        if( !audio.isEmpty() )
-        {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
-          singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
         if( !video.isEmpty() )
         {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
           singlepage.INSTANCE.setPlaying(vid.isPlaying());}
@@ -500,27 +485,10 @@ public class InformationActivity extends Activity{
         startaudio = false;
         seekbar.setProgress(0);
         duration.setText("0:00");
-
-        //player.pause();
         play_button.setImageResource(R.drawable.play_hell);
       }
 
     });
-
-
-    if(singlepage.INSTANCE.getPlayingAudio() && singlepage.INSTANCE.getTimeAudio()>0)
-    {
-     play_button.setImageResource(R.drawable.stop_hell);
-
-      player.seekTo((int) singlepage.INSTANCE.getTimeAudio());
-      player.start();
-      startaudio=true;
-      seekUpdationAudio();}
-    else if(singlepage.INSTANCE.getTimeAudio()>0)
-    {
-      play_button.setImageResource(R.drawable.play_hell);
-      player.seekTo((int) singlepage.INSTANCE.getTimeAudio());}
-
   }
 
 
