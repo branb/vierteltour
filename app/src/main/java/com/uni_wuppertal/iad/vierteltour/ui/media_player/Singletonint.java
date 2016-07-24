@@ -6,6 +6,8 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 public enum Singletonint {
     INSTANCE;
 
+  //TODO: überprüfe ob variablen noch notwendig
+
     private int page;
     private double time,timeAudio;
     private boolean playing,playingAudio;

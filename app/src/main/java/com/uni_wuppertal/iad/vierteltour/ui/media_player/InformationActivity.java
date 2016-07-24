@@ -147,6 +147,7 @@ public class InformationActivity extends Activity{
   @Override
   public void onBackPressed(){
     if( page == 0 ){
+      startaudio=false;
       super.onBackPressed();
       overridePendingTransition( R.anim.map_in, R.anim.fade_out );
       singlepage.INSTANCE.reset();
@@ -205,6 +206,8 @@ public class InformationActivity extends Activity{
 
     // Currently in the format "img1.jpg,img2.jpg,..."
     // TODO: Convert XML-entry to have one <image>-tag per image entry
+    // TODO: Set Video and Image Resources in <Resources></Resources> in right order
+
     String imagesFromXML = (String) b.get( "img" );
 
     if( !imagesFromXML.isEmpty() ){
@@ -326,7 +329,7 @@ public class InformationActivity extends Activity{
       public void onOrientationChanged( int arg0 ){
         arg0= arg0%360;
 
-
+//TODO: Check orientation with variables and permission of orientation
         if( arg0>=87 && arg0<=93  && page==1 ){
 
           singlepage.INSTANCE.setPage(1);
@@ -433,7 +436,8 @@ public class InformationActivity extends Activity{
 
   }
 
-
+  //TODO: Check audio, video and images method
+  //TODO: Remove Audio Seekbar in Gallery mode
   public void audio(){
     play_button.setOnClickListener( new View.OnClickListener(){
       @Override
