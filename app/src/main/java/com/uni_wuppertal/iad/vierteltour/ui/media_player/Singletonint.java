@@ -10,22 +10,14 @@ public enum Singletonint {
 
     private int page;
     private int id;
-    private double time,timeAudio;
-    private boolean playing,playingAudio;
+    private double time;
+    private boolean playing;
     private Singletonint(){
       page = 0;
       time = 0;
       playing = false;
-      timeAudio = 0;
-      playingAudio = false;
       id=-1;
     }
-
-  //  public boolean getPlayingAudio() {return playingAudio;}
-  //  public void setPlayingAudio(boolean p) {this.playingAudio = p;}
-
-  //  public double getTimeAudio() {return timeAudio;}
-  //  public void setTimeAudio(double time) {this.timeAudio = time;}
 
     public boolean getPlaying() {return playing;}
     public void setPlaying(boolean p)  {this.playing = p;}
@@ -50,9 +42,7 @@ public enum Singletonint {
     public void reset()
     {page = 0;
      time = 0;
-     playing = false;
-     timeAudio = 0;
-     playingAudio = false;}
+     playing = false;}
 
 
 }
