@@ -43,7 +43,7 @@ public class InformationActivity extends Activity{
   int isimages=-1;
   boolean startaudio = true, startvideo = true;  //Variable für Status des Play-Buttons
   Handler seekHandler = new Handler();
-  VideoView vid;                          //Videoplayer
+  VideoView vid, videoplayer;                          //Videoplayer
   TextView duration, gallerytitle, gallerytitletop, durationGallery;  //diverse Textfelder
   TextView title, routenname, prof, info2, description;
   double timeElapsed = 0;
@@ -108,6 +108,7 @@ public class InformationActivity extends Activity{
       startvideo = false;
       vid.pause();
       page = 0;
+      videoplayer.setVisibility(View.VISIBLE);
       if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
       { singlepage.INSTANCE.setPage(0);
         if( !video.isEmpty() )
@@ -198,6 +199,7 @@ public class InformationActivity extends Activity{
     duration = (TextView) findViewById( R.id.duration );
     duration.setTextColor( Color.GRAY );
     vid = (VideoView) findViewById( R.id.videoViewGallery );
+    videoplayer = (VideoView) findViewById(R.id.videoView);
     image = (ImageView)findViewById(R.id.imageScreen);
     gallerytitle = (TextView) findViewById( R.id.titleGallery );
     gallerytitletop = (TextView) findViewById(R.id.titleGalleryTop);
@@ -430,17 +432,22 @@ public class InformationActivity extends Activity{
         });
 
 
-    //TODO: Change Image dynamically to Video like 1. Secound of Video + PlayButtonImage
+    //TODO: Change Image dynamically to Video //AFTER VIDEO CHANGED AND XML UPDATED + Some bugs flipping between gallery and station
+        videoplayer.setVisibility(View.VISIBLE);
+        videoplayer.setVideoPath( OurStorage.getInstance( this).getPathToFile( video ) );
+        videoplayer.seekTo(100);
         image.setVisibility(View.VISIBLE);
-        image.setImageResource(R.drawable.i_04_01_01);
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        image.setImageResource(R.drawable.play_hell);
+        videoplayer.setOnTouchListener(new View.OnTouchListener() {
+          @Override
+          public boolean onTouch(View view, MotionEvent motionEvent) {
+
                 vf.setDisplayedChild(1);
                 play_button.setImageResource(R.drawable.play_hell);
                 startaudio=false;
                 if(player.isPlaying())
                 player.pause();
+                videoplayer.setVisibility(View.GONE);
                 page=1;
                 startvideo=true;
                 vid.seekTo((int) singlepage.INSTANCE.getTime());
@@ -449,6 +456,8 @@ public class InformationActivity extends Activity{
 
                 seekbarGallery.setProgress((int) singlepage.INSTANCE.getTime());
                 seekUpdationVideo();
+
+            return false;
             }
         });
   }
