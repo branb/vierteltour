@@ -46,10 +46,6 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
    */
   public boolean loadAudio( String path ){
 
-
-
-    // TODO: Vergleiche aktuelle Datei mit neuem path
-
     if( isPlaying() ){
       stop();
     }

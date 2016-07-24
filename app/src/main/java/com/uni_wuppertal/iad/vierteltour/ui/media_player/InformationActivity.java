@@ -465,6 +465,7 @@ public class InformationActivity extends Activity{
 
     player = ViertelTourMediaPlayer.getInstance( this );
 
+    //number soll später mit id ersetzt werden, leider wurde id bis jetzt noch nicht gesetzt
     if(singlepage.INSTANCE.getId() != Integer.parseInt(number))
     { player.loadAudio( audio );
       singlepage.INSTANCE.setId(Integer.parseInt(number));}

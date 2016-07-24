@@ -6,10 +6,10 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 public enum Singletonint {
     INSTANCE;
 
-  //TODO: überprüfe ob variablen noch notwendig
+  //Wenn Videoplayer wie Audio implementiert wird, kann time und playing gelöscht werden
 
-    private int page;
-    private int id;
+    private int page;   //page=0 Stationenbeschreibung, page=1 Gallerymode
+    private int id;     //Zur Zeit nur nummer der Station, soll später zu ID werden
     private double time;
     private boolean playing;
     private Singletonint(){
