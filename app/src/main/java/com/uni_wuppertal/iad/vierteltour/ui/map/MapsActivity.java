@@ -273,6 +273,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
   //Durch Auswahl einer Tour wird zur Stationenübersicht gewechselt
+  //TODO: Adding little Bar at Bottom for tmp Playing Audio
   public void swapToViewPager( View v ){
 
     if( pageradapter.fragments.size() != 0 ){

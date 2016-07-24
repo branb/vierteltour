@@ -312,7 +312,6 @@ public class InformationActivity extends Activity{
 
   }
 
-  //TODO: Check audio, video and images method
   public void audio(){
     player = ViertelTourMediaPlayer.getInstance( this );
 
@@ -364,7 +363,7 @@ public class InformationActivity extends Activity{
   }
 
 
-
+//TODO: Videoplayer auslagern und abändern
   public void video(){
 
     vid.setVideoPath( OurStorage.getInstance( this).getPathToFile( video ) );
@@ -430,6 +429,8 @@ public class InformationActivity extends Activity{
             }
         });
 
+
+    //TODO: Change Image dynamically to Video like 1. Secound of Video + PlayButtonImage
         image.setVisibility(View.VISIBLE);
         image.setImageResource(R.drawable.i_04_01_01);
         image.setOnClickListener(new View.OnClickListener() {
