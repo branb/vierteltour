@@ -9,6 +9,7 @@ public enum Singletonint {
   //TODO: überprüfe ob variablen noch notwendig
 
     private int page;
+    private int id;
     private double time,timeAudio;
     private boolean playing,playingAudio;
     private Singletonint(){
@@ -17,6 +18,7 @@ public enum Singletonint {
       playing = false;
       timeAudio = 0;
       playingAudio = false;
+      id=-1;
     }
 
     public boolean getPlayingAudio() {return playingAudio;}
@@ -37,6 +39,13 @@ public enum Singletonint {
     public void setPage(int page){
       this.page = page;
     }
+
+    public int getId(){
+    return id;
+  }
+    public void setId(int id){
+    this.id = id;
+  }
 
     public void reset()
     {page = 0;

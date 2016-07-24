@@ -448,13 +448,11 @@ public class InformationActivity extends Activity{
               startaudio = true;
               player.start();
               play_button.setImageResource( R.drawable.stop_hell );
-             // play_buttonGallery.setImageResource( R.drawable.stop_hell );
               seekUpdationAudio();
             } else {
               startaudio=false;
               player.pause();
               play_button.setImageResource( R.drawable.play_hell );
-            //  play_buttonGallery.setImageResource( R.drawable.play_hell );
             }
             break;
         }
@@ -470,48 +468,48 @@ public class InformationActivity extends Activity{
               startaudio = true;
               player.start();
               play_button.setImageResource( R.drawable.stop_hell );
-              //play_buttonGallery.setImageResource( R.drawable.stop_hell );
               seekUpdationAudio();
             } else {
               startaudio=false;
               player.pause();
               play_button.setImageResource( R.drawable.play_hell );
-             // play_buttonGallery.setImageResource( R.drawable.play_hell );
             }
             break;
         }}});
 
+
     player = ViertelTourMediaPlayer.getInstance( this );
-    player.loadAudio( audio );
+
+    if(singlepage.INSTANCE.getId() != Integer.parseInt(number))
+    { player.loadAudio( audio );
+      singlepage.INSTANCE.setId(Integer.parseInt(number));}
+
+    else if(player.isPlaying())
+    {startaudio = true;
+      play_button.setImageResource( R.drawable.stop_hell );
+      seekUpdationAudio();}
+
 
     //CustomKlasse
     seekbar.getProgressDrawable().setColorFilter( Color.GRAY, PorterDuff.Mode.SRC );
-    //seekbarGallery.getProgressDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC);
     seekbar.setMax( player.getDuration() );
-    //seekbarGallery.setMax(player.getDuration());
-    //if(player.isPlaying()){play_buttonGallery.setImageResource(R.drawable.stop_hell);}
-   // else {play_buttonGallery.setImageResource(R.drawable.play_hell);}
   //  seekbar.getThumb().mutate().setAlpha( 0 );//seekbar.getthumb ist pin auf der seekbar
     player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){
       @Override
       public void onCompletion( MediaPlayer player ){
         startaudio = false;
         seekbar.setProgress(0);
-       // seekbarGallery.setProgress(0);
         duration.setText("0:00");
-        //durationGallery.setText("0:00");
 
         //player.pause();
         play_button.setImageResource(R.drawable.play_hell);
-        //play_buttonGallery.setImageResource(R.drawable.play_hell);
       }
 
     });
 
-   // seekbarGallery.setOnSeekBarChangeListener( customSeekBarListener );
 
     if(singlepage.INSTANCE.getPlayingAudio() && singlepage.INSTANCE.getTimeAudio()>0)
-    {//play_buttonGallery.setImageResource(R.drawable.stop_hell);
+    {
      play_button.setImageResource(R.drawable.stop_hell);
 
       player.seekTo((int) singlepage.INSTANCE.getTimeAudio());
@@ -519,7 +517,7 @@ public class InformationActivity extends Activity{
       startaudio=true;
       seekUpdationAudio();}
     else if(singlepage.INSTANCE.getTimeAudio()>0)
-    {//play_buttonGallery.setImageResource(R.drawable.play_hell);
+    {
       play_button.setImageResource(R.drawable.play_hell);
       player.seekTo((int) singlepage.INSTANCE.getTimeAudio());}
 
@@ -532,6 +530,7 @@ public class InformationActivity extends Activity{
     vid.setVideoPath( OurStorage.getInstance( this).getPathToFile( video ) );
     vid.requestFocus();
     vid.setVisibility(View.VISIBLE);
+    showGalleryBar();
     if(singlepage.INSTANCE.getPlaying() && singlepage.INSTANCE.getTime()>0)
     {play_buttonGallery.setImageResource(R.drawable.stop_hell);
 
@@ -662,5 +661,10 @@ public class InformationActivity extends Activity{
     relGalleryTop.setVisibility(View.VISIBLE);
 
   }}
+
+  public void showGalleryBar()
+  {seekbarGallery.setVisibility(View.VISIBLE);
+    play_buttonGallery.setVisibility(View.VISIBLE);
+    durationGallery.setVisibility(View.VISIBLE);}
 
 }
