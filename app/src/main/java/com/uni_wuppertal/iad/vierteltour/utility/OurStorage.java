@@ -137,4 +137,17 @@ public class OurStorage extends ContextWrapper{
   }
 
 
+
+  /**
+   * Return the external storage location on the device
+   *
+   * @return String our external storage path, absolute
+   */
+  public String getStoragePath(){
+    return externalFilesDir.getAbsolutePath();
+
+  }
+
+
+
 }
