@@ -33,4 +33,5 @@ dependencies {
     }
     compile 'com.sothree.slidinguppanel:library:3.2.0'
     compile 'com.android.support:design:22.2.1'
+    compile 'com.google.code.gson:gson:2.4'
 }
