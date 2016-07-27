@@ -49,6 +49,7 @@ import com.uni_wuppertal.iad.vierteltour.ui.up_slider.TourenAdapter;
 import com.uni_wuppertal.iad.vierteltour.XmlParser;
 import com.uni_wuppertal.iad.vierteltour.ui.up_slider.DrawerAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.up_slider.DrawerItem;
+import com.uni_wuppertal.iad.vierteltour.updater.Updater;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +111,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   @Override
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
+
+    // Check for updates
+    Updater.getInstance( this ).anyUpdatesOnTourdata();
+
     setContentView( R.layout.activity_main );
     // Obtain the SupportMapFragment and get notified when the map is ready to be used.
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
