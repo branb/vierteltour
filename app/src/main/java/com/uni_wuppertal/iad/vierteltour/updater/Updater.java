@@ -11,8 +11,12 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -88,6 +92,29 @@ public class Updater extends ContextWrapper{
     String stringUrl = "http://10.0.2.2:8888/";
 
     new DownloadWebpageTask().execute(stringUrl);
+
+    return true;
+  }
+
+
+
+  /**
+   *
+   * @return true if the download was successful, false else
+   */
+  public boolean downloadFile(){
+    // If the phone has no connection to the internet, tell this to the user.
+    if( !isNetworkAvailable() ){
+      Toast.makeText( getApplicationContext(), "Can't download file: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
+      return false;
+    }
+
+    Log.d( DEBUG_TAG, "Starting file download..." );
+
+    // TODO: Move the URL to the resources
+    String stringUrl = "http://10.0.2.2:8888/bleep.zip";
+
+    new DownloadFileTask().execute(stringUrl);
 
     return true;
   }
@@ -184,6 +211,99 @@ public class Updater extends ContextWrapper{
     }
 
   }
+
+
+
+  // Uses AsyncTask to create a task away from the main UI thread. This task takes a
+  // URL string and uses it to create an HttpUrlConnection. Once the connection
+  // has been established, the AsyncTask downloads the contents of the webpage as
+  // an InputStream. Finally, the InputStream is converted into a string, which is
+  // displayed in the UI by the AsyncTask's onPostExecute method.
+  private class DownloadFileTask extends AsyncTask<String, Void, String>{
+    @Override
+    protected String doInBackground( String... urls ) {
+      // urls comes from the execute() call: urls[0] is the url.
+      try {
+        return downloadFile( urls[0] );
+      } catch (IOException e) {
+        return "Unable to retrieve file. URL may be invalid.";
+      }
+    }
+
+    // onPostExecute displays the results of the AsyncTask.
+    @Override
+    protected void onPostExecute( String result ) {
+      Log.d( DEBUG_TAG, "Let's see if we have downloaded the file!"  );
+      Log.d( DEBUG_TAG, result );
+
+    }
+
+
+    // Given a URL, establishes an HttpUrlConnection and retrieves
+    // the web page content as a InputStream, which it returns as
+    // a string.
+    private String downloadFile( String myurl ) throws IOException {
+      InputStream is = null;
+
+      try {
+        URL url = new URL( myurl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setReadTimeout( 10000 );
+        conn.setConnectTimeout( 15000 );
+        conn.setRequestMethod( "GET" );
+        conn.setDoInput( true );
+
+        // Starts the query
+        conn.connect();
+
+        int response = conn.getResponseCode();
+        Log.d( DEBUG_TAG, "Webserver responded with code: " + response );
+
+        if( response == 200 ) {
+          is = conn.getInputStream();
+
+          // Convert the InputStream into a JSON-string
+          return saveFile( is, conn.getContentLength() );
+        } else {
+          Log.e( DEBUG_TAG, "Unable to download JSON data (" +  response + ")" );
+          return Integer.toString( response );
+        }
+
+        // Makes sure that the InputStream is closed after the app is finished using it.
+      } finally {
+        if (is != null) {
+          is.close();
+        }
+      }
+    }
+
+
+    // Reads a binary InputStream and saves it to a file, returning the file path
+    public String saveFile( InputStream stream, int length ) throws IOException, UnsupportedEncodingException {
+      String storagePath = OurStorage.getInstance( Updater.this ).getStoragePath();
+      String outfileName = storagePath + "/bleep.zip";
+
+      BufferedInputStream response = new BufferedInputStream( stream );
+
+      FileOutputStream outfile = new FileOutputStream( outfileName );
+      BufferedOutputStream os = new BufferedOutputStream( outfile );
+
+      byte b[] = new byte[1024];
+      int n;
+
+      while( (n = response.read(b, 0, 1024)) >= 0 ){
+        os.write( b, 0, n );
+      }
+
+      // Clean up
+      response.close();
+      os.close();
+
+      return outfileName;
+    }
+
+  }
+
 
 
 }

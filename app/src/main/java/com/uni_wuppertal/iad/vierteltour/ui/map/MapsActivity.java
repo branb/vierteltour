@@ -113,7 +113,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     super.onCreate( savedInstanceState );
 
     // Check for updates
-    Updater.getInstance( this ).anyUpdatesOnTourdata();
+    if( Updater.getInstance( this ).anyUpdatesOnTourdata() ){
+      Updater.getInstance( this ).downloadFile();
+    }
 
     setContentView( R.layout.activity_main );
     // Obtain the SupportMapFragment and get notified when the map is ready to be used.
