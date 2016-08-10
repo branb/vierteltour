@@ -2,7 +2,10 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.VideoView;
 
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
@@ -26,8 +29,7 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
 
 
   private Context context;
-
-
+  private VideoView videoview;
   /** The main constructor.
    *
    */
@@ -70,5 +72,52 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
     }
 
   }
+
+  public boolean loadVideo( String path , VideoView video){
+    String inputStream = OurStorage.getInstance( this.context ).getPathToFile( path );
+
+    if( inputStream == null ){
+      return false;
+    }
+      video.setVideoPath( inputStream );
+      resetVideoFrame(video);
+      return true;
+  }
+
+
+
+  public boolean loadGalleryVideo( String path){
+    if( isPlaying() ){
+      pause();
+    }
+
+    if(videoview.isPlaying())
+    {videoview.stopPlayback();}
+
+    String inputStream = OurStorage.getInstance( this.context ).getPathToFile( path );
+
+    if( inputStream == null ){
+      return false;
+    }
+
+    videoview.setVideoPath( inputStream );
+    return true;
+  }
+
+
+
+  public void resetVideoFrame(VideoView video)
+  {
+    video.seekTo(100);
+  video.pause();}
+
+
+  public VideoView getVideoview()
+  {return videoview;}
+
+
+  public void setVideoview(VideoView video)
+  {videoview=video;}
+
 }
 

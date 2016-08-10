@@ -363,7 +363,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     audiobar.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        mPager.;
+        //mPager.;
       }});
   }
 
