@@ -30,6 +30,7 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
 
   private Context context;
   private VideoView videoview;
+  Singletonint singlepage;
   /** The main constructor.
    *
    */
@@ -50,6 +51,7 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
 
     if( isPlaying() ){
       stop();
+      System.out.println("STOP");
     }
     reset();
 
@@ -87,12 +89,7 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
 
 
   public boolean loadGalleryVideo( String path){
-    if( isPlaying() ){
-      pause();
-    }
 
-    if(videoview.isPlaying())
-    {videoview.stopPlayback();}
 
     String inputStream = OurStorage.getInstance( this.context ).getPathToFile( path );
 
@@ -118,6 +115,11 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
 
   public void setVideoview(VideoView video)
   {videoview=video;}
+
+  public void pos()
+  {System.out.println(videoview.getCurrentPosition());
+    System.out.println(singlepage.INSTANCE.getTime());
+    System.out.println(singlepage.INSTANCE.getPlaying());}
 
 }
 

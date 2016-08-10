@@ -80,7 +80,6 @@ public class InformationActivity extends Activity{
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
     setContentView( R.layout.information );
-
     parseData();      //übergibt Daten von MapsActivity
     getInit();        //Initialisierung
    }
@@ -88,6 +87,7 @@ public class InformationActivity extends Activity{
   @Override
   protected void onDestroy()
   {super.onDestroy();
+    //player.pos();
    orientation.disable();
     if( !video.isEmpty() ){
       singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
@@ -110,13 +110,26 @@ public class InformationActivity extends Activity{
     }
 
      else if( page == 1 ){
+
+      if( !video.isEmpty() ){
+        singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
+        singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());
+      }
+
       vf.setDisplayedChild(0);
       startvideo = false;
+
       player.getVideoview().pause();
-      player.getVideoview().setVisibility(View.INVISIBLE);
+     // player.pos();
+      videoplayerGallery.setVisibility(View.INVISIBLE);   //SOBALD VIDEOVIEW INVISIBLE WIRD WIRD DIE ZEIT AUF 0 GESETZT??
+     // player.pos();
+    //  videoplayerGallery.setVisibility(View.VISIBLE);
+     // player.pos();
       player.resetVideoFrame(videoplayer);
       page = 0;
       videoplayer.setVisibility(View.VISIBLE);
+
+
       if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
       { singlepage.INSTANCE.setPage(0);
 
@@ -225,7 +238,7 @@ public class InformationActivity extends Activity{
   //Audioupdater
   public void seekUpdationAudio(){
     if( player != null && startaudio ){
-      System.out.println("111");
+      //System.out.println("111");
 
       seekbar.setProgress( player.getCurrentPosition() );
       timeElapsed = player.getCurrentPosition();
@@ -237,11 +250,11 @@ public class InformationActivity extends Activity{
 
   //Videoupdater
   public void seekUpdationVideo(){
-    if( videoplayerGallery != null && startvideo ){
-      System.out.println("222");
-      seekbarGallery.setMax( videoplayerGallery.getDuration() );
-      seekbarGallery.setProgress( videoplayerGallery.getCurrentPosition() );
-      timeElapsed = videoplayerGallery.getCurrentPosition();
+    if( player.getVideoview() != null && startvideo ){
+      //System.out.println("222");
+      seekbarGallery.setMax( player.getVideoview().getDuration() );
+      seekbarGallery.setProgress( player.getVideoview().getCurrentPosition() );
+      timeElapsed = player.getVideoview().getCurrentPosition();
 
       durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
 
@@ -259,7 +272,7 @@ public class InformationActivity extends Activity{
     }
 
     if( video.isEmpty() ){
-      videoplayerGallery.setVisibility( View.INVISIBLE );
+      player.getVideoview().setVisibility( View.INVISIBLE );
     }
 
     if( stationImagePaths.length == 0 ){
@@ -388,16 +401,16 @@ public class InformationActivity extends Activity{
 
     showGalleryVideoBar();
 
-   // if(singlepage.INSTANCE.getPlaying() && singlepage.INSTANCE.getTime()>0)
-   // {play_buttonGallery.setImageResource(R.drawable.stop_hell);
- //     videoplayerGallery.seekTo((int) singlepage.INSTANCE.getTime());
- //     player.getVideoview().start();
-//      startvideo=true;
- //   seekUpdationVideo();}
-   // else if(singlepage.INSTANCE.getTime()>0)
- //   {play_buttonGallery.setImageResource(R.drawable.play_hell);
- //     videoplayerGallery.seekTo((int) singlepage.INSTANCE.getTime());
- //   startvideo=false;}
+    if(singlepage.INSTANCE.getPlaying() && singlepage.INSTANCE.getTime()>0)
+    {play_buttonGallery.setImageResource(R.drawable.stop_hell);
+      player.getVideoview().seekTo((int) singlepage.INSTANCE.getTime());
+      player.getVideoview().start();
+      startvideo=true;
+      seekUpdationVideo();}
+    else if(singlepage.INSTANCE.getTime()>0)
+      {play_buttonGallery.setImageResource(R.drawable.play_hell);
+        player.getVideoview().seekTo((int) singlepage.INSTANCE.getTime());
+     startvideo=false;}
 
     play_buttonGallery.setOnClickListener( new View.OnClickListener(){
       @Override
@@ -423,8 +436,6 @@ public class InformationActivity extends Activity{
           startvideo = false;
           player.getVideoview().pause();
           play_buttonGallery.setImageResource( R.drawable.play_hell );
-          System.out.println(player.getVideoview().getCurrentPosition());
-
         }
         else if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE && player.getVideoview() != null)
         {mediaplayerbars();
@@ -466,11 +477,11 @@ public class InformationActivity extends Activity{
                 player.getVideoview().setVisibility(View.VISIBLE);
                 page=1;
                 startvideo=true;
-              //  videoplayerGallery.seekTo((int) singlepage.INSTANCE.getTime());
+                player.getVideoview().seekTo((int) singlepage.INSTANCE.getTime());
                 play_buttonGallery.setImageResource(R.drawable.stop_hell);
                 player.getVideoview().start();
 
-              //  seekbarGallery.setProgress((int) singlepage.INSTANCE.getTime());
+                seekbarGallery.setProgress((int) singlepage.INSTANCE.getTime());
                 seekUpdationVideo();
 
             return false;
@@ -567,8 +578,8 @@ public class InformationActivity extends Activity{
 
           singlepage.INSTANCE.setPage(1);
           if( !video.isEmpty() )
-          {singlepage.INSTANCE.setTime(videoplayerGallery.getCurrentPosition());
-            singlepage.INSTANCE.setPlaying(videoplayerGallery.isPlaying());}
+          {singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
+            singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());}
           setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
         }
 
@@ -579,8 +590,8 @@ public class InformationActivity extends Activity{
 
           singlepage.INSTANCE.setPage(1);
           if( !video.isEmpty() )
-          {singlepage.INSTANCE.setTime(videoplayerGallery.getCurrentPosition());
-            singlepage.INSTANCE.setPlaying(videoplayerGallery.isPlaying());}
+          {singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
+            singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());}
           setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
 
@@ -588,9 +599,9 @@ public class InformationActivity extends Activity{
         {
 
           singlepage.INSTANCE.setPage(1);
-          if( !video.isEmpty())
-          {singlepage.INSTANCE.setTime(videoplayerGallery.getCurrentPosition());
-            singlepage.INSTANCE.setPlaying(videoplayerGallery.isPlaying());}
+         if( !video.isEmpty())
+          {singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
+            singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());}
           setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
       }
