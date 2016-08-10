@@ -238,7 +238,6 @@ public class InformationActivity extends Activity{
   //Audioupdater
   public void seekUpdationAudio(){
     if( player != null && startaudio ){
-      //System.out.println("111");
 
       seekbar.setProgress( player.getCurrentPosition() );
       timeElapsed = player.getCurrentPosition();
@@ -272,7 +271,7 @@ public class InformationActivity extends Activity{
     }
 
     if( video.isEmpty() ){
-      player.getVideoview().setVisibility( View.INVISIBLE );
+      videoplayerGallery.setVisibility( View.INVISIBLE );
     }
 
     if( stationImagePaths.length == 0 ){

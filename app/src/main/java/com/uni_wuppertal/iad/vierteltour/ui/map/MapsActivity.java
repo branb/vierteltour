@@ -109,7 +109,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private int marked;         //marked für Tour ausgewählt: -1 für nicht ausgewählt, 0-xxx für ausgewählte Tour
   private RelativeLayout panel;
   public static RelativeLayout audiobar;
+  private ViertelTourMediaPlayer player;
 
+
+  //TODO: CHANGE DYNAMICALLY VIEWPAGER WITH AUDIOBAR LAYOUT
+  //TODO: BUGGY SEEKBAR AFTER GO BACK AND FORWARD TO INFORMATION ACTIVITY
+  //TODO: BUGGY VIEWPAGER IN INFORMATIONACTIVITY WITH IMAGES
+  //TODO: ADDING VIDEOS AND IMAGES IN SAME VIEWPAGER
 
   @Override
   protected void onCreate( Bundle savedInstanceState ){
@@ -122,7 +128,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     marked = -1;        //keine Tour ausgewählt
     tour = new XmlParser( this );
-
+    player = ViertelTourMediaPlayer.getInstance( this );
 
 
     initPager();
@@ -312,6 +318,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     xbtn.setVisibility( View.GONE );
     title.setVisibility( View.GONE );
     mPager.setVisibility( View.GONE );
+    player.stop();
   }
 
   //Erstelle den Slider
