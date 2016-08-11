@@ -115,7 +115,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
   //TODO: CHANGE DYNAMICALLY VIEWPAGER WITH AUDIOBAR LAYOUT
-  //TODO: BUGGY VIEWPAGER IN INFORMATIONACTIVITY WITH IMAGES
   //TODO: ADDING VIDEOS AND IMAGES IN SAME VIEWPAGER
 
   @Override
@@ -320,7 +319,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     title.setVisibility( View.GONE );
     mPager.setVisibility( View.GONE );
     player.stop();
-    audiobar.setVisibility(View.GONE);
+    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
+    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+    audiobar.setLayoutParams(layoutParams);
     singlepage.INSTANCE.setId(0);
   }
 

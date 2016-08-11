@@ -104,9 +104,13 @@ public class InformationActivity extends Activity{
       overridePendingTransition( R.anim.map_in, R.anim.fade_out );
       singlepage.INSTANCE.reset();
       if(player.isPlaying()==true)
-      {MapsActivity.audiobar.setVisibility(View.VISIBLE);}
+      {RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        MapsActivity.audiobar.setLayoutParams(layoutParams);}
       else
-      {MapsActivity.audiobar.setVisibility(View.GONE);}
+      {RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+      MapsActivity.audiobar.setLayoutParams(layoutParams);}
     }
 
      else if( singlepage.INSTANCE.getPage() == 1 ){

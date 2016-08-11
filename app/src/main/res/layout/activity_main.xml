@@ -56,16 +56,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_above="@+id/audiobar"
-                    android:layout_alignParentBottom="true"
                     android:visibility="gone"
                     />
 
               <RelativeLayout
                 android:id="@+id/audiobar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_alignParentBottom="true"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@color/ColorPrimary">
                 <ImageView
                   android:id="@+id/upaudio"
