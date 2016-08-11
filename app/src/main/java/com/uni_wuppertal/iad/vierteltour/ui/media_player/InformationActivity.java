@@ -48,7 +48,7 @@ public class InformationActivity extends Activity{
   TextView duration, gallerytitle, gallerytitletop, durationGallery;  //diverse Textfelder
   TextView title, routenname, prof, info2, description;
   double timeElapsed = 0;
-  int page = 0, dotsCount;      //page=0 normale Stationenbeschreibung, page=1 Gallery Mode
+  int dotsCount;
   String video, audio, stationImagePaths[];
   String station, farbe, autor, tourname, laenge, desc, zeit, size, number;
   ImageView image, dots[];
@@ -97,7 +97,7 @@ public class InformationActivity extends Activity{
 
   @Override
   public void onBackPressed(){
-    if( page == 0 ){
+    if( singlepage.INSTANCE.getPage() == 0 ){
       startaudio=false;
 
       super.onBackPressed();
@@ -109,29 +109,25 @@ public class InformationActivity extends Activity{
       {MapsActivity.audiobar.setVisibility(View.GONE);}
     }
 
-     else if( page == 1 ){
+     else if( singlepage.INSTANCE.getPage() == 1 ){
 
       if( !video.isEmpty() ){
         singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
         singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());
+        player.getVideoview().pause();
+        startvideo = false;
+        videoplayerGallery.setVisibility(View.INVISIBLE);   //SOBALD VIDEOVIEW INVISIBLE WIRD WIRD DIE ZEIT AUF 0 GESETZT??
+        player.resetVideoFrame(videoplayer);
+        videoplayer.setVisibility(View.VISIBLE);
       }
 
       vf.setDisplayedChild(0);
-      startvideo = false;
+      singlepage.INSTANCE.setPage(0);
 
-      player.getVideoview().pause();
-     // player.pos();
-      videoplayerGallery.setVisibility(View.INVISIBLE);   //SOBALD VIDEOVIEW INVISIBLE WIRD WIRD DIE ZEIT AUF 0 GESETZT??
-     // player.pos();
-    //  videoplayerGallery.setVisibility(View.VISIBLE);
-     // player.pos();
-      player.resetVideoFrame(videoplayer);
-      page = 0;
-      videoplayer.setVisibility(View.VISIBLE);
 
 
       if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-      { singlepage.INSTANCE.setPage(0);
+      {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
     }
@@ -182,7 +178,7 @@ public class InformationActivity extends Activity{
     video = (String) b.get( "video" );
 
 
-    page = singlepage.INSTANCE.getPage();
+
 
     layout = (RelativeLayout) findViewById( R.id.rellayout );
     layout.setBackgroundColor( Color.parseColor( farbe ) );
@@ -296,8 +292,8 @@ public class InformationActivity extends Activity{
       }
     });
 
-    if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT || page == 1)
-    {page=1;
+    if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT || singlepage.INSTANCE.getPage() == 1)
+    {singlepage.INSTANCE.setPage(1);
      vf.setDisplayedChild(1);}
   }
 
@@ -474,7 +470,7 @@ public class InformationActivity extends Activity{
                 player.pause();
                 videoplayer.setVisibility(View.GONE);
                 player.getVideoview().setVisibility(View.VISIBLE);
-                page=1;
+                singlepage.INSTANCE.setPage(1);
                 startvideo=true;
                 player.getVideoview().seekTo((int) singlepage.INSTANCE.getTime());
                 play_buttonGallery.setImageResource(R.drawable.stop_hell);
@@ -573,7 +569,7 @@ public class InformationActivity extends Activity{
         arg0= arg0%360;
 
 //TODO: Check orientation with variables and permission of orientation  //AFTER VIDEOPLAYER CHANGE
-        if( arg0>=87 && arg0<=93  && page==1 ){
+        if( arg0>=87 && arg0<=93  && singlepage.INSTANCE.getPage()==1 ){
 
           singlepage.INSTANCE.setPage(1);
           if( !video.isEmpty() )
@@ -585,7 +581,7 @@ public class InformationActivity extends Activity{
 
         else if(arg0==180){}
 
-        else if(arg0>=267  && arg0<=273 && page==1){
+        else if(arg0>=267  && arg0<=273 && singlepage.INSTANCE.getPage()==1){
 
           singlepage.INSTANCE.setPage(1);
           if( !video.isEmpty() )

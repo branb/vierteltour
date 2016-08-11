@@ -24,7 +24,7 @@ public class InformationPagerAdapter extends PagerAdapter{
 
   private Context mContext;
   private InformationActivity infoAct;
-
+  private Singletonint singlepage;
   private String[] stationImagePaths;
 
   public InformationPagerAdapter( Context mContext, String[] stationImagePaths , InformationActivity infoAct){
@@ -58,7 +58,7 @@ public class InformationPagerAdapter extends PagerAdapter{
       @Override
       public void onClick(View v)
       {infoAct.vf.setDisplayedChild(1);
-        infoAct.page=1;
+        singlepage.INSTANCE.setPage(1);
 
       }
     });
