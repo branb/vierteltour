@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.PolyUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.ui.up_slider.PagerAdapter;
 import com.uni_wuppertal.iad.vierteltour.R;
@@ -110,6 +111,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private RelativeLayout panel;
   public static RelativeLayout audiobar;
   private ViertelTourMediaPlayer player;
+  private Singletonint singlepage;
 
 
   //TODO: CHANGE DYNAMICALLY VIEWPAGER WITH AUDIOBAR LAYOUT
@@ -319,6 +321,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     title.setVisibility( View.GONE );
     mPager.setVisibility( View.GONE );
     player.stop();
+    audiobar.setVisibility(View.GONE);
+    singlepage.INSTANCE.setId(0);
   }
 
   //Erstelle den Slider

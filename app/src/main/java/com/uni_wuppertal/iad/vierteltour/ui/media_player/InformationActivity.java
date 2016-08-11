@@ -40,7 +40,7 @@ public class InformationActivity extends Activity{
   SeekBar seekbar, seekbarGallery;        //Fortschrittsbalken
   ImageButton play_button, x_button, play_buttonGallery;      //diverse Bilderbuttons
   ViertelTourMediaPlayer player;          //Media player
-  Singletonint singlepage;                //Kann vielleicht weg
+  Singletonint singlepage;
   int isimages=-1;
   boolean startaudio = true, startvideo = true;  //Variable für Status des Play-Buttons
   Handler seekHandler = new Handler();
