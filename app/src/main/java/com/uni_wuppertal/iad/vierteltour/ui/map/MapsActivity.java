@@ -114,9 +114,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Singletonint singlepage;
 
 
-  //TODO: CHANGE DYNAMICALLY VIEWPAGER WITH AUDIOBAR LAYOUT
-  //TODO: ADDING VIDEOS AND IMAGES IN SAME VIEWPAGER
-
   @Override
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );

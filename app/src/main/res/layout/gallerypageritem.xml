@@ -6,12 +6,27 @@
     android:fitsSystemWindows="true"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/img_pager_item"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:clickable="true"/>
 
+
+  <VideoView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/vid_pager_item"
+    android:scaleType="fitXY"
+    android:adjustViewBounds="true"
+    android:clickable="true"
+    android:visibility="gone"
+    />
+
+  <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/img_pager_item"
+    android:scaleType="fitXY"
+    android:adjustViewBounds="true"
+    android:clickable="true"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:visibility="gone"
+    android:gravity="center"/>
 </LinearLayout>

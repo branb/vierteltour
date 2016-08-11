@@ -9,10 +9,12 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.VideoView;
 import android.widget.ViewFlipper;
 
 import com.uni_wuppertal.iad.vierteltour.R;
@@ -49,7 +51,16 @@ public class InformationPagerAdapter extends PagerAdapter{
                                   .inflate( R.layout.gallerypageritem, container, false );
 
     ImageView imageView = (ImageView) itemView.findViewById( R.id.img_pager_item );
+    VideoView videoView = (VideoView) itemView.findViewById( R.id.vid_pager_item );
+    //TODO:Erkenne ob video oder image und zeige jeweils nur video oder image an
     imageView.setImageURI( Uri.fromFile( new File(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths[position])) ) );
+
+    if(true){videoView.setVisibility(View.VISIBLE);
+            videoView.seekTo(100);
+      imageView.setImageResource(R.drawable.play_hell);
+    imageView.setVisibility(View.VISIBLE);}
+
+    else {imageView.setVisibility(View.VISIBLE);}
 
     container.addView( itemView );
 
@@ -57,9 +68,18 @@ public class InformationPagerAdapter extends PagerAdapter{
     {
       @Override
       public void onClick(View v)
-      {infoAct.vf.setDisplayedChild(1);
+      {
+        infoAct.vf.setDisplayedChild(1);
         singlepage.INSTANCE.setPage(1);
+      }
+    });
 
+    videoView.setOnTouchListener(new View.OnTouchListener() {
+      @Override
+      public boolean onTouch(View view, MotionEvent motionEvent) {
+        infoAct.vf.setDisplayedChild(1);
+        singlepage.INSTANCE.setPage(1);
+        return false;
       }
     });
 

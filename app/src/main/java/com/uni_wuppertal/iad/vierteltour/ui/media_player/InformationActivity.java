@@ -103,7 +103,8 @@ public class InformationActivity extends Activity{
       super.onBackPressed();
       overridePendingTransition( R.anim.map_in, R.anim.fade_out );
       singlepage.INSTANCE.reset();
-      if(player.isPlaying()==true)
+      if(player != null)    //If no audio exists, player == null and error will show up
+      {if(player.isPlaying()==true)
       {RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         MapsActivity.audiobar.setLayoutParams(layoutParams);}
@@ -111,7 +112,7 @@ public class InformationActivity extends Activity{
       {RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
       MapsActivity.audiobar.setLayoutParams(layoutParams);}
-    }
+    }}
 
      else if( singlepage.INSTANCE.getPage() == 1 ){
 
