@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
@@ -124,9 +127,10 @@ public class InformationActivity extends Activity{
         singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());
         player.getVideoview().pause();
         startvideo = false;
-        videoplayerGallery.setVisibility(View.INVISIBLE);   //SOBALD VIDEOVIEW INVISIBLE WIRD WIRD DIE ZEIT AUF 0 GESETZT??
-        player.resetVideoFrame(videoplayer);
-        videoplayer.setVisibility(View.VISIBLE);
+        videoplayerGallery.setVisibility(View.GONE);   //SOBALD VIDEOVIEW INVISIBLE WIRD WIRD DIE ZEIT AUF 0 GESETZT??
+        //videoplayerGallery.
+       // player.resetVideoFrame(videoplayer);
+        //videoplayer.setVisibility(View.VISIBLE);
       }
 
       vf.setDisplayedChild(0);
@@ -172,7 +176,7 @@ public class InformationActivity extends Activity{
     // Currently in the format "img1.jpg,img2.jpg,..."
     // TODO: Convert XML-entry to have one <image>-tag per image entry
     // TODO: Set Video and Image Resources in <Resources></Resources> in right order
-
+//TODO: HIER WURDE TMP EDITIERT
     String imagesFromXML = (String) b.get( "img" );
     video = (String) b.get( "video" );
     if( !imagesFromXML.isEmpty() ){
@@ -214,7 +218,7 @@ public class InformationActivity extends Activity{
     duration = (TextView) findViewById( R.id.duration );
     duration.setTextColor( Color.GRAY );
     videoplayerGallery = (VideoView) findViewById( R.id.videoViewGallery );
-    videoplayer = (VideoView) findViewById(R.id.videoView);
+    //videoplayer = (VideoView) findViewById(R.id.videoView);
     image = (ImageView)findViewById(R.id.imageScreen);
     gallerytitle = (TextView) findViewById( R.id.titleGallery );
     gallerytitletop = (TextView) findViewById(R.id.titleGalleryTop);
@@ -228,6 +232,7 @@ public class InformationActivity extends Activity{
     mAdapter = new InformationPagerAdapter( this, stationImagePaths, this);
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
     imagePager.setAdapter( mAdapter );
+    //imagePager.setBackgroundColor(Color.parseColor(farbe));
     imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
     imagePagerGallery.setAdapter( mAdapter );
     seekbar.setOnSeekBarChangeListener(customSeekBarListener);

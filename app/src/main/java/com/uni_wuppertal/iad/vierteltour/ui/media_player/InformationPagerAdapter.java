@@ -3,8 +3,11 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 import android.content.Context;
 import android.content.res.Configuration;
 
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 
+import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -52,19 +55,28 @@ public class InformationPagerAdapter extends PagerAdapter{
                                   .inflate( R.layout.gallerypageritem, container, false );
 
     ImageView imageView = (ImageView) itemView.findViewById( R.id.img_pager_item );
+    ImageView imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button );
     VideoView videoView = (VideoView) itemView.findViewById( R.id.vid_pager_item );
     char resources = stationImagePaths.get(position).charAt(0);     //v für video, i für image
 
 //TODO: stationimagepaths to stationresourcepaths with video and images to show
+    //TODO: HIER WURDE TMP EDITIERT
     if(resources == 'v')
     { videoView.setVideoPath(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths.get(position)));
-      videoView.setVisibility(View.VISIBLE);
+     /* videoView.setVisibility(View.VISIBLE);
             videoView.seekTo(100);
-      imageView.setImageResource(R.drawable.play_hell);
-    imageView.setVisibility(View.VISIBLE);
+      imageBtn.setVisibility(View.VISIBLE);
+      imageBtn.setImageResource(R.drawable.play_hell);
+    imageView.setVisibility(View.GONE);*/
+      imageView.setVisibility(View.VISIBLE);
+      Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths.get(position)),
+        MediaStore.Images.Thumbnails.MINI_KIND);
+      imageView.setImageBitmap(thumbnail);
       }
 
-    else if (resources == 'i') {imageView.setVisibility(View.VISIBLE);
+    else if (resources == 'i') {videoView.setVisibility(View.GONE);
+      imageBtn.setVisibility(View.GONE);
+      imageView.setVisibility(View.VISIBLE);
       imageView.setImageURI( Uri.fromFile( new File(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths.get(position))) ) );}
 
     container.addView( itemView );
