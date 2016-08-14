@@ -21,15 +21,16 @@ import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class InformationPagerAdapter extends PagerAdapter{
 
   private Context mContext;
   private InformationActivity infoAct;
   private Singletonint singlepage;
-  private String[] stationImagePaths;
+  private ArrayList<String> stationImagePaths;
 
-  public InformationPagerAdapter( Context mContext, String[] stationImagePaths , InformationActivity infoAct){
+  public InformationPagerAdapter(Context mContext, ArrayList<String> stationImagePaths , InformationActivity infoAct){
     this.mContext = mContext;
     this.stationImagePaths = stationImagePaths;
     this.infoAct= infoAct;
@@ -37,7 +38,7 @@ public class InformationPagerAdapter extends PagerAdapter{
 
   @Override
   public int getCount(){
-    return stationImagePaths.length;
+    return stationImagePaths.size();
   }
 
   @Override
@@ -52,11 +53,11 @@ public class InformationPagerAdapter extends PagerAdapter{
 
     ImageView imageView = (ImageView) itemView.findViewById( R.id.img_pager_item );
     VideoView videoView = (VideoView) itemView.findViewById( R.id.vid_pager_item );
-    char resources = stationImagePaths[position].charAt(0);     //v für video, i für image
+    char resources = stationImagePaths.get(position).charAt(0);     //v für video, i für image
 
-//TODO: stationimagepaths to stationresourcespaths with video and images to show
+//TODO: stationimagepaths to stationresourcepaths with video and images to show
     if(resources == 'v')
-    { videoView.setVideoPath(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths[position]));
+    { videoView.setVideoPath(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths.get(position)));
       videoView.setVisibility(View.VISIBLE);
             videoView.seekTo(100);
       imageView.setImageResource(R.drawable.play_hell);
@@ -64,7 +65,7 @@ public class InformationPagerAdapter extends PagerAdapter{
       }
 
     else if (resources == 'i') {imageView.setVisibility(View.VISIBLE);
-      imageView.setImageURI( Uri.fromFile( new File(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths[position])) ) );}
+      imageView.setImageURI( Uri.fromFile( new File(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths.get(position))) ) );}
 
     container.addView( itemView );
 
@@ -78,12 +79,11 @@ public class InformationPagerAdapter extends PagerAdapter{
       }
     });
 
-    videoView.setOnTouchListener(new View.OnTouchListener() {
+    videoView.setOnClickListener(new View.OnClickListener() {
       @Override
-      public boolean onTouch(View view, MotionEvent motionEvent) {
+      public void onClick(View view) {
         infoAct.vf.setDisplayedChild(1);
         singlepage.INSTANCE.setPage(1);
-        return false;
       }
     });
 

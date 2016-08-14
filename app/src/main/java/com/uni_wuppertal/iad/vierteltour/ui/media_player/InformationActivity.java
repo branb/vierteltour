@@ -31,6 +31,8 @@ import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 
@@ -49,7 +51,8 @@ public class InformationActivity extends Activity{
   TextView title, routenname, prof, info2, description;
   double timeElapsed = 0;
   int dotsCount;
-  String video, audio, stationImagePaths[];
+  String video, audio;
+  ArrayList<String> stationImagePaths;
   String station, farbe, autor, tourname, laenge, desc, zeit, size, number;
   ImageView image, dots[];
   Intent myIntent2;
@@ -149,7 +152,7 @@ public class InformationActivity extends Activity{
 
     if( !video.isEmpty() ){video();}
 
-    if( stationImagePaths.length != 0 ){images();}
+    if( stationImagePaths.size() != 0 || !video.isEmpty()){images();}
   }
 
 
@@ -171,18 +174,15 @@ public class InformationActivity extends Activity{
     // TODO: Set Video and Image Resources in <Resources></Resources> in right order
 
     String imagesFromXML = (String) b.get( "img" );
-    System.out.println(imagesFromXML);
-    if( !imagesFromXML.isEmpty() ){
-      this.stationImagePaths = imagesFromXML.split( "," );
-    } else {
-      this.stationImagePaths = new String[0];
-    }
-
-
-    audio = (String) b.get( "audio" );
     video = (String) b.get( "video" );
+    if( !imagesFromXML.isEmpty() ){
+      stationImagePaths = new ArrayList<String>(Arrays.asList(imagesFromXML.split("\\s*,\\s*")));
+      if(!video.isEmpty())stationImagePaths.add(video);
+    } else {
+      if(!video.isEmpty()) stationImagePaths.add(video);
 
-
+    }
+    audio = (String) b.get( "audio" );
 
 
     layout = (RelativeLayout) findViewById( R.id.rellayout );
@@ -276,7 +276,7 @@ public class InformationActivity extends Activity{
       videoplayerGallery.setVisibility( View.INVISIBLE );
     }*/
 
-    if( stationImagePaths.length == 0 && video.isEmpty() ){
+    if( stationImagePaths.size() == 0 && video.isEmpty() ){
       imagePager.setVisibility( View.GONE );
       imagePagerGallery.setVisibility(View.GONE);
     }
@@ -461,7 +461,7 @@ public class InformationActivity extends Activity{
         });
 
 
-    //TODO: Change Image dynamically to Video //AFTER VIDEO CHANGED AND XML UPDATED + Some bugs flipping between gallery and station
+    //TODO: Change Image dynamically to Video //AFTER VIDEO CHANGED AND XML UPDATED
 
         image.setVisibility(View.VISIBLE);
         image.setImageResource(R.drawable.play_hell);
@@ -491,7 +491,7 @@ public class InformationActivity extends Activity{
   }
 
   public void images(){
-    if( stationImagePaths.length > 1 || !video.isEmpty() ){
+    if( stationImagePaths.size() > 1 || !video.isEmpty() ){
       isimages=0;
         imagePager.setOnPageChangeListener(pagechangelisten);
         imagePagerGallery.setOnPageChangeListener(pagechangelisten);
