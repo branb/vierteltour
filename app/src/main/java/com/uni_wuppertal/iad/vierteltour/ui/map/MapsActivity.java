@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.PolyUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.uni_wuppertal.iad.vierteltour.ui.media_player.InformationActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.ui.up_slider.PagerAdapter;
@@ -112,6 +113,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public static RelativeLayout audiobar;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
+
 
 
   @Override
@@ -371,7 +373,26 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     audiobar.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        //mPager.;
+
+        Intent tmpIntent = new Intent( getApplicationContext(), InformationActivity.class );
+
+        //myIntent.putExtra("key", arguments.getInt(ARG_PAGE_NUMBER)); //Optional parameters
+        tmpIntent.putExtra( "station", tour.ListTouren.get(marked).stations.get(singlepage.INSTANCE.getPosition()).title );
+        tmpIntent.putExtra( "name", tour.ListTouren.get(marked).info.name );
+        tmpIntent.putExtra( "autor", tour.ListTouren.get(marked).info.author );
+        tmpIntent.putExtra( "zeit", tour.ListTouren.get(marked).info.time );
+        tmpIntent.putExtra( "laenge", tour.ListTouren.get(marked).info.length);
+        tmpIntent.putExtra( "farbe", tour.ListTouren.get(marked).info.color );
+        tmpIntent.putExtra( "desc", tour.ListTouren.get(marked).stations.get(singlepage.INSTANCE.getPosition()).description );
+        tmpIntent.putExtra( "size", "" + tour.ListTouren.get(marked).stations.size() );
+        tmpIntent.putExtra( "pos", "" + (singlepage.INSTANCE.getPosition() + 1) );
+
+        tmpIntent.putExtra( "img", tour.ListTouren.get(marked).stations.get( singlepage.INSTANCE.getPosition() ).image);
+        tmpIntent.putExtra( "audio", tour.ListTouren.get(marked).stations.get( singlepage.INSTANCE.getPosition() ).audio);
+        tmpIntent.putExtra( "video", tour.ListTouren.get(marked).stations.get( singlepage.INSTANCE.getPosition() ).video);
+
+        overridePendingTransition( R.anim.fade_in, R.anim.map_out );
+        startActivity( tmpIntent );
       }});
   }
 

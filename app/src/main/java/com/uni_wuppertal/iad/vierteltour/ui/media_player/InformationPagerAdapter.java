@@ -52,15 +52,19 @@ public class InformationPagerAdapter extends PagerAdapter{
 
     ImageView imageView = (ImageView) itemView.findViewById( R.id.img_pager_item );
     VideoView videoView = (VideoView) itemView.findViewById( R.id.vid_pager_item );
-    //TODO:Erkenne ob video oder image und zeige jeweils nur video oder image an
-    imageView.setImageURI( Uri.fromFile( new File(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths[position])) ) );
+    char resources = stationImagePaths[position].charAt(0);     //v für video, i für image
 
-    if(true){videoView.setVisibility(View.VISIBLE);
+//TODO: stationimagepaths to stationresourcespaths with video and images to show
+    if(resources == 'v')
+    { videoView.setVideoPath(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths[position]));
+      videoView.setVisibility(View.VISIBLE);
             videoView.seekTo(100);
       imageView.setImageResource(R.drawable.play_hell);
-    imageView.setVisibility(View.VISIBLE);}
+    imageView.setVisibility(View.VISIBLE);
+      }
 
-    else {imageView.setVisibility(View.VISIBLE);}
+    else if (resources == 'i') {imageView.setVisibility(View.VISIBLE);
+      imageView.setImageURI( Uri.fromFile( new File(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths[position])) ) );}
 
     container.addView( itemView );
 

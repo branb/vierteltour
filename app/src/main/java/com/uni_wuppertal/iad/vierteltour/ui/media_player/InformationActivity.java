@@ -171,7 +171,7 @@ public class InformationActivity extends Activity{
     // TODO: Set Video and Image Resources in <Resources></Resources> in right order
 
     String imagesFromXML = (String) b.get( "img" );
-
+    System.out.println(imagesFromXML);
     if( !imagesFromXML.isEmpty() ){
       this.stationImagePaths = imagesFromXML.split( "," );
     } else {
@@ -197,6 +197,7 @@ public class InformationActivity extends Activity{
     info2.setText( zeit + "/" + laenge );
     description = (TextView) findViewById( R.id.stationenbeschreibung );
     description.setText( desc );
+    singlepage.INSTANCE.setPosition(Integer.parseInt(number)-1);
   }
 
   public void initAll(){//Init
@@ -271,11 +272,11 @@ public class InformationActivity extends Activity{
       duration.setVisibility( View.GONE );
     }
 
-    if( video.isEmpty() ){
+   /* if( video.isEmpty() ){
       videoplayerGallery.setVisibility( View.INVISIBLE );
-    }
+    }*/
 
-    if( stationImagePaths.length == 0 ){
+    if( stationImagePaths.length == 0 && video.isEmpty() ){
       imagePager.setVisibility( View.GONE );
       imagePagerGallery.setVisibility(View.GONE);
     }
@@ -390,7 +391,7 @@ public class InformationActivity extends Activity{
 
 //TODO: Videoplayer auslagern und abändern
   public void video(){
-   // if(player.getVideoview()SOURCE != SOURCE aktuelle Videoview (Wenn die Quellen unterschiedlich sind))
+/*   // if(player.getVideoview()SOURCE != SOURCE aktuelle Videoview (Wenn die Quellen unterschiedlich sind))
     player.setVideoview(videoplayerGallery);
     player.loadGalleryVideo(video);
     player.loadVideo(video, videoplayer);
@@ -486,11 +487,11 @@ public class InformationActivity extends Activity{
 
             return false;
             }
-        });
+        });*/
   }
 
   public void images(){
-    if( stationImagePaths.length > 1 ){
+    if( stationImagePaths.length > 1 || !video.isEmpty() ){
       isimages=0;
         imagePager.setOnPageChangeListener(pagechangelisten);
         imagePagerGallery.setOnPageChangeListener(pagechangelisten);

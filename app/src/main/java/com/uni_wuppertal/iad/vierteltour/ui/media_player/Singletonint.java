@@ -12,6 +12,7 @@ public enum Singletonint {
     private int id;     //Zur Zeit nur nummer der Station, soll später zu ID werden
     private double time;
     private boolean playing;
+    private int position;
     private Singletonint(){
       page = 0;
       time = 0;
@@ -38,6 +39,10 @@ public enum Singletonint {
     public void setId(int id){
     this.id = id;
   }
+
+    public int getPosition() {return position;}
+    public void setPosition(int position) {this.position = position;}
+
 
     public void reset()
     {page = 0;

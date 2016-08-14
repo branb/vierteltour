@@ -36,6 +36,7 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
    */
   private ViertelTourMediaPlayer( Context context ){
     this.context = context;
+    videoview = new VideoView(context);
   }
 
 
