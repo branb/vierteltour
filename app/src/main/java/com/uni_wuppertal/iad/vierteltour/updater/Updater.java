@@ -21,10 +21,11 @@ import com.thin.downloadmanager.ThinDownloadManager;
 
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -266,6 +267,8 @@ public class Updater extends ContextWrapper{
         public void onDownloadComplete( DownloadRequest request ) {
           Log.d( DEBUG_TAG, successMessage  + request.getDestinationURI().toString() );
 
+          // unzip
+          unzipFile( request.getDestinationURI().toString() );
 
           statusToast.setText( "Die Tourdaten wurden vollständig heruntergeladen." );
           statusToast.show();
@@ -307,9 +310,33 @@ public class Updater extends ContextWrapper{
 
 
 
+  /**
+   * Unzip a .zip compressed file into the same destination where the .zip file is in.
+   *
+   * The folder name where the content from the .zip file are extracted into has the same name
+   * as the .zip file itself, without it's extension.
+   *
+   * Example:
+   * /location/of/zip/file/unzip_me.zip -> /location/of/zip/file/unzip_me
+   *
+   * @param zipFile - The destination of our ZIP-File
+   */
+  private void unzipFile( String zipFile ){
+    try {
+      // Determine output folder
+      File rootfolder = new File( zipFile );
+      File outputFolder = new File( rootfolder.getParentFile().getAbsolutePath() );
 
+      Log.d( DEBUG_TAG, "Output folder:");
+      Log.d( DEBUG_TAG, outputFolder.getAbsolutePath() );
 
+      ZipFile zip = new ZipFile( zipFile );
 
+      zip.extractAll( outputFolder.getAbsolutePath() );
+
+    } catch( ZipException e ){
+      e.printStackTrace();
+    }
   }
 
 
