@@ -114,7 +114,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     // Check for updates
     if( Updater.getInstance( this ).anyUpdatesOnTourdata() ){
-      Updater.getInstance( this ).downloadFile();
+      Updater.getInstance( this ).downloadTourdata();
     }
 
     setContentView( R.layout.activity_main );
