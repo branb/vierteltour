@@ -3,11 +3,13 @@ package com.uni_wuppertal.iad.vierteltour.updater;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -74,6 +76,7 @@ public class Updater extends ContextWrapper{
   private ThinDownloadManager downloadManager;
   private int manifestDownloadId;
 
+  private String remoteTourdataVersion = "";
 
 
   /**
@@ -109,7 +112,6 @@ public class Updater extends ContextWrapper{
       return false;
     }
 
-    // TODO: Well, actually, DO check for updates ^^
     Log.d( DEBUG_TAG, "Checking for updates..." );
 
     // TODO: Move the URL to the resources once you have finetuned the updater behaviour
@@ -117,7 +119,27 @@ public class Updater extends ContextWrapper{
 
     new DownloadWebpageTask().execute(stringUrl);
 
-    return true;
+    // Assumption: If the version on server differs from our version, the tour data is new
+    // There is no reason whatsoever for the data on the server side to be OLDER than this one.
+    //  Initialize SharedPreferences
+    SharedPreferences getPrefs = PreferenceManager
+      .getDefaultSharedPreferences( getBaseContext() );
+
+    //  Make a new preferences editor
+    SharedPreferences.Editor e = getPrefs.edit();
+
+    // If we've never stored a tour data version, use the remote one as the local version
+    if( !getPrefs.contains( "localTourdataVersion" ) ) {
+      e.putString( "localTourdataVersion", getPrefs.getString( "remoteTourdataVersion", "" ) );
+      return true;
+    }
+
+    if( !getPrefs.getString( "localTourdataVersion", "" ).equals( getPrefs.getString( "remoteTourdataVersion", "" ) )  ){
+      return true;
+    }
+
+
+    return false;
   }
 
 
@@ -176,9 +198,17 @@ public class Updater extends ContextWrapper{
 
       Map<String, String> gsonResult = new Gson().fromJson(result, new TypeToken<Map<String, String>>() {}.getType());
 
-      Log.d( DEBUG_TAG, "Result parsed by GSON (isTourDataAvailable)" );
+      Log.d( DEBUG_TAG, "Result parsed by GSON" );
       for( Map.Entry<String, String> entry : gsonResult.entrySet() ){
         Log.d( DEBUG_TAG, entry.getKey() + ": " + entry.getValue() );
+
+        // Save remote tour data version
+        if( entry.getKey().equals( "tourDataVersion" ) ){
+          PreferenceManager.getDefaultSharedPreferences( getBaseContext() )
+            .edit()
+            .putString( "remoteTourdataVersion", entry.getValue() )
+            .apply();
+        }
       }
 
     }
@@ -272,6 +302,14 @@ public class Updater extends ContextWrapper{
 
           statusToast.setText( "Die Tourdaten wurden vollständig heruntergeladen." );
           statusToast.show();
+
+          // Save local tour data version
+          SharedPreferences getPrefs = PreferenceManager
+            .getDefaultSharedPreferences( getBaseContext() );
+
+          getPrefs.edit()
+                  .putString( "localTourdataVersion", getPrefs.getString( "remoteTourdataVersion", "" ) )
+                  .apply();
         }
 
         @Override
