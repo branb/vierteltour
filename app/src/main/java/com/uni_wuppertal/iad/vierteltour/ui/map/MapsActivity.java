@@ -205,7 +205,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onMapClick( LatLng clickCoords ){
         if( mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED ){
           int tmp = 0;
+          //TODO: tour.ListTouren.size() für Anzashl der Touren
           for( int i = 0; i < tour.ListTouren.size(); i++ ){
+            //TODO: tour.ListTouren. infos über Koordinaten vom Weg
             if( PolyUtil.isLocationOnPath( clickCoords, tour.ListTouren.get( i ).polylines.getPoints(), true, 20 ) && tmp == 0 ){
               // clicked track and marker become no alpha value
               markedTour( i );
@@ -236,15 +238,19 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   public void transparentTour( int i ){
+    //TODO: Farbe jeder Tour
     String s = tour.ListTouren.get( i ).info.color;
     s = "#30" + s.substring( 1, 7 ); // #xx (Hex) Transparenz Stufe
+    //TODO:
     tour.ListTouren.get( i ).polylines.color( Color.parseColor( s ) );
+    //TODO: Pins auf der Map für Station
     for( MarkerOptions m : tour.ListTouren.get( i ).ListMarker ){
       m.alpha( 0.3f );
     }
   }
 
   public void markedTour( int i ){
+    //TODO: Siehe oben
     tour.ListTouren.get( i ).polylines.color( Color.parseColor( tour.ListTouren.get( i ).info.color ) );
     for( MarkerOptions m : tour.ListTouren.get( i ).ListMarker ){
       m.alpha( 1.0f );
@@ -253,7 +259,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   }
 
+  //Setzt alle Touren auf Sichtbar zurück
   public void resetTour(){
+    //TODO: Siehe oben
     for( Tour t : tour.ListTouren ){
       t.polylines.color( Color.parseColor( t.info.color ) );
       for( MarkerOptions m : t.ListMarker ){
@@ -303,6 +311,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   public void updatePolylines(){
     mMap.clear();
+    //TODO: Verbindungen werden hinzugefügt
     for( Tour t : tour.ListTouren ){
       mMap.addPolyline( t.polylines );
       for( MarkerOptions m : t.ListMarker ){
@@ -312,6 +321,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   public void zeichnePolyLines(){
+    //TODO siehe oben
     for( Tour t : tour.ListTouren ){
       t.makePolylines();
       mMap.addPolyline( t.polylines );
@@ -323,6 +333,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
   public int addPage( int position ){
+    //TODO zählt Stationen
     if( (position >= 0) && (position < tour.ListTouren.get( marked ).stations.size()) ){
       pageradapter.addFragment( position, tour.ListTouren.get( marked ) );
       pageradapter.notifyDataSetChanged();
@@ -342,7 +353,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       pageradapter.notifyDataSetChanged();
     }
 
-
+    //TODO zählt Stationen
     for( int i = 0; i < tour.ListTouren.get( marked ).stations.size(); i++ ){
       addPage( i );
     }
@@ -353,6 +364,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mLayout.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
     xbtn.setVisibility( View.VISIBLE );
     title.setVisibility( View.VISIBLE );
+    //TODO Titel der Tour
     title.setText( tour.ListTouren.get( marked ).info.name );
     mPager.setVisibility( View.VISIBLE );
 
@@ -388,6 +400,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
         rowItems.get( position )
                 .setSelected( true ); //Nur das Angeklickte wird vergrößert
+        //TODO Anzahl der Touren
         for( int i = 0; i < tour.ListTouren.size(); i++ ){
           if( i == position ){
             markedTour( i );
@@ -403,11 +416,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     });
     rowItems = new ArrayList<RowItem>();
 
+    //TODO so
     for( int i = 0; i < tour.ListTouren.size(); i++ ){
       RowItem items = new RowItem( tour.ListTouren.get( i ).info.name, tour.ListTouren.get( i ).info.author, tour.ListTouren.get( i ).info.time + "/" + tour.ListTouren.get( i ).info.length, menuIcons[i], tour.ListTouren.get( i ).info.description );
 
       rowItems.add( items );
     }
+    //TODO: lösche parser aus Tourenadapter
     adapter = new TourenAdapter( this, rowItems, tour );
     lv.setAdapter( adapter );
   }
@@ -426,16 +441,18 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         Intent tmpIntent = new Intent( getApplicationContext(), InformationActivity.class );
 
         //myIntent.putExtra("key", arguments.getInt(ARG_PAGE_NUMBER)); //Optional parameters
+        //TODO: Informationen der Tour
         tmpIntent.putExtra( "station", tour.ListTouren.get(marked).stations.get(singlepage.INSTANCE.getPosition()).title );
         tmpIntent.putExtra( "name", tour.ListTouren.get(marked).info.name );
         tmpIntent.putExtra( "autor", tour.ListTouren.get(marked).info.author );
         tmpIntent.putExtra( "zeit", tour.ListTouren.get(marked).info.time );
         tmpIntent.putExtra( "laenge", tour.ListTouren.get(marked).info.length);
         tmpIntent.putExtra( "farbe", tour.ListTouren.get(marked).info.color );
-        tmpIntent.putExtra( "desc", tour.ListTouren.get(marked).stations.get(singlepage.INSTANCE.getPosition()).description );
         tmpIntent.putExtra( "size", "" + tour.ListTouren.get(marked).stations.size() );
+        //TODO:Beschreibung der angeklickte Station
+        tmpIntent.putExtra( "desc", tour.ListTouren.get(marked).stations.get(singlepage.INSTANCE.getPosition()).description );
         tmpIntent.putExtra( "pos", "" + (singlepage.INSTANCE.getPosition() + 1) );
-
+        //TODO: Queller der Resources(Resource ID)
         tmpIntent.putExtra( "img", tour.ListTouren.get(marked).stations.get( singlepage.INSTANCE.getPosition() ).image);
         tmpIntent.putExtra( "audio", tour.ListTouren.get(marked).stations.get( singlepage.INSTANCE.getPosition() ).audio);
         tmpIntent.putExtra( "video", tour.ListTouren.get(marked).stations.get( singlepage.INSTANCE.getPosition() ).video);
@@ -739,6 +756,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       subtext1.setVisibility( View.VISIBLE );
       subtext2.setVisibility( View.VISIBLE );
       if( marked >= 0 ){
+        //TODO
         tourenliste.setText( tour.ListTouren.get( marked ).info.name );
         subtext1.setText( tour.ListTouren.get( marked ).info.author );
         subtext2.setText( tour.ListTouren.get( marked ).info.time + "/" + tour.ListTouren.get( marked ).info.length );

@@ -65,6 +65,7 @@ public class TourenAdapter extends BaseAdapter{
     View divider = convertView.findViewById( R.id.divider );
 
     //Setzt jeweilige Informationen an die richtigen Views
+    //TODO: Farbe von Touren
     convertView.setBackgroundColor( Color.parseColor( parser.ListTouren.get( position ).info.color ) );
     RowItem row_pos = rowItem.get( position );
 
