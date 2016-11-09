@@ -126,6 +126,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     marked = -1;        //keine Tour ausgewählt
     tour = new XmlParser( this );
 
+    tour.readTourlist( "tourlist.xml" );
+
     initPager();
     initSupl();
     initBtns();

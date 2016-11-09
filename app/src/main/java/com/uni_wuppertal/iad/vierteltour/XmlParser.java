@@ -1,25 +1,30 @@
 package com.uni_wuppertal.iad.vierteltour;
 
-import android.os.Environment;
+import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.uni_wuppertal.iad.vierteltour.component.map.Station;
 import com.uni_wuppertal.iad.vierteltour.component.map.StationInfo;
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
 public class XmlParser{
+
+  private final static String DEBUG_TAG = "XmlParser";
+  private Context context;
 
   public int trkid;
   public String name;
@@ -47,6 +52,8 @@ public class XmlParser{
 
 
   public XmlParser( FragmentActivity context ){
+    this.context = context;
+
     FileInputStream inputStream = OurStorage.getInstance( context )
                                             .getFile( "tour.xml" );
 
@@ -144,7 +151,7 @@ public class XmlParser{
         eventType = parser.next();
       }
     } catch( XmlPullParserException | IOException e ){
-      e.printStackTrace();
+      Log.d( DEBUG_TAG, e.toString() );
     }
 
   }
@@ -176,10 +183,33 @@ public class XmlParser{
         eventType = parser.next();
       }
     } catch( XmlPullParserException | IOException e ){
-      e.printStackTrace();
+      Log.d( DEBUG_TAG, e.toString() );
     }
 
   }
+
+
+  public String readTourlist( String fileName ){
+    Serializer serializer = new Persister();
+
+    String result = "";
+
+    try{
+      Log.d( DEBUG_TAG, "Starting the deserialization (I hope so, at least..." );
+
+      TourList tourlist = serializer.read( TourList.class, OurStorage.getInstance( context ).getFile( fileName ) );
+
+      Log.d( DEBUG_TAG, tourlist.toString() );
+      Log.d( DEBUG_TAG, "Version of downloaded tourlist: " + tourlist.getVersion() );
+
+      result = tourlist.toString();
+    } catch( Exception e ) {
+      Log.d( DEBUG_TAG, e.toString() );
+    }
+
+    return result;
+  }
+
 
 
 }
