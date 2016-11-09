@@ -111,20 +111,38 @@
             android:layout_marginRight="30dp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="90dp"
-           />
 
-        <ImageView
-        android:layout_width="fill_parent"
+           />
+<!--
+      <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageScreen"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/stationenbeschreibung"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="30dp"
+        >
+     <VideoView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/videoView"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
         />
 
+      <ImageView
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:id="@+id/imageScreen"
+         android:layout_centerHorizontal="true"
+         android:layout_centerVertical="true"
+         android:gravity="center"
+         />
+
+      </RelativeLayout>
+
+-->
         <SeekBar
             android:id="@+id/seek_bar"
             android:layout_width="match_parent"
@@ -242,7 +260,7 @@
             android:layout_toRightOf="@+id/play_buttonGallery"
             android:layout_marginRight="45dp"
             android:layout_alignParentBottom="true"
-            android:visibility="visible"
+            android:visibility="gone"
             />
 
         <ImageButton
@@ -256,7 +274,7 @@
             android:layout_marginBottom="32dp"
             android:layout_marginLeft="20dp"
             android:layout_alignParentBottom="true"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -268,7 +286,7 @@
             android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:visibility="visible"
+            android:visibility="gone"
             />
 
         </RelativeLayout>

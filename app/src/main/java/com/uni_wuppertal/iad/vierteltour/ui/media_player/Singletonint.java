@@ -6,22 +6,19 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 public enum Singletonint {
     INSTANCE;
 
-    private int page;
-    private double time,timeAudio;
-    private boolean playing,playingAudio;
+  //Wenn Videoplayer wie Audio implementiert wird, kann time und playing gelöscht werden
+
+    private int page;   //page=0 Stationenbeschreibung, page=1 Gallerymode
+    private int id;     //Zur Zeit nur nummer der Station, soll später zu ID werden
+    private double time;
+    private boolean playing;
+    private int position;
     private Singletonint(){
       page = 0;
       time = 0;
       playing = false;
-      timeAudio = 0;
-      playingAudio = false;
+      id=-1;
     }
-
-    public boolean getPlayingAudio() {return playingAudio;}
-    public void setPlayingAudio(boolean p) {this.playingAudio = p;}
-
-    public double getTimeAudio() {return timeAudio;}
-    public void setTimeAudio(double time) {this.timeAudio = time;}
 
     public boolean getPlaying() {return playing;}
     public void setPlaying(boolean p)  {this.playing = p;}
@@ -36,12 +33,21 @@ public enum Singletonint {
       this.page = page;
     }
 
+    public int getId(){
+    return id;
+  }
+    public void setId(int id){
+    this.id = id;
+  }
+
+    public int getPosition() {return position;}
+    public void setPosition(int position) {this.position = position;}
+
+
     public void reset()
     {page = 0;
      time = 0;
-     playing = false;
-     timeAudio = 0;
-     playingAudio = false;}
+     playing = false;}
 
 
 }

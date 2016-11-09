@@ -113,17 +113,33 @@
         android:layout_marginBottom="90dp"
         />
 
-      <ImageView
+      <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/imageScreen"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/stationenbeschreibung"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="30dp"
-        />
+        >
+        <VideoView
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/videoView"
+          android:visibility="gone"
+          android:layout_centerHorizontal="true"
+          />
+
+        <ImageView
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/imageScreen"
+          android:layout_centerHorizontal="true"
+          android:layout_centerVertical="true"
+          android:gravity="center"
+          />
+
+      </RelativeLayout>
 
       <SeekBar
         android:id="@+id/seek_bar"
@@ -209,7 +225,8 @@
         android:layout_alignParentTop="true"
         android:background="#70000000"
         android:animateLayoutChanges="true"
-        android:id="@+id/relativeTop">
+        android:id="@+id/relativeTop"
+        android:visibility="gone">
 
         <ImageButton
           android:layout_width="wrap_content"
@@ -240,7 +257,8 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="#70000000"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        android:visibility="gone">
 
         <SeekBar
           android:id="@+id/seek_barGallery"

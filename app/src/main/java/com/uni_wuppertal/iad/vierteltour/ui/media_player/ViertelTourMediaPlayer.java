@@ -2,7 +2,10 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.VideoView;
 
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
@@ -26,13 +29,14 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
 
 
   private Context context;
-
-
+  private VideoView videoview;
+  Singletonint singlepage;
   /** The main constructor.
    *
    */
   private ViertelTourMediaPlayer( Context context ){
     this.context = context;
+    videoview = new VideoView(context);
   }
 
 
@@ -45,10 +49,12 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
    * @return True if the file could be loaded, false else
    */
   public boolean loadAudio( String path ){
+
     if( isPlaying() ){
       stop();
-      reset();
+      System.out.println("STOP");
     }
+    reset();
 
     FileInputStream inputStream = OurStorage.getInstance( this.context ).getFile( path );
 
@@ -69,5 +75,52 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
     }
 
   }
+
+  public boolean loadVideo( String path , VideoView video){
+    String inputStream = OurStorage.getInstance( this.context ).getPathToFile( path );
+
+    if( inputStream == null ){
+      return false;
+    }
+      video.setVideoPath( inputStream );
+      resetVideoFrame(video);
+      return true;
+  }
+
+
+
+  public boolean loadGalleryVideo( String path){
+
+
+    String inputStream = OurStorage.getInstance( this.context ).getPathToFile( path );
+
+    if( inputStream == null ){
+      return false;
+    }
+
+    videoview.setVideoPath( inputStream );
+    return true;
+  }
+
+
+
+  public void resetVideoFrame(VideoView video)
+  {
+    video.seekTo(100);
+  video.pause();}
+
+
+  public VideoView getVideoview()
+  {return videoview;}
+
+
+  public void setVideoview(VideoView video)
+  {videoview=video;}
+
+  public void pos()
+  {System.out.println(videoview.getCurrentPosition());
+    System.out.println(singlepage.INSTANCE.getTime());
+    System.out.println(singlepage.INSTANCE.getPlaying());}
+
 }
 

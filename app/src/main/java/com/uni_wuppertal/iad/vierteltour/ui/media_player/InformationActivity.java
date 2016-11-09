@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
@@ -28,81 +31,54 @@ import android.widget.VideoView;
 import android.widget.ViewFlipper;
 
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 
 public class InformationActivity extends Activity{
 
-  SeekBar seekbar, seekbarGallery;
-  ImageButton play_button, x_button, play_buttonGallery;
-  ViertelTourMediaPlayer player;
+  //Declare Var
+  SeekBar seekbar, seekbarGallery;        //Fortschrittsbalken
+  ImageButton play_button, x_button, play_buttonGallery;      //diverse Bilderbuttons
+  ViertelTourMediaPlayer player;          //Media player
   Singletonint singlepage;
-
   int isimages=-1;
-  public SeekBar.OnSeekBarChangeListener customSeekBarListener = new SeekBar.OnSeekBarChangeListener(){
-    @Override
-    public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
-      if( fromUser ){
-        player.seekTo( progress );
-      }
-    }
-
-    @Override
-    public void onStartTrackingTouch( SeekBar seekBar ){
-    }
-
-    @Override
-    public void onStopTrackingTouch( SeekBar seekBar ){
-    }
-  };
-  boolean finished = false, start = true;  //Variable für Status des Play-Buttons
+  boolean startaudio = true, startvideo = true;  //Variable für Status des Play-Buttons
   Handler seekHandler = new Handler();
-  VideoView vid;
-  public SeekBar.OnSeekBarChangeListener customSeekBarListener2 = new SeekBar.OnSeekBarChangeListener(){
-    @Override
-    public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
-      if( fromUser ){
-        vid.seekTo( progress );
-      }
-    }
-
-    @Override
-    public void onStartTrackingTouch( SeekBar seekBar ){
-    }
-
-    @Override
-    public void onStopTrackingTouch( SeekBar seekBar ){
-    }
-  };
-  TextView duration, gallerytitle, gallerytitletop, durationGallery;
+  VideoView videoplayerGallery, videoplayer;                          //Videoplayer
+  TextView duration, gallerytitle, gallerytitletop, durationGallery;  //diverse Textfelder
+  TextView title, routenname, prof, info2, description;
   double timeElapsed = 0;
-  int page = 0, dotsCount;
-  String video, audio, stationImagePaths[];
+  int dotsCount;
+  String video, audio;
+  ArrayList<String> stationImagePaths;
+  String station, farbe, autor, tourname, laenge, desc, zeit, size, number;
   ImageView image, dots[];
   Intent myIntent2;
   Bundle b;
   RelativeLayout layout;
-  String station, farbe, autor, tourname, laenge, desc, zeit, size, number;
-  TextView title, routenname, prof, info2, description;
-  OrientationEventListener changed;
-  ViewFlipper vf;
-  ViewPager imagePager, imagePagerGallery;
+  OrientationEventListener orientation;
+  ViewFlipper vf;     //tauscht Stationenbeschreibung und Gallery Mode
+  ViewPager imagePager, imagePagerGallery;    //Slidebare Gallery
   InformationPagerAdapter mAdapter;
   LinearLayout pager_indicator;
-  RelativeLayout relGalleryBot, relGalleryTop;
+  RelativeLayout relGalleryBot, relGalleryTop; //Layout im Gallerymode für Informationen
 
+  //Runnables zuständig für Aktualisierung der fortgeschrittenen Zeit der Player
   Runnable run = new Runnable(){
     @Override
     public void run(){
-      seekUpdation();
+      seekUpdationAudio();
     }
   };
   Runnable run2 = new Runnable(){
     @Override
     public void run(){
-      seekUpdation2();
+      seekUpdationVideo();
     }
   };
 
@@ -110,51 +86,79 @@ public class InformationActivity extends Activity{
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
     setContentView( R.layout.information );
-
-    vf = (ViewFlipper) findViewById( R.id.viewFlipper );
-
-    if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-    {vf.setDisplayedChild(1);
-    page=1;}
-    parseData();
-    getInit();}
+    parseData();      //übergibt Daten von MapsActivity
+    getInit();        //Initialisierung
+   }
 
   @Override
   protected void onDestroy()
   {super.onDestroy();
-   changed.disable();
+    //player.pos();
+   orientation.disable();
     if( !video.isEmpty() ){
-      vid.stopPlayback();
-      vid=null;
-      start=false;
-    }
-
-  }
+      singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
+        singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());
+      startvideo=false;
+    }}
 
   @Override
   public void onBackPressed(){
-    if( page == 0 ){
+    if( singlepage.INSTANCE.getPage() == 0 ){
+      startaudio=false;
+
       super.onBackPressed();
       overridePendingTransition( R.anim.map_in, R.anim.fade_out );
       singlepage.INSTANCE.reset();
+      if(player != null)    //If no audio exists, player == null and error will show up
+      {if(player.isPlaying()==true)
+      {RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        MapsActivity.audiobar.setLayoutParams(layoutParams);}
+      else
+      {RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+      MapsActivity.audiobar.setLayoutParams(layoutParams);}
+    }}
+
+     else if( singlepage.INSTANCE.getPage() == 1 ){
+
+      if( !video.isEmpty() ){
+        singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
+        singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());
+        player.getVideoview().pause();
+        startvideo = false;
+        videoplayerGallery.setVisibility(View.GONE);   //SOBALD VIDEOVIEW INVISIBLE WIRD WIRD DIE ZEIT AUF 0 GESETZT??
+        //videoplayerGallery.
+       // player.resetVideoFrame(videoplayer);
+        //videoplayer.setVisibility(View.VISIBLE);
       }
 
-     else if( page == 1 ){
       vf.setDisplayedChild(0);
-      start = false;
-      vid.pause();
-      page = 0;
+      singlepage.INSTANCE.setPage(0);
+
+
+
       if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-      { singlepage.INSTANCE.setPage(0);
-        if( !audio.isEmpty() )
-        {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
-          singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
-        if( !video.isEmpty() )
-        {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
-          singlepage.INSTANCE.setPlaying(vid.isPlaying());}
+      {
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
     }
   }
+
+  public void getInit(){
+    initAll();
+
+    gallerymode();
+    initOrientation();
+    hide();
+
+    if( !audio.isEmpty() ){audio();}
+
+    if( !video.isEmpty() ){video();}
+
+    if( stationImagePaths.size() != 0 || !video.isEmpty()){images();}
+  }
+
 
   public void parseData(){
     myIntent2 = getIntent();
@@ -171,20 +175,19 @@ public class InformationActivity extends Activity{
 
     // Currently in the format "img1.jpg,img2.jpg,..."
     // TODO: Convert XML-entry to have one <image>-tag per image entry
+    // TODO: Set Video and Image Resources in <Resources></Resources> in right order
+//TODO: HIER WURDE TMP EDITIERT
     String imagesFromXML = (String) b.get( "img" );
-
-    if( !imagesFromXML.isEmpty() ){
-      this.stationImagePaths = imagesFromXML.split( "," );
-    } else {
-      this.stationImagePaths = new String[0];
-    }
-
-
-    audio = (String) b.get( "audio" );
     video = (String) b.get( "video" );
+    if( !imagesFromXML.isEmpty() ){
+      stationImagePaths = new ArrayList<String>(Arrays.asList(imagesFromXML.split("\\s*,\\s*")));
+      if(!video.isEmpty())stationImagePaths.add(video);
+    } else {
+      if(!video.isEmpty()) stationImagePaths.add(video);
 
+    }
+    audio = (String) b.get( "audio" );
 
-    page = singlepage.INSTANCE.getPage();
 
     layout = (RelativeLayout) findViewById( R.id.rellayout );
     layout.setBackgroundColor( Color.parseColor( farbe ) );
@@ -198,161 +201,11 @@ public class InformationActivity extends Activity{
     info2.setText( zeit + "/" + laenge );
     description = (TextView) findViewById( R.id.stationenbeschreibung );
     description.setText( desc );
-  }
-
-  public void getInit(){
-    initAll();
-
-    gallerymode();
-    initOrientation();
-    hide();
-
-    if( !audio.isEmpty() ){
-      audio();
-    }
-
-    if( !video.isEmpty() ){
-      video();
-    }
-
-    if( stationImagePaths.length != 0 ){
-      images();
-    }
-  }
-
-  public void seekUpdation(){
-    if( player != null && !finished ){
-      seekbar.setProgress( player.getCurrentPosition() );
-      if( video.isEmpty() )seekbarGallery.setProgress(player.getCurrentPosition());
-      timeElapsed = player.getCurrentPosition();
-
-      duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
-      if( video.isEmpty() )durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
-      seekHandler.postDelayed( run, 100 );
-    }
-  }
-
-  public void seekUpdation2(){
-    if( vid != null && start ){
-      seekbarGallery.setMax( vid.getDuration() );
-      seekbarGallery.setProgress( vid.getCurrentPosition() );
-      timeElapsed = vid.getCurrentPosition();
-
-      durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
-
-      seekHandler.postDelayed( run2, 100 );
-    }
-  }
-
-
-  //@Override
-
-  public void hide(){
-    if( audio.isEmpty() ){
-      seekbar.setVisibility( View.GONE );
-      play_button.setVisibility( View.GONE );
-      duration.setVisibility( View.GONE );
-    }
-
-    if( video.isEmpty() ){
-      vid.setVisibility( View.INVISIBLE );
-    }
-
-    if( stationImagePaths.length == 0 ){
-      imagePager.setVisibility( View.GONE );
-      imagePagerGallery.setVisibility(View.GONE);
-    }
-  }
-
-  public void initOrientation(){//Landscape/Portrait change
-    changed = new OrientationEventListener( this, SensorManager.SENSOR_DELAY_NORMAL ){
-      @Override
-      public void onOrientationChanged( int arg0 ){
-        arg0= arg0%360;
-
-
-        if( arg0>=87 && arg0<=93  && page==1 ){
-
-          singlepage.INSTANCE.setPage(1);
-          if( !audio.isEmpty() )
-          {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
-           singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
-          if( !video.isEmpty() )
-          {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
-            singlepage.INSTANCE.setPlaying(vid.isPlaying());}
-          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-          }
-
-
-        else if(arg0==180){}
-
-        else if(arg0>=267  && arg0<=273 && page==1){
-
-            singlepage.INSTANCE.setPage(1);
-          if( !audio.isEmpty() )
-          {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
-            singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
-          if( !video.isEmpty() )
-          {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
-            singlepage.INSTANCE.setPlaying(vid.isPlaying());}
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-          }
-
-          else if((arg0>=357 || arg0<=3) && getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-          {
-
-              singlepage.INSTANCE.setPage(1);
-            if( !audio.isEmpty() )
-            {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
-              singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
-              if( !video.isEmpty())
-              {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
-              singlepage.INSTANCE.setPlaying(vid.isPlaying());}
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            }
-        }
-    };
-    if( changed.canDetectOrientation() ){
-      changed.enable();
-    }
-  }
-
-
-  public void gallerymode(){
-    gallerytitle.setText( station );
-    if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-    {gallerytitletop.setText( station );
-      gallerytitletop.setVisibility(View.VISIBLE);
-    gallerytitle.setVisibility(View.GONE);}
-
-
-
-    x_button.setOnClickListener( new View.OnClickListener(){
-      @Override
-      public void onClick( View v ){
-        vid.pause();
-        start = false;
-        page = 0;
-        singlepage.INSTANCE.setPage(0);
-        if( !audio.isEmpty() )
-        {singlepage.INSTANCE.setTimeAudio(player.getCurrentPosition());
-          singlepage.INSTANCE.setPlayingAudio(player.isPlaying());}
-        if( !video.isEmpty() )
-        {singlepage.INSTANCE.setTime(vid.getCurrentPosition());
-          singlepage.INSTANCE.setPlaying(vid.isPlaying());}
-        if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-        {setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
-        else{vf.setDisplayedChild(0);}
-      }
-    });
-
-    if (page==1)
-    {vf.setDisplayedChild(1);}
-
+    singlepage.INSTANCE.setPosition(Integer.parseInt(number)-1);
   }
 
   public void initAll(){//Init
-
+    vf = (ViewFlipper) findViewById( R.id.viewFlipper );
     ImageButton arrdwn = (ImageButton) findViewById( R.id.arrowdown );
     arrdwn.setOnClickListener( new View.OnClickListener(){
       @Override
@@ -364,8 +217,9 @@ public class InformationActivity extends Activity{
     play_button = (ImageButton) findViewById( R.id.play_button );
     duration = (TextView) findViewById( R.id.duration );
     duration.setTextColor( Color.GRAY );
-    vid = (VideoView) findViewById( R.id.videoViewGallery );
-     image = (ImageView)findViewById(R.id.imageScreen);
+    videoplayerGallery = (VideoView) findViewById( R.id.videoViewGallery );
+    //videoplayer = (VideoView) findViewById(R.id.videoView);
+    image = (ImageView)findViewById(R.id.imageScreen);
     gallerytitle = (TextView) findViewById( R.id.titleGallery );
     gallerytitletop = (TextView) findViewById(R.id.titleGalleryTop);
     x_button = (ImageButton) findViewById( R.id.x_button );
@@ -378,11 +232,82 @@ public class InformationActivity extends Activity{
     mAdapter = new InformationPagerAdapter( this, stationImagePaths, this);
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
     imagePager.setAdapter( mAdapter );
+    //imagePager.setBackgroundColor(Color.parseColor(farbe));
     imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
     imagePagerGallery.setAdapter( mAdapter );
+    seekbar.setOnSeekBarChangeListener(customSeekBarListener);
+    seekbarGallery.setOnSeekBarChangeListener(customSeekBarListener);
 
 
   }
+
+
+  //Audioupdater
+  public void seekUpdationAudio(){
+    if( player != null && startaudio ){
+
+      seekbar.setProgress( player.getCurrentPosition() );
+      timeElapsed = player.getCurrentPosition();
+
+      duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
+      seekHandler.postDelayed( run, 100 );
+    }
+  }
+
+  //Videoupdater
+  public void seekUpdationVideo(){
+    if( player.getVideoview() != null && startvideo ){
+      //System.out.println("222");
+      seekbarGallery.setMax( player.getVideoview().getDuration() );
+      seekbarGallery.setProgress( player.getVideoview().getCurrentPosition() );
+      timeElapsed = player.getVideoview().getCurrentPosition();
+
+      durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
+
+      seekHandler.postDelayed( run2, 100 );
+    }
+  }
+
+
+  //zeigt nur Ressourcen an, die vorhanden sind
+  public void hide(){
+    if( audio.isEmpty() ){
+      seekbar.setVisibility( View.GONE );
+      play_button.setVisibility( View.GONE );
+      duration.setVisibility( View.GONE );
+    }
+
+   /* if( video.isEmpty() ){
+      videoplayerGallery.setVisibility( View.INVISIBLE );
+    }*/
+
+    if( stationImagePaths.size() == 0 && video.isEmpty() ){
+      imagePager.setVisibility( View.GONE );
+      imagePagerGallery.setVisibility(View.GONE);
+    }
+  }
+
+
+  public void gallerymode(){
+    gallerytitle.setText( station );
+    if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
+    {gallerytitletop.setText( station );
+      gallerytitletop.setVisibility(View.VISIBLE);
+    gallerytitle.setVisibility(View.GONE);}
+
+
+    x_button.setOnClickListener( new View.OnClickListener(){
+      @Override
+      public void onClick( View v ){
+        onBackPressed();
+      }
+    });
+
+    if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT || singlepage.INSTANCE.getPage() == 1)
+    {singlepage.INSTANCE.setPage(1);
+     vf.setDisplayedChild(1);}
+  }
+
 
   private void setUiPageViewController(){
 
@@ -408,210 +333,181 @@ public class InformationActivity extends Activity{
 
   }
 
-
   public void audio(){
+    player = ViertelTourMediaPlayer.getInstance( this );
+
+
+
+    //number soll später mit id ersetzt werden, leider wurde id bis jetzt noch nicht gesetzt
+    //Wenn die gleiche Station geöffnet wird, soll audio nicht neu geladen werden
+    if(singlepage.INSTANCE.getId() != Integer.parseInt(number))
+    { player.loadAudio( audio );
+      singlepage.INSTANCE.setId(Integer.parseInt(number));}
+
+
+
+    else if(player.isPlaying())
+    {startaudio = true;
+      play_button.setImageResource( R.drawable.stop_hell );
+      seekUpdationAudio();}
+
+
+
+    //CustomKlasse Seekbar
+    seekbar.getProgressDrawable().setColorFilter( Color.GRAY, PorterDuff.Mode.SRC );
+    seekbar.setMax( player.getDuration() );
+  //  seekbar.getThumb().mutate().setAlpha( 0 );//seekbar.getthumb ist pin auf der seekbar
+
+    seekbar.setProgress( player.getCurrentPosition() );
+    timeElapsed = player.getCurrentPosition();
+
+    duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
+
+
+    player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){
+      @Override
+      public void onCompletion( MediaPlayer player ){
+        startaudio = false;
+        seekbar.setProgress(0);
+        duration.setText("0:00");
+        play_button.setImageResource(R.drawable.play_hell);
+
+      }
+
+    });
+
     play_button.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View play ){
         switch( play.getId() ){
           case R.id.play_button:
             if( !player.isPlaying() ){
-              finished = false;
+              startaudio = true;
               player.start();
               play_button.setImageResource( R.drawable.stop_hell );
-              play_buttonGallery.setImageResource( R.drawable.stop_hell );
-              seekUpdation();
+              seekUpdationAudio();
             } else {
+              startaudio=false;
               player.pause();
               play_button.setImageResource( R.drawable.play_hell );
-              play_buttonGallery.setImageResource( R.drawable.play_hell );
-            }
-            break;
-        }
-
-      }
-    } );
-    play_buttonGallery.setOnClickListener( new View.OnClickListener(){
-      @Override
-      public void onClick( View play ){
-        switch( play.getId() ){
-          case R.id.play_buttonGallery:
-            if( !player.isPlaying() ){
-              finished = false;
-              player.start();
-              play_button.setImageResource( R.drawable.stop_hell );
-              play_buttonGallery.setImageResource( R.drawable.stop_hell );
-              seekUpdation();
-            } else {
-              player.pause();
-              play_button.setImageResource( R.drawable.play_hell );
-              play_buttonGallery.setImageResource( R.drawable.play_hell );
-            }
-            break;
-        }}});
-
-    player = ViertelTourMediaPlayer.getInstance( this );
-    player.loadAudio( audio );
-
-    seekbar.getProgressDrawable().setColorFilter( Color.GRAY, PorterDuff.Mode.SRC );
-    seekbarGallery.getProgressDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.SRC);
-    seekbar.setMax( player.getDuration() );
-    seekbarGallery.setMax(player.getDuration());
-    seekbar.setOnSeekBarChangeListener( customSeekBarListener );
-    if(player.isPlaying()){play_buttonGallery.setImageResource(R.drawable.stop_hell);}
-    else {play_buttonGallery.setImageResource(R.drawable.play_hell);}
-  //  seekbar.getThumb().mutate().setAlpha( 0 );//seekbar.getthumb ist pin auf der seekbar
-    player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){
-      @Override
-      public void onCompletion( MediaPlayer player ){
-        finished = true;
-        seekbar.setProgress( 0 );
-        seekbarGallery.setProgress(0);
-        duration.setText( "0:00" );
-        durationGallery.setText("0:00");
-
-        //player.pause();
-        play_button.setImageResource( R.drawable.play_hell );
-        play_buttonGallery.setImageResource(R.drawable.play_hell);
-      }
-
-    });
-
-    seekbarGallery.setOnSeekBarChangeListener( customSeekBarListener );
-
-    if(singlepage.INSTANCE.getPlayingAudio() && singlepage.INSTANCE.getTimeAudio()>0)
-    {play_buttonGallery.setImageResource(R.drawable.stop_hell);
-     play_button.setImageResource(R.drawable.stop_hell);
-
-      player.seekTo((int) singlepage.INSTANCE.getTimeAudio());
-      player.start();
-      finished=false;
-      seekUpdation();}
-    else if(singlepage.INSTANCE.getTimeAudio()>0)
-    {play_buttonGallery.setImageResource(R.drawable.play_hell);
-      play_button.setImageResource(R.drawable.play_hell);
-      player.seekTo((int) singlepage.INSTANCE.getTimeAudio());}
-
+            }break;}}});
   }
 
+
+//TODO: Videoplayer auslagern und abändern
   public void video(){
+/*   // if(player.getVideoview()SOURCE != SOURCE aktuelle Videoview (Wenn die Quellen unterschiedlich sind))
+    player.setVideoview(videoplayerGallery);
+    player.loadGalleryVideo(video);
+    player.loadVideo(video, videoplayer);
+    player.resetVideoFrame(videoplayer);
 
+    videoplayer.setVisibility(View.VISIBLE);
+    player.getVideoview().setVisibility(View.VISIBLE);
 
-    vid.setVideoPath( OurStorage.getInstance( this).getPathToFile( video ) );
-    vid.requestFocus();
-    vid.setVisibility(View.VISIBLE);
+    showGalleryVideoBar();
+
     if(singlepage.INSTANCE.getPlaying() && singlepage.INSTANCE.getTime()>0)
     {play_buttonGallery.setImageResource(R.drawable.stop_hell);
-
-      vid.seekTo((int) singlepage.INSTANCE.getTime());
-      vid.start();
-      start=true;
-    seekUpdation2();}
+      player.getVideoview().seekTo((int) singlepage.INSTANCE.getTime());
+      player.getVideoview().start();
+      startvideo=true;
+      seekUpdationVideo();}
     else if(singlepage.INSTANCE.getTime()>0)
-    {play_buttonGallery.setImageResource(R.drawable.play_hell);
-      vid.seekTo((int) singlepage.INSTANCE.getTime());
-    start=false;}
+      {play_buttonGallery.setImageResource(R.drawable.play_hell);
+        player.getVideoview().seekTo((int) singlepage.INSTANCE.getTime());
+     startvideo=false;}
+
     play_buttonGallery.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-        if( vid.isPlaying() ){
-          start = false;
-          vid.pause();
+        if( player.getVideoview().isPlaying() ){
+          startvideo = false;
+          player.getVideoview().pause();
           play_buttonGallery.setImageResource( R.drawable.play_hell );
         } else {
-          start = true;
-          vid.start();
+          startvideo = true;
+          player.getVideoview().start();
           play_buttonGallery.setImageResource( R.drawable.stop_hell );
-          seekUpdation2();
+          seekUpdationVideo();
         }
       }
     });
 
     seekbarGallery.setOnSeekBarChangeListener( customSeekBarListener2 );
-    vid.setOnTouchListener( new View.OnTouchListener(){
+    player.getVideoview().setOnTouchListener( new View.OnTouchListener(){
       @Override
       public boolean onTouch( View v, MotionEvent motionEvent ){
-        if( vid.isPlaying() && getResources().getConfiguration().orientation== Configuration.ORIENTATION_PORTRAIT){
-          start = false;
-          vid.pause();
+        if( player.getVideoview().isPlaying() && getResources().getConfiguration().orientation== Configuration.ORIENTATION_PORTRAIT){
+          startvideo = false;
+          player.getVideoview().pause();
           play_buttonGallery.setImageResource( R.drawable.play_hell );
-
         }
-        else if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE)
-        {mediaplayerbars();}
+        else if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE && player.getVideoview() != null)
+        {mediaplayerbars();
+           }
         else {
-          start = true;
-          vid.start();
+          startvideo = true;
+          player.getVideoview().start();
           play_buttonGallery.setImageResource( R.drawable.stop_hell );
-          seekUpdation2();}
+          seekUpdationVideo();}
         return false;
       }
     });
 
-            vid.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+    player.getVideoview().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 play_buttonGallery.setImageResource(R.drawable.play_hell);
-                start=false;
+                startvideo=false;
                 durationGallery.setText("0:00");
                 seekbarGallery.setProgress(0);
             }
         });
 
+
+    //TODO: Change Image dynamically to Video //AFTER VIDEO CHANGED AND XML UPDATED
+
         image.setVisibility(View.VISIBLE);
-        image.setImageResource(R.drawable.i_04_01_01);
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        image.setImageResource(R.drawable.play_hell);
+        videoplayer.setOnTouchListener(new View.OnTouchListener() {
+          @Override
+          public boolean onTouch(View view, MotionEvent motionEvent) {
+
                 vf.setDisplayedChild(1);
                 play_button.setImageResource(R.drawable.play_hell);
-                finished=true;
-                if(player.isPlaying())player.pause();
-                page=1;
-                start=true;
-                vid.seekTo((int) singlepage.INSTANCE.getTime());
-               play_buttonGallery.setImageResource(R.drawable.stop_hell);
-                vid.start();
+                startaudio=false;
+                if(player.isPlaying())
+                player.pause();
+                videoplayer.setVisibility(View.GONE);
+                player.getVideoview().setVisibility(View.VISIBLE);
+                singlepage.INSTANCE.setPage(1);
+                startvideo=true;
+                player.getVideoview().seekTo((int) singlepage.INSTANCE.getTime());
+                play_buttonGallery.setImageResource(R.drawable.stop_hell);
+                player.getVideoview().start();
 
                 seekbarGallery.setProgress((int) singlepage.INSTANCE.getTime());
-                seekUpdation2();
+                seekUpdationVideo();
+
+            return false;
             }
-        });
+        });*/
   }
 
   public void images(){
-    imagePager.setCurrentItem( 0 );
-   //
-    if( stationImagePaths.length > 1 ){
+    if( stationImagePaths.size() > 1 || !video.isEmpty() ){
       isimages=0;
-        imagePager.setOnPageChangeListener( new ViewPager.OnPageChangeListener(){
-        @Override
-        public void onPageScrolled( int position, float positionOffset, int positionOffsetPixels ){
-
-        }
-
-        @Override
-        public void onPageSelected( int position ){
-          isimages=position;
-          imagePagerGallery.setCurrentItem(position);
-
-          for( int i = 0; i < dotsCount; i++ ){
-            dots[i].setImageDrawable( getResources().getDrawable( R.drawable.nonselecteditem ) );
-          }
-
-          dots[position].setImageDrawable( getResources().getDrawable( R.drawable.selecteditem ) );
-        }
-
-        @Override
-        public void onPageScrollStateChanged( int state ){
-        }
-      });
+        imagePager.setOnPageChangeListener(pagechangelisten);
+        imagePagerGallery.setOnPageChangeListener(pagechangelisten);
       setUiPageViewController();
     }
   }
 
+
+
   public void mediaplayerbars()
-  {if (relGalleryBot.getVisibility() != View.GONE) {
+  {if (relGalleryBot.getVisibility() == View.VISIBLE) {
     Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_down);
     Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_up);
     relGalleryBot.startAnimation(slide1);
@@ -620,14 +516,132 @@ public class InformationActivity extends Activity{
     relGalleryTop.setVisibility(View.GONE);
 
   }
-  else if(relGalleryBot.getVisibility() != View.VISIBLE){
+  else if(relGalleryBot.getVisibility() == View.GONE){
     Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_up);
     Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_down);
     relGalleryBot.startAnimation(slide1);
     relGalleryTop.startAnimation(slide2);
     relGalleryBot.setVisibility(View.VISIBLE);
     relGalleryTop.setVisibility(View.VISIBLE);
-
   }}
+
+  public void showGalleryVideoBar()
+  {seekbarGallery.setVisibility(View.VISIBLE);
+    play_buttonGallery.setVisibility(View.VISIBLE);
+    durationGallery.setVisibility(View.VISIBLE);}
+
+
+
+
+
+
+
+  //Custom Class Seekbar start
+  public SeekBar.OnSeekBarChangeListener customSeekBarListener = new SeekBar.OnSeekBarChangeListener(){
+    @Override
+    public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
+      if( fromUser ){
+        player.seekTo( progress );
+      }
+    }
+
+    @Override
+    public void onStartTrackingTouch( SeekBar seekBar ){
+    }
+
+    @Override
+    public void onStopTrackingTouch( SeekBar seekBar ){
+    }
+  };
+
+  public SeekBar.OnSeekBarChangeListener customSeekBarListener2 = new SeekBar.OnSeekBarChangeListener(){
+    @Override
+    public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
+      if( fromUser ){
+        player.getVideoview().seekTo( progress );
+      }
+    }
+
+    @Override
+    public void onStartTrackingTouch( SeekBar seekBar ){
+    }
+
+    @Override
+    public void onStopTrackingTouch( SeekBar seekBar ){
+    }
+  };
+  //Custom Class Seekbar stop
+
+  //EIGENE KLASSE Orientation, zusätzlich muss geprüft werden, ob bildschirm gedreht werden darf und empfindlichkeit anpassung
+  public void initOrientation(){//Landscape/Portrait change
+    orientation = new OrientationEventListener( this, SensorManager.SENSOR_DELAY_NORMAL ){
+      @Override
+      public void onOrientationChanged( int arg0 ){
+        arg0= arg0%360;
+
+//TODO: Check orientation with variables and permission of orientation  //AFTER VIDEOPLAYER CHANGE
+        if( arg0>=87 && arg0<=93  && singlepage.INSTANCE.getPage()==1 ){
+
+          singlepage.INSTANCE.setPage(1);
+          if( !video.isEmpty() )
+          {singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
+            singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());}
+          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+        }
+
+
+        else if(arg0==180){}
+
+        else if(arg0>=267  && arg0<=273 && singlepage.INSTANCE.getPage()==1){
+
+          singlepage.INSTANCE.setPage(1);
+          if( !video.isEmpty() )
+          {singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
+            singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());}
+          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
+        else if((arg0>=357 || arg0<=3) && getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
+        {
+
+          singlepage.INSTANCE.setPage(1);
+         if( !video.isEmpty())
+          {singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
+            singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());}
+          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+      }
+    };
+    if( orientation.canDetectOrientation() ){
+      orientation.enable();
+    }
+  }
+//Orientation end
+
+  //ViewPager.OnPageChangeListener
+  ViewPager.OnPageChangeListener pagechangelisten = new ViewPager.OnPageChangeListener(){
+    @Override
+    public void onPageScrolled( int position, float positionOffset, int positionOffsetPixels ){
+
+    }
+
+    @Override
+    public void onPageSelected( int position ){
+      isimages=position;
+      imagePagerGallery.setCurrentItem(position);
+      imagePager.setCurrentItem(position);
+
+      for( int i = 0; i < dotsCount; i++ ){
+        dots[i].setImageDrawable( getResources().getDrawable( R.drawable.nonselecteditem ) );
+      }
+
+      dots[position].setImageDrawable( getResources().getDrawable( R.drawable.selecteditem ) );
+    }
+
+    @Override
+    public void onPageScrollStateChanged( int state ){
+    }
+  };
+  //Viewpager.onPageChangeListener end
 
 }

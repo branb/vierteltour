@@ -22,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,7 +44,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.PolyUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
 import com.uni_wuppertal.iad.vierteltour.ui.intro.IntroActivity;
+
+import com.uni_wuppertal.iad.vierteltour.ui.media_player.InformationActivity;
+import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
+import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
+
 import com.uni_wuppertal.iad.vierteltour.ui.up_slider.PagerAdapter;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.Route;
@@ -111,6 +118,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private XmlParser tour;
   private int marked;         //marked für Tour ausgewählt: -1 für nicht ausgewählt, 0-xxx für ausgewählte Tour
   private RelativeLayout panel;
+  public static RelativeLayout audiobar;
+  private ViertelTourMediaPlayer player;
+  private Singletonint singlepage;
+
+
 
   @Override
   protected void onCreate( Bundle savedInstanceState ){
@@ -134,6 +146,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     marked = -1;        //keine Tour ausgewählt
     tour = new XmlParser( this );
+    player = ViertelTourMediaPlayer.getInstance( this );
+
 
     tour.readTourlist( "tourlist.xml" );
 
@@ -352,6 +366,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     xbtn.setVisibility( View.GONE );
     title.setVisibility( View.GONE );
     mPager.setVisibility( View.GONE );
+    player.stop();
+    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
+    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+    audiobar.setLayoutParams(layoutParams);
+    singlepage.INSTANCE.setId(0);
   }
 
   //Erstelle den Slider
@@ -399,6 +418,31 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mPager = (ViewPager) findViewById( R.id.pager );
     pageradapter = new PagerAdapter( getSupportFragmentManager(), this );
     mPager.setAdapter( pageradapter );
+    audiobar = (RelativeLayout) findViewById(R.id.audiobar);
+    audiobar.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+
+        Intent tmpIntent = new Intent( getApplicationContext(), InformationActivity.class );
+
+        //myIntent.putExtra("key", arguments.getInt(ARG_PAGE_NUMBER)); //Optional parameters
+        tmpIntent.putExtra( "station", tour.ListTouren.get(marked).stations.get(singlepage.INSTANCE.getPosition()).title );
+        tmpIntent.putExtra( "name", tour.ListTouren.get(marked).info.name );
+        tmpIntent.putExtra( "autor", tour.ListTouren.get(marked).info.author );
+        tmpIntent.putExtra( "zeit", tour.ListTouren.get(marked).info.time );
+        tmpIntent.putExtra( "laenge", tour.ListTouren.get(marked).info.length);
+        tmpIntent.putExtra( "farbe", tour.ListTouren.get(marked).info.color );
+        tmpIntent.putExtra( "desc", tour.ListTouren.get(marked).stations.get(singlepage.INSTANCE.getPosition()).description );
+        tmpIntent.putExtra( "size", "" + tour.ListTouren.get(marked).stations.size() );
+        tmpIntent.putExtra( "pos", "" + (singlepage.INSTANCE.getPosition() + 1) );
+
+        tmpIntent.putExtra( "img", tour.ListTouren.get(marked).stations.get( singlepage.INSTANCE.getPosition() ).image);
+        tmpIntent.putExtra( "audio", tour.ListTouren.get(marked).stations.get( singlepage.INSTANCE.getPosition() ).audio);
+        tmpIntent.putExtra( "video", tour.ListTouren.get(marked).stations.get( singlepage.INSTANCE.getPosition() ).video);
+
+        overridePendingTransition( R.anim.fade_in, R.anim.map_out );
+        startActivity( tmpIntent );
+      }});
   }
 
 
