@@ -3,6 +3,7 @@ package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -11,12 +12,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +43,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.PolyUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.uni_wuppertal.iad.vierteltour.ui.intro.IntroActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.up_slider.PagerAdapter;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.Route;
@@ -113,7 +117,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     super.onCreate( savedInstanceState );
 
     // Check for updates
-    if( Updater.getInstance( this ).anyUpdatesOnTourdata() ){
+
+    //  Initialize SharedPreferences
+    SharedPreferences getPrefs = PreferenceManager
+      .getDefaultSharedPreferences( getBaseContext() );
+
+    if( (! getPrefs.getBoolean( "firstStart", true )) && Updater.getInstance( this ).anyUpdatesOnTourdata() ){
       Updater.getInstance( this ).downloadTourdata();
     }
 
@@ -134,6 +143,35 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     moveDrawerToTop();
     initActionBar();
     initDrawer();
+
+    showIntro();
+  }
+
+  // Show intro, but only if it's the first start of the app
+  private void showIntro(){
+    //  Declare a new thread to do a preference check
+    Thread t = new Thread( new Runnable(){
+      @Override
+      public void run(){
+        //  Initialize SharedPreferences
+        SharedPreferences getPrefs = PreferenceManager
+          .getDefaultSharedPreferences( getBaseContext() );
+
+        //  Create a new boolean and preference and set it to true
+        boolean isFirstStart = getPrefs.getBoolean( "firstStart", true );
+
+        //  If the activity has never started before...
+        if( isFirstStart ){
+          //        if( true ){
+          //  Launch app intro
+          Intent i = new Intent( MapsActivity.this, IntroActivity.class );
+          startActivity( i );
+        }
+      }
+    } );
+
+    // Start the thread
+    t.start();
   }
 
 
@@ -538,6 +576,20 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           // ftx.replace(R.id.main_content, new FragmentFirst());
         } else if( position == 1 ){
           //  ftx.replace(R.id.main_content, new FragmentSecond());
+          showIntro();
+
+          //  Initialize SharedPreferences
+          SharedPreferences getPrefs = PreferenceManager
+            .getDefaultSharedPreferences( getBaseContext() );
+
+          //  Make a new preferences editor
+          SharedPreferences.Editor e = getPrefs.edit();
+
+          //  Edit preference to make it false because we don't want this to run again
+          e.putBoolean( "firstStart", true );
+
+          //  Apply changes
+          e.apply();
 
         }
         //  ftx.commit();
@@ -717,4 +769,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     super.onRestart();
     locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locationListener );
   }
+
+
+
 }
