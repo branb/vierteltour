@@ -124,16 +124,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
 
-    // Check for updates
-
-    //  Initialize SharedPreferences
-    SharedPreferences getPrefs = PreferenceManager
-      .getDefaultSharedPreferences( getBaseContext() );
-
-    if( (! getPrefs.getBoolean( "firstStart", true )) && Updater.getInstance( this ).anyUpdatesOnTourdata() ){
-      Updater.getInstance( this ).downloadTourdata();
-    }
-
     setContentView( R.layout.activity_main );
     // Obtain the SupportMapFragment and get notified when the map is ready to be used.
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -155,7 +145,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     initDrawer();
 
     showIntro();
+    checkUpdates();
   }
+
 
   // Show intro, but only if it's the first start of the app
   private void showIntro(){
@@ -163,25 +155,29 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     Thread t = new Thread( new Runnable(){
       @Override
       public void run(){
-        //  Initialize SharedPreferences
-        SharedPreferences getPrefs = PreferenceManager
-          .getDefaultSharedPreferences( getBaseContext() );
-
-        //  Create a new boolean and preference and set it to true
-        boolean isFirstStart = getPrefs.getBoolean( "firstStart", true );
-
         //  If the activity has never started before...
-        if( isFirstStart ){
-          //        if( true ){
+        if( PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean( "firstStart", true ) ){
           //  Launch app intro
           Intent i = new Intent( MapsActivity.this, IntroActivity.class );
           startActivity( i );
         }
       }
-    } );
+    });
 
     // Start the thread
     t.start();
+  }
+
+
+  /**
+   * Check for updates
+   */
+  private void checkUpdates(){
+    SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences( getBaseContext() );
+
+    if( (! getPrefs.getBoolean( "firstStart", true )) && Updater.getInstance( this ).anyUpdatesOnTourdata() ){
+      Updater.getInstance( this ).downloadTourdata();
+    }
   }
 
 
