@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.uni_wuppertal.iad.vierteltour.R;
-import com.uni_wuppertal.iad.vierteltour.ReplaceFont;
+import com.uni_wuppertal.iad.vierteltour.utility.ReplaceFont;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 
 //Vorerst nicht benötigt, ist für Splashscreen zuständig, eigentlich in AndroidManifest als Launcher ausgewählt

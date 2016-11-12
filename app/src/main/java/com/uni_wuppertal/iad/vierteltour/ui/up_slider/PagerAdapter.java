@@ -5,8 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 
-import com.uni_wuppertal.iad.vierteltour.Tour;
-import com.uni_wuppertal.iad.vierteltour.ui.up_slider.PageFragment;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 
 import java.util.ArrayList;
 import java.util.List;

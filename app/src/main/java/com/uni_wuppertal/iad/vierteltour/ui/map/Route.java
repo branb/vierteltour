@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

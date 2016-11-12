@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.uni_wuppertal.iad.vierteltour.R;
-import com.uni_wuppertal.iad.vierteltour.XmlParser;
+import com.uni_wuppertal.iad.vierteltour.utility.XmlParser;
 
 import java.util.List;
 

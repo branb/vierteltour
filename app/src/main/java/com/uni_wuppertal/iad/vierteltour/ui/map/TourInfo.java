@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;

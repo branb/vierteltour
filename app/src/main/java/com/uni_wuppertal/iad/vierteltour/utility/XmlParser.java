@@ -1,13 +1,14 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.utility;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.uni_wuppertal.iad.vierteltour.component.map.Station;
-import com.uni_wuppertal.iad.vierteltour.component.map.StationInfo;
-import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
+import com.uni_wuppertal.iad.vierteltour.ui.map.TourList;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Station;
+import com.uni_wuppertal.iad.vierteltour.ui.map.StationInfo;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;

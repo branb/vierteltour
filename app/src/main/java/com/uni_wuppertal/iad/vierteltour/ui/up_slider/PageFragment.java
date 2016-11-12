@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.InformationActivity;
 import com.uni_wuppertal.iad.vierteltour.R;
-import com.uni_wuppertal.iad.vierteltour.Tour;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour.component.map;
+package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 public class StationInfo{
   public String name;

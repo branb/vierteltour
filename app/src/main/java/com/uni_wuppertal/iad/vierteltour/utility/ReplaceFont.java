@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour;
+package com.uni_wuppertal.iad.vierteltour.utility;
 
 import android.content.Context;
 import android.graphics.Typeface;
