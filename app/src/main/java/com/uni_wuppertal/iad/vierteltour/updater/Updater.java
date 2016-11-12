@@ -117,11 +117,11 @@ public class Updater extends ContextWrapper{
     // TODO: Move the URL to the resources once you have finetuned the updater behaviour
     String stringUrl = "http://10.0.2.2:8888/";
 
-    new DownloadWebpageTask().execute(stringUrl);
+    new DownloadTourdataVersionTask().execute(stringUrl);
 
     // Assumption: If the version on server differs from our version, the tour data is new
     // There is no reason whatsoever for the data on the server side to be OLDER than this one.
-    //  Initialize SharedPreferences
+    // Initialize SharedPreferences
     SharedPreferences getPrefs = PreferenceManager
       .getDefaultSharedPreferences( getBaseContext() );
 
@@ -130,7 +130,7 @@ public class Updater extends ContextWrapper{
 
     // If we've never stored a tour data version, use the remote one as the local version
     if( !getPrefs.contains( "localTourdataVersion" ) ) {
-      e.putString( "localTourdataVersion", getPrefs.getString( "remoteTourdataVersion", "" ) );
+      e.putString( "localTourdataVersion", getPrefs.getString( "remoteTourdataVersion", "" ) ).apply();
       return true;
     }
 
@@ -158,12 +158,9 @@ public class Updater extends ContextWrapper{
     Log.d( DEBUG_TAG, "Starting file download..." );
 
     // TODO: Move the URL to the resources
-    //String url = "http://10.0.2.2:8888/fortschrott.zip";
     String url = "http://10.0.2.2:8888/files.zip";
-    //String destination = OurStorage.getInstance( Updater.this ).getStoragePath() + "/fortschrott.zip";
     String destination = new File( OurStorage.getInstance( Updater.this ).getStoragePath() ).getParentFile().getAbsolutePath()  + "/fortschrott.zip";
 
-    //new DownloadFileTask().execute(stringUrl);
     this.downloadFile( url, destination );
 
 
@@ -177,7 +174,7 @@ public class Updater extends ContextWrapper{
   // has been established, the AsyncTask downloads the contents of the webpage as
   // an InputStream. Finally, the InputStream is converted into a string, which is
   // displayed in the UI by the AsyncTask's onPostExecute method.
-  private class DownloadWebpageTask extends AsyncTask<String, Void, String>{
+  private class DownloadTourdataVersionTask extends AsyncTask<String, Void, String>{
     @Override
     protected String doInBackground( String... urls ) {
       // urls comes from the execute() call: urls[0] is the url.
