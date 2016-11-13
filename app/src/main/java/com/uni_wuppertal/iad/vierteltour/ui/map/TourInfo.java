@@ -1,24 +1,17 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
-import org.simpleframework.xml.Attribute;
+import android.content.Context;
+
 import org.simpleframework.xml.Root;
 
 @Root( name = "tour" )
-class TourInfo {
+class TourInfo extends TourListData{
 
-  public TourInfo(){};
+  public TourInfo(){ super(); }
 
-  @Attribute
-  private String name;
 
-  @Attribute
-  private String slug;
+  private Route route;
 
-  public String getName() {
-    return name;
-  }
 
-  public String getSlug() {
-    return slug;
   }
 }
