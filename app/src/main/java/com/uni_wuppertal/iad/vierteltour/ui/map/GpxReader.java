@@ -29,13 +29,13 @@ public class GpxReader{
   }
 
 
-  public Route readRoute( String fileName ){
+  public Route readRoute( String gpxFilePath ){
     Serializer serializer = new Persister();
 
     try{
-      Log.d( DEBUG_TAG, "Reading " + fileName );
+      Log.d( DEBUG_TAG, "Reading " + OurStorage.getInstance( context ).getPathToFile( gpxFilePath ) );
 
-      Gpx gpx = serializer.read( Gpx.class, OurStorage.getInstance( context ).getFile( fileName ), false );
+      Gpx gpx = serializer.read( Gpx.class, OurStorage.getInstance( context ).getFile( gpxFilePath ), false );
 
       Log.d( DEBUG_TAG, gpx.route().name() + " has " + gpx.route().segments().size() + " segment(s)" );
 
