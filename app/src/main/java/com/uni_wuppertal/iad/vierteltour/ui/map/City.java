@@ -11,10 +11,10 @@ public class City extends TourListData{
 
 
   @ElementList( name = "tour", required = false, inline = true )
-  private List<TourInfo> tours;
+  private List<Tour> tours;
 
 
-  public List<TourInfo> tours() {
+  public List<Tour> tours() {
     return tours;
   }
 }

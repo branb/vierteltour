@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 
-import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
+import com.uni_wuppertal.iad.vierteltour.ui.map.TourOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ public class PagerAdapter extends FragmentPagerAdapter{
     return fragments.size();
   }
 
-  public PageFragment addFragment( int position, Tour tour ){
-    PageFragment xfragment = PageFragment.create( position, tour );
+  public PageFragment addFragment( int position, TourOld tourOld ){
+    PageFragment xfragment = PageFragment.create( position, tourOld );
     fragments.add( position, xfragment );
     notifyDataSetChanged();
     return xfragment;

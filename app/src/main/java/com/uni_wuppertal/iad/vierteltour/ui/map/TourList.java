@@ -1,7 +1,5 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
-import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
-
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
@@ -47,7 +45,7 @@ public class TourList{
         for( City city : area.cities() ){
           city.home( area.home() );
 
-          for( TourInfo tour : city.tours() ){
+          for( Tour tour : city.tours() ){
             tour.home( city.home() );
           }
         }
@@ -118,11 +116,11 @@ public class TourList{
    *
    * @param slug The sanitized name of the tour
    */
-  public TourInfo tour( String slug ){
+  public Tour tour( String slug ){
     for( Region region : regions ){
       for( Area area : region.areas() ){
         for( City city : area.cities() ){
-          for( TourInfo tour : city.tours() ){
+          for( Tour tour : city.tours() ){
             if( tour.slug().equals( slug ) ){
               return tour;
             }
@@ -131,7 +129,7 @@ public class TourList{
       }
     }
 
-    return new TourInfo();
+    return new Tour();
   }
 
 }

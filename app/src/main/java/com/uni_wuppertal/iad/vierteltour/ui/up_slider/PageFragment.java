@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.InformationActivity;
 import com.uni_wuppertal.iad.vierteltour.R;
-import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
+import com.uni_wuppertal.iad.vierteltour.ui.map.TourOld;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class PageFragment extends Fragment{
   private TextView title;
   private int position;
 
-  public static PageFragment create( int pageNumber, Tour marked ){
+  public static PageFragment create( int pageNumber, TourOld marked ){
     PageFragment fragment = new PageFragment();
     arguments = new Bundle();
     arguments.putInt( ARG_PAGE_NUMBER, pageNumber );

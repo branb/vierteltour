@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
+import com.uni_wuppertal.iad.vierteltour.ui.map.TourOld;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Station;
 import com.uni_wuppertal.iad.vierteltour.ui.map.StationInfo;
 
@@ -41,8 +41,8 @@ public class XmlParser{
   public XmlPullParser parser;
   public XmlPullParserFactory parserFactory;
   public String text;
-  public Tour tour;
-  public List<Tour> ListTouren;
+  public TourOld tourOld;
+  public List<TourOld> listTouren;
   public StationInfo tourInfo;
   public List<Station> stations;
   public List<LatLng> track;
@@ -54,7 +54,7 @@ public class XmlParser{
     FileInputStream inputStream = OurStorage.getInstance( context )
                                             .getFile( "tour.xml" );
 
-    ListTouren = new Vector<>();
+    listTouren = new Vector<>();
     try{
       parserFactory = XmlPullParserFactory.newInstance();
       parser = parserFactory.newPullParser();
@@ -65,7 +65,7 @@ public class XmlParser{
         if( eventType == XmlPullParser.START_TAG ){
           switch( parser.getName() ){
             case ("tour"):
-              tour = new Tour();
+              tourOld = new TourOld();
               stations = new Vector<>();
               break;
             case ("info"):
@@ -137,9 +137,9 @@ public class XmlParser{
               stations.add( station );
               break;
             case ("tour"):
-              tour = new Tour( tourInfo, stations, trkid, context );
-              ListTouren.add( tour );
-              parseTrack( context, tour );
+              tourOld = new TourOld( tourInfo, stations, trkid, context );
+              listTouren.add( tourOld );
+              parseTrack( context, tourOld );
               break;
           }
 
@@ -153,7 +153,7 @@ public class XmlParser{
 
   }
 
-  public void parseTrack( FragmentActivity context, Tour t ){
+  public void parseTrack( FragmentActivity context, TourOld t ){
     FileInputStream inputStream = OurStorage.getInstance( context )
                                             .getFile( "track_" + t.trkid + ".gpx" );
 
