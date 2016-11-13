@@ -8,10 +8,9 @@ import java.util.List;
 
 @Root( name = "area" )
 public class Area {
+  public Area(){ super(); }
 
-  public Area(){};
-
-  @ElementList( name = "city", required = false, inline = true )
+  @ElementList( name = "city", inline = true )
   private List<City> cities;
 
   @Attribute
@@ -20,15 +19,15 @@ public class Area {
   @Attribute
   private String slug;
 
-  public List<City> getCities() {
+  public List<City> cities() {
     return cities;
   }
 
-  public String getName() {
+  public String name() {
     return name;
   }
 
-  public String getSlug() {
+  public String slug() {
     return slug;
   }
 }

@@ -11,21 +11,20 @@ import java.util.List;
  *
  */
 @Root( name = "tourlist" )
-public class TourList {
+public class TourList{
+  public TourList(){ super(); }
 
-  public TourList(){};
-
-  @ElementList( name = "region", required = false, inline = true )
+  @ElementList( name = "region", inline = true )
   private List<Region> regions;
 
   @Attribute()
   private String version;
 
-  public String getVersion() {
+  public String version() {
     return version;
   }
 
-  public List<Region> getRegions() {
+  public List<Region> regions() {
     return regions;
   }
 }

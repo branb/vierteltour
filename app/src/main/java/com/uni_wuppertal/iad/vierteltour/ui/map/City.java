@@ -8,8 +8,8 @@ import java.util.List;
 
 @Root( name = "city" )
 public class City {
+  public City(){ super(); }
 
-  public City(){};
 
   @ElementList( name = "tour", required = false, inline = true )
   private List<TourInfo> tours;
@@ -20,15 +20,16 @@ public class City {
   @Attribute
   private String slug;
 
-  public List<TourInfo> getTours() {
+
+  public List<TourInfo> tours() {
     return tours;
   }
 
-  public String getName() {
+  public String name() {
     return name;
   }
 
-  public String getSlug() {
+  public String slug() {
     return slug;
   }
 }
