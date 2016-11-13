@@ -136,6 +136,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
     TourList tourlist = new TourListReader( this ).readTourList( "tourlist.xml" );
+    Route route = new GpxReader( this ).readRoute( "track_1.gpx" );
 
     initPager();
     initSupl();

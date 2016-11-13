@@ -1,6 +1,5 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
-import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
@@ -18,24 +17,16 @@ import java.util.List;
  * It's values are read from a GPX file by the GpxReader class
  */
 
-@Root( name = "trk" )
-public class Route{
-  public Route(){ super(); }
+@Root( name = "trkseg" )
+public class RouteSegment{
+  public RouteSegment(){ super(); }
 
 
-  @Element( name = "name", required = true )
-  private String name;
-
-  @ElementList( name = "trkseg", required = true, inline = true )
-  private List<RouteSegment> segments;
+  @ElementList( name = "trkpt", required = true, inline = true )
+  private List<RouteWaypoint> waypoints;
 
 
-
-  public String name() {
-    return name;
-  }
-
-  public List<RouteSegment> segments() {
-    return segments;
+  public List<RouteWaypoint> waypoints(){
+    return waypoints;
   }
 }
