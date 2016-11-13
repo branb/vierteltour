@@ -19,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -119,6 +120,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Singletonint singlepage;
 
 
+  private TourList tourlist;
 
   @Override
   protected void onCreate( Bundle savedInstanceState ){
@@ -135,8 +137,16 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     player = ViertelTourMediaPlayer.getInstance( this );
 
 
-    TourList tourlist = new TourListReader( this ).readTourList( "tourlist.xml" );
-    Route route = new GpxReader( this ).readRoute( "track_1.gpx" );
+    tourlist = new TourListReader( this ).readTourList();
+
+    Log.d( "Xml/getCity", "Searching for City 'wuppertal': " + tourlist.city( "wuppertal" ).name() );
+
+    TourInfo tourFortschrott = tourlist.tour( "fortschrott" );
+    Log.d( "Xml/getTour", "Searching for Tour 'fortschrott': " + tourFortschrott.name() );
+    Log.d( "Xml/getFortschrottHome", "Home directory': " + tourFortschrott.home() );
+
+    RouteWaypoint waypointFortschrott = tourFortschrott.route( this ).segments().get( 0 ).waypoints().get( 0 );
+    Log.d( "Xml/getFortschrottRoute", "First coordinates of Fortschrott Route: " + waypointFortschrott.latitude() + " / " + waypointFortschrott.longitude() );
 
     initPager();
     initSupl();

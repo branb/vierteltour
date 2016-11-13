@@ -20,6 +20,14 @@ import org.simpleframework.xml.core.Persister;
 public class TourListReader{
   private final static String DEBUG_TAG = "Xml/TourListReader";
 
+  private final static String xmlFile = "tourlist.xml";
+
+  /**
+   * Home directory of the tours. Always *relative* to wherever you want it to be stored on the
+   * device (usually, external storage).
+   *
+   */
+  private final static String toursHome = "tours";
 
   private Context context;
 
@@ -29,13 +37,17 @@ public class TourListReader{
   }
 
 
-  public TourList readTourList( String fileName ){
+
+  public TourList readTourList(){
     Serializer serializer = new Persister();
 
-    try{
-      Log.d( DEBUG_TAG, "Reading " + fileName );
+    String xmlDataPath = OurStorage.getInstance( context ).getPathToFile( xmlFile );
 
-      TourList tourlist = serializer.read( TourList.class, OurStorage.getInstance( context ).getFile( fileName ), false );
+
+    try{
+      Log.d( DEBUG_TAG, "Reading " + xmlDataPath );
+
+      TourList tourlist = serializer.read( TourList.class, OurStorage.getInstance( context ).getFile( xmlFile ), false );
 
       Log.d( DEBUG_TAG, "Version: " + tourlist.version() );
       Log.d( DEBUG_TAG, "Found " + tourlist.regions().size() + " region(s)" );
@@ -45,6 +57,9 @@ public class TourListReader{
       for( Region region : tourlist.regions() ){
         Log.d( DEBUG_TAG, "#" + ++i + " has " + region.areas().size() + " areas" );
       }
+
+      // Initialize tourlist
+      tourlist.init( "tours" );
 
       return tourlist;
     } catch( Exception e ) {
