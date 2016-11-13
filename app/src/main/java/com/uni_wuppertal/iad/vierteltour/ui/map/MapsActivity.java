@@ -135,7 +135,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     player = ViertelTourMediaPlayer.getInstance( this );
 
 
-    tour.readTourlist( "tourlist.xml" );
+    TourList tourlist = new TourListReader( this ).readTourList( "tourlist.xml" );
 
     initPager();
     initSupl();

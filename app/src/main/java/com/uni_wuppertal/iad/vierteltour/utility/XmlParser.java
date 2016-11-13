@@ -6,12 +6,8 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
-import com.uni_wuppertal.iad.vierteltour.ui.map.TourList;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Station;
 import com.uni_wuppertal.iad.vierteltour.ui.map.StationInfo;
-
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -188,29 +184,5 @@ public class XmlParser{
     }
 
   }
-
-
-  public String readTourlist( String fileName ){
-    Serializer serializer = new Persister();
-
-    String result = "";
-
-    try{
-      Log.d( DEBUG_TAG, "Starting the deserialization (I hope so, at least..." );
-
-      TourList tourlist = serializer.read( TourList.class, OurStorage.getInstance( context ).getFile( fileName ) );
-
-      Log.d( DEBUG_TAG, tourlist.toString() );
-      Log.d( DEBUG_TAG, "Version of downloaded tourlist: " + tourlist.getVersion() );
-
-      result = tourlist.toString();
-    } catch( Exception e ) {
-      Log.d( DEBUG_TAG, e.toString() );
-    }
-
-    return result;
-  }
-
-
 
 }
