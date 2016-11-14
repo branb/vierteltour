@@ -5,6 +5,9 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.uni_wuppertal.iad.vierteltour.ui.map.RouteWaypoint;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
+import com.uni_wuppertal.iad.vierteltour.ui.map.TourList;
 import com.uni_wuppertal.iad.vierteltour.ui.map.TourOld;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Station;
 import com.uni_wuppertal.iad.vierteltour.ui.map.StationInfo;
@@ -25,6 +28,7 @@ public class XmlParser{
 
   public int trkid;
   public String name;
+  public String slug;
   public String author;
   public String description;
   public String length;
@@ -47,12 +51,15 @@ public class XmlParser{
   public List<Station> stations;
   public List<LatLng> track;
 
+  public TourList tourlist;
 
-  public XmlParser( FragmentActivity context ){
+  public XmlParser( FragmentActivity context, TourList tourlist ){
     this.context = context;
 
     FileInputStream inputStream = OurStorage.getInstance( context )
                                             .getFile( "tour.xml" );
+
+    this.tourlist = tourlist;
 
     listTouren = new Vector<>();
     try{
@@ -89,6 +96,9 @@ public class XmlParser{
             case ("name"):
               name = text;
               break;
+            case ("slug"):
+              slug = text;
+              break;
             case ("author"):
               author = text;
               break;
@@ -109,7 +119,7 @@ public class XmlParser{
               break;
             // construct TourInfo
             case ("info"):
-              tourInfo = new StationInfo( name, author, description, length, time, image, color );
+              tourInfo = new StationInfo( name, slug, author, description, length, time, image, color );
               break;
 
             // Station
@@ -139,7 +149,7 @@ public class XmlParser{
             case ("tour"):
               tourOld = new TourOld( tourInfo, stations, trkid, context );
               listTouren.add( tourOld );
-              parseTrack( context, tourOld );
+              parseTrack( tourOld );
               break;
           }
 
@@ -153,36 +163,11 @@ public class XmlParser{
 
   }
 
-  public void parseTrack( FragmentActivity context, TourOld t ){
-    FileInputStream inputStream = OurStorage.getInstance( context )
-                                            .getFile( "track_" + t.trkid + ".gpx" );
-
-    try{
-      XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-      XmlPullParser parser = factory.newPullParser();
-      parser.setInput( inputStream, null );
-
-      int eventType = parser.getEventType();
-      while( eventType != XmlPullParser.END_DOCUMENT ){
-        if( eventType == XmlPullParser.START_TAG ){
-          if( parser.getName()
-                    .equals( "trkpt" ) ){
-            Double lat = Double.parseDouble( parser.getAttributeValue( null, "lat" ) );
-            Double lon = Double.parseDouble( parser.getAttributeValue( null, "lon" ) );
-            LatLng latlng = new LatLng( lat, lon );
-            t.track.add( latlng );
-          }
-        }
-        if( eventType == XmlPullParser.TEXT ){
-        }
-        if( eventType == XmlPullParser.END_TAG ){
-        }
-        eventType = parser.next();
-      }
-    } catch( XmlPullParserException | IOException e ){
-      Log.d( DEBUG_TAG, e.toString() );
+  public void parseTrack( TourOld t_old ){
+    for( RouteWaypoint wp : tourlist.tour( t_old.info.slug ).route( context ).segments().get( 0 ).waypoints() ){
+      LatLng latlng = new LatLng( wp.latitude(), wp.longitude() );
+      t_old.track.add( latlng );
     }
-
   }
 
 }

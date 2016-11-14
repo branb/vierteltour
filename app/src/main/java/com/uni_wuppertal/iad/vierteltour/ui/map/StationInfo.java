@@ -2,6 +2,7 @@ package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 public class StationInfo{
   public String name;
+  public String slug;
   public String author;
   public String description;
   public String length;
@@ -12,8 +13,9 @@ public class StationInfo{
   public StationInfo(){
   }
 
-  public StationInfo( String n, String a, String d, String l, String t, String i, String c ){
+  public StationInfo( String n, String s, String a, String d, String l, String t, String i, String c ){
     name = n;
+    slug = s;
     author = a;
     description = d;
     length = l;
@@ -24,6 +26,6 @@ public class StationInfo{
 
   @Override
   public String toString(){
-    return name + "\n" + author + "\n" + description + "\n" + length + "\n" + time + "\n" + image + "\n" + color + "\n";
+    return name + "\n" + slug + "\n" + author + "\n" + description + "\n" + length + "\n" + time + "\n" + image + "\n" + color + "\n";
   }
 }

@@ -133,11 +133,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mapFragment.getMapAsync( this );
 
     marked = -1;        //keine Tour ausgewählt
-    tourXml = new XmlParser( this );
     player = ViertelTourMediaPlayer.getInstance( this );
 
 
     tourlist = new TourListReader( this ).readTourList();
+    tourXml = new XmlParser( this, tourlist );
+
 
     Log.d( "Xml/getCity", "Searching for City 'wuppertal': " + tourlist.city( "wuppertal" ).name() );
 
