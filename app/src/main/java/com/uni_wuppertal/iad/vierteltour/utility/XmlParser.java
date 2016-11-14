@@ -6,11 +6,10 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.uni_wuppertal.iad.vierteltour.ui.map.RouteWaypoint;
-import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 import com.uni_wuppertal.iad.vierteltour.ui.map.TourList;
 import com.uni_wuppertal.iad.vierteltour.ui.map.TourOld;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Station;
-import com.uni_wuppertal.iad.vierteltour.ui.map.StationInfo;
+import com.uni_wuppertal.iad.vierteltour.ui.map.TourInfo;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -47,7 +46,7 @@ public class XmlParser{
   public String text;
   public TourOld tourOld;
   public List<TourOld> listTouren;
-  public StationInfo tourInfo;
+  public TourInfo tourInfo;
   public List<Station> stations;
   public List<LatLng> track;
 
@@ -76,7 +75,7 @@ public class XmlParser{
               stations = new Vector<>();
               break;
             case ("info"):
-              tourInfo = new StationInfo();
+              tourInfo = new TourInfo();
               break;
           }
 
@@ -119,7 +118,7 @@ public class XmlParser{
               break;
             // construct TourInfo
             case ("info"):
-              tourInfo = new StationInfo( name, slug, author, description, length, time, image, color );
+              tourInfo = new TourInfo( name, slug, author, description, length, time, image, color );
               break;
 
             // Station

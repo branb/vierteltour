@@ -15,7 +15,7 @@ import java.util.Vector;
 
 public class TourOld{
   public int trkid;
-  public StationInfo info;
+  public TourInfo info;
   public List<Station> stations;
   public List<LatLng> track;
   public PolylineOptions polylines;
@@ -26,12 +26,12 @@ public class TourOld{
     track = new Vector<>();
   }
 
-  public TourOld( StationInfo i, List<Station> s ){
+  public TourOld( TourInfo i, List<Station> s ){
     info = i;
     stations = s;
   }
 
-  public TourOld( StationInfo i, List<Station> s, int tid, FragmentActivity context ){
+  public TourOld( TourInfo i, List<Station> s, int tid, FragmentActivity context ){
     info = i;
     stations = s;
     trkid = tid;
