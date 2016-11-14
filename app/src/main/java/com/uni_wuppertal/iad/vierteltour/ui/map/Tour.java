@@ -5,7 +5,7 @@ import android.content.Context;
 import org.simpleframework.xml.Root;
 
 @Root( name = "tour" )
-class Tour extends TourListData{
+public class Tour extends TourListData{
 
   public Tour(){ super(); }
 
