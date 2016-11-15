@@ -38,7 +38,7 @@ public class PageFragment extends Fragment{
     img.add( marked.stations.get( pageNumber ).image );
     aud.add( marked.stations.get( pageNumber ).audio );
     vid.add( marked.stations.get( pageNumber ).video );
-    TOURNAME = marked.info.name;
+    TOURNAME = marked.info.name();
     AUTOR = marked.info.author;
     TIME = marked.info.time;
     LENGHT = marked.info.length;

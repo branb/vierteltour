@@ -1,10 +1,13 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
+import android.util.Log;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Class that represents the list of all available tours
@@ -47,6 +50,10 @@ public class TourList{
 
           for( Tour tour : city.tours() ){
             tour.home( city.home() );
+
+            // TODO: Don't read all tours at once, only when required. Change this after refactoring is finished
+            // Also, read the tour details
+            tour.details().home( tour.home() );
           }
         }
       }

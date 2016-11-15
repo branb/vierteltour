@@ -163,7 +163,7 @@ public class XmlParser{
   }
 
   public void parseTrack( TourOld t_old ){
-    for( RouteWaypoint wp : tourlist.tour( t_old.info.slug ).route( context ).segments().get( 0 ).waypoints() ){
+    for( RouteWaypoint wp : tourlist.tour( t_old.info.slug() ).route( context ).segments().get( 0 ).waypoints() ){
       LatLng latlng = new LatLng( wp.latitude(), wp.longitude() );
       t_old.track.add( latlng );
     }
