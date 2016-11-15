@@ -1,6 +1,6 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
-public class TourInfo{
+public class TourDetails{
   public String name;
   public String slug;
   public String author;
@@ -10,10 +10,10 @@ public class TourInfo{
   public String image;
   public String color;
 
-  public TourInfo(){
+  public TourDetails(){
   }
 
-  public TourInfo( String n, String s, String a, String d, String l, String t, String i, String c ){
+  public TourDetails( String n, String s, String a, String d, String l, String t, String i, String c ){
     name = n;
     slug = s;
     author = a;
