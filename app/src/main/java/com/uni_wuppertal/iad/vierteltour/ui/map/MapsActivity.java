@@ -135,6 +135,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     marked = -1;        //keine Tour ausgewählt
     player = ViertelTourMediaPlayer.getInstance( this );
 
+    showIntro();
+    checkUpdates();
 
     tourlist = new TourListReader( this ).readTourList();
     tourXml = new XmlParser( this, tourlist );
@@ -156,8 +158,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     initActionBar();
     initDrawer();
 
-    showIntro();
-    checkUpdates();
   }
 
 
@@ -260,7 +260,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       m.alpha( 1.0f );
     }
     marked = i;
-
   }
 
   //Setzt alle Touren auf Sichtbar zurück

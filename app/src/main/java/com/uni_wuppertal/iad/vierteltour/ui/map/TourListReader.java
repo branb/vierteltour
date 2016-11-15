@@ -59,7 +59,7 @@ public class TourListReader{
       }
 
       // Initialize tourlist
-      tourlist.init( "tours" );
+      tourlist.init( toursHome );
 
       return tourlist;
     } catch( Exception e ) {

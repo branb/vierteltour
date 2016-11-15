@@ -50,7 +50,7 @@ public class XmlParser{
   public List<Station> stations;
   public List<LatLng> track;
 
-  public TourList tourlist;
+  private TourList tourlist;
 
   public XmlParser( FragmentActivity context, TourList tourlist ){
     this.context = context;
