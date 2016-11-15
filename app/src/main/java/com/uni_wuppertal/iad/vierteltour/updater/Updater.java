@@ -115,7 +115,8 @@ public class Updater extends ContextWrapper{
     Log.d( DEBUG_TAG, "Checking for updates..." );
 
     // TODO: Move the URL to the resources once you have finetuned the updater behaviour
-    String stringUrl = "http://10.0.2.2:8888/";
+    //String stringUrl = "http://10.0.2.2:8888/";
+    String stringUrl = "http://smallfish.eu/vierteltour/";
 
     new DownloadTourdataVersionTask().execute(stringUrl);
 
@@ -158,8 +159,9 @@ public class Updater extends ContextWrapper{
     Log.d( DEBUG_TAG, "Starting file download..." );
 
     // TODO: Move the URL to the resources
-    String url = "http://10.0.2.2:8888/files.zip";
-    String destination = new File( OurStorage.getInstance( Updater.this ).getStoragePath() ).getParentFile().getAbsolutePath()  + "/fortschrott.zip";
+    //String url = "http://10.0.2.2:8888/files.zip";
+    String url = "http://smallfish.eu/vierteltour/tours.zip";
+    String destination = new File( OurStorage.getInstance( Updater.this ).getStoragePath() ).getParentFile().getAbsolutePath()  + "/tours.zip";
 
     this.downloadFile( url, destination );
 
