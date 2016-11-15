@@ -4,10 +4,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.StringTokenizer;
 
-public class Station{
+public class Station extends TourListData{
   public String id;
-  public String name;
-  public String slug;
   public String number;
   public String description;
   public String image;

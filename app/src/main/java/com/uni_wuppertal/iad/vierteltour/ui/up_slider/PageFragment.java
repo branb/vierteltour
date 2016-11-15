@@ -33,7 +33,7 @@ public class PageFragment extends Fragment{
     arguments = new Bundle();
     arguments.putInt( ARG_PAGE_NUMBER, pageNumber );
     fragment.setArguments( arguments );
-    ztitle.add( marked.stations.get( pageNumber ).name );
+    ztitle.add( marked.stations.get( pageNumber ).name() );
     descriptions.add( marked.stations.get( pageNumber ).description );
     img.add( marked.stations.get( pageNumber ).image );
     aud.add( marked.stations.get( pageNumber ).audio );
