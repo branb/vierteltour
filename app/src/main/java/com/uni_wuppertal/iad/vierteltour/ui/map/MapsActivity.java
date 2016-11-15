@@ -446,7 +446,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
         //myIntent.putExtra("key", arguments.getInt(ARG_PAGE_NUMBER)); //Optional parameters
         //TODO: Informationen der Tour
-        tmpIntent.putExtra( "station", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition()).title );
+        tmpIntent.putExtra( "station", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition()).name );
         tmpIntent.putExtra( "name", tourXml.listTouren.get( marked).info.name );
         tmpIntent.putExtra( "autor", tourXml.listTouren.get( marked).info.author );
         tmpIntent.putExtra( "zeit", tourXml.listTouren.get( marked).info.time );

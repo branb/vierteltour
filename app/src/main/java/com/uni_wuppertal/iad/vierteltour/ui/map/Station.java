@@ -6,7 +6,8 @@ import java.util.StringTokenizer;
 
 public class Station{
   public String id;
-  public String title;
+  public String name;
+  public String slug;
   public String number;
   public String description;
   public String image;
@@ -21,7 +22,7 @@ public class Station{
 
   public Station( String id, String t, String n, String d, String i, String v, String a, String c ){
     this.id = id;
-    title = t;
+    name = t;
     number = n;
     description = d;
     image = i;
@@ -37,6 +38,6 @@ public class Station{
 
   @Override
   public String toString(){
-    return id + "\n" + title + "\n" + number + "\n" + description + "\n" + image + "\n" + video + "\n" + audio + "\n" + coordinates + "\n";
+    return id + "\n" + name + "\n" + number + "\n" + description + "\n" + image + "\n" + video + "\n" + audio + "\n" + coordinates + "\n";
   }
 }
