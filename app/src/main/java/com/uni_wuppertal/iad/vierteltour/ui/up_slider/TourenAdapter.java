@@ -66,7 +66,7 @@ public class TourenAdapter extends BaseAdapter{
 
     //Setzt jeweilige Informationen an die richtigen Views
     //TODO: Farbe von Touren
-    convertView.setBackgroundColor( Color.parseColor( parser.listTouren.get( position ).info.color ) );
+    convertView.setBackgroundColor( Color.parseColor( parser.listTouren.get( position ).info.color() ) );
     RowItem row_pos = rowItem.get( position );
 
     imgIcon.setImageResource( row_pos.getIcon() );

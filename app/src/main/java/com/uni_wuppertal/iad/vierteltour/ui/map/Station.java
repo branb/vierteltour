@@ -14,14 +14,16 @@ import java.util.Vector;
 @Root( name = "station" )
 public class Station extends TourListData{
 
-  @Attribute
-  public String id;
+  public Station(){ super(); }
 
   @Attribute
-  public int number;
+  private String id;
+
+  @Attribute
+  private int number;
 
   @Element
-  public String description;
+  private String description;
 
   @ElementList( required = false )
   private List<String> images;
@@ -30,21 +32,42 @@ public class Station extends TourListData{
   private List<String> videos;
 
   @Attribute
-  public String audio;
+  private String audio;
 
   @Attribute
-  public String coordinates;
+  private String coordinates;
 
-  public Station(){ super(); }
 
-  public Station( String id, String t, int n, String d, String a, String c ){
-    this.id = id;
-    name = t;
-    number = n;
-    description = d;
-    audio = a;
-    coordinates = c;
+
+  public String id(){
+    return id;
   }
+
+
+  public int number(){
+    return number;
+  }
+
+
+  public String description(){
+    return description;
+  }
+
+
+  public List<String> images(){
+    return images;
+  }
+
+
+  public List<String> videos(){
+    return videos;
+  }
+
+
+  public String audio(){
+    return audio;
+  }
+
 
 
   /**
@@ -104,6 +127,6 @@ public class Station extends TourListData{
 
   @Override
   public String toString(){
-    return id + "\n" + name + "\n" + number + "\n" + description + "\n" + imagesToString() + "\n" + videosToString() + "\n" + audio + "\n" + coordinates + "\n";
+    return id + "\n" + name() + "\n" + number + "\n" + description + "\n" + imagesToString() + "\n" + videosToString() + "\n" + audio + "\n" + coordinates + "\n";
   }
 }

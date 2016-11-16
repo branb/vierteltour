@@ -30,7 +30,7 @@ public class Tour extends TourListData{
 
     Serializer serializer = new Persister();
 
-    String xmlDataPath = home + "/" + xmlFile;
+    String xmlDataPath = home() + "/" + xmlFile;
 
     try{
       Log.d( DEBUG_TAG, "Reading " + xmlDataPath );
@@ -59,7 +59,7 @@ public class Tour extends TourListData{
    */
   public Route route( Context context ){
     if( route == null ){
-      route = new GpxReader( context ).readRoute( home + "/" + routesGpxFile );
+      route = new GpxReader( context ).readRoute( home() + "/" + routesGpxFile );
     }
 
     return route;
@@ -80,13 +80,13 @@ public class Tour extends TourListData{
    */
   public Station station( int number ){
     for( Station station : details.stations() ){
-      if( station.number == number ){
+      if( station.number() == number ){
         return station;
       }
     }
 
     // TODO: Use exceptions rather than a simple log message
-    Log.d( DEBUG_TAG, "WARNING: The tour " + name + " does not contain a station with the number " + number );
+    Log.d( DEBUG_TAG, "WARNING: The tour " + name() + " does not contain a station with the number " + number );
     return new Station();
   }
 }

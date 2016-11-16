@@ -72,7 +72,7 @@ public class TourOld{
     polylines = new PolylineOptions();
     for( LatLng latlng : track ){
       polylines.add( latlng );
-      polylines.color( Color.parseColor( info.color ) );
+      polylines.color( Color.parseColor( info.color() ) );
     }
   }
 }

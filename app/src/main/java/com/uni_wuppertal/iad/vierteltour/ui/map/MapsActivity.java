@@ -243,7 +243,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   public void transparentTour( int i ){
     //TODO: Farbe jeder Tour
-    String s = tourXml.listTouren.get( i ).info.color;
+    String s = tourXml.listTouren.get( i ).info.color();
     s = "#30" + s.substring( 1, 7 ); // #xx (Hex) Transparenz Stufe
     //TODO:
     tourXml.listTouren.get( i ).polylines.color( Color.parseColor( s ) );
@@ -255,7 +255,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   public void markedTour( int i ){
     //TODO: Siehe oben
-    tourXml.listTouren.get( i ).polylines.color( Color.parseColor( tourXml.listTouren.get( i ).info.color ) );
+    tourXml.listTouren.get( i ).polylines.color( Color.parseColor( tourXml.listTouren.get( i ).info.color() ) );
     for( MarkerOptions m : tourXml.listTouren.get( i ).ListMarker ){
       m.alpha( 1.0f );
     }
@@ -266,7 +266,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void resetTour(){
     //TODO: Siehe oben
     for( TourOld t : tourXml.listTouren ){
-      t.polylines.color( Color.parseColor( t.info.color ) );
+      t.polylines.color( Color.parseColor( t.info.color() ) );
       for( MarkerOptions m : t.ListMarker ){
         m.alpha( 1.0f );
       }
@@ -368,7 +368,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     xbtn.setVisibility( View.VISIBLE );
     title.setVisibility( View.VISIBLE );
     //TODO Titel der Tour
-    title.setText( tourXml.listTouren.get( marked ).info.name );
+    title.setText( tourXml.listTouren.get( marked ).info.name() );
     mPager.setVisibility( View.VISIBLE );
 
   }
@@ -421,7 +421,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     //TODO so
     for( int i = 0; i < tourXml.listTouren.size(); i++ ){
-      RowItem items = new RowItem( tourXml.listTouren.get( i ).info.name, tourXml.listTouren.get( i ).info.author, tourXml.listTouren.get( i ).info.time + "/" + tourXml.listTouren.get( i ).info.length, menuIcons[i], tourXml.listTouren.get( i ).info.description );
+      RowItem items = new RowItem( tourXml.listTouren.get( i ).info.name(), tourXml.listTouren.get( i ).info.author(), tourXml.listTouren.get( i ).info.time() + "/" + tourXml.listTouren.get( i ).info.length(), menuIcons[i], tourXml.listTouren.get( i ).info.description() );
 
       rowItems.add( items );
     }
@@ -445,19 +445,19 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
         //myIntent.putExtra("key", arguments.getInt(ARG_PAGE_NUMBER)); //Optional parameters
         //TODO: Informationen der Tour
-        tmpIntent.putExtra( "station", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition()).name );
-        tmpIntent.putExtra( "name", tourXml.listTouren.get( marked).info.name );
-        tmpIntent.putExtra( "autor", tourXml.listTouren.get( marked).info.author );
-        tmpIntent.putExtra( "zeit", tourXml.listTouren.get( marked).info.time );
-        tmpIntent.putExtra( "laenge", tourXml.listTouren.get( marked).info.length);
-        tmpIntent.putExtra( "farbe", tourXml.listTouren.get( marked).info.color );
+        tmpIntent.putExtra( "station", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition()).name() );
+        tmpIntent.putExtra( "name", tourXml.listTouren.get( marked).info.name() );
+        tmpIntent.putExtra( "autor", tourXml.listTouren.get( marked).info.author() );
+        tmpIntent.putExtra( "zeit", tourXml.listTouren.get( marked).info.time() );
+        tmpIntent.putExtra( "laenge", tourXml.listTouren.get( marked).info.length() );
+        tmpIntent.putExtra( "farbe", tourXml.listTouren.get( marked).info.color() );
         tmpIntent.putExtra( "size", "" + tourXml.listTouren.get( marked).stations.size() );
         //TODO:Beschreibung der angeklickte Station
-        tmpIntent.putExtra( "desc", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition()).description );
+        tmpIntent.putExtra( "desc", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition()).description() );
         tmpIntent.putExtra( "pos", "" + (singlepage.INSTANCE.getPosition() + 1) );
         //TODO: Queller der Resources(Resource ID)
         tmpIntent.putExtra( "img", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition() ).imagesToString() );
-        tmpIntent.putExtra( "audio", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition() ).audio);
+        tmpIntent.putExtra( "audio", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition() ).audio());
         tmpIntent.putExtra( "video", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition() ).videosToString() );
 
         overridePendingTransition( R.anim.fade_in, R.anim.map_out );
@@ -760,9 +760,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       subtext2.setVisibility( View.VISIBLE );
       if( marked >= 0 ){
         //TODO
-        tourenliste.setText( tourXml.listTouren.get( marked ).info.name );
-        subtext1.setText( tourXml.listTouren.get( marked ).info.author );
-        subtext2.setText( tourXml.listTouren.get( marked ).info.time + "/" + tourXml.listTouren.get( marked ).info.length );
+        tourenliste.setText( tourXml.listTouren.get( marked ).info.name() );
+        subtext1.setText( tourXml.listTouren.get( marked ).info.author() );
+        subtext2.setText( tourXml.listTouren.get( marked ).info.time() + "/" + tourXml.listTouren.get( marked ).info.length() );
       } else {
         tourenliste.setText( "Tourenliste" );
       }

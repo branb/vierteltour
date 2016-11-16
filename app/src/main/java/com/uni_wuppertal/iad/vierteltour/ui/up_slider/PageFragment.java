@@ -34,15 +34,15 @@ public class PageFragment extends Fragment{
     arguments.putInt( ARG_PAGE_NUMBER, pageNumber );
     fragment.setArguments( arguments );
     ztitle.add( marked.stations.get( pageNumber ).name() );
-    descriptions.add( marked.stations.get( pageNumber ).description );
+    descriptions.add( marked.stations.get( pageNumber ).description() );
     img.add( marked.stations.get( pageNumber ).imagesToString() );
-    aud.add( marked.stations.get( pageNumber ).audio );
+    aud.add( marked.stations.get( pageNumber ).audio() );
     vid.add( marked.stations.get( pageNumber ).videosToString() );
     TOURNAME = marked.info.name();
-    AUTOR = marked.info.author;
-    TIME = marked.info.time;
-    LENGHT = marked.info.length;
-    COLOR = marked.info.color;
+    AUTOR = marked.info.author();
+    TIME = marked.info.time();
+    LENGHT = marked.info.length();
+    COLOR = marked.info.color();
     SIZE = "" + marked.stations.size();
     return fragment;
   }

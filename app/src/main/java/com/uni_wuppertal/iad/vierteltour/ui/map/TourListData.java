@@ -5,12 +5,12 @@ import org.simpleframework.xml.Attribute;
 public class TourListData{
 
   @Attribute
-  protected String name;
+  private String name;
 
   @Attribute
-  protected String slug;
+  private String slug;
 
-  protected String home;
+  private String home;
 
 
   /**
