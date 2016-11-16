@@ -25,15 +25,9 @@ public class XmlParser{
   private final static String DEBUG_TAG = "XmlParser";
   private Context context;
 
-  public int trkid;
-  public String name;
   public String slug;
-  public String author;
   public String description;
-  public String length;
-  public String time;
   public String image;
-  public String color;
   public String id;
   public String title;
   public String number;
@@ -88,39 +82,10 @@ public class XmlParser{
         if( eventType == XmlPullParser.END_TAG ){
           switch( parser.getName() ){
             // Tour
-            case ("trkid"):
-              trkid = Integer.parseInt( text );
-              break;
-            // TourDetails
-            case ("name"):
-              name = text;
-              break;
+            // TODO: Remove this after refactoring as well. I just need it to figure out step by step why the app is crashing when replacing XmlParser completely at once
             case ("slug"):
               slug = text;
               break;
-            case ("author"):
-              author = text;
-              break;
-            case ("description"):
-              description = text;
-              break;
-            case ("length"):
-              length = text;
-              break;
-            case ("time"):
-              time = text;
-              break;
-            case ("image"):
-              image = text;
-              break;
-            case ("color"):
-              color = text;
-              break;
-            // construct TourDetails
-            case ("info"):
-              tourInfo = new TourDetails( name, slug, author, description, length, time, image, color );
-              break;
-
             // Station
             case ("id"):
               id = text;
@@ -128,8 +93,15 @@ public class XmlParser{
             case ("title"):
               title = text;
               break;
+            case ("description"):
+              description = text;
+              break;
             case ("number"):
               number = text;
+              break;
+            // TODO: Replace the image parsing in InformationActivity (imagesFromXML.isEmpty() etc)
+            case ("image"):
+              image = text;
               break;
             case ("video"):
               video = text;
@@ -146,7 +118,7 @@ public class XmlParser{
               stations.add( station );
               break;
             case ("tour"):
-              tourOld = new TourOld( tourInfo, stations, trkid, context );
+              tourOld = new TourOld( tourlist.tour(slug).details(), stations, tourlist.tour(slug).details().trkid(), context );
               listTouren.add( tourOld );
               parseTrack( tourOld );
               break;
