@@ -9,26 +9,25 @@ import org.simpleframework.xml.Root;
 
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 @Root( name = "station" )
 public class Station extends TourListData{
 
   @Attribute
   public String id;
+
   @Attribute
-  public String number;
+  public int number;
+
   @Element
   public String description;
 
   @ElementList( required = false )
   private List<String> images;
 
-  public String image;
-
   @ElementList
   private List<String> videos;
-
-  public String video;
 
   @Attribute
   public String audio;
@@ -36,28 +35,75 @@ public class Station extends TourListData{
   @Attribute
   public String coordinates;
 
-  public LatLng latlng;
-
   public Station(){ super(); }
 
-  public Station( String id, String t, String n, String d, String i, String v, String a, String c ){
+  public Station( String id, String t, int n, String d, String a, String c ){
     this.id = id;
     name = t;
     number = n;
     description = d;
-    image = i;
-    video = v;
     audio = a;
     coordinates = c;
+  }
 
+
+  /**
+   * Retrieve the LatLng object for this station
+   *
+   * @return LatLng
+   */
+  public LatLng latlng(){
     StringTokenizer tok = new StringTokenizer( coordinates, "," );
 
-    latlng = new LatLng( Double.parseDouble( tok.nextToken() ), Double.parseDouble( tok.nextToken() ) );
+    return new LatLng( Double.parseDouble( tok.nextToken() ), Double.parseDouble( tok.nextToken() ) );
   }
+
+
+
+  // TODO: REFACTORING: Temporary function, can be removed after refactoring the whole XmlParsing thing
+  public String imagesToString(){
+    if( images == null )
+      images = new Vector<>();
+
+    return listToString( images );
+  }
+
+
+
+  // TODO: REFACTORING: Temporary function, can be removed after refactoring the whole XmlParsing thing
+  public String videosToString(){
+    if( videos == null )
+      videos = new Vector<>();
+
+    return listToString( videos );
+  }
+
+
+
+  // TODO: REFACTORING: Temporary function, can be removed after refactoring the whole XmlParsing thing
+  /**
+   * Converts a List<String> to a comma seperated String,
+   *
+   * @param list
+   * @return
+   */
+  private String listToString( List<String> list ){
+    String s = "";
+
+    for( String l : list ){
+      s += l + ",";
+    }
+
+    if( list.size() > 1 )
+      return s.replaceAll( ",$", "" );
+    else
+      return s;
+  }
+
 
 
   @Override
   public String toString(){
-    return id + "\n" + name + "\n" + number + "\n" + description + "\n" + image + "\n" + video + "\n" + audio + "\n" + coordinates + "\n";
+    return id + "\n" + name + "\n" + number + "\n" + description + "\n" + imagesToString() + "\n" + videosToString() + "\n" + audio + "\n" + coordinates + "\n";
   }
 }

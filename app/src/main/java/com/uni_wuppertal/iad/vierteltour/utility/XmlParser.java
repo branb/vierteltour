@@ -63,6 +63,7 @@ public class XmlParser{
       int eventType = parser.getEventType();
       while( eventType != XmlPullParser.END_DOCUMENT ){
         if( eventType == XmlPullParser.START_TAG ){
+
           switch( parser.getName() ){
             case ("tour"):
               tourOld = new TourOld();
@@ -87,35 +88,15 @@ public class XmlParser{
               slug = text;
               break;
             // Station
-            case ("id"):
-              id = text;
-              break;
-            case ("title"):
-              title = text;
-              break;
-            case ("description"):
-              description = text;
-              break;
+            // TODO: Remove this after refactoring as well. I just need it to figure out step by step why the app is crashing when replacing XmlParser completely at once
             case ("number"):
               number = text;
               break;
             // TODO: Replace the image parsing in InformationActivity (imagesFromXML.isEmpty() etc)
-            case ("image"):
-              image = text;
-              break;
-            case ("video"):
-              video = text;
-              break;
-            case ("audio"):
-              audio = text;
-              break;
-            case ("coordinates"):
-              coordinates = text;
-              break;
             // construct Station and add new Station to List
             case ("station"):
-              Station station = new Station( id, title, number, description, image, video, audio, coordinates );
-              stations.add( station );
+              Log.d( DEBUG_TAG, "Adding '" + tourlist.tour(slug).station( Integer.parseInt( number ) ).name() + "' to '" + tourlist.tour(slug).name() + "'" );
+              stations.add( tourlist.tour(slug).station(Integer.parseInt(number)) );
               break;
             case ("tour"):
               tourOld = new TourOld( tourlist.tour(slug).details(), stations, tourlist.tour(slug).details().trkid(), context );

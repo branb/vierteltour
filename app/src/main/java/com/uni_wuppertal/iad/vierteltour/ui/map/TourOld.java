@@ -47,7 +47,7 @@ public class TourOld{
       int id = context.getResources()
                       .getIdentifier( "pin_" + trkid, "drawable", context.getPackageName() );
       Bitmap icon = BitmapFactory.decodeResource( context.getResources(), id );
-      marker.position( station.latlng );
+      marker.position( station.latlng() );
       marker.icon( BitmapDescriptorFactory.fromBitmap( icon ) );
       ListMarker.add( marker );
     }

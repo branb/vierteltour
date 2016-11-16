@@ -35,9 +35,9 @@ public class PageFragment extends Fragment{
     fragment.setArguments( arguments );
     ztitle.add( marked.stations.get( pageNumber ).name() );
     descriptions.add( marked.stations.get( pageNumber ).description );
-    img.add( marked.stations.get( pageNumber ).image );
+    img.add( marked.stations.get( pageNumber ).imagesToString() );
     aud.add( marked.stations.get( pageNumber ).audio );
-    vid.add( marked.stations.get( pageNumber ).video );
+    vid.add( marked.stations.get( pageNumber ).videosToString() );
     TOURNAME = marked.info.name();
     AUTOR = marked.info.author;
     TIME = marked.info.time;

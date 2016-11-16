@@ -456,9 +456,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         tmpIntent.putExtra( "desc", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition()).description );
         tmpIntent.putExtra( "pos", "" + (singlepage.INSTANCE.getPosition() + 1) );
         //TODO: Queller der Resources(Resource ID)
-        tmpIntent.putExtra( "img", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition() ).image);
+        tmpIntent.putExtra( "img", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition() ).imagesToString() );
         tmpIntent.putExtra( "audio", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition() ).audio);
-        tmpIntent.putExtra( "video", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition() ).video);
+        tmpIntent.putExtra( "video", tourXml.listTouren.get( marked).stations.get( singlepage.INSTANCE.getPosition() ).videosToString() );
 
         overridePendingTransition( R.anim.fade_in, R.anim.map_out );
         startActivity( tmpIntent );
