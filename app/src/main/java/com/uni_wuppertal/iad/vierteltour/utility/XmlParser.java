@@ -27,7 +27,7 @@ public class XmlParser{
     listTouren = new Vector<>();
 
     for( Tour tour : tourlist.allTours() ){
-      tourOld = new TourOld( tour.details(), tour.details().stations(), tour.details().trkid(), context );
+      tourOld = new TourOld( tour.details(), tour.stations(), tour.trkid(), context );
       parseTrack( tour );
       listTouren.add( tourOld );
     }

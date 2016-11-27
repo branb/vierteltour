@@ -10,6 +10,8 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
+import java.util.List;
+
 @Root( name = "tour" )
 public class Tour extends TourListData{
   public Tour(){ super(); }
@@ -24,6 +26,13 @@ public class Tour extends TourListData{
   private Route route;
 
 
+  // TODO: Make this private after eliminating the XmlParser and TourOld classes
+  /**
+   * A wrapper function to load TourDetails if they are not already loaded. The actual contents are
+   * accessed by special public functions
+   *
+   * @return
+   */
   public TourDetails details(){
     if( details != null )
       return details;
@@ -40,14 +49,107 @@ public class Tour extends TourListData{
       Log.d( DEBUG_TAG, "Tour '" + details.name() + "' found, Version: " + details.version() );
       Log.d( DEBUG_TAG, "It has " + details.stations().size() + " stations" );
 
-      Integer i = 0;
-
       return details;
     } catch( Exception e ) {
       Log.d( DEBUG_TAG, e.toString() );
       return new TourDetails();
     }
 
+  }
+
+
+  /**
+   * Sets the path to the home directory of this tour, where all it's data is stored
+   *
+   * @return TourListData
+   */
+  public TourListData home( String parentPath ){
+    super.home( parentPath );
+
+    // TODO: Don't read all tours at once, only when required. Change this after refactoring is finished
+    details().home( home() );
+
+    return this;
+  }
+
+
+  /**
+   * Returns the version of this tours data
+   *
+   * @return String
+   */
+  public String version(){
+    return details().version();
+  }
+
+
+  /**
+   * Returns the trkid of this tour
+   *
+   * @return int
+   */
+  public int trkid(){
+    return details().trkid();
+  }
+
+
+  /**
+   * Returns the author of this tour
+   *
+   * @return String
+   */
+  public String author(){
+    return details().author();
+  }
+
+
+  /**
+   * Returns the description of this tour
+   *
+   * @return String
+   */
+  public String description(){
+    return details().description();
+  }
+
+
+  /**
+   * Returns the length of the whole tour, in kilometers
+   *
+   * @return String
+   */
+  public String length(){
+    return details().length();
+  }
+
+
+  /**
+   * Returns the approximate time it takes to listen to the complete audio guide
+   *
+   * @return String
+   */
+  public String time(){
+    return details().time();
+  }
+
+
+  /**
+   * Returns the tours associated color, as a hexadecimal value in #000000 notation
+   *
+   * @return String
+   */
+  public String color(){
+    return details().color();
+  }
+
+
+  /**
+   * Returns the authors image name of this tour.
+   *
+   * @return String
+   */
+  public String image(){
+    return details().image();
   }
 
 
@@ -62,6 +164,16 @@ public class Tour extends TourListData{
     }
 
     return route;
+  }
+
+
+  /**
+   * Returns a List<Station> of all stations of this tour
+   *
+   * @return List<Station>
+   */
+  public List<Station> stations(){
+    return details().stations();
   }
 
 

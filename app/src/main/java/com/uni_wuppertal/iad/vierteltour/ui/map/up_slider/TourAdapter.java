@@ -67,14 +67,14 @@ public class TourAdapter extends BaseAdapter{
     View divider = convertView.findViewById( R.id.divider );
 
     Tour tour = tours.get( position );
-    convertView.setBackgroundColor( Color.parseColor( tour.details().color() ) );
+    convertView.setBackgroundColor( Color.parseColor( tour.color() ) );
 
     // TODO: Insert author image
     imgAuthor.setImageResource( R.drawable.ic_drawer );
     txtTitle.setText( tour.name() );
-    txtAuthor.setText( tour.details().author() );
-    txtTimeLength.setText( tour.details().time() + "/" + tour.details().length() );
-    txtDescription.setText( tour.details().description() );
+    txtAuthor.setText( tour.author() );
+    txtTimeLength.setText( tour.time() + "/" + tour.length() );
+    txtDescription.setText( tour.description() );
 
     if( tour.slug().equals( selectedTour.slug() ) ){
       txtDescription.setVisibility( View.VISIBLE );

@@ -268,11 +268,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * @param tour Tour to blend with the background
    */
   private void fadeTour( Tour tour ){
-    String color = "#30" + tour.details().color().substring( 1, 7 ); // #xx (Hex) transparency
+    String color = "#30" + tour.color().substring( 1, 7 ); // #xx (Hex) transparency
 
     polylines.get(tour.slug()).color( Color.parseColor( color ) );
 
-    for( Station station : tour.details().stations() ){
+    for( Station station : tour.stations() ){
       markers.get( station.slug() ).alpha( 0.3f );
     }
   }
@@ -284,9 +284,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * @param tour Tour to put into the foreground
    */
   private void unfadeTour( Tour tour ){
-    polylines.get(tour.slug()).color( Color.parseColor( tour.details().color() ) );
+    polylines.get(tour.slug()).color( Color.parseColor( tour.color() ) );
 
-    for( Station station : tour.details().stations() ){
+    for( Station station : tour.stations() ){
       markers.get(station.slug()).alpha( 1.0f );
     }
   }
@@ -417,7 +417,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     xbtn.setVisibility( View.VISIBLE );
     title.setVisibility( View.VISIBLE );
     //TODO Titel der Tour
-    title.setText( selectedTour.details().name() );
+    title.setText( selectedTour.name() );
     mPager.setVisibility( View.VISIBLE );
 
   }
@@ -471,13 +471,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
         // Tour data
         tmpIntent.putExtra( "name", selectedTour.name() );
-        tmpIntent.putExtra( "autor", selectedTour.details().author() );
-        tmpIntent.putExtra( "zeit", selectedTour.details().time() );
-        tmpIntent.putExtra( "laenge", selectedTour.details().length() );
-        tmpIntent.putExtra( "farbe", selectedTour.details().color() );
-        tmpIntent.putExtra( "size", "" + selectedTour.details().stations().size() );
+        tmpIntent.putExtra( "autor", selectedTour.author() );
+        tmpIntent.putExtra( "zeit", selectedTour.time() );
+        tmpIntent.putExtra( "laenge", selectedTour.length() );
+        tmpIntent.putExtra( "farbe", selectedTour.color() );
+        tmpIntent.putExtra( "size", "" + selectedTour.stations().size() );
         // Selected Station
-        Station station = selectedTour.details().stations().get( singlepage.INSTANCE.getPosition());
+        Station station = selectedTour.stations().get( singlepage.INSTANCE.getPosition());
         tmpIntent.putExtra( "station", station.name() );
         tmpIntent.putExtra( "desc", station.description() );
         tmpIntent.putExtra( "pos", "" + (singlepage.INSTANCE.getPosition() + 1) );
@@ -784,8 +784,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       subtext2.setVisibility( View.VISIBLE );
       if( !selectedTour.slug().isEmpty() ){
         tourenliste.setText( selectedTour.name() );
-        subtext1.setText( selectedTour.details().author() );
-        subtext2.setText( selectedTour.details().time() + "/" + selectedTour.details().length() );
+        subtext1.setText( selectedTour.author() );
+        subtext2.setText( selectedTour.time() + "/" + selectedTour.length() );
       } else {
         tourenliste.setText( "Tourenliste" );
       }
@@ -875,7 +875,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         polyline.add( new LatLng( waypoint.latitude(), waypoint.longitude() ) );
       }
 
-      polyline.color( Color.parseColor( tour.details().color() ) );
+      polyline.color( Color.parseColor( tour.color() ) );
       polylines.put( tour.slug(), polyline );
 
       makeMarkers( tour );
@@ -890,10 +890,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    */
   // TODO: Remove the old markers before adding new ones
   private void makeMarkers( Tour tour ){
-    for( Station station : tour.details().stations() ){
+    for( Station station : tour.stations() ){
       MarkerOptions marker = new MarkerOptions();
 
-      int id = getResources().getIdentifier( "pin_" + tour.details().trkid(), "drawable", getPackageName() );
+      int id = getResources().getIdentifier( "pin_" + tour.trkid(), "drawable", getPackageName() );
 
       Bitmap icon = BitmapFactory.decodeResource( getResources(), id );
 

@@ -50,10 +50,6 @@ public class TourList{
 
           for( Tour tour : city.tours() ){
             tour.home( city.home() );
-
-            // TODO: Don't read all tours at once, only when required. Change this after refactoring is finished
-            // Also, read the tour details
-            tour.details().home( tour.home() );
           }
         }
       }
