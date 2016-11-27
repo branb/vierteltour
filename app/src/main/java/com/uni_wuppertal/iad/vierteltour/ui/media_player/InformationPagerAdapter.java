@@ -1,7 +1,6 @@
 package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 
 import android.content.Context;
-import android.content.res.Configuration;
 
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -9,16 +8,12 @@ import android.net.Uri;
 
 import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.VideoView;
-import android.widget.ViewFlipper;
 
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
@@ -29,11 +24,11 @@ import java.util.ArrayList;
 public class InformationPagerAdapter extends PagerAdapter{
 
   private Context mContext;
-  private InformationActivity infoAct;
+  private StationActivity infoAct;
   private Singletonint singlepage;
   private ArrayList<String> stationImagePaths;
 
-  public InformationPagerAdapter(Context mContext, ArrayList<String> stationImagePaths , InformationActivity infoAct){
+  public InformationPagerAdapter(Context mContext, ArrayList<String> stationImagePaths , StationActivity infoAct){
     this.mContext = mContext;
     this.stationImagePaths = stationImagePaths;
     this.infoAct= infoAct;

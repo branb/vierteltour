@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour.ui.up_slider;
+package com.uni_wuppertal.iad.vierteltour.ui.map.up_slider;
 
 import android.app.Activity;
 import android.content.Context;

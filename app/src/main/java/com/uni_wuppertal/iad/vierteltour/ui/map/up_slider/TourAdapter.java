@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour.ui.up_slider;
+package com.uni_wuppertal.iad.vierteltour.ui.map.up_slider;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,14 +19,14 @@ import java.util.List;
 /**
  * Connects the ListView inside of the SUPL of the Maps Activity with a List<Tour>
  */
-public class TourenAdapter extends BaseAdapter{
+public class TourAdapter extends BaseAdapter{
 
   private Context context;
 
   private Tour selectedTour;
   private List<Tour> tours;
 
-  public TourenAdapter( Context context, List<Tour> tours, Tour selectedTour ){
+  public TourAdapter( Context context, List<Tour> tours, Tour selectedTour ){
     this.context = context;
     this.tours = tours;
     this.selectedTour = selectedTour;

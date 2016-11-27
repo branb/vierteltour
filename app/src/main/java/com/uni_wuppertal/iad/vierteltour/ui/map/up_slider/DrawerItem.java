@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour.ui.up_slider;
+package com.uni_wuppertal.iad.vierteltour.ui.map.up_slider;
 
 public class DrawerItem{
   private String subtitle, title;
@@ -15,7 +15,7 @@ public class DrawerItem{
   }
 
   public void setTitle( String title ){
-    this.title = title;
+    this.title = title + "!!";
   }
 
   public int getIcon(){
@@ -31,7 +31,7 @@ public class DrawerItem{
   }
 
   public void setSubtitle( String subtitle ){
-    this.subtitle = subtitle;
+    this.subtitle = subtitle + "!!";
   }
 
 }

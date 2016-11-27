@@ -47,16 +47,16 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import com.uni_wuppertal.iad.vierteltour.ui.intro.IntroActivity;
 
-import com.uni_wuppertal.iad.vierteltour.ui.media_player.InformationActivity;
+import com.uni_wuppertal.iad.vierteltour.ui.media_player.StationActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 
-import com.uni_wuppertal.iad.vierteltour.ui.up_slider.PagerAdapter;
+import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.StationAdapter;
 import com.uni_wuppertal.iad.vierteltour.R;
-import com.uni_wuppertal.iad.vierteltour.ui.up_slider.TourenAdapter;
+import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.TourAdapter;
 import com.uni_wuppertal.iad.vierteltour.utility.XmlParser;
-import com.uni_wuppertal.iad.vierteltour.ui.up_slider.DrawerAdapter;
-import com.uni_wuppertal.iad.vierteltour.ui.up_slider.DrawerItem;
+import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.DrawerAdapter;
+import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.DrawerItem;
 import com.uni_wuppertal.iad.vierteltour.updater.Updater;
 
 import java.util.ArrayList;
@@ -96,9 +96,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private SlidingUpPanelLayout mLayout;
   private RelativeLayout mDrawer;
   private ViewPager mPager;
-  private PagerAdapter pageradapter;
+  private StationAdapter pageradapter;
   private DrawerAdapter draweradapter;
-  private TourenAdapter adapter;
+  private TourAdapter adapter;
   private List<DrawerItem> drawerItems;
   private LatLng wuppertal;
   private XmlParser tourXml;
@@ -452,7 +452,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       }
     });
 
-    adapter = new TourenAdapter( this, tourlist.city( visibleCity ).tours(), selectedTour );
+    adapter = new TourAdapter( this, tourlist.city( visibleCity ).tours(), selectedTour );
     lv.setAdapter( adapter );
   }
 
@@ -460,14 +460,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void initPager(){
     //Initialisiere Pager
     mPager = (ViewPager) findViewById( R.id.pager );
-    pageradapter = new PagerAdapter( getSupportFragmentManager(), this );
+    pageradapter = new StationAdapter( getSupportFragmentManager(), this );
     mPager.setAdapter( pageradapter );
     audiobar = (RelativeLayout) findViewById(R.id.audiobar);
     audiobar.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
 
-        Intent tmpIntent = new Intent( getApplicationContext(), InformationActivity.class );
+        Intent tmpIntent = new Intent( getApplicationContext(), StationActivity.class );
 
         // Tour data
         tmpIntent.putExtra( "name", selectedTour.name() );

@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour.ui.up_slider;
+package com.uni_wuppertal.iad.vierteltour.ui.map.station_pager;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
@@ -10,11 +10,11 @@ import com.uni_wuppertal.iad.vierteltour.ui.map.TourOld;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PagerAdapter extends FragmentPagerAdapter{
-  public List<PageFragment> fragments = new ArrayList<PageFragment>();
+public class StationAdapter extends FragmentPagerAdapter{
+  public List<StationFragment> fragments = new ArrayList<StationFragment>();
   private LayoutInflater mInflater;
 
-  public PagerAdapter( FragmentManager fm, Context context ){
+  public StationAdapter( FragmentManager fm, Context context ){
     super( fm );
     mInflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
   }
@@ -24,15 +24,15 @@ public class PagerAdapter extends FragmentPagerAdapter{
     return fragments.size();
   }
 
-  public PageFragment addFragment( int position, TourOld tourOld ){
-    PageFragment xfragment = PageFragment.create( position, tourOld );
+  public StationFragment addFragment( int position, TourOld tourOld ){
+    StationFragment xfragment = StationFragment.create( position, tourOld );
     fragments.add( position, xfragment );
     notifyDataSetChanged();
     return xfragment;
   }
 
   @Override
-  public PageFragment getItem( int position ){
+  public StationFragment getItem( int position ){
     return fragments.get( position );
   }
 

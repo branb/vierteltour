@@ -39,7 +39,7 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 
-public class InformationActivity extends Activity{
+public class StationActivity extends Activity{
 
   //Declare Var
   SeekBar seekbar, seekbarGallery;        //Fortschrittsbalken

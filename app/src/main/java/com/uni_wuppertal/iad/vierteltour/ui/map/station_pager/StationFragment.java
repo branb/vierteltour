@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour.ui.up_slider;
+package com.uni_wuppertal.iad.vierteltour.ui.map.station_pager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.uni_wuppertal.iad.vierteltour.ui.media_player.InformationActivity;
+import com.uni_wuppertal.iad.vierteltour.ui.media_player.StationActivity;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.TourOld;
 
 import java.util.ArrayList;
 
-public class PageFragment extends Fragment{
+public class StationFragment extends Fragment{
   private static final String ARG_PAGE_NUMBER = "pageNumber", TITLE = "title", STATIONNAME = "stationname";
   private static String TOURNAME, AUTOR, TIME, LENGHT, COLOR, DESCRIPTION, SIZE;
   private static ArrayList<String> descriptions = new ArrayList<>();
@@ -28,8 +28,8 @@ public class PageFragment extends Fragment{
   private TextView title;
   private int position;
 
-  public static PageFragment create( int pageNumber, TourOld marked ){
-    PageFragment fragment = new PageFragment();
+  public static StationFragment create( int pageNumber, TourOld marked ){
+    StationFragment fragment = new StationFragment();
     arguments = new Bundle();
     arguments.putInt( ARG_PAGE_NUMBER, pageNumber );
     fragment.setArguments( arguments );
@@ -70,7 +70,7 @@ public class PageFragment extends Fragment{
       btItem.setOnClickListener( new View.OnClickListener(){
         @Override
         public void onClick( View v ){
-          Intent myIntent = new Intent( getActivity(), InformationActivity.class );
+          Intent myIntent = new Intent( getActivity(), StationActivity.class );
 
           //myIntent.putExtra("key", arguments.getInt(ARG_PAGE_NUMBER)); //Optional parameters
           myIntent.putExtra( "station", title.getText() );
