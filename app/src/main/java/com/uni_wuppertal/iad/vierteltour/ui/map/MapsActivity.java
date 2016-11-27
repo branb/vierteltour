@@ -54,7 +54,6 @@ import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.StationAdapter;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.TourAdapter;
-import com.uni_wuppertal.iad.vierteltour.utility.XmlParser;
 import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.DrawerAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.DrawerItem;
 import com.uni_wuppertal.iad.vierteltour.updater.Updater;
@@ -63,6 +62,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 
 public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback{
@@ -101,7 +101,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private TourAdapter adapter;
   private List<DrawerItem> drawerItems;
   private LatLng wuppertal;
-  private XmlParser tourXml;
   private int marked;         //marked für Tour ausgewählt: -1 für nicht ausgewählt, 0-xxx für ausgewählte Tour
   private RelativeLayout panel;
   public static RelativeLayout audiobar;
@@ -109,6 +108,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Singletonint singlepage;
   // All the tour information that is currently available to us
   private TourList tourlist;
+  private List<TourOld> tourOldList;
 
 
   private GoogleMap mMap;
@@ -146,8 +146,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     checkUpdates();
 
     tourlist = new TourListReader( this ).readTourList();
-    tourXml = new XmlParser( this, tourlist );
 
+    tourOldList = new Vector<>();
+
+    for( Tour tour : tourlist.allTours() ){
+      tourOldList.add( new TourOld( tour.details(), tour.stations() ) );
+    }
 
     Log.d( "Xml/getCity", "Searching for City 'wuppertal': " + tourlist.city( "wuppertal" ).name() );
 
