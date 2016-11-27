@@ -62,14 +62,14 @@ public class InformationPagerAdapter extends PagerAdapter{
 //TODO: stationimagepaths to stationresourcepaths with video and images to show
     //TODO: HIER WURDE TMP EDITIERT
     if(resources == 'v')
-    { videoView.setVideoPath(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths.get(position)));
+    { videoView.setVideoPath( OurStorage.get(mContext).pathToFile( stationImagePaths.get(position) ) );
      /* videoView.setVisibility(View.VISIBLE);
             videoView.seekTo(100);
       imageBtn.setVisibility(View.VISIBLE);
       imageBtn.setImageResource(R.drawable.play_hell);
     imageView.setVisibility(View.GONE);*/
       imageView.setVisibility(View.VISIBLE);
-      Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths.get(position)),
+      Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail( OurStorage.get(mContext).pathToFile( stationImagePaths.get(position) ),
         MediaStore.Images.Thumbnails.MINI_KIND);
       imageView.setImageBitmap(thumbnail);
       }
@@ -77,7 +77,7 @@ public class InformationPagerAdapter extends PagerAdapter{
     else if (resources == 'i') {videoView.setVisibility(View.GONE);
       imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
-      imageView.setImageURI( Uri.fromFile( new File(OurStorage.getInstance(mContext).getPathToFile(stationImagePaths.get(position))) ) );}
+      imageView.setImageURI( Uri.fromFile( new File( OurStorage.get(mContext).pathToFile( stationImagePaths.get(position)) ) ) );}
 
     container.addView( itemView );
 

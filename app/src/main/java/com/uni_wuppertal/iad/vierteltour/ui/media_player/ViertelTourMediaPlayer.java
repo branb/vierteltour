@@ -56,7 +56,7 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
     }
     reset();
 
-    FileInputStream inputStream = OurStorage.getInstance( this.context ).getFile( path );
+    FileInputStream inputStream = OurStorage.get( this.context ).file( path );
 
     if( inputStream == null ){
       return false;
@@ -77,7 +77,7 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
   }
 
   public boolean loadVideo( String path , VideoView video){
-    String inputStream = OurStorage.getInstance( this.context ).getPathToFile( path );
+    String inputStream = OurStorage.get( this.context ).pathToFile( path );
 
     if( inputStream == null ){
       return false;
@@ -92,7 +92,7 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
   public boolean loadGalleryVideo( String path){
 
 
-    String inputStream = OurStorage.getInstance( this.context ).getPathToFile( path );
+    String inputStream = OurStorage.get( this.context ).pathToFile( path );
 
     if( inputStream == null ){
       return false;

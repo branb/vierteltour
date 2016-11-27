@@ -35,7 +35,7 @@ public class Tour extends TourListData{
     try{
       Log.d( DEBUG_TAG, "Reading " + xmlDataPath );
 
-      details = serializer.read( TourDetails.class, OurStorage.getInstance( new Application().getBaseContext() ).getFile( xmlDataPath ) , false );
+      details = serializer.read( TourDetails.class, OurStorage.get( new Application().getBaseContext() ).file( xmlDataPath ) , false );
 
       Log.d( DEBUG_TAG, "Tour '" + details.name() + "' found, Version: " + details.version() );
       Log.d( DEBUG_TAG, "It has " + details.stations().size() + " stations" );

@@ -41,13 +41,13 @@ public class TourListReader{
   public TourList readTourList(){
     Serializer serializer = new Persister();
 
-    String xmlDataPath = OurStorage.getInstance( context ).getPathToFile( xmlFile );
+    String xmlDataPath = OurStorage.get( context ).pathToFile( xmlFile );
 
 
     try{
       Log.d( DEBUG_TAG, "Reading " + xmlDataPath );
 
-      TourList tourlist = serializer.read( TourList.class, OurStorage.getInstance( context ).getFile( xmlFile ), false );
+      TourList tourlist = serializer.read( TourList.class, OurStorage.get( context ).file( xmlFile ), false );
 
       Log.d( DEBUG_TAG, "Version: " + tourlist.version() );
       Log.d( DEBUG_TAG, "Found " + tourlist.regions().size() + " region(s)" );

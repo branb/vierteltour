@@ -33,9 +33,9 @@ public class GpxReader{
     Serializer serializer = new Persister();
 
     try{
-      Log.d( DEBUG_TAG, "Reading " + OurStorage.getInstance( context ).getPathToFile( gpxFilePath ) );
+      Log.d( DEBUG_TAG, "Reading " + OurStorage.get( context ).pathToFile( gpxFilePath ) );
 
-      Gpx gpx = serializer.read( Gpx.class, OurStorage.getInstance( context ).getFile( gpxFilePath ), false );
+      Gpx gpx = serializer.read( Gpx.class, OurStorage.get( context ).file( gpxFilePath ), false );
 
       Log.d( DEBUG_TAG, gpx.route().name() + " has " + gpx.route().segments().size() + " segment(s)" );
 

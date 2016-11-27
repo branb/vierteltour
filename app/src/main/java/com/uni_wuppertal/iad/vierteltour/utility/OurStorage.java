@@ -17,7 +17,7 @@ public class OurStorage extends ContextWrapper{
    *
    * @return OurStorage a static singleton of this class
    */
-  public static OurStorage getInstance( Context context){
+  public static OurStorage get( Context context){
     if( ourInstance == null) {
       ourInstance = new OurStorage( context );
     }
@@ -68,7 +68,7 @@ public class OurStorage extends ContextWrapper{
    * @param path Path to the file, relative to the applications default (external) storage root
    * @return a FileInputStream if the file was found, null else
    */
-  public FileInputStream getFile( String path ){
+  public FileInputStream file( String path ){
     if( !isFileAccessible( path ) ){
       return null;
     }
@@ -94,7 +94,7 @@ public class OurStorage extends ContextWrapper{
    * @param path
    * @return The absolute path if the file was found, null else
    */
-  public String getPathToFile( String path ){
+  public String pathToFile( String path ){
     String pathToFile;
 
     if( !isFileAccessible( path ) ){
@@ -143,7 +143,7 @@ public class OurStorage extends ContextWrapper{
    *
    * @return String our external storage path, absolute
    */
-  public String getStoragePath(){
+  public String storagePath(){
     return externalFilesDir.getAbsolutePath();
 
   }

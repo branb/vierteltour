@@ -45,7 +45,7 @@ public class Updater extends ContextWrapper{
    *
    * @return Updater a static singleton of this class
    */
-  public static Updater getInstance( Context context){
+  public static Updater get( Context context){
     if( ourInstance == null) {
       ourInstance = new Updater( context );
     }
@@ -161,7 +161,7 @@ public class Updater extends ContextWrapper{
     // TODO: Move the URL to the resources
     //String url = "http://10.0.2.2:8888/files.zip";
     String url = "http://smallfish.eu/vierteltour/tours.zip";
-    String destination = new File( OurStorage.getInstance( Updater.this ).getStoragePath() ).getParentFile().getAbsolutePath()  + "/tours.zip";
+    String destination = new File( OurStorage.get( Updater.this ).storagePath() ).getParentFile().getAbsolutePath()  + "/tours.zip";
 
     this.downloadFile( url, destination );
 
