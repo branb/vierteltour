@@ -16,8 +16,9 @@ import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 
 import java.util.List;
 
-// TODO: Rename it to TourAdapter and factor the RowItem out of it. The whole point of an Adapter is to connect views with data models, and Tour (even TourOld) IS already the data model
-//Die Schnittstelle zwischen Liste als xml und java mit definiertem Aussehen
+/**
+ * Connects the ListView inside of the SUPL of the Maps Activity with a List<Tour>
+ */
 public class TourenAdapter extends BaseAdapter{
 
   private Context context;
@@ -31,7 +32,6 @@ public class TourenAdapter extends BaseAdapter{
     this.selectedTour = selectedTour;
   }
 
-  //zaehlt Anzahl an Zeilen in Liste
   @Override
   public int getCount(){
     return tours.size();
@@ -47,7 +47,9 @@ public class TourenAdapter extends BaseAdapter{
     return tours.indexOf( getItem( position ) );
   }
 
-  //erzeugt Aussehen der Liste
+  /**
+   * This is being called every time the connected ListView is refreshing itself
+   */
   @Override
   public View getView( final int position, View convertView, ViewGroup parent ){
     if( convertView == null ){
@@ -55,20 +57,20 @@ public class TourenAdapter extends BaseAdapter{
       convertView = mInflater.inflate( R.layout.touren_list_single, null );
     }
 
-    ImageView imgIcon = (ImageView) convertView.findViewById( R.id.img );
+    // Define the visible elements of a single item inside of our ListView
+    ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
     TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
     TextView txtAuthor = (TextView) convertView.findViewById( R.id.subtxt1 );
     TextView txtTimeLength = (TextView) convertView.findViewById( R.id.subtxt2 );
     TextView txtDescription = (TextView) convertView.findViewById( R.id.addinfo );
-    ImageButton startbtn = (ImageButton) convertView.findViewById( R.id.zumstartlist );
+    ImageButton btnStart = (ImageButton) convertView.findViewById( R.id.zumstartlist );
     View divider = convertView.findViewById( R.id.divider );
 
-    //Setzt jeweilige Informationen an die richtigen Views
     Tour tour = tours.get( position );
     convertView.setBackgroundColor( Color.parseColor( tour.details().color() ) );
 
     // TODO: Insert author image
-    imgIcon.setImageResource( R.drawable.ic_drawer );
+    imgAuthor.setImageResource( R.drawable.ic_drawer );
     txtTitle.setText( tour.name() );
     txtAuthor.setText( tour.details().author() );
     txtTimeLength.setText( tour.details().time() + "/" + tour.details().length() );
@@ -76,17 +78,22 @@ public class TourenAdapter extends BaseAdapter{
 
     if( tour.slug().equals( selectedTour.slug() ) ){
       txtDescription.setVisibility( View.VISIBLE );
-      startbtn.setVisibility( View.VISIBLE );
+      btnStart.setVisibility( View.VISIBLE );
       divider.setVisibility( View.VISIBLE );
     } else {
       txtDescription.setVisibility( View.GONE );
-      startbtn.setVisibility( View.GONE );
+      btnStart.setVisibility( View.GONE );
       divider.setVisibility( View.GONE );
     }
 
     return convertView;
   }
 
+  /**
+   * Select a tour
+   *
+   * @param tour Tour to be selected
+   */
   public void select( Tour tour ){
     selectedTour = tour;
     notifyDataSetChanged();
