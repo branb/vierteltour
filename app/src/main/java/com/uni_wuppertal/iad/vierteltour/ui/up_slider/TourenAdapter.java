@@ -11,41 +11,40 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.uni_wuppertal.iad.vierteltour.R;
-import com.uni_wuppertal.iad.vierteltour.utility.XmlParser;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 
 import java.util.List;
 
+// TODO: Rename it to TourAdapter and factor the RowItem out of it. The whole point of an Adapter is to connect views with data models, and Tour (even TourOld) IS already the data model
 //Die Schnittstelle zwischen Liste als xml und java mit definiertem Aussehen
 public class TourenAdapter extends BaseAdapter{
 
-  Context context;
-  List<RowItem> rowItem;
-  XmlParser parser;
+  private Context context;
 
-  private SlidingUpPanelLayout mLayout;
+  private Tour selectedTour;
+  private List<Tour> tours;
 
-  public TourenAdapter( Context context, List<RowItem> rowItem, XmlParser parse ){
+  public TourenAdapter( Context context, List<Tour> tours, Tour selectedTour ){
     this.context = context;
-    this.rowItem = rowItem;
-    this.parser = parse;
+    this.tours = tours;
+    this.selectedTour = selectedTour;
   }
 
   //zaehlt Anzahl an Zeilen in Liste
   @Override
   public int getCount(){
-    return rowItem.size();
+    return tours.size();
   }
 
   @Override
   public Object getItem( int position ){
-    return rowItem.get( position );
+    return tours.get( position );
   }
 
   @Override
   public long getItemId( int position ){
-    return rowItem.indexOf( getItem( position ) );
+    return tours.indexOf( getItem( position ) );
   }
 
   //erzeugt Aussehen der Liste
@@ -58,29 +57,29 @@ public class TourenAdapter extends BaseAdapter{
 
     ImageView imgIcon = (ImageView) convertView.findViewById( R.id.img );
     TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
-    TextView subtxtTitle1 = (TextView) convertView.findViewById( R.id.subtxt1 );
-    TextView subtxtTitle2 = (TextView) convertView.findViewById( R.id.subtxt2 );
-    TextView addInfo = (TextView) convertView.findViewById( R.id.addinfo );
+    TextView txtAuthor = (TextView) convertView.findViewById( R.id.subtxt1 );
+    TextView txtTimeLength = (TextView) convertView.findViewById( R.id.subtxt2 );
+    TextView txtDescription = (TextView) convertView.findViewById( R.id.addinfo );
     ImageButton startbtn = (ImageButton) convertView.findViewById( R.id.zumstartlist );
     View divider = convertView.findViewById( R.id.divider );
 
     //Setzt jeweilige Informationen an die richtigen Views
-    //TODO: Farbe von Touren
-    convertView.setBackgroundColor( Color.parseColor( parser.listTouren.get( position ).info.color() ) );
-    RowItem row_pos = rowItem.get( position );
+    Tour tour = tours.get( position );
+    convertView.setBackgroundColor( Color.parseColor( tour.details().color() ) );
 
-    imgIcon.setImageResource( row_pos.getIcon() );
-    txtTitle.setText( row_pos.getTitle() );
-    subtxtTitle1.setText( row_pos.getSubtitle1() );
-    subtxtTitle2.setText( row_pos.getSubtitle2() );
-    addInfo.setText( row_pos.getAddinfo() );
+    // TODO: Insert author image
+    imgIcon.setImageResource( R.drawable.ic_drawer );
+    txtTitle.setText( tour.name() );
+    txtAuthor.setText( tour.details().author() );
+    txtTimeLength.setText( tour.details().time() + "/" + tour.details().length() );
+    txtDescription.setText( tour.details().description() );
 
-    if( row_pos.isSelected() ){
-      addInfo.setVisibility( View.VISIBLE );
+    if( tour.slug().equals( selectedTour.slug() ) ){
+      txtDescription.setVisibility( View.VISIBLE );
       startbtn.setVisibility( View.VISIBLE );
       divider.setVisibility( View.VISIBLE );
     } else {
-      addInfo.setVisibility( View.GONE );
+      txtDescription.setVisibility( View.GONE );
       startbtn.setVisibility( View.GONE );
       divider.setVisibility( View.GONE );
     }
@@ -88,4 +87,7 @@ public class TourenAdapter extends BaseAdapter{
     return convertView;
   }
 
+  public void select( Tour tour ){
+    selectedTour = tour;
+  }
 }

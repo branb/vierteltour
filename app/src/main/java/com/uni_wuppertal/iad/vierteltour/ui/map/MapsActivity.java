@@ -41,6 +41,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -60,7 +62,9 @@ import com.uni_wuppertal.iad.vierteltour.ui.up_slider.DrawerItem;
 import com.uni_wuppertal.iad.vierteltour.updater.Updater;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 
@@ -72,15 +76,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public LocationListener locationListener;
   public MarkerOptions CurrentMarker;
   public int CurrentZoom = 15;
-  int[] menuIcons = new int[]{ R.drawable.ic_drawer,
-                               R.drawable.ic_drawer,
-                               R.drawable.ic_drawer,
-                               R.drawable.ic_drawer,
-                               R.drawable.ic_drawer,
-                               R.drawable.ic_drawer,
-                               R.drawable.ic_drawer,
-                               R.drawable.ic_drawer
-  };
   int[] drawerIcons = new int[]{ R.drawable.einstellungen,
                                  R.drawable.hilfe,
                                  R.drawable.about,
@@ -97,8 +92,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                                            "hell / dunkel"
   };
 
-  private GoogleMap mMap;
-  private List<Route> routen = new Vector<>();
   private ActionBar actionBar;
   private DrawerLayout mDrawerLayout;
   private ListView mDrawerList;
@@ -118,9 +111,27 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public static RelativeLayout audiobar;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
-
-
+  // All the tour information that is currently available to us
   private TourList tourlist;
+
+
+  private GoogleMap mMap;
+
+  // TODO: Save the currently displayed city into shared preferences and load them on startup
+  // Slug of the currently displayed city, e.g. the currently available and displayed tours
+  private String visibleCity = "wuppertal";
+
+  // TODO: Save the selected tour into shared preferences and load them on startup
+  // The currently selected and highlighted tour;
+  private Tour selectedTour = new Tour();
+
+  // TODO: I don't know if it's the best approach to save it on a map ACTIVITY, but it certainly is NOT a good approach to couple it to the data model aka the Tour* classes
+  // Holds the configuration of the current polylines drawn on the map
+  private Map<String, PolylineOptions> polylines = new HashMap<String, PolylineOptions>();
+
+  // Holds the configuration of the current markers drawn on the map
+  private Map<String, MarkerOptions> markers = new HashMap<String, MarkerOptions>();
+
 
   @Override
   protected void onCreate( Bundle savedInstanceState ){
@@ -151,6 +162,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     RouteWaypoint waypointFortschrott = tourFortschrott.route().waypoints().get( 0 );
     Log.d( "Xml/getFortschrottRoute", "First coordinates of Fortschrott Route: " + waypointFortschrott.latitude() + " / " + waypointFortschrott.longitude() );
 
+    initMap();
     initPager();
     initSupl();
     initBtns();
@@ -194,39 +206,50 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
 
+  /**
+   * Draw the map
+   */
+  private void initMap(){
+    makePolylines();
+  }
+
+
+
   @Override
   public void onMapReady( GoogleMap googleMap ){
     mMap = googleMap;
 
-    zeichnePolyLines();
+    drawRoutes();
     findMyLocation();
 
     wuppertal = new LatLng( 51.256972, 7.139341 );
     mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( wuppertal, CurrentZoom ) );
 
-    //tmpcut, klar machen wie jede Tour zusammenhängt mit markern und co, siehe XML, tourliste, supl liste
+    /**
+     * When the user clicks anywhere on the map, check which tour he clicked onto and mark it as
+     * selected
+     *
+     * TODO: Improve click recognition. Currently, it only checks if the user has clicked a polyline, not station markers
+     */
     final GoogleMap.OnMapClickListener listener = new GoogleMap.OnMapClickListener(){
       @Override
       public void onMapClick( LatLng clickCoords ){
         if( mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED ){
-          int tmp = 0;
-          //TODO: tourOld.listTouren.size() für Anzashl der Touren
-          for( int i = 0; i < tourXml.listTouren.size(); i++ ){
-            //TODO: tourOld.listTouren. infos über Koordinaten vom Weg
-            if( PolyUtil.isLocationOnPath( clickCoords, tourXml.listTouren.get( i ).polylines.getPoints(), true, 20 ) && tmp == 0 ){
-              // clicked track and marker become no alpha value
-              markedTour( i );
+          boolean tourSelected = false;
+
+          for( Tour tour : tourlist.city(visibleCity).tours() ){
+            if( PolyUtil.isLocationOnPath( clickCoords, tour.route().latLngs(), true, 20 ) && !tourSelected ){
+              tourSelected = true;
+              selectTour( tour );
               showInfo( true );
-              tmp = 1;
-              // no clicked tracks and marker become alpha value
-            } else {
-              transparentTour( i );
             }
           }
-          if( tmp == 0 ){
+
+          if( !tourSelected ){
             resetTour();
           }
-          updatePolylines();
+
+          drawRoutes();
         }
       }
     };
@@ -242,39 +265,64 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   }
 
-  public void transparentTour( int i ){
-    //TODO: Farbe jeder Tour
-    String s = tourXml.listTouren.get( i ).info.color();
-    s = "#30" + s.substring( 1, 7 ); // #xx (Hex) Transparenz Stufe
-    //TODO:
-    tourXml.listTouren.get( i ).polylines.color( Color.parseColor( s ) );
-    //TODO: Pins auf der Map für Station
-    for( MarkerOptions m : tourXml.listTouren.get( i ).ListMarker ){
-      m.alpha( 0.3f );
+  /**
+   * Put a tour into the background, giving it's polylines and station markers a high alpha value so
+   * it blends into the background
+   *
+   * @param tour Tour to blend with the background
+   */
+  private void fadeTour( Tour tour ){
+    String color = "#30" + tour.details().color().substring( 1, 7 ); // #xx (Hex) transparency
+
+    polylines.get(tour.slug()).color( Color.parseColor( color ) );
+
+    for( Station station : tour.details().stations() ){
+      markers.get( station.slug() ).alpha( 0.3f );
     }
   }
 
-  public void markedTour( int i ){
-    //TODO: Siehe oben
-    tourXml.listTouren.get( i ).polylines.color( Color.parseColor( tourXml.listTouren.get( i ).info.color() ) );
-    for( MarkerOptions m : tourXml.listTouren.get( i ).ListMarker ){
-      m.alpha( 1.0f );
+
+  /**
+   * Put a tour into the foreground, removing the alpha value from it's polylines and markers
+   *
+   * @param tour Tour to put into the foreground
+   */
+  private void unfadeTour( Tour tour ){
+    polylines.get(tour.slug()).color( Color.parseColor( tour.details().color() ) );
+
+    for( Station station : tour.details().stations() ){
+      markers.get(station.slug()).alpha( 1.0f );
     }
-    marked = i;
   }
+
+
+  /**
+   * Highlight a tour, setting the polyline color to a non-alpha value and the alpha value of the
+   * markers to full alpha
+   *
+   * @param tour Tour that was selected
+   */
+  public void selectTour( Tour tour ){
+    selectedTour = tour;
+
+    unfadeTour( tour );
+
+    // Unselect all other tours
+    for( Tour t : tourlist.city( visibleCity ).tours() ){
+      if( !t.slug().equals( tour.slug() ) ){
+        fadeTour( t );
+      }
+    }
+  }
+
 
   //Setzt alle Touren auf Sichtbar zurück
   public void resetTour(){
-    //TODO: Siehe oben
-    for( TourOld t : tourXml.listTouren ){
-      t.polylines.color( Color.parseColor( t.info.color() ) );
-      for( MarkerOptions m : t.ListMarker ){
-        m.alpha( 1.0f );
-      }
+    for( Tour tour : tourlist.city( visibleCity ).tours() ){
+      unfadeTour( tour );
     }
-    marked = -1;
     hideInfo( false );
-    updatePolylines();
+    drawRoutes();
   }
 
 
@@ -282,7 +330,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     locationListener = new LocationListener(){
       @Override
       public void onLocationChanged( Location location ){
-        updatePolylines();
+        drawRoutes();
+
         // define new Location
         MyLocation = location;
         pos = new LatLng( location.getLatitude(), location.getLongitude() );
@@ -313,27 +362,30 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
   }
 
-  public void updatePolylines(){
+
+  /**
+   * (Re-)Draw the routes of the currently visible tours and their station markers
+   */
+  private void drawRoutes(){
     mMap.clear();
-    //TODO: Verbindungen werden hinzugefügt
-    for( TourOld t : tourXml.listTouren ){
-      mMap.addPolyline( t.polylines );
-      for( MarkerOptions m : t.ListMarker ){
-        mMap.addMarker( m );
-      }
+
+    for( Map.Entry<String, PolylineOptions> polyline : polylines.entrySet() ){
+      mMap.addPolyline( polyline.getValue() );
+    }
+
+    drawStations();
+  }
+
+
+  /**
+   * (Re-)Draw the station markers of the currently visible tours
+   */
+  private void drawStations(){
+    for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
+      mMap.addMarker( marker.getValue() );
     }
   }
 
-  public void zeichnePolyLines(){
-    //TODO siehe oben
-    for( TourOld t : tourXml.listTouren ){
-      t.makePolylines();
-      mMap.addPolyline( t.polylines );
-      for( MarkerOptions m : t.ListMarker ){
-        mMap.addMarker( m );
-      }
-    }
-  }
 
 
   public int addPage( int position ){
@@ -399,35 +451,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     lv.setOnItemClickListener( new AdapterView.OnItemClickListener(){
       @Override
       public void onItemClick( AdapterView<?> parent, View view, int position, long id ){
-        for( RowItem item : rowItems ){     //Alle Listenelemente werden verkleinert
-          item.setSelected( false );
-        }
-        rowItems.get( position )
-                .setSelected( true ); //Nur das Angeklickte wird vergrößert
-        //TODO Anzahl der Touren
-        for( int i = 0; i < tourXml.listTouren.size(); i++ ){
-          if( i == position ){
-            markedTour( i );
-          } else {
-            transparentTour( i );
-          }
-        }
-
-        updatePolylines();
-
+        selectTour( tourlist.city( visibleCity ).tours().get( position ) );
+        adapter.select( selectedTour );
+        drawRoutes();
         adapter.notifyDataSetChanged();
       }
     });
-    rowItems = new ArrayList<RowItem>();
 
-    //TODO so
-    for( int i = 0; i < tourXml.listTouren.size(); i++ ){
-      RowItem items = new RowItem( tourXml.listTouren.get( i ).info.name(), tourXml.listTouren.get( i ).info.author(), tourXml.listTouren.get( i ).info.time() + "/" + tourXml.listTouren.get( i ).info.length(), menuIcons[i], tourXml.listTouren.get( i ).info.description() );
-
-      rowItems.add( items );
-    }
-    //TODO: lösche parser aus Tourenadapter
-    adapter = new TourenAdapter( this, rowItems, tourXml );
+    adapter = new TourenAdapter( this, tourlist.city( visibleCity ).tours(), selectedTour );
     lv.setAdapter( adapter );
   }
 
@@ -700,7 +731,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     return new SlidingUpPanelLayout.PanelSlideListener(){
       @Override
       public void onPanelSlide( View view, float v ){
-        if( marked >= 0 ){
+        if( !selectedTour.slug().isEmpty() ){
+
+//        if( marked >= 0 ){
           showInfo( true );
         } else {
           hideInfo( false );
@@ -711,14 +744,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onPanelCollapsed( View view ){
         //ändere Pfeilrichtung nach oben
-        if( marked >= 0 ){
+        if( !selectedTour.slug().isEmpty() ){
+//        if( marked >= 0 ){
           showInfo( true );
         } else {
           showInfo( false );
         }
-        for( RowItem item : rowItems ){
-          item.setSelected( false );
-        }
+//        for( RowItem item : rowItems ){
+//          item.setSelected( false );
+//        }
       }
 
       @Override
@@ -738,6 +772,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   //zeigt, wenn gewünscht, alle Informationen auf dem Panel an
+  // TODO: Turn this and hideinfo into a toggle method, and rename those silly names here as well...
   private void showInfo( boolean all ){
     ImageButton imgbtn1 = (ImageButton) findViewById( R.id.x );
     ImageButton imgbtn2 = (ImageButton) findViewById( R.id.zumstart );
@@ -836,6 +871,52 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locationListener );
   }
 
+
+  /***********************************************************************************************
+   *                                       Helper Methods
+   ***********************************************************************************************/
+
+  /**
+   * Will create polylines for all the tours in the visibleCity
+   */
+  // TODO: Remove the old polylines before you add new ones!
+  private void makePolylines(){
+    for( Tour tour : tourlist.city(visibleCity).tours() ){
+      PolylineOptions polyline = new PolylineOptions();
+
+      for( RouteWaypoint waypoint : tour.route().waypoints() ){
+        polyline.add( new LatLng( waypoint.latitude(), waypoint.longitude() ) );
+      }
+
+      polyline.color( Color.parseColor( tour.details().color() ) );
+      polylines.put( tour.slug(), polyline );
+
+      makeMarkers( tour );
+    }
+
+  }
+
+
+  /**
+   * Will create the markers on the map
+   * @param tour Tour object to create the markers from
+   */
+  // TODO: Remove the old markers before adding new ones
+  private void makeMarkers( Tour tour ){
+    for( Station station : tour.details().stations() ){
+      MarkerOptions marker = new MarkerOptions();
+
+      int id = getResources().getIdentifier( "pin_" + tour.details().trkid(), "drawable", getPackageName() );
+
+      Bitmap icon = BitmapFactory.decodeResource( getResources(), id );
+
+      marker.position( station.latlng() );
+      marker.icon( BitmapDescriptorFactory.fromBitmap( icon ) );
+
+      markers.put( station.slug(), marker );
+    }
+
+  }
 
 
 }

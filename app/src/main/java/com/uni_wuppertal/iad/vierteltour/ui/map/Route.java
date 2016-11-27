@@ -1,10 +1,13 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 import java.util.List;
+import java.util.Vector;
 
 /**
  * This class holds sets (called: segments) of waypoint coordinates of a route.
@@ -58,4 +61,18 @@ public class Route{
   }
 
 
+  /**
+   * Return the LatLngs of all segments at once
+   *
+   * @return latlngs A List<LatLng>
+   */
+  public List<LatLng> latLngs(){
+    List<LatLng> latlngs = new Vector<>();
+
+    for( RouteWaypoint waypoint : waypoints() ){
+      latlngs.add( new LatLng( waypoint.latitude(), waypoint.longitude() ) );
+    }
+
+    return latlngs;
+  }
 }
