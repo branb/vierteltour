@@ -62,6 +62,8 @@ public class Updater extends ContextWrapper{
   private Updater( Context base ){
     super(base);
 
+    // TODO: Move the URL to the resources once you have finetuned the updater behaviour
+    updateServerUrl = PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getString( "updateServerUrl", "http://10.0.2.2:8888" );
     downloadManager = new ThinDownloadManager();
   }
 
@@ -73,6 +75,8 @@ public class Updater extends ContextWrapper{
 
 
   // Properties
+  private String updateServerUrl;
+
   private ThinDownloadManager downloadManager;
   private int manifestDownloadId;
 
@@ -114,11 +118,7 @@ public class Updater extends ContextWrapper{
 
     Log.d( DEBUG_TAG, "Checking for updates..." );
 
-    // TODO: Move the URL to the resources once you have finetuned the updater behaviour
-    //String stringUrl = "http://10.0.2.2:8888/";
-    String stringUrl = "http://smallfish.eu/vierteltour/";
-
-    new DownloadTourdataVersionTask().execute(stringUrl);
+    new DownloadTourdataVersionTask().execute( updateServerUrl );
 
     // Assumption: If the version on server differs from our version, the tour data is new
     // There is no reason whatsoever for the data on the server side to be OLDER than this one.
@@ -158,12 +158,9 @@ public class Updater extends ContextWrapper{
 
     Log.d( DEBUG_TAG, "Starting file download..." );
 
-    // TODO: Move the URL to the resources
-    //String url = "http://10.0.2.2:8888/files.zip";
-    String url = "http://smallfish.eu/vierteltour/tours.zip";
     String destination = new File( OurStorage.get( Updater.this ).storagePath() ).getParentFile().getAbsolutePath()  + "/tours.zip";
 
-    this.downloadFile( url, destination );
+    this.downloadFile( updateServerUrl + "/tours.zip", destination );
 
 
     return true;
