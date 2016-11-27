@@ -21,8 +21,6 @@ public class XmlParser{
   public List<TourOld> listTouren;
   public List<LatLng> track;
 
-  private TourList tourlist;
-
   public XmlParser( FragmentActivity context, TourList tourlist ){
     this.context = context;
 

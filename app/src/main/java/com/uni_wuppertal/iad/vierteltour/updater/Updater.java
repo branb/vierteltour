@@ -60,7 +60,7 @@ public class Updater extends ContextWrapper{
    *
    */
   private Updater( Context base ){
-    super(base);
+    super( base );
 
     // TODO: Move the URL to the resources once you have finetuned the updater behaviour
     updateServerUrl = PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getString( "updateServerUrl", "http://10.0.2.2:8888" );
@@ -73,14 +73,12 @@ public class Updater extends ContextWrapper{
   private static final String DEBUG_TAG = "Updater";
 
 
-
   // Properties
   private String updateServerUrl;
 
   private ThinDownloadManager downloadManager;
   private int manifestDownloadId;
 
-  private String remoteTourdataVersion = "";
 
 
   /**
@@ -123,8 +121,7 @@ public class Updater extends ContextWrapper{
     // Assumption: If the version on server differs from our version, the tour data is new
     // There is no reason whatsoever for the data on the server side to be OLDER than this one.
     // Initialize SharedPreferences
-    SharedPreferences getPrefs = PreferenceManager
-      .getDefaultSharedPreferences( getBaseContext() );
+    SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences( getBaseContext() );
 
     //  Make a new preferences editor
     SharedPreferences.Editor e = getPrefs.edit();

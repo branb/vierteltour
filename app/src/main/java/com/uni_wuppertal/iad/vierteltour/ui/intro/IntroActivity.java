@@ -83,17 +83,10 @@ public class IntroActivity extends AppIntro{
   @Override
   public void finish(){
     //  Initialize SharedPreferences
-    SharedPreferences getPrefs = PreferenceManager
-      .getDefaultSharedPreferences( getBaseContext() );
-
-    //  Make a new preferences editor
-    SharedPreferences.Editor e = getPrefs.edit();
-
-    //  Edit preference to make it false because we don't want this to run again
-    e.putBoolean( "firstStart", false );
-
-    //  Apply changes
-    e.apply();
+    PreferenceManager.getDefaultSharedPreferences( getBaseContext() )
+                     .edit()
+                     .putBoolean( "firstStart", false )
+                     .apply();
 
     // Check for updates
     if( Updater.get( getBaseContext() ).updatesOnTourdata() ){

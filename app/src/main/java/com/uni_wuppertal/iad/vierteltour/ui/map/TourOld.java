@@ -22,15 +22,6 @@ public class TourOld{
   public List<MarkerOptions> ListMarker;
 
 
-  public TourOld(){
-    track = new Vector<>();
-  }
-
-  public TourOld( TourDetails i, List<Station> s ){
-    info = i;
-    stations = s;
-  }
-
   public TourOld( TourDetails i, List<Station> s, int tid, FragmentActivity context ){
     info = i;
     stations = s;
