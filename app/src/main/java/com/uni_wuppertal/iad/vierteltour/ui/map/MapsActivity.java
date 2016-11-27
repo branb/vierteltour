@@ -41,7 +41,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -54,7 +53,6 @@ import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 
 import com.uni_wuppertal.iad.vierteltour.ui.up_slider.PagerAdapter;
 import com.uni_wuppertal.iad.vierteltour.R;
-import com.uni_wuppertal.iad.vierteltour.ui.up_slider.RowItem;
 import com.uni_wuppertal.iad.vierteltour.ui.up_slider.TourenAdapter;
 import com.uni_wuppertal.iad.vierteltour.utility.XmlParser;
 import com.uni_wuppertal.iad.vierteltour.ui.up_slider.DrawerAdapter;
@@ -65,7 +63,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 
 public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback{
@@ -102,7 +99,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private PagerAdapter pageradapter;
   private DrawerAdapter draweradapter;
   private TourenAdapter adapter;
-  private List<RowItem> rowItems;
   private List<DrawerItem> drawerItems;
   private LatLng wuppertal;
   private XmlParser tourXml;
@@ -732,8 +728,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onPanelSlide( View view, float v ){
         if( !selectedTour.slug().isEmpty() ){
-
-//        if( marked >= 0 ){
           showInfo( true );
         } else {
           hideInfo( false );
@@ -745,14 +739,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onPanelCollapsed( View view ){
         //ändere Pfeilrichtung nach oben
         if( !selectedTour.slug().isEmpty() ){
-//        if( marked >= 0 ){
           showInfo( true );
         } else {
           showInfo( false );
         }
-//        for( RowItem item : rowItems ){
-//          item.setSelected( false );
-//        }
       }
 
       @Override
