@@ -10,9 +10,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.uni_wuppertal.iad.vierteltour.ui.map.Station;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.StationActivity;
 import com.uni_wuppertal.iad.vierteltour.R;
-import com.uni_wuppertal.iad.vierteltour.ui.map.TourOld;
 
 import java.util.ArrayList;
 
@@ -28,22 +29,24 @@ public class StationFragment extends Fragment{
   private TextView title;
   private int position;
 
-  public static StationFragment create( int pageNumber, TourOld marked ){
+  public static StationFragment create( int pageNumber, Tour tour ){
     StationFragment fragment = new StationFragment();
     arguments = new Bundle();
     arguments.putInt( ARG_PAGE_NUMBER, pageNumber );
     fragment.setArguments( arguments );
-    ztitle.add( marked.stations.get( pageNumber ).name() );
-    descriptions.add( marked.stations.get( pageNumber ).description() );
-    img.add( marked.stations.get( pageNumber ).imagesToString() );
-    aud.add( marked.stations.get( pageNumber ).audio() );
-    vid.add( marked.stations.get( pageNumber ).videosToString() );
-    TOURNAME = marked.info.name();
-    AUTOR = marked.info.author();
-    TIME = marked.info.time();
-    LENGHT = marked.info.length();
-    COLOR = marked.info.color();
-    SIZE = "" + marked.stations.size();
+
+    Station station = tour.station( pageNumber + 1);
+    ztitle.add( station.name() );
+    descriptions.add( station.description() );
+    img.add( station.imagesToString() );
+    aud.add( station.audio() );
+    vid.add( station.videosToString() );
+    TOURNAME = tour.name();
+    AUTOR = tour.author();
+    TIME = tour.time();
+    LENGHT = tour.length();
+    COLOR = tour.color();
+    SIZE = "" + tour.stations().size();
     return fragment;
   }
 

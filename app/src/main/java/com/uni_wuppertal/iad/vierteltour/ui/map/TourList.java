@@ -137,14 +137,14 @@ public class TourList{
 
 
   // TODO: Remove this helper method. Only used during Refactoring
-  public List<Tour> allTours(){
+  public List<Tour> tours(){
     List<Tour> tours = new Vector<>();
 
     for( Region region : regions ){
       for( Area area : region.areas() ){
         for( City city : area.cities() ){
           for( Tour tour : city.tours() ){
-            Log.d( "Xml/lListOfAllTourOlds", "Adding tour " + tour.name() );
+            Log.d( "TourList", "Adding tour " + tour.name() );
             tours.add( tour );
           }
         }

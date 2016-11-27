@@ -1,7 +1,6 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 import android.app.Application;
-import android.content.Context;
 import android.util.Log;
 
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
@@ -26,14 +25,13 @@ public class Tour extends TourListData{
   private Route route;
 
 
-  // TODO: Make this private after eliminating the XmlParser and TourOld classes
   /**
    * A wrapper function to load TourDetails if they are not already loaded. The actual contents are
    * accessed by special public functions
    *
    * @return
    */
-  public TourDetails details(){
+  private TourDetails details(){
     if( details != null )
       return details;
 
@@ -55,21 +53,6 @@ public class Tour extends TourListData{
       return new TourDetails();
     }
 
-  }
-
-
-  /**
-   * Sets the path to the home directory of this tour, where all it's data is stored
-   *
-   * @return TourListData
-   */
-  public TourListData home( String parentPath ){
-    super.home( parentPath );
-
-    // TODO: Don't read all tours at once, only when required. Change this after refactoring is finished
-    details().home( home() );
-
-    return this;
   }
 
 
@@ -190,7 +173,7 @@ public class Tour extends TourListData{
    * @return the Station
    */
   public Station station( int number ){
-    for( Station station : details.stations() ){
+    for( Station station : details().stations() ){
       if( station.number() == number ){
         return station;
       }

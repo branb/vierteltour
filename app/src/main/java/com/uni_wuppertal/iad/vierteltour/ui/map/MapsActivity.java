@@ -62,7 +62,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 
 public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback{
@@ -101,14 +100,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private TourAdapter adapter;
   private List<DrawerItem> drawerItems;
   private LatLng wuppertal;
-  private int marked;         //marked für Tour ausgewählt: -1 für nicht ausgewählt, 0-xxx für ausgewählte Tour
   private RelativeLayout panel;
   public static RelativeLayout audiobar;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
   // All the tour information that is currently available to us
   private TourList tourlist;
-  private List<TourOld> tourOldList;
 
 
   private GoogleMap mMap;
@@ -139,19 +136,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       .findFragmentById( R.id.map );
     mapFragment.getMapAsync( this );
 
-    marked = -1;        //keine Tour ausgewählt
     player = ViertelTourMediaPlayer.getInstance( this );
 
     showIntro();
     checkUpdates();
 
     tourlist = new TourListReader( this ).readTourList();
-
-    tourOldList = new Vector<>();
-
-    for( Tour tour : tourlist.allTours() ){
-      tourOldList.add( new TourOld( tour.details(), tour.stations() ) );
-    }
 
     Log.d( "Xml/getCity", "Searching for City 'wuppertal': " + tourlist.city( "wuppertal" ).name() );
 
@@ -388,18 +378,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
 
-  public int addPage( int position ){
-    //TODO zählt Stationen
-    if( (position >= 0) && (position < tourXml.listTouren.get( marked ).stations.size()) ){
-      pageradapter.addFragment( position, tourXml.listTouren.get( marked ) );
-      pageradapter.notifyDataSetChanged();
-      return position;
-    } else {
-      return -1;
-    }
-  }
-
-
   //Durch Auswahl einer Tour wird zur Stationenübersicht gewechselt
   public void swapToViewPager( View v ){
 
@@ -409,9 +387,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       pageradapter.notifyDataSetChanged();
     }
 
-    //TODO zählt Stationen
-    for( int i = 0; i < tourXml.listTouren.get( marked ).stations.size(); i++ ){
-      addPage( i );
+    // Create a page for every station
+    for( Station station : selectedTour.stations() ){
+      pageradapter.addFragment( station.number() - 1, selectedTour );
+      pageradapter.notifyDataSetChanged();
     }
 
     ImageButton xbtn = (ImageButton) findViewById( R.id.btn_x );      //ActionBar Button: Right
