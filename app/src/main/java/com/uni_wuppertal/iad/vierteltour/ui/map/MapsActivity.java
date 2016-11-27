@@ -300,7 +300,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    */
   public void selectTour( Tour tour ){
     selectedTour = tour;
-
+    adapter.select( tour );
     unfadeTour( tour );
 
     // Unselect all other tours
@@ -448,9 +448,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onItemClick( AdapterView<?> parent, View view, int position, long id ){
         selectTour( tourlist.city( visibleCity ).tours().get( position ) );
-        adapter.select( selectedTour );
         drawRoutes();
-        adapter.notifyDataSetChanged();
       }
     });
 

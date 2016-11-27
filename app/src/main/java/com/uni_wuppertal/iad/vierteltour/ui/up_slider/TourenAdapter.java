@@ -89,5 +89,6 @@ public class TourenAdapter extends BaseAdapter{
 
   public void select( Tour tour ){
     selectedTour = tour;
+    notifyDataSetChanged();
   }
 }
