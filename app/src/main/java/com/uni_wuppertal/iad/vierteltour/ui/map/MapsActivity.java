@@ -181,14 +181,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
 
+
   /**
    * Check for updates
    */
   private void checkUpdates(){
     SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences( getBaseContext() );
 
-    if( (! getPrefs.getBoolean( "firstStart", true )) && Updater.getInstance( this ).anyUpdatesOnTourdata() ){
-      Updater.getInstance( this ).downloadTourdata();
+    if( (! getPrefs.getBoolean( "firstStart", true )) && Updater.get( getBaseContext() ).updatesOnTourdata() ){
+      Updater.get( getBaseContext() ).downloadTourdata();
     }
   }
 

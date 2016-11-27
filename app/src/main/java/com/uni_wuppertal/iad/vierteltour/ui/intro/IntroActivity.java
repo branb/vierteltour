@@ -96,8 +96,8 @@ public class IntroActivity extends AppIntro{
     e.apply();
 
     // Check for updates
-    if( Updater.getInstance( this ).anyUpdatesOnTourdata() ){
-      Updater.getInstance( this ).downloadTourdata();
+    if( Updater.get( getBaseContext() ).updatesOnTourdata() ){
+      Updater.get( getBaseContext() ).downloadTourdata();
     }
 
     super.finish();

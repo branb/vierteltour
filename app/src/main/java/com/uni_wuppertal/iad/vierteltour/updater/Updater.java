@@ -104,7 +104,7 @@ public class Updater extends ContextWrapper{
    *
    * @return true if there is either new data or data has changed, false else
    */
-  public boolean anyUpdatesOnTourdata(){
+  public boolean updatesOnTourdata(){
     // If the phone has no connection to the internet, tell this to the user.
     if( !isNetworkAvailable() ){
       // TODO: Replace Toasts (all of them, not just this one) with proper UI elements (modals etc.)
