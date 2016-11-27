@@ -38,4 +38,24 @@ public class Route{
   public List<RouteSegment> segments() {
     return segments;
   }
+
+
+  /**
+   * Return the waypoints of all segments at once
+   *
+   * @return waypoints A List<RouteWaypoints>
+   */
+  public List<RouteWaypoint> waypoints(){
+    List<RouteWaypoint> waypoints = new Vector<>();
+
+    for( RouteSegment segment : segments ){
+      for( RouteWaypoint waypoint : segment.waypoints() ){
+        waypoints.add( waypoint );
+      }
+    }
+
+    return waypoints;
+  }
+
+
 }

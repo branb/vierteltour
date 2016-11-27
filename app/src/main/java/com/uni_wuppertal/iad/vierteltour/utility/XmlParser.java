@@ -37,7 +37,7 @@ public class XmlParser{
   }
 
   public void parseTrack( Tour t){
-    for( RouteWaypoint wp : t.route( context ).segments().get( 0 ).waypoints() ){
+    for( RouteWaypoint wp : t.route().waypoints() ){
       LatLng latlng = new LatLng( wp.latitude(), wp.longitude() );
       this.tourOld.track.add( latlng );
     }

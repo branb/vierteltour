@@ -54,12 +54,11 @@ public class Tour extends TourListData{
   /**
    * Reads the GPX data of this tours route (if not already read) and returns it.
    *
-   * @param context
    * @return
    */
-  public Route route( Context context ){
+  public Route route(){
     if( route == null ){
-      route = new GpxReader( context ).readRoute( home() + "/" + routesGpxFile );
+      route = new GpxReader( new Application().getBaseContext() ).readRoute( home() + "/" + routesGpxFile );
     }
 
     return route;

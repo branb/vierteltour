@@ -148,7 +148,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     Log.d( "Xml/getTour", "Searching for Tour 'fortschrott': " + tourFortschrott.name() );
     Log.d( "Xml/getFortschrottHome", "Home directory': " + tourFortschrott.home() );
 
-    RouteWaypoint waypointFortschrott = tourFortschrott.route( this ).segments().get( 0 ).waypoints().get( 0 );
+    RouteWaypoint waypointFortschrott = tourFortschrott.route().waypoints().get( 0 );
     Log.d( "Xml/getFortschrottRoute", "First coordinates of Fortschrott Route: " + waypointFortschrott.latitude() + " / " + waypointFortschrott.longitude() );
 
     initPager();
