@@ -95,7 +95,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private SlidingUpPanelLayout mLayout;
   private RelativeLayout mDrawer;
   private ViewPager mPager;
-  private StationAdapter pageradapter;
+  private StationAdapter stationAdapter;
   private DrawerAdapter draweradapter;
   private TourAdapter adapter;
   private List<DrawerItem> drawerItems;
@@ -381,16 +381,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   //Durch Auswahl einer Tour wird zur Stationenübersicht gewechselt
   public void swapToViewPager( View v ){
 
-    if( pageradapter.fragments.size() != 0 ){
-      pageradapter.deleteStrings();
-      pageradapter.fragments.clear();
-      pageradapter.notifyDataSetChanged();
+    if( stationAdapter.fragments.size() != 0 ){
+      stationAdapter.deleteStrings();
+      stationAdapter.fragments.clear();
+      stationAdapter.notifyDataSetChanged();
     }
 
     // Create a page for every station
     for( Station station : selectedTour.stations() ){
-      pageradapter.addFragment( station.number() - 1, selectedTour );
-      pageradapter.notifyDataSetChanged();
+      stationAdapter.addFragment( station.number() - 1, selectedTour );
     }
 
     ImageButton xbtn = (ImageButton) findViewById( R.id.btn_x );      //ActionBar Button: Right
@@ -398,9 +397,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     mLayout.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
     xbtn.setVisibility( View.VISIBLE );
-    title.setVisibility( View.VISIBLE );
-    //TODO Titel der Tour
     title.setText( selectedTour.name() );
+    title.setVisibility( View.VISIBLE );
     mPager.setVisibility( View.VISIBLE );
 
   }
@@ -443,8 +441,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void initPager(){
     //Initialisiere Pager
     mPager = (ViewPager) findViewById( R.id.pager );
-    pageradapter = new StationAdapter( getSupportFragmentManager(), this );
-    mPager.setAdapter( pageradapter );
+    stationAdapter = new StationAdapter( getSupportFragmentManager(), this );
+    mPager.setAdapter( stationAdapter );
     audiobar = (RelativeLayout) findViewById(R.id.audiobar);
     audiobar.setOnClickListener(new View.OnClickListener() {
       @Override

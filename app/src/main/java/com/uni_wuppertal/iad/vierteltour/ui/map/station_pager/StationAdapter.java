@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StationAdapter extends FragmentPagerAdapter{
-  public List<StationFragment> fragments = new ArrayList<StationFragment>();
+  public List<StationFragment> fragments = new ArrayList<>();
   private LayoutInflater mInflater;
 
   public StationAdapter( FragmentManager fm, Context context ){

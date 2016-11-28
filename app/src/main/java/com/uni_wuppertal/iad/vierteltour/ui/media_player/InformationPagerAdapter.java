@@ -24,14 +24,14 @@ import java.util.ArrayList;
 public class InformationPagerAdapter extends PagerAdapter{
 
   private Context mContext;
-  private StationActivity infoAct;
+  private StationActivity stationActivity;
   private Singletonint singlepage;
   private ArrayList<String> stationImagePaths;
 
-  public InformationPagerAdapter(Context mContext, ArrayList<String> stationImagePaths , StationActivity infoAct){
+  public InformationPagerAdapter(Context mContext, ArrayList<String> stationImagePaths , StationActivity stationActivity){
     this.mContext = mContext;
     this.stationImagePaths = stationImagePaths;
-    this.infoAct= infoAct;
+    this.stationActivity= stationActivity;
   }
 
   @Override
@@ -81,7 +81,7 @@ public class InformationPagerAdapter extends PagerAdapter{
       @Override
       public void onClick(View v)
       {
-        infoAct.vf.setDisplayedChild(1);
+        stationActivity.vf.setDisplayedChild(1);
         singlepage.INSTANCE.setPage(1);
       }
     });
@@ -89,7 +89,7 @@ public class InformationPagerAdapter extends PagerAdapter{
     videoView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        infoAct.vf.setDisplayedChild(1);
+        stationActivity.vf.setDisplayedChild(1);
         singlepage.INSTANCE.setPage(1);
       }
     });
