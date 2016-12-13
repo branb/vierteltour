@@ -39,7 +39,7 @@ public class TourListData{
    * @return String Absolute path to the home directory
    */
   public String home(){
-    return home;
+    return home + "/";
   }
 
 

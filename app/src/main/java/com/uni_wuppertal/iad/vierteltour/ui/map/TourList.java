@@ -50,6 +50,10 @@ public class TourList{
 
           for( Tour tour : city.tours() ){
             tour.home( city.home() );
+
+            for( Station station : tour.stations() ){
+              station.home( tour.home() );
+            }
           }
         }
       }

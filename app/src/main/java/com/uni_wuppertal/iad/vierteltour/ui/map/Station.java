@@ -65,7 +65,7 @@ public class Station extends TourListData{
 
 
   public String audio(){
-    return audio;
+    return home() + audio;
   }
 
 
@@ -114,7 +114,7 @@ public class Station extends TourListData{
     String s = "";
 
     for( String l : list ){
-      s += l + ",";
+      s += home() + l + ",";
     }
 
     if( list.size() > 1 )
