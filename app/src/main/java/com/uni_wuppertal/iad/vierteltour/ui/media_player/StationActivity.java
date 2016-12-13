@@ -152,11 +152,11 @@ public class StationActivity extends Activity{
     initOrientation();
     hide();
 
-    if( !audio.isEmpty() ){audio();}
+    initAudio();
 
-    if( !video.isEmpty() ){video();}
+    initVideo();
 
-    if( stationImagePaths.size() != 0 || !video.isEmpty()){images();}
+    initImages();
   }
 
 
@@ -178,14 +178,17 @@ public class StationActivity extends Activity{
     // TODO: Set Video and Image Resources in <Resources></Resources> in right order
 //TODO: HIER WURDE TMP EDITIERT
     String imagesFromXML = (String) b.get( "img" );
+
     video = (String) b.get( "video" );
+
     if( !imagesFromXML.isEmpty() ){
       stationImagePaths = new ArrayList<String>(Arrays.asList(imagesFromXML.split("\\s*,\\s*")));
-      if(!video.isEmpty())stationImagePaths.add(video);
-    } else {
-      if(!video.isEmpty()) stationImagePaths.add(video);
-
     }
+
+    if(!video.isEmpty()){
+      stationImagePaths.add(video);
+    }
+
     audio = (String) b.get( "audio" );
 
 
@@ -333,7 +336,13 @@ public class StationActivity extends Activity{
 
   }
 
-  public void audio(){
+
+
+  public void initAudio(){
+    if( audio.isEmpty() ){
+      return;
+    }
+
     player = ViertelTourMediaPlayer.getInstance( this );
 
 
@@ -395,8 +404,13 @@ public class StationActivity extends Activity{
 
 
 //TODO: Videoplayer auslagern und abändern
-  public void video(){
-/*   // if(player.getVideoview()SOURCE != SOURCE aktuelle Videoview (Wenn die Quellen unterschiedlich sind))
+  public void initVideo(){
+/*
+    if( video.isEmpty() ){
+      return;
+    }
+
+    // if(player.getVideoview()SOURCE != SOURCE aktuelle Videoview (Wenn die Quellen unterschiedlich sind))
     player.setVideoview(videoplayerGallery);
     player.loadGalleryVideo(video);
     player.loadVideo(video, videoplayer);
@@ -495,13 +509,15 @@ public class StationActivity extends Activity{
         });*/
   }
 
-  public void images(){
-    if( stationImagePaths.size() > 1 || !video.isEmpty() ){
-      isimages=0;
-        imagePager.setOnPageChangeListener(pagechangelisten);
-        imagePagerGallery.setOnPageChangeListener(pagechangelisten);
-      setUiPageViewController();
+  public void initImages(){
+    if( stationImagePaths.size() == 0 ){
+      return;
     }
+
+    isimages=0;
+    imagePager.setOnPageChangeListener(pagechangelisten);
+    imagePagerGallery.setOnPageChangeListener(pagechangelisten);
+    setUiPageViewController();
   }
 
 
