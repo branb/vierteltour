@@ -52,7 +52,7 @@ public class InformationPagerAdapter extends PagerAdapter{
     ImageView imageView = (ImageView) itemView.findViewById( R.id.img_pager_item );
     ImageView imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button );
     VideoView videoView = (VideoView) itemView.findViewById( R.id.vid_pager_item );
-    char resources = stationImagePaths.get(position).charAt(0);     //v für video, i für image
+    char resources = new File(stationImagePaths.get(position)).getName().charAt(0);     //v für video, i für image
 
 //TODO: stationimagepaths to stationresourcepaths with video and images to show
     //TODO: HIER WURDE TMP EDITIERT
