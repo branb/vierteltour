@@ -1,6 +1,5 @@
 package com.uni_wuppertal.iad.vierteltour.ui.intro;
 
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -9,12 +8,9 @@ import android.support.v4.app.Fragment;
 import com.uni_wuppertal.iad.vierteltour.R;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.github.paolorotolo.appintro.AppIntro;
-import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroFragment;
-import com.uni_wuppertal.iad.vierteltour.updater.Updater;
 
 public class IntroActivity extends AppIntro{
   @Override
@@ -82,16 +78,11 @@ public class IntroActivity extends AppIntro{
 
   @Override
   public void finish(){
-    //  Initialize SharedPreferences
+    //  Remember to not start the intro again
     PreferenceManager.getDefaultSharedPreferences( getBaseContext() )
                      .edit()
                      .putBoolean( "firstStart", false )
                      .apply();
-
-    // Check for updates
-    if( Updater.get( getBaseContext() ).updatesOnTourdata() ){
-      Updater.get( getBaseContext() ).downloadTourdata();
-    }
 
     super.finish();
   }

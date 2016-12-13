@@ -53,7 +53,6 @@ public class Updater extends ContextWrapper{
     return ourInstance;
   }
 
-
   /**
    * The main constructor.
    *
@@ -64,22 +63,29 @@ public class Updater extends ContextWrapper{
 
     // TODO: Move the URL to the resources once you have finetuned the updater behaviour
     updateServerUrl = PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getString( "updateServerUrl", "http://smallfish.eu/vierteltour/" );
+    //updateServerUrl = PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getString( "updateServerUrl", "http://10.0.2.2:8888" );
+
     downloadManager = new ThinDownloadManager();
   }
-
 
 
   // Constants
   private static final String DEBUG_TAG = "Updater";
 
 
+
   // Properties
   private String updateServerUrl;
 
+
   private ThinDownloadManager downloadManager;
+
   private int manifestDownloadId;
+  private int tourlistDownloadId;
+  private UpdateListener updateListener;
 
-
+  // Indicates if we're checking for updates right now, e.g. in the middle of a download process
+  private boolean checkingForUpdates = false;
 
   /**
    * Check if there is a network connection available
@@ -115,6 +121,7 @@ public class Updater extends ContextWrapper{
     }
 
     Log.d( DEBUG_TAG, "Checking for updates..." );
+    checkingForUpdates = true;
 
     new DownloadTourdataVersionTask().execute( updateServerUrl );
 
@@ -129,38 +136,17 @@ public class Updater extends ContextWrapper{
     // If we've never stored a tour data version, use the remote one as the local version
     if( !getPrefs.contains( "localTourdataVersion" ) ) {
       e.putString( "localTourdataVersion", getPrefs.getString( "remoteTourdataVersion", "" ) ).apply();
+      updateListener.newTourdataAvailable();
       return true;
     }
 
     if( !getPrefs.getString( "localTourdataVersion", "" ).equals( getPrefs.getString( "remoteTourdataVersion", "" ) )  ){
+      updateListener.newTourdataAvailable();
       return true;
     }
 
-
+    updateListener.noNewTourdataAvailable();
     return false;
-  }
-
-
-
-  /**
-   *
-   * @return true if the download was successful, false else
-   */
-  public boolean downloadTourdata(){
-    // If the phone has no connection to the internet, tell this to the user.
-    if( !isNetworkAvailable() ){
-      Toast.makeText( getApplicationContext(), "Can't download file: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
-      return false;
-    }
-
-    Log.d( DEBUG_TAG, "Starting file download..." );
-
-    String destination = new File( OurStorage.get( Updater.this ).storagePath() ).getParentFile().getAbsolutePath()  + "/tours.zip";
-
-    this.downloadFile( updateServerUrl + "/tours.zip", destination );
-
-
-    return true;
   }
 
 
@@ -198,12 +184,13 @@ public class Updater extends ContextWrapper{
         // Save remote tour data version
         if( entry.getKey().equals( "tourDataVersion" ) ){
           PreferenceManager.getDefaultSharedPreferences( getBaseContext() )
-            .edit()
-            .putString( "remoteTourdataVersion", entry.getValue() )
-            .apply();
+                           .edit()
+                           .putString( "remoteTourdataVersion", entry.getValue() )
+                           .apply();
         }
       }
 
+      checkingForUpdates = false;
     }
 
 
@@ -266,8 +253,113 @@ public class Updater extends ContextWrapper{
 
 
 
-  private void downloadFile( String url, String destination ){
+  /**
+   *
+   * @return true if the download was successful, false else
+   */
+  public boolean downloadTourlist(){
+    // If the phone has no connection to the internet, tell this to the user.
+    if( !isNetworkAvailable() ){
+      Toast.makeText( getApplicationContext(), "Can't download tourlist: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
+      return false;
+    }
+
+    checkingForUpdates = true;
+
+    final UpdateListener listener = updateListener;
+
+    Log.d( DEBUG_TAG, "Starting download of tourlist..." );
+
+    String url = updateServerUrl + "/tourlist";
+    String destination = new File( OurStorage.get( this ).storagePath() )  + "/tourlist.xml";
+
     Uri downloadUri = Uri.parse( url );
+    Uri destinationUri = Uri.parse( destination );
+
+    // Setup the download, with nice callback function on different events throughout the download
+    DownloadRequest downloadRequest = new DownloadRequest( downloadUri)
+      .setRetryPolicy( new DefaultRetryPolicy() )
+      .setDestinationURI( destinationUri ).setPriority( DownloadRequest.Priority.LOW )
+      .setStatusListener( new DownloadStatusListenerV1() {
+        // Define a Toast object so we can update it and display it for as long as the onProgress-object fires
+        // It's only a temporary solution during development anyways, so, don't tweak it further, e.g. it would still disappear
+        // if onProgress doesn't fire for more than 3.5s due to network delay etc.
+        Toast statusToast = Toast.makeText( getApplicationContext(), "intentionally left blank - or, something like that", Toast.LENGTH_LONG );
+
+        String successMessage = "Download completed!";
+        String errorMessage = "Download FAILED!\n" + "Message:\n";
+        String progressMessage = "Download in progress! (";
+        String toastText = "Tourenliste wird heruntergeladen - bitte einen Moment Geduld";
+        Boolean updateProgress = true;
+
+        @Override
+        public void onDownloadComplete( DownloadRequest request ) {
+          Log.d( DEBUG_TAG, successMessage  + request.getDestinationURI().toString() );
+
+          statusToast.setText( "Die Tourenliste wurde vollständig heruntergeladen." );
+          statusToast.show();
+
+          checkingForUpdates = false;
+          listener.tourlistDownloaded();
+        }
+
+        @Override
+        public void onDownloadFailed( DownloadRequest request, int returnCode, String returnMessage ) {
+          Log.d( DEBUG_TAG, errorMessage + returnMessage + " (" + returnCode + ")" );
+
+          statusToast.setText( "Beim Herunterladen der Tourenliste ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat." );
+          statusToast.show();
+
+          checkingForUpdates = false;
+        }
+
+        @Override
+        public void onProgress( DownloadRequest request, long totalBytes, long downlaodedBytes, int progress) {
+          if( (progress % 5) == 0 ){
+            if( updateProgress ){
+              Log.d( DEBUG_TAG, progressMessage + downlaodedBytes + " / " + totalBytes + ") - Progress? => " + progress + " (" + updateProgress.toString() + ")" );
+
+              toastText = toastText + ".";
+              statusToast.setText( toastText );
+              updateProgress = false;
+            }
+          } else {
+            updateProgress = true;
+          }
+
+          statusToast.show();
+        }
+      });
+
+    // Display the message to the user for as long as the download lasts
+    Toast.makeText( getApplicationContext(), "Beginne die Tourenliste herunterzuladen...", Toast.LENGTH_LONG ).show();
+
+    // Start the download
+    this.tourlistDownloadId = downloadManager.add( downloadRequest );
+
+    return true;
+  }
+
+  /**
+   *
+   * @return true if the download was successful, false else
+   */
+  public boolean downloadTourdata( ){
+    // If the phone has no connection to the internet, tell this to the user.
+    if( !isNetworkAvailable() ){
+      Toast.makeText( getApplicationContext(), "Can't download file: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
+      return false;
+    }
+
+    checkingForUpdates = true;
+
+    final UpdateListener listener = updateListener;
+
+    Log.d( DEBUG_TAG, "Starting file download..." );
+
+    String destination = new File( OurStorage.get( Updater.this ).storagePath() )  + "/tours.zip";
+
+    Uri downloadUri = Uri.parse( updateServerUrl + "/tours.zip" );
     Uri destinationUri = Uri.parse( destination );
 
     // Setup the download, with nice callback function on different events throughout the download
@@ -303,6 +395,9 @@ public class Updater extends ContextWrapper{
           getPrefs.edit()
                   .putString( "localTourdataVersion", getPrefs.getString( "remoteTourdataVersion", "" ) )
                   .apply();
+
+          checkingForUpdates = false;
+          listener.tourdataDownloaded();
         }
 
         @Override
@@ -311,6 +406,8 @@ public class Updater extends ContextWrapper{
 
           statusToast.setText( "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat." );
           statusToast.show();
+
+          checkingForUpdates = false;
         }
 
         @Override
@@ -337,6 +434,13 @@ public class Updater extends ContextWrapper{
     Toast.makeText( getApplicationContext(), "Beginne die Tourdaten herunterzuladen...", Toast.LENGTH_LONG ).show();
 
     this.manifestDownloadId = downloadManager.add( downloadRequest );
+
+    return true;
+  }
+
+
+  public boolean checkingForUpdates(){
+    return checkingForUpdates;
   }
 
 
@@ -350,26 +454,38 @@ public class Updater extends ContextWrapper{
    * Example:
    * /location/of/zip/file/unzip_me.zip -> /location/of/zip/file/unzip_me
    *
-   * @param zipFile - The destination of our ZIP-File
+   * @param zipPath - The destination of our ZIP-File
    */
-  private void unzipFile( String zipFile ){
+  private void unzipFile( String zipPath ){
     try {
       // Determine output folder
-      File rootfolder = new File( zipFile );
-      File outputFolder = new File( rootfolder.getParentFile().getAbsolutePath() );
+      File zipFile = new File( zipPath );
+      File outputFolder = new File( zipFile.getParentFile().getAbsolutePath() );
 
       Log.d( DEBUG_TAG, "Output folder:");
       Log.d( DEBUG_TAG, outputFolder.getAbsolutePath() );
 
-      ZipFile zip = new ZipFile( zipFile );
+      ZipFile zip = new ZipFile( zipPath );
 
       zip.extractAll( outputFolder.getAbsolutePath() );
+
+      // Remove .zip after unzipping
+      zipFile.delete();
 
     } catch( ZipException e ){
       e.printStackTrace();
     }
   }
 
+
+  /**
+   * Set a listener from e.g. an activity so we can inform the activity about finished updates
+   *
+   * @param listener
+   */
+  public void updateListener( UpdateListener listener ){
+    updateListener = listener;
+  }
 
 
 }

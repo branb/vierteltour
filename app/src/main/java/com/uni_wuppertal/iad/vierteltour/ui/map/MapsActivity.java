@@ -57,6 +57,7 @@ import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.TourAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.DrawerAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.DrawerItem;
 import com.uni_wuppertal.iad.vierteltour.updater.Updater;
+import com.uni_wuppertal.iad.vierteltour.updater.UpdateListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +65,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback{
+public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback, UpdateListener{
 
   public Location MyLocation;
   public LatLng pos;
@@ -110,6 +111,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   private GoogleMap mMap;
 
+  // Indicates, if we have checked for new updates on tourdata. Needed at the start of the app
+  private boolean checkedForUpdates = false;
+
   // TODO: Save the currently displayed city into shared preferences and load them on startup
   // Slug of the currently displayed city, e.g. the currently available and displayed tours
   private String visibleCity = "wuppertal";
@@ -129,32 +133,18 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   @Override
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
-
     setContentView( R.layout.activity_main );
-    // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-      .findFragmentById( R.id.map );
-    mapFragment.getMapAsync( this );
 
     player = ViertelTourMediaPlayer.getInstance( this );
 
+
+    initLocationServices();
+
     showIntro();
-    checkUpdates();
-
-    tourlist = new TourListReader( this ).readTourList();
-
-    Log.d( "Xml/getCity", "Searching for City 'wuppertal': " + tourlist.city( "wuppertal" ).name() );
-
-    Tour tourFortschrott = tourlist.tour( "fortschrott" );
-    Log.d( "Xml/getTour", "Searching for Tour 'fortschrott': " + tourFortschrott.name() );
-    Log.d( "Xml/getFortschrottHome", "Home directory': " + tourFortschrott.home() );
-
-    RouteWaypoint waypointFortschrott = tourFortschrott.route().waypoints().get( 0 );
-    Log.d( "Xml/getFortschrottRoute", "First coordinates of Fortschrott Route: " + waypointFortschrott.latitude() + " / " + waypointFortschrott.longitude() );
 
     initMap();
+
     initPager();
-    initSupl();
     initBtns();
     moveDrawerToTop();
     initActionBar();
@@ -187,20 +177,21 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   /**
    * Check for updates
    */
-  private void checkUpdates(){
-    SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences( getBaseContext() );
-
-    if( (! getPrefs.getBoolean( "firstStart", true )) && Updater.get( getBaseContext() ).updatesOnTourdata() ){
-      Updater.get( getBaseContext() ).downloadTourdata();
+  private void checkForUpdates(){
+    if( !checkedForUpdates ){
+      Updater.get( getBaseContext() ).updateListener( this );
+      Updater.get( getBaseContext() ).updatesOnTourdata();
+    } else if( !Updater.get( getBaseContext() ).checkingForUpdates() ) {
+      loadTourdata();
     }
   }
 
 
   /**
-   * Draw the map
+   * Get notified when the map is ready to be used.
    */
   private void initMap(){
-    makePolylines();
+    ((SupportMapFragment) getSupportFragmentManager().findFragmentById( R.id.map )).getMapAsync( this );
   }
 
 
@@ -209,11 +200,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void onMapReady( GoogleMap googleMap ){
     mMap = googleMap;
 
-    drawRoutes();
-    findMyLocation();
-
     wuppertal = new LatLng( 51.256972, 7.139341 );
     mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( wuppertal, CurrentZoom ) );
+
+    checkForUpdates();
 
     /**
      * When the user clicks anywhere on the map, check which tour he clicked onto and mark it as
@@ -316,7 +306,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
 
-  public void findMyLocation(){
+  public void initLocationServices(){
+    locationManager = (LocationManager) getSystemService( LOCATION_SERVICE );
+
     locationListener = new LocationListener(){
       @Override
       public void onLocationChanged( Location location ){
@@ -346,7 +338,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onProviderDisabled( String provider ){
       }
     };
-    locationManager = (LocationManager) getSystemService( LOCATION_SERVICE );
     // Start GPS
     locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locationListener );
     //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,locationListener);
@@ -836,6 +827,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   @Override
   public void onRestart(){
     super.onRestart();
+    checkForUpdates();
     locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locationListener );
   }
 
@@ -886,5 +878,48 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   }
 
+
+  /**
+   * Loads the list of available tours
+   */
+  private void loadTourdata(){
+    tourlist = new TourListReader( this ).readTourList();
+
+    Log.d( "Xml/getCity", "Searching for City 'wuppertal': " + tourlist.city( "wuppertal" ).name() );
+
+    Tour tourFortschrott = tourlist.tour( "fortschrott" );
+    Log.d( "Xml/getTour", "Searching for Tour 'fortschrott': " + tourFortschrott.name() );
+    Log.d( "Xml/getFortschrottHome", "Home directory': " + tourFortschrott.home() );
+
+    RouteWaypoint waypointFortschrott = tourFortschrott.route().waypoints().get( 0 );
+    Log.d( "Xml/getFortschrottRoute", "First coordinates of Fortschrott Route: " + waypointFortschrott.latitude() + " / " + waypointFortschrott.longitude() );
+
+    makePolylines();
+    drawRoutes();
+
+    initSupl();
+  }
+
+  @Override
+  public void newTourdataAvailable(){
+    Updater.get( getBaseContext() ).downloadTourlist();
+  }
+
+  @Override
+  public void noNewTourdataAvailable(){
+    checkedForUpdates = true;
+    loadTourdata();
+  }
+
+  @Override
+  public void tourlistDownloaded(){
+    Updater.get( getBaseContext() ).downloadTourdata();
+  }
+
+  @Override
+  public void tourdataDownloaded(){
+    checkedForUpdates = true;
+    loadTourdata();
+  }
 
 }
