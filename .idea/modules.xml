@@ -3,9 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core.iml" filepath="$PROJECT_DIR$/core.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/libs/j4gpx-master/j4gpx-master.iml" filepath="$PROJECT_DIR$/app/libs/j4gpx-master/j4gpx-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/libs/libs.iml" filepath="$PROJECT_DIR$/app/libs/libs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vierteltour.iml" filepath="$PROJECT_DIR$/vierteltour.iml" />
     </modules>
   </component>
 </project>

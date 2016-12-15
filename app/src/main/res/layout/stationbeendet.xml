@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/transparentblack"
+android:id="@+id/stationbeendet">
+
+<ImageButton
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:id="@+id/station_x_button"
+  android:src="@drawable/beenden_hell"
+  android:layout_alignParentRight="true"
+  android:layout_alignParentTop="true"
+  android:layout_marginTop="20dp"
+  android:layout_marginRight="20dp"
+  android:background="@color/transparent"
+  />
+
+<TextView
+  android:id="@+id/stationbeendettext"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:textColor="@color/white"
+  android:text="Sie haben diese Station\nbeendet!"
+  android:layout_centerHorizontal="true"
+  android:gravity="center"
+  android:layout_above="@+id/station_wiederholen"
+  android:layout_marginBottom="70dp"/>
+
+<ImageButton
+  android:id="@+id/zur_naechsten_station"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:src="@drawable/zur_naechsten_station"
+  android:visibility="gone"
+  android:layout_centerHorizontal="true"
+  android:layout_above="@+id/station_wiederholen"
+  android:background="@color/transparent"
+  android:layout_marginBottom="20dp"
+  />
+
+<ImageButton
+  android:id="@+id/zur_tourenauswahl"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:src="@drawable/zur_tourenauswahl"
+  android:visibility="gone"
+  android:layout_centerHorizontal="true"
+  android:layout_above="@+id/station_wiederholen"
+  android:background="@color/transparent"
+  android:layout_marginBottom="20dp"
+  />
+
+<ImageButton
+  android:id="@+id/station_wiederholen"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:src="@drawable/station_wiederholen"
+  android:visibility="visible"
+  android:layout_centerHorizontal="true"
+  android:layout_centerVertical="true"
+  android:background="@color/transparent"
+  />
+
+</RelativeLayout>
