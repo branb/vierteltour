@@ -105,7 +105,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
       public void onClick(View v)
       {if(gallery.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
       {gallery.mediaplayerbars();}
-        else{imageView.setVisibility(View.GONE);}
+      //  else{imageView.setVisibility(View.GONE);}
       }});
 
     return itemView;
