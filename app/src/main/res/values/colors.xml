@@ -21,5 +21,7 @@
     <color name="black">#353535</color>
     <color name="grey">#BABDB5</color>
     <color name="white">#E6EBE0</color>
-
+    <color name="transparentblack">#99353535</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparentred">#DDFF5D59</color>
 </resources>

@@ -8,13 +8,11 @@ public enum Singletonint {
 
   //Wenn Videoplayer wie Audio implementiert wird, kann time und playing gelöscht werden
 
-    private int page;   //page=0 Stationenbeschreibung, page=1 Gallerymode
     private int id;     //Zur Zeit nur nummer der Station, soll später zu ID werden
     private double time;
     private boolean playing;
     private int position;
-    private Singletonint(){
-      page = 0;
+    Singletonint(){
       time = 0;
       playing = false;
       id=-1;
@@ -25,13 +23,6 @@ public enum Singletonint {
 
     public double getTime() {return time;}
     public void setTime(double time) {this.time = time;}
-
-    public int getPage(){
-      return page;
-    }
-    public void setPage(int page){
-      this.page = page;
-    }
 
     public int getId(){
     return id;
@@ -45,8 +36,7 @@ public enum Singletonint {
 
 
     public void reset()
-    {page = 0;
-     time = 0;
+    {time = 0;
      playing = false;}
 
 
