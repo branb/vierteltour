@@ -58,17 +58,17 @@ public class InformationPagerAdapter extends PagerAdapter{
 
     imageView = (ImageView) itemView.findViewById( R.id.img_pager_item );
     ImageView imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button );
-    char resources = stationImagePaths.get(position).charAt(0);     //v für video, i für image
+    String resources = stationImagePaths.get(position);     //v für video, i für image
 
 //TODO: stationimagepaths to stationresourcepaths with video and images to show
     //TODO: HIER WURDE TMP EDITIERT
-    if(resources == 'v')
+    if(resources.endsWith("mp4"))
     { imageView.setVisibility(View.VISIBLE);
       Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
         MediaStore.Images.Thumbnails.MINI_KIND);
       imageView.setImageBitmap(thumbnail);}
 
-    else if (resources == 'i') {
+    else if (resources.endsWith("jpg")) {
       imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       imageView.setImageURI( Uri.fromFile( new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))) ) );}

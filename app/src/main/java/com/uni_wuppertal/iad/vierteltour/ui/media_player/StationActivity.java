@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
@@ -60,12 +61,11 @@ public class StationActivity extends Activity{
   Intent myIntent2;
   Bundle b;
   RelativeLayout layout;
-  ViewFlipper vf;     //tauscht Stationenbeschreibung und Gallery Mode
-  ViewPager imagePager, imagePagerGallery;    //Slidebare Gallery
+  ViewPager imagePager;    //Slidebare Gallery
   InformationPagerAdapter mAdapter;
   LinearLayout pager_indicator;
   RelativeLayout gesperrt;
-  boolean sperrvariable=false;
+  boolean sperrvariable=true;
   TextView ausrufe;
 
 
@@ -136,13 +136,18 @@ public class StationActivity extends Activity{
 //TODO: HIER WURDE TMP EDITIERT
     stationImagePaths = new ArrayList<String>();
     String imagesFromXML = (String) b.get( "img" );
+
     video = (String) b.get( "video" );
+    System.out.println(imagesFromXML+ "\n" + video);
     if( !imagesFromXML.isEmpty() ){
       stationImagePaths = new ArrayList<String>(Arrays.asList(imagesFromXML.split("\\s*,\\s*")));
     }
     if(!video.isEmpty()){
       stationImagePaths.add(video);
     }
+
+    for(int i=0;i<stationImagePaths.size();i++)
+    {System.out.println(stationImagePaths.get(i));}
 
     audio = (String) b.get( "audio" );
 
@@ -396,7 +401,6 @@ public class StationActivity extends Activity{
     @Override
     public void onPageSelected( int position ){
       isimages=position;
-      imagePagerGallery.setCurrentItem(position);
       imagePager.setCurrentItem(position);
 
       for( int i = 0; i < dotsCount; i++ ){

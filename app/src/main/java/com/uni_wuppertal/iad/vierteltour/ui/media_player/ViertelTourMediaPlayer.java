@@ -76,19 +76,6 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
 
   }
 
-  public boolean loadVideo( String path , VideoView video){
-    String inputStream = OurStorage.get( this.context ).pathToFile( path );
-
-    if( inputStream == null ){
-      return false;
-    }
-      video.setVideoPath( inputStream );
-      resetVideoFrame(video);
-      return true;
-  }
-
-
-
   public boolean loadGalleryVideo( String path){
 
 
@@ -103,24 +90,12 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
   }
 
 
-
-  public void resetVideoFrame(VideoView video)
-  {
-    video.seekTo(100);
-  video.pause();}
-
-
   public VideoView getVideoview()
   {return videoview;}
 
 
   public void setVideoview(VideoView video)
   {videoview=video;}
-
-  public void pos()
-  {System.out.println(videoview.getCurrentPosition());
-    System.out.println(singlepage.INSTANCE.getTime());
-    System.out.println(singlepage.INSTANCE.getPlaying());}
 
 }
 
