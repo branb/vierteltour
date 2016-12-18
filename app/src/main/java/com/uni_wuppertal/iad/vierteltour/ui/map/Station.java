@@ -117,10 +117,8 @@ public class Station extends TourListData{
       s += home() + l + ",";
     }
 
-    if( list.size() > 1 )
       return s.replaceAll( ",$", "" );
-    else
-      return s;
+
   }
 
 
