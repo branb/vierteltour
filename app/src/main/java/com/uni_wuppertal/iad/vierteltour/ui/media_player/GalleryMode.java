@@ -204,6 +204,7 @@ public void initAll()
     player.getVideoview().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
       @Override
       public void onCompletion(MediaPlayer mediaPlayer) {
+        System.out.println("FINISH");
         stopVideoplay();
       }
     });
@@ -237,7 +238,8 @@ public void initAll()
   }
 
   public void startVideoplay()
-  {startvideo = true;
+  {
+    startvideo = true;
     player.getVideoview().setVisibility(View.VISIBLE);
     mAdapter2.hideImage(imagePagerGallery.getCurrentItem());
     player.getVideoview().start();

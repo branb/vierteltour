@@ -3,6 +3,7 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -73,6 +74,12 @@ public class GalleryPagerAdapter extends PagerAdapter {
         MediaStore.Images.Thumbnails.MINI_KIND);
       imageView.setImageBitmap(thumbnail);
       player.setVideoview(videoView);
+      videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mediaPlayer) {
+          gallery.stopVideoplay();
+        }
+      });
 
     /*  videoView.setOnTouchListener( new View.OnTouchListener(){
         @Override
@@ -116,12 +123,13 @@ public class GalleryPagerAdapter extends PagerAdapter {
           if(gallery.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
           {gallery.mediaplayerbars();}
         else{
-        gallery.startvideo=true;
+            gallery.startVideoplay();
+        /*gallery.startvideo=true;
         ownContainer.findViewWithTag("image"+position).setVisibility(View.GONE);
         ownContainer.findViewWithTag("video"+position).setVisibility(View.VISIBLE);
         player.getVideoview().start();
         gallery.play_buttonGallery.setImageResource( R.drawable.stop_hell );
-        gallery.seekUpdationVideo();}
+        gallery.seekUpdationVideo();*/}
 
         } else if (resources.endsWith("jpg")) {
           if(gallery.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
