@@ -209,7 +209,9 @@ public class StationActivity extends Activity{
     if (requestCode == 1) {
       if(resultCode == RESULT_OK){
         imagePager.setCurrentItem(singlepage.INSTANCE.getPosition());
-      }
+        if(!player.isPlaying())
+        {startaudio=false;
+          play_button.setImageResource( R.drawable.play_hell );}}
     }
   }
 

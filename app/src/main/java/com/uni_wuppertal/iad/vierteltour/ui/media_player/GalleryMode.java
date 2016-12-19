@@ -238,7 +238,7 @@ public void initAll()
   }
 
   public void startVideoplay()
-  {
+  {if(player.isPlaying())player.pause();
     startvideo = true;
     player.getVideoview().setVisibility(View.VISIBLE);
     mAdapter2.hideImage(imagePagerGallery.getCurrentItem());
