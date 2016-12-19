@@ -189,17 +189,10 @@ public void initAll()
 
 
         if( player.getVideoview().isPlaying() ){
-          startvideo = false;
-          player.getVideoview().pause();
-          play_buttonGallery.setImageResource( R.drawable.play_hell );
+          pauseVideoplay();
         } else {
 
-          startvideo = true;
-          player.getVideoview().setVisibility(View.VISIBLE);
-          mAdapter2.hideImage(imagePagerGallery.getCurrentItem());
-          player.getVideoview().start();
-          play_buttonGallery.setImageResource( R.drawable.stop_hell );
-          seekUpdationVideo();
+          startVideoplay();
         }
       }
     });
@@ -211,12 +204,7 @@ public void initAll()
     player.getVideoview().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
       @Override
       public void onCompletion(MediaPlayer mediaPlayer) {
-        play_buttonGallery.setImageResource(R.drawable.play_hell);
-        startvideo=false;
-        mAdapter2.showImage(imagePagerGallery.getCurrentItem());
-        player.getVideoview().setVisibility(View.GONE);
-        durationGallery.setText("0:00");
-        seekbarGallery.setProgress(0);
+        stopVideoplay();
       }
     });
 
@@ -248,6 +236,28 @@ public void initAll()
         });*/
   }
 
+  public void startVideoplay()
+  {startvideo = true;
+    player.getVideoview().setVisibility(View.VISIBLE);
+    mAdapter2.hideImage(imagePagerGallery.getCurrentItem());
+    player.getVideoview().start();
+    play_buttonGallery.setImageResource( R.drawable.stop_hell );
+    seekUpdationVideo();}
+
+  public void pauseVideoplay()
+  {startvideo = false;
+    player.getVideoview().pause();
+    play_buttonGallery.setImageResource( R.drawable.play_hell );}
+
+  public void stopVideoplay()
+  {startvideo = false;
+    player.getVideoview().pause();
+    play_buttonGallery.setImageResource( R.drawable.play_hell );
+    mAdapter2.showImage(imagePagerGallery.getCurrentItem());
+    player.getVideoview().setVisibility(View.GONE);
+    durationGallery.setText("0:00");
+    seekbarGallery.setProgress(0);}
+
   public void mediaplayerbars()
   {if (relGalleryBot.getVisibility() == View.VISIBLE) {
     Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_down);
@@ -267,6 +277,18 @@ public void initAll()
     relGalleryTop.setVisibility(View.VISIBLE);
   }}
 
+  public void hideBars()
+  {if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+  {  if(relGalleryBot.getVisibility() == View.VISIBLE)
+  {Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_down);
+    relGalleryBot.startAnimation(slide1);
+    relGalleryBot.setVisibility(View.GONE);}
+  if(relGalleryTop.getVisibility() == View.VISIBLE)
+  {Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_up);
+    relGalleryTop.startAnimation(slide2);
+    relGalleryTop.setVisibility(View.GONE);}}
+  }
+
   public void showGalleryVideoBar()
   {seekbarGallery.setVisibility(View.VISIBLE);
     play_buttonGallery.setVisibility(View.VISIBLE);
@@ -276,6 +298,17 @@ public void initAll()
   {seekbarGallery.setVisibility(View.GONE);
     play_buttonGallery.setVisibility(View.GONE);
     durationGallery.setVisibility(View.GONE);}
+
+  public void imageBar()
+  {if (relGalleryTop.getVisibility() == View.VISIBLE) {
+    Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_up);
+    relGalleryTop.startAnimation(slide2);
+    relGalleryTop.setVisibility(View.GONE);}
+  else if(relGalleryBot.getVisibility() == View.GONE){
+    Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_down);
+    relGalleryTop.startAnimation(slide2);
+    relGalleryTop.setVisibility(View.VISIBLE);}
+  }
 
   public void images(){
     if( res.size() > 1 || !video.isEmpty() ){
@@ -372,13 +405,20 @@ public void initAll()
     }
     @Override
     public void onPageSelected( int position ){
+      if(player.getVideoview().isPlaying())
+      {stopVideoplay();
+      if(position < mAdapter2.getCount()) mAdapter2.showImage(position+1);
+      if(position > 0) mAdapter2.showImage(position-1);}      //reset the Neighbours image
+
+      hideBars();
+
       singlepage.INSTANCE.setPosition(position);
 
 
       isimages=singlepage.INSTANCE.getPosition();
       imagePagerGallery.setCurrentItem(singlepage.INSTANCE.getPosition());
 
-      if(res.get(singlepage.INSTANCE.getPosition()).contains("v"))
+      if(res.get(singlepage.INSTANCE.getPosition()).endsWith("mp4"))
       {player.getVideoview().setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position));
         showGalleryVideoBar();}
       else
