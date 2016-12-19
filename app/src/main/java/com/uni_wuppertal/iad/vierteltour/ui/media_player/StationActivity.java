@@ -65,7 +65,7 @@ public class StationActivity extends Activity{
   InformationPagerAdapter mAdapter;
   LinearLayout pager_indicator;
   RelativeLayout gesperrt;
-  boolean sperrvariable=true;
+  boolean sperrvariable=false;
   TextView ausrufe;
 
 

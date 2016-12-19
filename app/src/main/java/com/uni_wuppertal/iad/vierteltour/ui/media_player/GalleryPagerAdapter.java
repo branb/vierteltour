@@ -24,10 +24,11 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
   private Context mContext;
   private ArrayList<String> stationImagePaths;
-  private ImageView imageView;
+  private ImageView imageView, imageBtn;
   private ViertelTourMediaPlayer player;
   private GalleryMode gallery;
   private VideoView videoView;
+  private ViewGroup ownContainer;
 
   public GalleryPagerAdapter(Context mContext, ArrayList<String> stationImagePaths, GalleryMode gallery){
     this.mContext = mContext;
@@ -52,14 +53,27 @@ public class GalleryPagerAdapter extends PagerAdapter {
       .inflate( R.layout.gallerypageritem, container, false );
 
     imageView = (ImageView) itemView.findViewById( R.id.img_pager_item_gallery );
-    ImageView imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button_gallery );
+    imageView.setTag(position);
+    imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button_gallery );
+    imageBtn.setTag("button" + position);
     videoView = (VideoView) itemView.findViewById( R.id.vid_pager_item_gallery );
+    videoView.setTag("video" + position);
     String resources = stationImagePaths.get(position);     //v für video, i für image
+
+
 
 //TODO: stationimagepaths to stationresourcepaths with video and images to show
     //TODO: HIER WURDE TMP EDITIERT
     if(resources.endsWith("mp4"))
-    { videoView.setVideoPath(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)));
+    { imageView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+      imageView.setVisibility(View.GONE);
+        notifyDataSetChanged();
+      }
+    });
+      System.out.println(position + "mp4");
+      videoView.setVideoPath(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)));
       videoView.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
@@ -91,13 +105,14 @@ public class GalleryPagerAdapter extends PagerAdapter {
     }
 
     else if (resources.endsWith("jpg")) {
+      System.out.println(position + "jpg");
       videoView.setVisibility(View.GONE);
       imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       imageView.setImageURI( Uri.fromFile( new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))) ) );}
 
     container.addView( itemView );
-
+    ownContainer = container;
 
     imageView.setOnClickListener(new View.OnClickListener()
     {
@@ -117,11 +132,13 @@ public class GalleryPagerAdapter extends PagerAdapter {
     container.removeView( (RelativeLayout) object );
   }
 
-  public void showImage()
-  {imageView.setVisibility(View.VISIBLE);}
+  public void showImage(int position)
+  {ownContainer.findViewWithTag(position).setVisibility(View.VISIBLE);
+    System.out.println("POS:" +position);}
 
-  public void hideImage()
-  {imageView.setVisibility(View.GONE);}
+  public void hideImage(int position)
+  {ownContainer.findViewWithTag(position).setVisibility(View.GONE);
+    System.out.println("POS:" +position);}
 
   public ImageView getImageView()
   {return imageView;}

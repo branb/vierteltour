@@ -348,7 +348,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * (Re-)Draw the routes of the currently visible tours and their station markers
    */
   private void drawRoutes(){
-    mMap.clear();
+  if(mMap!=null)  mMap.clear();
 
     for( Map.Entry<String, PolylineOptions> polyline : polylines.entrySet() ){
       mMap.addPolyline( polyline.getValue() );

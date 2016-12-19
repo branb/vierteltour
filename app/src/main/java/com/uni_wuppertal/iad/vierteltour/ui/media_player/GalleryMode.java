@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -63,7 +64,7 @@ public class GalleryMode extends Activity {
 
     if( !video.isEmpty() ){
       player.getVideoview().pause();
-      mAdapter2.showImage();
+      mAdapter2.showImage(imagePagerGallery.getCurrentItem());
       startvideo = false;
       play_buttonGallery.setImageResource( R.drawable.play_hell );
       durationGallery.setText("0:00");
@@ -185,6 +186,8 @@ public void initAll()
     play_buttonGallery.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
+
+
         if( player.getVideoview().isPlaying() ){
           startvideo = false;
           player.getVideoview().pause();
@@ -193,7 +196,7 @@ public void initAll()
 
           startvideo = true;
           player.getVideoview().setVisibility(View.VISIBLE);
-          mAdapter2.hideImage();
+          mAdapter2.hideImage(imagePagerGallery.getCurrentItem());
           player.getVideoview().start();
           play_buttonGallery.setImageResource( R.drawable.stop_hell );
           seekUpdationVideo();
@@ -210,7 +213,7 @@ public void initAll()
       public void onCompletion(MediaPlayer mediaPlayer) {
         play_buttonGallery.setImageResource(R.drawable.play_hell);
         startvideo=false;
-        mAdapter2.showImage();
+        mAdapter2.showImage(imagePagerGallery.getCurrentItem());
         player.getVideoview().setVisibility(View.GONE);
         durationGallery.setText("0:00");
         seekbarGallery.setProgress(0);
