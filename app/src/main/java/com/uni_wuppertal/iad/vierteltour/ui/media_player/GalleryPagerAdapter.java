@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
+import com.google.android.gms.tagmanager.Container;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
@@ -67,8 +68,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
 //TODO: stationimagepaths to stationresourcepaths with video and images to show
     //TODO: HIER WURDE TMP EDITIERT
     if(resources.endsWith("mp4"))
-    { System.out.println(position + "mp4");
-      videoView.setVideoPath(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)));
+    { videoView.setVideoPath(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)));
       videoView.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
@@ -117,7 +117,6 @@ public class GalleryPagerAdapter extends PagerAdapter {
     }
 
     else if (resources.endsWith("jpg")) {
-      System.out.println(position + "jpg");
       videoView.setVisibility(View.GONE);
       imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
@@ -134,14 +133,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
         if(resources.endsWith("mp4")){
           if(gallery.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
           {gallery.mediaplayerbars();}
-        else{
-            gallery.startVideoplay();
-        /*gallery.startvideo=true;
-        ownContainer.findViewWithTag("image"+position).setVisibility(View.GONE);
-        ownContainer.findViewWithTag("video"+position).setVisibility(View.VISIBLE);
-        player.getVideoview().start();
-        gallery.play_buttonGallery.setImageResource( R.drawable.stop_hell );
-        gallery.seekUpdationVideo();*/}
+        else{gallery.startVideoplay();}
 
         } else if (resources.endsWith("jpg")) {
           if(gallery.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -166,6 +158,12 @@ public class GalleryPagerAdapter extends PagerAdapter {
   public void hideImage(int position)
   {ownContainer.findViewWithTag("image" + position).setVisibility(View.GONE);
     System.out.println("POS:" +position);}
+
+  public VideoView videoView(int position)
+  {return (VideoView) ownContainer.findViewWithTag("video" + position);}
+
+  public ViewGroup container()
+  {return ownContainer;}
 
   public ImageView getImageView()
   {return imageView;}

@@ -53,7 +53,6 @@ public class GalleryMode extends Activity {
     super.onCreate( savedInstanceState );
     setContentView( R.layout.gallerymode );
 
-
     initAll();
     initOrientation();
     gallerymode();
@@ -124,7 +123,7 @@ public void initAll()
     {gallerytitletop.setText( station );
       gallerytitletop.setVisibility(View.VISIBLE);
       gallerytitle.setVisibility(View.GONE);}
-    if(res.get(singlepage.INSTANCE.getPosition()).contains("v"))
+    if(res.get(singlepage.INSTANCE.getPosition()).endsWith("mp4"))
     {showGalleryVideoBar();}
     else
     {hideGalleryVideoBar();}
@@ -165,23 +164,8 @@ public void initAll()
 
   //TODO: Videoplayer auslagern und abändern
   public void video(){
-    // if(player.getVideoview()SOURCE != SOURCE aktuelle Videoview (Wenn die Quellen unterschiedlich sind))
-   // player.setVideoview(videoplayerGallery);
-    player.loadGalleryVideo(video);
-    //videoplayer.setVisibility(View.VISIBLE);
-    //player.getVideoview().setVisibility(View.VISIBLE);
 
-  /*  if(singlepage.INSTANCE.getPlaying() && singlepage.INSTANCE.getTime()>0)
-    {play_buttonGallery.setImageResource(R.drawable.stop_hell);
-      player.getVideoview().seekTo((int) singlepage.INSTANCE.getTime());
-      player.getVideoview().start();
-      startvideo=true;
-      seekUpdationVideo();}
-    else if(singlepage.INSTANCE.getTime()>0)
-      {play_buttonGallery.setImageResource(R.drawable.play_hell);
-        player.getVideoview().seekTo((int) singlepage.INSTANCE.getTime());
-     startvideo=false;}*/
-
+    seekbarGallery.setOnSeekBarChangeListener( customSeekBarListener2 );
 
     play_buttonGallery.setOnClickListener( new View.OnClickListener(){
       @Override
@@ -197,44 +181,19 @@ public void initAll()
       }
     });
 
-    seekbarGallery.setOnSeekBarChangeListener( customSeekBarListener2 );
-
-
-
     player.getVideoview().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
       @Override
       public void onCompletion(MediaPlayer mediaPlayer) {
         System.out.println("FINISH");
         stopVideoplay();
-      }
-    });
+      }});
 
-
-    //TODO: Change Image dynamically to Video //AFTER VIDEO CHANGED AND XML UPDATED
-
-    /*    player.getVideoview().setOnTouchListener(new View.OnTouchListener() {
-          @Override
-          public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                vf.setDisplayedChild(1);
-                play_button.setImageResource(R.drawable.play_hell);
-                startaudio=false;
-                if(player.isPlaying())
-                player.pause();
-                videoplayer.setVisibility(View.GONE);
-                player.getVideoview().setVisibility(View.VISIBLE);
-                singlepage.INSTANCE.setPage(1);
-                startvideo=true;
-                player.getVideoview().seekTo((int) singlepage.INSTANCE.getTime());
-                play_buttonGallery.setImageResource(R.drawable.stop_hell);
-                player.getVideoview().start();
-
-                seekbarGallery.setProgress((int) singlepage.INSTANCE.getTime());
-                seekUpdationVideo();
-            System.out.println("KLICK");
-            return false;
-            }
-        });*/
+  /*  if(singlepage.INSTANCE.getPlaying() && singlepage.INSTANCE.getTime()>0)
+    { }
+    else if(singlepage.INSTANCE.getTime()>0)
+    {play_buttonGallery.setImageResource(R.drawable.play_hell);
+      player.getVideoview().seekTo((int) singlepage.INSTANCE.getTime());
+      startvideo=false;}*/
   }
 
   public void startVideoplay()
