@@ -136,13 +136,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     setContentView( R.layout.activity_main );
 
     player = ViertelTourMediaPlayer.getInstance( this );
-
+    initMap();
 
     initLocationServices();
 
     showIntro();
 
-    initMap();
+    //initMap();
 
     initPager();
     initBtns();

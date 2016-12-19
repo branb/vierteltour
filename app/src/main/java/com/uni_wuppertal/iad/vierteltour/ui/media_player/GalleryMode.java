@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.uni_wuppertal.iad.vierteltour.R;
@@ -54,7 +55,7 @@ public class GalleryMode extends Activity {
     setContentView( R.layout.gallerymode );
 
     initAll();
-    initOrientation();
+   // initOrientation();
     gallerymode();
   }
 
@@ -81,7 +82,7 @@ public class GalleryMode extends Activity {
   @Override
   protected void onDestroy()
   {super.onDestroy();
-    orientation.disable();
+   // orientation.disable();
     if( !video.isEmpty() ){
       singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
       singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());
@@ -116,6 +117,18 @@ public void initAll()
   player = ViertelTourMediaPlayer.getInstance( this );
   images();
 }
+//App soll nicht neustarten bei orientationwechsel
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+
+    // Checks the orientation of the screen
+    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+      Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+    }
+  }
 
   public void gallerymode(){
     gallerytitle.setText( station );
@@ -314,7 +327,7 @@ public void initAll()
   };
   //Custom Class Seekbar stop
 
-  //EIGENE KLASSE Orientation, zusätzlich muss geprüft werden, ob bildschirm gedreht werden darf und empfindlichkeit anpassung
+/*  //EIGENE KLASSE Orientation, zusätzlich muss geprüft werden, ob bildschirm gedreht werden darf und empfindlichkeit anpassung
   public void initOrientation(){//Landscape/Portrait change
     orientation = new OrientationEventListener( this, SensorManager.SENSOR_DELAY_NORMAL ){
       @Override
@@ -357,7 +370,7 @@ public void initAll()
   }
 //Orientation end
 
-
+*/
   //ViewPager.OnPageChangeListener
   ViewPager.OnPageChangeListener pagechangelisten2 = new ViewPager.OnPageChangeListener(){
     @Override

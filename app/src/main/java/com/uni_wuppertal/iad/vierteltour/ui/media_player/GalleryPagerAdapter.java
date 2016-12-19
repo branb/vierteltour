@@ -2,7 +2,10 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -74,6 +77,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
       Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
         MediaStore.Images.Thumbnails.MINI_KIND);
       imageView.setImageBitmap(thumbnail);
+      imageBtn.setVisibility(View.VISIBLE);
       player.setVideoview(videoView);
 
       videoView.setOnTouchListener(new View.OnTouchListener() {
@@ -125,6 +129,13 @@ public class GalleryPagerAdapter extends PagerAdapter {
     container.addView( itemView );
     ownContainer = container;
 
+    imageBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        gallery.startVideoplay();
+      }
+    });
+
     imageView.setOnClickListener(new View.OnClickListener()
     {
       @Override
@@ -153,11 +164,11 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
   public void showImage(int position)
   {ownContainer.findViewWithTag("image" + position).setVisibility(View.VISIBLE);
-    System.out.println("POS:" +position);}
+   ownContainer.findViewWithTag("button" + position).setVisibility(View.VISIBLE);}
 
   public void hideImage(int position)
   {ownContainer.findViewWithTag("image" + position).setVisibility(View.GONE);
-    System.out.println("POS:" +position);}
+   ownContainer.findViewWithTag("button" + position).setVisibility(View.GONE);}
 
   public VideoView videoView(int position)
   {return (VideoView) ownContainer.findViewWithTag("video" + position);}
