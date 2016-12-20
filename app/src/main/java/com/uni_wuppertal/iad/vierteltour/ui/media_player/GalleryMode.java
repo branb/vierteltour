@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -35,7 +36,7 @@ public class GalleryMode extends Activity {
   ViewPager imagePagerGallery;
   ViertelTourMediaPlayer player;
   Singletonint singlepage;
-  ImageButton play_buttonGallery, x_button;
+  ImageButton play_buttonGallery, x_button, x_button_bar;
   SeekBar seekbarGallery;
   VideoView videoplayerGallery;
   TextView gallerytitle, gallerytitletop, durationGallery;
@@ -90,12 +91,13 @@ public void initAll()
   station = (String) gallerybundle.get("station");
 
   x_button = (ImageButton) findViewById( R.id.x_button );
+  x_button_bar = (ImageButton) findViewById( R.id.x_button_bar );
   seekbarGallery = (SeekBar) findViewById( R.id.seek_barGallery );
   play_buttonGallery = (ImageButton) findViewById( R.id.play_buttonGallery );
   imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
 
   gallerytitle = (TextView) findViewById( R.id.titleGallery );
-  gallerytitletop = (TextView) findViewById(R.id.titleGalleryTop);
+  gallerytitletop = (TextView) findViewById(R.id.titleGalleryTop_bar);
   durationGallery = (TextView) findViewById( R.id.durationGallery );
   relGalleryBot = (RelativeLayout) findViewById(R.id.relativeBot);
   relGalleryTop = (RelativeLayout) findViewById(R.id.relativeTop);
@@ -117,6 +119,8 @@ public void initAll()
     if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       x_button.setVisibility(View.GONE);
       gallerytitle.setVisibility(View.GONE);
+      gallerytitletop.setText(station);
+      //imagePagerGallery.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
       x_button.setVisibility(View.VISIBLE);
       gallerytitle.setVisibility(View.VISIBLE);
@@ -127,10 +131,6 @@ public void initAll()
 
   public void gallerymode(){
     gallerytitle.setText( station );
-    if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-    {gallerytitletop.setText( station );
-      gallerytitletop.setVisibility(View.VISIBLE);
-      gallerytitle.setVisibility(View.GONE);}
     if(res.get(singlepage.INSTANCE.getPosition()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
     {showGalleryVideoBar();}
     else
@@ -140,6 +140,12 @@ public void initAll()
     x_button.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
+        onBackPressed();
+      }
+    });
+    x_button_bar.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
         onBackPressed();
       }
     });
