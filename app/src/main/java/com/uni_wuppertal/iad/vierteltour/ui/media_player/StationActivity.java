@@ -97,7 +97,6 @@ public class StationActivity extends Activity{
 
       super.onBackPressed();
       overridePendingTransition( R.anim.map_in, R.anim.fade_out );
-      singlepage.INSTANCE.reset();
       if(player != null)    //If no audio exists, player == null and error will show up
       {if(player.isPlaying()==true)
       {RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);

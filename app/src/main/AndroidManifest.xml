@@ -63,8 +63,7 @@
 
     <activity android:name=".ui.media_player.GalleryMode"
       android:label="@string/title_activity_maps"
-      android:configChanges="orientation|keyboardHidden|screenSize"
-      android:screenOrientation="portrait"></activity>
+      android:configChanges="orientation|keyboardHidden|screenSize"></activity>
 
         <activity
             android:name=".ui.media_player.StationActivity"

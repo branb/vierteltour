@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -55,7 +56,7 @@ public class GalleryMode extends Activity {
     setContentView( R.layout.gallerymode );
 
     initAll();
-   // initOrientation();
+    //initOrientation();
     gallerymode();
   }
 
@@ -78,16 +79,6 @@ public class GalleryMode extends Activity {
     setResult(RESULT_OK, intent);
     finish();
   }
-
-  @Override
-  protected void onDestroy()
-  {super.onDestroy();
-   // orientation.disable();
-    if( !video.isEmpty() ){
-      singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
-      singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());
-      startvideo=false;
-    }}
 
 public void initAll()
 {
@@ -124,9 +115,13 @@ public void initAll()
 
     // Checks the orientation of the screen
     if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-      Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+      x_button.setVisibility(View.GONE);
+      gallerytitle.setVisibility(View.GONE);
     } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-      Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+      x_button.setVisibility(View.VISIBLE);
+      gallerytitle.setVisibility(View.VISIBLE);
+      hideGalleryVideoBar();
+    //  setContentView(R.layout.gallerymode);
     }
   }
 
@@ -136,7 +131,7 @@ public void initAll()
     {gallerytitletop.setText( station );
       gallerytitletop.setVisibility(View.VISIBLE);
       gallerytitle.setVisibility(View.GONE);}
-    if(res.get(singlepage.INSTANCE.getPosition()).endsWith("mp4"))
+    if(res.get(singlepage.INSTANCE.getPosition()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
     {showGalleryVideoBar();}
     else
     {hideGalleryVideoBar();}
@@ -201,12 +196,6 @@ public void initAll()
         stopVideoplay();
       }});
 
-  /*  if(singlepage.INSTANCE.getPlaying() && singlepage.INSTANCE.getTime()>0)
-    { }
-    else if(singlepage.INSTANCE.getTime()>0)
-    {play_buttonGallery.setImageResource(R.drawable.play_hell);
-      player.getVideoview().seekTo((int) singlepage.INSTANCE.getTime());
-      startvideo=false;}*/
   }
 
   public void startVideoplay()
@@ -327,50 +316,6 @@ public void initAll()
   };
   //Custom Class Seekbar stop
 
-/*  //EIGENE KLASSE Orientation, zusätzlich muss geprüft werden, ob bildschirm gedreht werden darf und empfindlichkeit anpassung
-  public void initOrientation(){//Landscape/Portrait change
-    orientation = new OrientationEventListener( this, SensorManager.SENSOR_DELAY_NORMAL ){
-      @Override
-      public void onOrientationChanged( int arg0 ){
-        arg0= arg0%360;
-
-//TODO: Check orientation with variables and permission of orientation  //AFTER VIDEOPLAYER CHANGE
-        if( arg0>=87 && arg0<=93 ){
-
-          if( !video.isEmpty() )
-          {singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
-            singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());}
-          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-        }
-
-
-        else if(arg0==180){}
-
-        else if(arg0>=267  && arg0<=273){
-
-          if( !video.isEmpty() )
-          {singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
-            singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());}
-          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-
-        else if((arg0>=357 || arg0<=3) && getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-        {
-
-          if( !video.isEmpty())
-          {singlepage.INSTANCE.setTime(player.getVideoview().getCurrentPosition());
-            singlepage.INSTANCE.setPlaying(player.getVideoview().isPlaying());}
-          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-      }
-    };
-    if( orientation.canDetectOrientation() ){
-      orientation.enable();
-    }
-  }
-//Orientation end
-
-*/
   //ViewPager.OnPageChangeListener
   ViewPager.OnPageChangeListener pagechangelisten2 = new ViewPager.OnPageChangeListener(){
     @Override
@@ -392,7 +337,7 @@ public void initAll()
       isimages=singlepage.INSTANCE.getPosition();
       imagePagerGallery.setCurrentItem(singlepage.INSTANCE.getPosition());
 
-      if(res.get(singlepage.INSTANCE.getPosition()).endsWith("mp4"))
+      if(res.get(singlepage.INSTANCE.getPosition()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
       {player.getVideoview().setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position));
         showGalleryVideoBar();}
       else

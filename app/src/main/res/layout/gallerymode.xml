@@ -102,6 +102,84 @@
 
   </RelativeLayout>
 
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_alignParentTop="true"
+    android:background="#70000000"
+    android:animateLayoutChanges="true"
+    android:id="@+id/relativeTop"
+    android:visibility="gone">
 
+    <ImageButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/x_button_bar"
+      android:src="@drawable/beenden_hell"
+      android:layout_alignParentRight="true"
+      android:layout_centerVertical="true"
+      android:layout_centerHorizontal="true"
+      android:layout_marginRight="20dp"
+      android:background="#70000000"
+      />
+
+    <TextView
+      android:id="@+id/titleGalleryTop_bar"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="#ffffff"
+      android:layout_centerVertical="true"
+      android:layout_centerHorizontal="true"
+      android:visibility="gone"/>
+
+  </RelativeLayout>
+
+  <RelativeLayout
+    android:id="@+id/relativeBot"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_alignParentBottom="true"
+    android:background="#70000000"
+    android:animateLayoutChanges="true"
+    android:visibility="gone">
+
+    <SeekBar
+      android:id="@+id/seek_barGallery_bar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_centerHorizontal="true"
+      android:layout_toRightOf="@+id/play_buttonGallery_bar"
+      android:layout_marginRight="45dp"
+      android:visibility="visible"
+      />
+
+    <ImageButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/play_buttonGallery_bar"
+      android:src="@drawable/play_hell"
+      android:background="#70000000"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true"
+      android:layout_centerVertical="true"
+      android:layout_centerHorizontal="true"
+      android:layout_marginLeft="20dp"
+      android:visibility="visible"/>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="0:00"
+      android:textColor="#ffffff"
+      android:id="@+id/durationGallery_bar"
+      android:layout_marginRight="20dp"
+      android:layout_centerVertical="true"
+      android:layout_centerHorizontal="true"
+      android:layout_alignParentRight="true"
+      android:visibility="visible"
+      />
+
+  </RelativeLayout>
 </RelativeLayout>
 
