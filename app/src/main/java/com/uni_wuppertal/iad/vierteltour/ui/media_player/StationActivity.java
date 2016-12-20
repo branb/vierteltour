@@ -373,23 +373,6 @@ public class StationActivity extends Activity{
     public void onStopTrackingTouch( SeekBar seekBar ){
     }
   };
-
-  public SeekBar.OnSeekBarChangeListener customSeekBarListener2 = new SeekBar.OnSeekBarChangeListener(){
-    @Override
-    public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
-      if( fromUser ){
-        player.getVideoview().seekTo( progress );
-      }
-    }
-
-    @Override
-    public void onStartTrackingTouch( SeekBar seekBar ){
-    }
-
-    @Override
-    public void onStopTrackingTouch( SeekBar seekBar ){
-    }
-  };
   //Custom Class Seekbar stop
 
   //ViewPager.OnPageChangeListener

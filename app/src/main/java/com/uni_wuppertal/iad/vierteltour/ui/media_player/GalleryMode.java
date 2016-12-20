@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,16 +37,14 @@ public class GalleryMode extends Activity {
   ViewPager imagePagerGallery;
   ViertelTourMediaPlayer player;
   Singletonint singlepage;
-  ImageButton play_buttonGallery, x_button, x_button_bar;
-  SeekBar seekbarGallery;
-  VideoView videoplayerGallery;
-  TextView gallerytitle, gallerytitletop, durationGallery;
+  ImageButton play_buttonGallery, x_button, x_button_bar, play_buttonGallery_bar;
+  SeekBar seekbarGallery, seekbarGallery_bar;
+  TextView gallerytitle, gallerytitletop, durationGallery, durationGallery_bar;
   GalleryPagerAdapter mAdapter2;
   RelativeLayout relGalleryBot, relGalleryTop, stationbeendet;
   Boolean startvideo = true;
   double timeElapsedGallery = 0;
   Handler seekHandlerGallery = new Handler();
-  OrientationEventListener orientation;
   int isimages=-1;
   Bundle gallerybundle;
   Intent galleryIntent;
@@ -71,11 +70,9 @@ public class GalleryMode extends Activity {
       play_buttonGallery.setImageResource( R.drawable.play_hell );
       durationGallery.setText("0:00");
       seekbarGallery.setProgress(0);
-      player.getVideoview().seekTo(0);      //Verursacht anfangssound nochmal
+      player.getVideoview().seekTo(0);
       if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
-      {
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
+      {setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
     }
     setResult(RESULT_OK, intent);
     finish();
@@ -93,20 +90,21 @@ public void initAll()
   x_button = (ImageButton) findViewById( R.id.x_button );
   x_button_bar = (ImageButton) findViewById( R.id.x_button_bar );
   seekbarGallery = (SeekBar) findViewById( R.id.seek_barGallery );
+  seekbarGallery_bar = (SeekBar) findViewById( R.id.seek_barGallery_bar );
   play_buttonGallery = (ImageButton) findViewById( R.id.play_buttonGallery );
+  play_buttonGallery_bar = (ImageButton) findViewById( R.id.play_buttonGallery_bar );
   imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
 
   gallerytitle = (TextView) findViewById( R.id.titleGallery );
   gallerytitletop = (TextView) findViewById(R.id.titleGalleryTop_bar);
   durationGallery = (TextView) findViewById( R.id.durationGallery );
+  durationGallery_bar = (TextView) findViewById( R.id.durationGallery_bar );
   relGalleryBot = (RelativeLayout) findViewById(R.id.relativeBot);
   relGalleryTop = (RelativeLayout) findViewById(R.id.relativeTop);
   stationbeendet = (RelativeLayout) findViewById(R.id.stationbeendet);
-  videoplayerGallery = (VideoView) findViewById( R.id.vid_pager_item_gallery );
   mAdapter2 = new GalleryPagerAdapter(this, res, this);
   imagePagerGallery.setAdapter( mAdapter2 );
   imagePagerGallery.setCurrentItem(singlepage.INSTANCE.getPosition());
-  seekbarGallery.setOnSeekBarChangeListener(customSeekBarListener);
   player = ViertelTourMediaPlayer.getInstance( this );
   images();
 }
@@ -120,12 +118,20 @@ public void initAll()
       x_button.setVisibility(View.GONE);
       gallerytitle.setVisibility(View.GONE);
       gallerytitletop.setText(station);
-      //imagePagerGallery.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+      hideGalleryVideoBar();
+      ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
+      params.height = ViewPager.LayoutParams.MATCH_PARENT;
+      imagePagerGallery.setLayoutParams(params);
+
     } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+      hideBars();
       x_button.setVisibility(View.VISIBLE);
       gallerytitle.setVisibility(View.VISIBLE);
-      hideGalleryVideoBar();
-    //  setContentView(R.layout.gallerymode);
+      if(res.get(singlepage.INSTANCE.getPosition()).endsWith("mp4"))showGalleryVideoBar();
+
+      ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
+      params.height = calculateDP(300);
+      imagePagerGallery.setLayoutParams(params);
     }
   }
 
@@ -166,10 +172,14 @@ public void initAll()
     if( player.getVideoview() != null && startvideo ){
       //System.out.println("222");
       seekbarGallery.setMax( player.getVideoview().getDuration() );
+      seekbarGallery_bar.setMax( player.getVideoview().getDuration() );
       seekbarGallery.setProgress( player.getVideoview().getCurrentPosition() );
+      seekbarGallery_bar.setProgress( player.getVideoview().getCurrentPosition() );
+
       timeElapsedGallery = player.getVideoview().getCurrentPosition();
 
       durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsedGallery ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ) ) ) );
+      durationGallery_bar.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsedGallery ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ) ) ) );
 
       seekHandlerGallery.postDelayed( run2, 100 );
     }
@@ -179,9 +189,24 @@ public void initAll()
   //TODO: Videoplayer auslagern und abändern
   public void video(){
 
-    seekbarGallery.setOnSeekBarChangeListener( customSeekBarListener2 );
+    seekbarGallery.setOnSeekBarChangeListener( customSeekBarListenerVideo );
+    seekbarGallery_bar.setOnSeekBarChangeListener( customSeekBarListenerVideo );
 
     play_buttonGallery.setOnClickListener( new View.OnClickListener(){
+      @Override
+      public void onClick( View v ){
+
+
+        if( player.getVideoview().isPlaying() ){
+          pauseVideoplay();
+        } else {
+
+          startVideoplay();
+        }
+      }
+    });
+
+    play_buttonGallery_bar.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
 
@@ -211,19 +236,24 @@ public void initAll()
     mAdapter2.hideImage(imagePagerGallery.getCurrentItem());
     player.getVideoview().start();
     play_buttonGallery.setImageResource( R.drawable.stop_hell );
+    play_buttonGallery_bar.setImageResource( R.drawable.stop_hell );
     seekUpdationVideo();}
 
   public void pauseVideoplay()
   {startvideo = false;
     player.getVideoview().pause();
-    play_buttonGallery.setImageResource( R.drawable.play_hell );}
+    play_buttonGallery.setImageResource( R.drawable.play_hell );
+    play_buttonGallery_bar.setImageResource( R.drawable.play_hell );}
 
   public void stopVideoplay()
   {startvideo = false;
     player.getVideoview().pause();
     play_buttonGallery.setImageResource( R.drawable.play_hell );
+    play_buttonGallery_bar.setImageResource(R.drawable.play_hell);
     mAdapter2.showImage(imagePagerGallery.getCurrentItem());
     player.getVideoview().setVisibility(View.GONE);
+    durationGallery_bar.setText("0:00");
+    seekbarGallery_bar.setProgress(0);
     durationGallery.setText("0:00");
     seekbarGallery.setProgress(0);}
 
@@ -247,15 +277,14 @@ public void initAll()
   }}
 
   public void hideBars()
-  {if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-  {  if(relGalleryBot.getVisibility() == View.VISIBLE)
+  {if(relGalleryBot.getVisibility() == View.VISIBLE)
   {Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_down);
     relGalleryBot.startAnimation(slide1);
     relGalleryBot.setVisibility(View.GONE);}
   if(relGalleryTop.getVisibility() == View.VISIBLE)
   {Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_up);
     relGalleryTop.startAnimation(slide2);
-    relGalleryTop.setVisibility(View.GONE);}}
+    relGalleryTop.setVisibility(View.GONE);}
   }
 
   public void showGalleryVideoBar()
@@ -279,6 +308,12 @@ public void initAll()
     relGalleryTop.setVisibility(View.VISIBLE);}
   }
 
+  public int calculateDP(int pixel)
+  {DisplayMetrics metrics = getResources().getDisplayMetrics();
+    float dp = pixel;
+    float fpixels = metrics.density * dp;
+    return (int) (fpixels + 0.5f);}
+
   public void images(){
     if( res.size() > 1 || !video.isEmpty() ){
       isimages=0;
@@ -287,24 +322,8 @@ public void initAll()
   }
 
   //Custom Class Seekbar start
-  public SeekBar.OnSeekBarChangeListener customSeekBarListener = new SeekBar.OnSeekBarChangeListener(){
-    @Override
-    public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
-      if( fromUser ){
-        player.seekTo( progress );
-      }
-    }
 
-    @Override
-    public void onStartTrackingTouch( SeekBar seekBar ){
-    }
-
-    @Override
-    public void onStopTrackingTouch( SeekBar seekBar ){
-    }
-  };
-
-  public SeekBar.OnSeekBarChangeListener customSeekBarListener2 = new SeekBar.OnSeekBarChangeListener(){
+  public SeekBar.OnSeekBarChangeListener customSeekBarListenerVideo = new SeekBar.OnSeekBarChangeListener(){
     @Override
     public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
       if( fromUser ){

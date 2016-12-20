@@ -11,7 +11,9 @@
     android:id="@+id/vid_pager_item_gallery"
     android:clickable="true"
     android:visibility="gone"
+    android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
+    android:gravity="center"
     />
 
   <ImageView
@@ -19,7 +21,11 @@
     android:layout_height="match_parent"
     android:id="@+id/img_pager_item_gallery"
     android:clickable="true"
-    android:visibility="gone" />
+    android:visibility="gone"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:gravity="center"
+    />
 
   <ImageView
     android:layout_width="wrap_content"

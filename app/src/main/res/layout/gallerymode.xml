@@ -6,7 +6,7 @@
 
   <android.support.v4.view.ViewPager
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="300dp"
     android:id="@+id/ImagePagerGallery"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
@@ -26,17 +26,8 @@
       android:layout_alignParentTop="true"
       android:layout_marginTop="20dp"
       android:layout_marginRight="20dp"
-      android:background="#000000"
+      android:background="@color/transparent"
       />
-
-    <TextView
-      android:id="@+id/titleGalleryTop"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="#ffffff"
-      android:layout_centerHorizontal="true"
-      android:layout_marginTop="10dp"
-      android:visibility="gone"/>
 
   </RelativeLayout>
 
@@ -70,7 +61,7 @@
       android:layout_height="wrap_content"
       android:id="@+id/play_buttonGallery"
       android:src="@drawable/play_hell"
-      android:background="#000000"
+      android:background="@color/transparent"
       android:layout_alignParentLeft="true"
       android:layout_alignParentStart="true"
       android:layout_marginBottom="32dp"
@@ -111,7 +102,7 @@
       android:layout_centerVertical="true"
       android:layout_centerHorizontal="true"
       android:layout_marginRight="20dp"
-      android:background="#70000000"
+      android:background="@color/transparent"
       />
 
     <TextView
@@ -150,7 +141,7 @@
       android:layout_height="wrap_content"
       android:id="@+id/play_buttonGallery_bar"
       android:src="@drawable/play_hell"
-      android:background="#70000000"
+      android:background="@color/transparent"
       android:layout_alignParentLeft="true"
       android:layout_alignParentStart="true"
       android:layout_centerVertical="true"
