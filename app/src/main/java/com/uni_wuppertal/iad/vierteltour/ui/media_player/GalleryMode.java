@@ -124,7 +124,8 @@ public void initAll()
       imagePagerGallery.setLayoutParams(params);
 
     } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-      hideBars();
+      relGalleryBot.setVisibility(View.GONE);
+      relGalleryTop.setVisibility(View.GONE);
       x_button.setVisibility(View.VISIBLE);
       gallerytitle.setVisibility(View.VISIBLE);
       if(res.get(singlepage.INSTANCE.getPosition()).endsWith("mp4"))showGalleryVideoBar();

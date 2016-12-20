@@ -90,8 +90,9 @@ public class StationFragment extends Fragment{
           myIntent.putExtra( "video", vid.get( position ) );
 
 
-          getActivity().overridePendingTransition( R.anim.fade_in, R.anim.map_out );
+
           getActivity().startActivity( myIntent );
+          getActivity().overridePendingTransition( R.anim.fade_in, R.anim.map_out );
         }
       } );
     } else {
