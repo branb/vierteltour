@@ -58,6 +58,7 @@ import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.DrawerAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.DrawerItem;
 import com.uni_wuppertal.iad.vierteltour.updater.Updater;
 import com.uni_wuppertal.iad.vierteltour.updater.UpdateListener;
+import com.uni_wuppertal.iad.vierteltour.utility.ReplaceFont;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -133,6 +134,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   @Override
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
+    ReplaceFont.replaceDefaultFont(this, "MONOSPACE", "Bariol_Regular.ttf");
     setContentView( R.layout.activity_main );
 
     player = ViertelTourMediaPlayer.getInstance( this );

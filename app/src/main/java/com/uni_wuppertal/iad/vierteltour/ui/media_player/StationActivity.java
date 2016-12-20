@@ -275,10 +275,12 @@ public class StationActivity extends Activity{
 
 
   public void initAudio(){
-    if( audio.isEmpty() ){
+    if( !audio.endsWith("mp3") ){
+      play_button.setVisibility(View.GONE);
+      seekbar.setVisibility(View.GONE);
+      duration.setVisibility(View.GONE);
       return;
     }
-
     player = ViertelTourMediaPlayer.getInstance( this );
 
 
@@ -328,6 +330,7 @@ public class StationActivity extends Activity{
     play_button.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View play ){
+
         switch( play.getId() ){
           case R.id.play_button:
             if( !player.isPlaying() ){
