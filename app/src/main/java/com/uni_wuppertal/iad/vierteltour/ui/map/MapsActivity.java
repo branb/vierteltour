@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -386,7 +387,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
 
     ImageButton xbtn = (ImageButton) findViewById( R.id.btn_x );      //ActionBar Button: Right
-    TextView title = (TextView) findViewById( R.id.toolbar_title );   //ActionBar Title
+    TextView title = (TextView) findViewById( R.id.toolbar_title );  //ActionBar Title
+    Typeface tf = Typeface.createFromAsset(getAssets(), "Bariol_Regular.ttf");
+    title.setTypeface(tf);
 
     mLayout.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
     xbtn.setVisibility( View.VISIBLE );
