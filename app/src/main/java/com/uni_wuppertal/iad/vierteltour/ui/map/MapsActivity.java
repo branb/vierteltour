@@ -366,7 +366,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    */
   private void drawStations(){
     for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
-      mMap.addMarker( marker.getValue() );
+     if(marker.getValue().getPosition()==null)
+     {}
+      else {mMap.addMarker( marker.getValue() );}
     }
   }
 
