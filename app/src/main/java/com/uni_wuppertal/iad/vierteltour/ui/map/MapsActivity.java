@@ -866,7 +866,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * Will create the markers on the map
    * @param tour Tour object to create the markers from
    */
-  // TODO: Remove the old markers before adding new ones
+  // TODO: Rmove the old markers before adding new ones
   private void makeMarkers( Tour tour ){
     for( Station station : tour.stations() ){
       MarkerOptions marker = new MarkerOptions();
