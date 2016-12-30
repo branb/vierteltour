@@ -103,7 +103,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private TourAdapter adapter;
   private List<DrawerItem> drawerItems;
   private LatLng wuppertal;
-  private ImageButton xbtn, zumstart, homebtn, leftbtn, imgbtn1, arrowbtn, tarbtn;
+  private ImageButton xbtn, zumstart, homebtn, leftbtn, x_supl, arrowbtn, tarbtn;
   private ImageView up, down;
   private ListView lv;
   private TextView title, tourenliste, subtext1, subtext2;
@@ -173,7 +173,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     zumstart = (ImageButton) findViewById(R.id.zumstart);       //SUPL Button bottom right
 
-    imgbtn1 = (ImageButton) findViewById( R.id.x );               //SUPL Button top left
+    x_supl = (ImageButton) findViewById( R.id.x );               //SUPL Button top left
 
     arrowbtn = (ImageButton) findViewById( R.id.arrowbtn );       //Top Twin Button
 
@@ -262,6 +262,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           }
           drawRoutes();
         }
+        else if(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
+        { for( Tour tour : tourlist.city(visibleCity).tours() ){
+            for( int i=1; i<tour.stations().size(); i++)
+            {if( clickCoords.equals(tour.stations().get(i).latlng())){
+                mPager.setCurrentItem(tour.station(i).number());
+            }
+        }
+      }}
       }
     };
     mMap.setOnMapClickListener( listener );
@@ -369,8 +377,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         int id = getResources().getIdentifier( "current3", "drawable", getPackageName() );
         Bitmap icon = BitmapFactory.decodeResource( getResources(), id );
         CurrentMarker = new MarkerOptions().position( pos )
-                                           .icon( BitmapDescriptorFactory.fromBitmap( icon ) )
-                                           .anchor( 0.5f, 0.5f );
+                                           .icon( BitmapDescriptorFactory.fromBitmap( icon ) );
+                                         //  .anchor( 0.5f, 0.5f );
         mMap.addMarker( CurrentMarker );
       }
 
@@ -517,7 +525,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         swapToViewPager( v );
       }
     });
-    imgbtn1.setOnClickListener( new View.OnClickListener(){
+    x_supl.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
         resetTour();
@@ -786,7 +794,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if( all ){
 
 
-      imgbtn1.setVisibility( View.VISIBLE );
+      x_supl.setVisibility( View.VISIBLE );
       zumstart.setVisibility( View.VISIBLE );
       subtext1.setVisibility( View.VISIBLE );
       subtext2.setVisibility( View.VISIBLE );
@@ -808,7 +816,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if( !all ){
 
 
-      imgbtn1.setVisibility( View.INVISIBLE );
+      x_supl.setVisibility( View.INVISIBLE );
       zumstart.setVisibility( View.INVISIBLE );
       subtext1.setVisibility( View.INVISIBLE );
       subtext2.setVisibility( View.INVISIBLE );
@@ -817,7 +825,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     } else {
 
       tourenliste.setVisibility( View.GONE );
-      imgbtn1.setVisibility( View.GONE );
+      x_supl.setVisibility( View.GONE );
       zumstart.setVisibility( View.GONE );
       subtext1.setVisibility( View.GONE );
       subtext2.setVisibility( View.GONE );

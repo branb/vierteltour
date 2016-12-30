@@ -18,10 +18,9 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/imagefrag"
-            android:paddingTop="5dp"
-            android:paddingLeft="20dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"/>
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/i_04_01_01"/>
 
         <TextView
             android:id="@+id/titlefrag"
