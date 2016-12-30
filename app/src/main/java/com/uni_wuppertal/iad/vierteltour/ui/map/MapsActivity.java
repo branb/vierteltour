@@ -103,6 +103,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private TourAdapter adapter;
   private List<DrawerItem> drawerItems;
   private LatLng wuppertal;
+  private ImageButton xbtn, zumstart, homebtn, leftbtn, imgbtn1, arrowbtn, tarbtn;
+  private ImageView up, down;
+  private ListView lv;
+  private TextView title, tourenliste, subtext1, subtext2;
   private RelativeLayout panel;
   public static RelativeLayout audiobar;
   private ViertelTourMediaPlayer player;
@@ -122,7 +126,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   // TODO: Save the selected tour into shared preferences and load them on startup
   // The currently selected and highlighted tour;
-  private Tour selectedTour = new Tour();
 
   // TODO: I don't know if it's the best approach to save it on a map ACTIVITY, but it certainly is NOT a good approach to couple it to the data model aka the Tour* classes
   // Holds the configuration of the current polylines drawn on the map
@@ -139,13 +142,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     setContentView( R.layout.activity_main );
 
     player = ViertelTourMediaPlayer.getInstance( this );
-    initMap();
+
 
     initLocationServices();
-
+    initAll();
     showIntro();
 
-    //initMap();
 
     initPager();
     initBtns();
@@ -153,6 +155,38 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     initActionBar();
     initDrawer();
 
+  }
+
+  public void initAll() {
+    ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this); //initMap
+
+    mPager = (ViewPager) findViewById(R.id.pager);
+    stationAdapter = new StationAdapter(getSupportFragmentManager(), this);
+    mPager.setAdapter(stationAdapter);
+    audiobar = (RelativeLayout) findViewById(R.id.audiobar);
+
+
+    mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+    mLayout.setPanelSlideListener(onSlideListener());
+    lv = (ListView) findViewById(R.id.list);
+    panel = (RelativeLayout) findViewById(R.id.panelhalf);
+
+    zumstart = (ImageButton) findViewById(R.id.zumstart);       //SUPL Button bottom right
+
+    imgbtn1 = (ImageButton) findViewById( R.id.x );               //SUPL Button top left
+
+    arrowbtn = (ImageButton) findViewById( R.id.arrowbtn );       //Top Twin Button
+
+
+
+    tarbtn = (ImageButton) findViewById( R.id.tarbtn );           //Bot Twin Button
+
+    tourenliste = (TextView) findViewById( R.id.tourenliste );
+
+    subtext1 = (TextView) findViewById( R.id.subinfo1 );
+    subtext2 = (TextView) findViewById( R.id.subinfo2 );
+    up = (ImageView) findViewById( R.id.up );
+    down = (ImageView) findViewById( R.id.down );
   }
 
 
@@ -193,10 +227,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   /**
    * Get notified when the map is ready to be used.
    */
-  private void initMap(){
-    ((SupportMapFragment) getSupportFragmentManager().findFragmentById( R.id.map )).getMapAsync( this );
-  }
-
 
 
   @Override
@@ -227,11 +257,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
               showInfo( true );
             }
           }
-
           if( !tourSelected ){
             resetTour();
           }
-
           drawRoutes();
         }
       }
@@ -264,6 +292,23 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
   }
 
+  private void vanishTours( Tour tour ){
+     singlepage.INSTANCE.selectedTour(tour);
+    adapter.select( tour );
+
+    // Unselect all other tours
+    for( Tour t : tourlist.city( visibleCity ).tours() ){
+      if( !t.slug().equals( tour.slug() ) ){
+    String color = "#00" + t.color().substring( 1, 7 ); // #xx (Hex) transparency
+
+    polylines.get(t.slug()).color( Color.parseColor( color ) );
+    for( Station station : t.stations() ){
+      markers.get( station.slug() ).alpha( 0f );
+    }}
+    else{unfadeTour(t);}
+    }
+    drawRoutes();
+  }
 
   /**
    * Put a tour into the foreground, removing the alpha value from it's polylines and markers
@@ -286,7 +331,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * @param tour Tour that was selected
    */
   public void selectTour( Tour tour ){
-    selectedTour = tour;
+    singlepage.INSTANCE.selectedTour(tour);
     adapter.select( tour );
     unfadeTour( tour );
 
@@ -384,18 +429,17 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
 
     // Create a page for every station
-    for( Station station : selectedTour.stations() ){
-      stationAdapter.addFragment( station.number() - 1, selectedTour );
+    for( Station station : singlepage.INSTANCE.selectedTour().stations() ){
+      stationAdapter.addFragment( station.number() - 1, singlepage.INSTANCE.selectedTour() );
     }
 
-    ImageButton xbtn = (ImageButton) findViewById( R.id.btn_x );      //ActionBar Button: Right
-    TextView title = (TextView) findViewById( R.id.toolbar_title );  //ActionBar Title
+    vanishTours(singlepage.INSTANCE.selectedTour());
     Typeface tf = Typeface.createFromAsset(getAssets(), "Bariol_Regular.ttf");
     title.setTypeface(tf);
 
     mLayout.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
     xbtn.setVisibility( View.VISIBLE );
-    title.setText( selectedTour.name() );
+    title.setText( singlepage.INSTANCE.selectedTour().name() );
     title.setVisibility( View.VISIBLE );
     mPager.setVisibility( View.VISIBLE );
 
@@ -403,13 +447,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   //Stationenübersicht schließen und zurück zur Tourenauswahl
   public void swapToSupl(){
-    ImageButton xbtn = (ImageButton) findViewById( R.id.btn_x );           //ActionBar Button: Right
-    TextView title = (TextView) findViewById( R.id.toolbar_title );        //ActionBar Title
     mLayout.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );    //Show Slider
     xbtn.setVisibility( View.GONE );
     title.setVisibility( View.GONE );
     mPager.setVisibility( View.GONE );
     player.stop();
+    selectTour(singlepage.INSTANCE.selectedTour());
+    drawRoutes();
     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
     audiobar.setLayoutParams(layoutParams);
@@ -418,10 +462,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   //Erstelle den Slider
   public void initSupl(){
-    mLayout = (SlidingUpPanelLayout) findViewById( R.id.sliding_layout );
-    mLayout.setPanelSlideListener( onSlideListener() );
-    ListView lv = (ListView) findViewById( R.id.list );
-    panel = (RelativeLayout) findViewById( R.id.panelhalf );
+
 
     lv.setOnItemClickListener( new AdapterView.OnItemClickListener(){
       @Override
@@ -431,17 +472,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       }
     });
 
-    adapter = new TourAdapter( this, tourlist.city( visibleCity ).tours(), selectedTour );
+    adapter = new TourAdapter( this, tourlist.city( visibleCity ).tours());
     lv.setAdapter( adapter );
   }
 
 
   public void initPager(){
     //Initialisiere Pager
-    mPager = (ViewPager) findViewById( R.id.pager );
-    stationAdapter = new StationAdapter( getSupportFragmentManager(), this );
-    mPager.setAdapter( stationAdapter );
-    audiobar = (RelativeLayout) findViewById(R.id.audiobar);
+
     audiobar.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -449,17 +487,17 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         Intent tmpIntent = new Intent( getApplicationContext(), StationActivity.class );
 
         // Tour data
-        tmpIntent.putExtra( "name", selectedTour.name() );
-        tmpIntent.putExtra( "autor", selectedTour.author() );
-        tmpIntent.putExtra( "zeit", selectedTour.time() );
-        tmpIntent.putExtra( "laenge", selectedTour.length() );
-        tmpIntent.putExtra( "farbe", selectedTour.color() );
-        tmpIntent.putExtra( "size", "" + selectedTour.stations().size() );
+        tmpIntent.putExtra( "name", singlepage.INSTANCE.selectedTour().name() );
+        tmpIntent.putExtra( "autor", singlepage.INSTANCE.selectedTour().author() );
+        tmpIntent.putExtra( "zeit", singlepage.INSTANCE.selectedTour().time() );
+        tmpIntent.putExtra( "laenge", singlepage.INSTANCE.selectedTour().length() );
+        tmpIntent.putExtra( "farbe", singlepage.INSTANCE.selectedTour().color() );
+        tmpIntent.putExtra( "size", "" + singlepage.INSTANCE.selectedTour().stations().size() );
         // Selected Station
-        Station station = selectedTour.stations().get( singlepage.INSTANCE.getPosition());
+        Station station = singlepage.INSTANCE.selectedTour().stations().get( singlepage.INSTANCE.position());
         tmpIntent.putExtra( "station", station.name() );
         tmpIntent.putExtra( "desc", station.description() );
-        tmpIntent.putExtra( "pos", "" + (singlepage.INSTANCE.getPosition() + 1) );
+        tmpIntent.putExtra( "pos", "" + (singlepage.INSTANCE.position() + 1) );
         // Station media
         tmpIntent.putExtra( "img", station.imagesToString() );
         tmpIntent.putExtra( "audio", station.audio());
@@ -473,14 +511,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   //Initialisiere Alle Buttons in der Activity
   public void initBtns(){
-    ImageButton zumstart = (ImageButton) findViewById( R.id.zumstart );       //SUPL Button bottom right
     zumstart.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
         swapToViewPager( v );
       }
     });
-    ImageButton imgbtn1 = (ImageButton) findViewById( R.id.x );               //SUPL Button top left
     imgbtn1.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
@@ -489,7 +525,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     });
 
 
-    ImageButton arrowbtn = (ImageButton) findViewById( R.id.arrowbtn );       //Top Twin Button
+
     arrowbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
@@ -513,7 +549,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
       }
     });
-    ImageButton tarbtn = (ImageButton) findViewById( R.id.tarbtn );           //Bot Twin Button
     tarbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
@@ -600,8 +635,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   public void initActionBarBtn(){
-    ImageButton homebtn = (ImageButton) findViewById( R.id.homebtn );     //ActionBar Button: Right
-    ImageButton xbtn = (ImageButton) findViewById( R.id.btn_x );          //ActionBar Title
+    homebtn = (ImageButton) findViewById(R.id.homebtn);     //ActionBar Button: Right
     homebtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
@@ -612,6 +646,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
       }
     });
+    xbtn = (ImageButton) findViewById(R.id.btn_x);      //ActionBar Button: Right
+    title = (TextView) findViewById(R.id.toolbar_title);  //ActionBar Title
     xbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
@@ -621,11 +657,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   private void initDrawer(){
-    mDrawerLayout = (DrawerLayout) findViewById( R.id.drawer_layout );
     mDrawerList = (ListView) findViewById( R.id.drawerlist );
     mDrawer = (RelativeLayout) findViewById( R.id.drawer );
+    mDrawerLayout = (DrawerLayout) findViewById( R.id.drawer_layout );
+    drawerItems = new ArrayList<DrawerItem>();
     mDrawerLayout.setDrawerListener( createDrawerToggle() );
-    List<DrawerItem> drawerItems = new ArrayList<DrawerItem>();
     for( int i = 0; i < drawertitles.length; i++ ){
       DrawerItem items = new DrawerItem( drawertitles[i], drawersubtitles[i], drawerIcons[i] );
       drawerItems.add( items );
@@ -642,9 +678,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         // FragmentTransaction ftx = fragmentManager.beginTransaction();
         if( position == 0 ){
 
-          // ftx.replace(R.id.main_content, new FragmentFirst());
         } else if( position == 1 ){
-          //  ftx.replace(R.id.main_content, new FragmentSecond());
+
           showIntro();
 
           //  Initialize SharedPreferences
@@ -666,7 +701,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     });
 
-    ImageButton leftbtn = (ImageButton) findViewById( R.id.leftarrow );
+    leftbtn = (ImageButton) findViewById(R.id.leftarrow);
     leftbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
@@ -704,7 +739,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     return new SlidingUpPanelLayout.PanelSlideListener(){
       @Override
       public void onPanelSlide( View view, float v ){
-        if( !selectedTour.slug().isEmpty() ){
+        if( !singlepage.INSTANCE.selectedTour().slug().isEmpty() ){
           showInfo( true );
         } else {
           hideInfo( false );
@@ -715,7 +750,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onPanelCollapsed( View view ){
         //ändere Pfeilrichtung nach oben
-        if( !selectedTour.slug().isEmpty() ){
+        if( !singlepage.INSTANCE.selectedTour().slug().isEmpty() ){
           showInfo( true );
         } else {
           showInfo( false );
@@ -741,13 +776,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   //zeigt, wenn gewünscht, alle Informationen auf dem Panel an
   // TODO: Turn this and hideinfo into a toggle method, and rename those silly names here as well...
   private void showInfo( boolean all ){
-    ImageButton imgbtn1 = (ImageButton) findViewById( R.id.x );
-    ImageButton imgbtn2 = (ImageButton) findViewById( R.id.zumstart );
-    TextView subtext1 = (TextView) findViewById( R.id.subinfo1 );
-    TextView subtext2 = (TextView) findViewById( R.id.subinfo2 );
-    TextView tourenliste = (TextView) findViewById( R.id.tourenliste );
-    ImageView up = (ImageView) findViewById( R.id.up );
-    ImageView down = (ImageView) findViewById( R.id.down );
+
 
 
     up.setVisibility( View.VISIBLE );
@@ -758,13 +787,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
       imgbtn1.setVisibility( View.VISIBLE );
-      imgbtn2.setVisibility( View.VISIBLE );
+      zumstart.setVisibility( View.VISIBLE );
       subtext1.setVisibility( View.VISIBLE );
       subtext2.setVisibility( View.VISIBLE );
-      if( !selectedTour.slug().isEmpty() ){
-        tourenliste.setText( selectedTour.name() );
-        subtext1.setText( selectedTour.author() );
-        subtext2.setText( selectedTour.time() + "/" + selectedTour.length() );
+      if( !singlepage.INSTANCE.selectedTour().slug().isEmpty() ){
+        tourenliste.setText( singlepage.INSTANCE.selectedTour().name() );
+        subtext1.setText( singlepage.INSTANCE.selectedTour().author() );
+        subtext2.setText( singlepage.INSTANCE.selectedTour().time() + "/" + singlepage.INSTANCE.selectedTour().length() );
       } else {
         tourenliste.setText( "Tourenliste" );
       }
@@ -775,28 +804,21 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   //versteckt, wenn gewünscht, alle Informationen auf dem Panel
   private void hideInfo( boolean all ){
-    ImageButton imgbtn1 = (ImageButton) findViewById( R.id.x );
-    ImageButton imgbtn2 = (ImageButton) findViewById( R.id.zumstart );
-    TextView subtext1 = (TextView) findViewById( R.id.subinfo1 );
-    TextView subtext2 = (TextView) findViewById( R.id.subinfo2 );
-    ImageView up = (ImageView) findViewById( R.id.up );
-    ImageView down = (ImageView) findViewById( R.id.down );
-    TextView title = (TextView) findViewById( R.id.tourenliste );
 
     if( !all ){
 
 
       imgbtn1.setVisibility( View.INVISIBLE );
-      imgbtn2.setVisibility( View.INVISIBLE );
+      zumstart.setVisibility( View.INVISIBLE );
       subtext1.setVisibility( View.INVISIBLE );
       subtext2.setVisibility( View.INVISIBLE );
-      title.setVisibility( View.VISIBLE );
-      title.setText( "Tourenliste" );
+      tourenliste.setVisibility( View.VISIBLE );
+      tourenliste.setText( "Tourenliste" );
     } else {
 
-      title.setVisibility( View.GONE );
+      tourenliste.setVisibility( View.GONE );
       imgbtn1.setVisibility( View.GONE );
-      imgbtn2.setVisibility( View.GONE );
+      zumstart.setVisibility( View.GONE );
       subtext1.setVisibility( View.GONE );
       subtext2.setVisibility( View.GONE );
       up.setVisibility( View.GONE );

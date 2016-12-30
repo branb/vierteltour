@@ -104,7 +104,7 @@ public void initAll()
   stationbeendet = (RelativeLayout) findViewById(R.id.stationbeendet);
   mAdapter2 = new GalleryPagerAdapter(this, res, this);
   imagePagerGallery.setAdapter( mAdapter2 );
-  imagePagerGallery.setCurrentItem(singlepage.INSTANCE.getPosition());
+  imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
   player = ViertelTourMediaPlayer.getInstance( this );
   images();
 }
@@ -128,7 +128,7 @@ public void initAll()
       relGalleryTop.setVisibility(View.GONE);
       x_button.setVisibility(View.VISIBLE);
       gallerytitle.setVisibility(View.VISIBLE);
-      if(res.get(singlepage.INSTANCE.getPosition()).endsWith("mp4"))showGalleryVideoBar();
+      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4"))showGalleryVideoBar();
 
       ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
       params.height = calculateDP(300);
@@ -138,7 +138,7 @@ public void initAll()
 
   public void gallerymode(){
     gallerytitle.setText( station );
-    if(res.get(singlepage.INSTANCE.getPosition()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
+    if(res.get(singlepage.INSTANCE.position()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
     {showGalleryVideoBar();}
     else
     {hideGalleryVideoBar();}
@@ -357,13 +357,13 @@ public void initAll()
 
       hideBars();
 
-      singlepage.INSTANCE.setPosition(position);
+      singlepage.INSTANCE.position(position);
 
 
-      isimages=singlepage.INSTANCE.getPosition();
-      imagePagerGallery.setCurrentItem(singlepage.INSTANCE.getPosition());
+      isimages=singlepage.INSTANCE.position();
+      imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
 
-      if(res.get(singlepage.INSTANCE.getPosition()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
+      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
       {player.getVideoview().setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position));
         showGalleryVideoBar();}
       else

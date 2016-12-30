@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
+import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
 
 import java.util.List;
 
@@ -23,13 +24,12 @@ public class TourAdapter extends BaseAdapter{
 
   private Context context;
 
-  private Tour selectedTour;
   private List<Tour> tours;
+  private Singletonint singlepage;
 
-  public TourAdapter( Context context, List<Tour> tours, Tour selectedTour ){
+  public TourAdapter( Context context, List<Tour> tours ){
     this.context = context;
     this.tours = tours;
-    this.selectedTour = selectedTour;
   }
 
   @Override
@@ -76,7 +76,7 @@ public class TourAdapter extends BaseAdapter{
     txtTimeLength.setText( tour.time() + "/" + tour.length() );
     txtDescription.setText( tour.description() );
 
-    if( tour.slug().equals( selectedTour.slug() ) ){
+    if( tour.slug().equals( singlepage.INSTANCE.selectedTour().slug() ) ){
       txtDescription.setVisibility( View.VISIBLE );
       btnStart.setVisibility( View.VISIBLE );
       divider.setVisibility( View.VISIBLE );
@@ -95,7 +95,7 @@ public class TourAdapter extends BaseAdapter{
    * @param tour Tour to be selected
    */
   public void select( Tour tour ){
-    selectedTour = tour;
+    singlepage.INSTANCE.selectedTour(tour);
     notifyDataSetChanged();
   }
 }

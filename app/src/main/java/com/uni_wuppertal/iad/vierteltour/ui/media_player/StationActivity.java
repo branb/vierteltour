@@ -88,7 +88,7 @@ public class StationActivity extends Activity{
   @Override
   protected void onDestroy()
   {super.onDestroy();
-    singlepage.INSTANCE.setPosition(0);}
+    singlepage.INSTANCE.position(0);}
 
   @Override
   public void onBackPressed(){
@@ -163,7 +163,7 @@ public class StationActivity extends Activity{
     info2.setText( zeit + "/" + laenge );
     description = (TextView) findViewById( R.id.stationenbeschreibung );
     description.setText( desc );
-    singlepage.INSTANCE.setPosition(Integer.parseInt(number)-1);
+    singlepage.INSTANCE.position(Integer.parseInt(number)-1);
   }
 
   public void initAll(){//Init
@@ -207,7 +207,7 @@ public class StationActivity extends Activity{
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == 1) {
       if(resultCode == RESULT_OK){
-        imagePager.setCurrentItem(singlepage.INSTANCE.getPosition());
+        imagePager.setCurrentItem(singlepage.INSTANCE.position());
         if(!player.isPlaying())
         {startaudio=false;
           play_button.setImageResource( R.drawable.play_hell );}}

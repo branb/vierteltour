@@ -84,7 +84,7 @@ public class InformationPagerAdapter extends PagerAdapter{
         gallery.putExtra("resources", stationImagePaths);
         gallery.putExtra("station", stationActivity.station);
         gallery.putExtra("video", stationActivity.video);
-        singlepage.INSTANCE.setPosition(position);
+        singlepage.INSTANCE.position(position);
         stationActivity.startActivityForResult(gallery, 1);
       }
     });
