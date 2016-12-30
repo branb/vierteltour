@@ -188,6 +188,17 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     up = (ImageView) findViewById( R.id.up );
     down = (ImageView) findViewById( R.id.down );
   }
+//TODO WEITER MORGEN
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == 1) {
+      if(resultCode == RESULT_OK){
+        System.out.println("TEST");
+        vanishTours(singlepage.INSTANCE.selectedTour());
+        drawRoutes();
+        }
+    }
+  }
 
 
   // Show intro, but only if it's the first start of the app
@@ -459,7 +470,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     xbtn.setVisibility( View.GONE );
     title.setVisibility( View.GONE );
     mPager.setVisibility( View.GONE );
-    player.stop();
+    player.reset();
     selectTour(singlepage.INSTANCE.selectedTour());
     drawRoutes();
     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
