@@ -221,10 +221,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if( !checkedForUpdates ){
       Updater.get( getBaseContext() ).updateListener( this );
       Updater.get( getBaseContext() ).updatesOnTourdata();
-    } else if( !Updater.get( getBaseContext() ).checkingForUpdates() ) {
-      loadTourdata();
-    }
-  }
+    }}
 
 
   /**
