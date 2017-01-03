@@ -1,13 +1,16 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -20,6 +23,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -188,18 +192,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     up = (ImageView) findViewById( R.id.up );
     down = (ImageView) findViewById( R.id.down );
   }
-//TODO WEITER MORGEN
-  public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == 1) {
-      if(resultCode == RESULT_OK){
-        System.out.println("TEST");
-        vanishTours(singlepage.INSTANCE.selectedTour());
-        drawRoutes();
-        }
-    }
-  }
-
 
   // Show intro, but only if it's the first start of the app
   private void showIntro(){
@@ -312,8 +304,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   private void vanishTours( Tour tour ){
-     singlepage.INSTANCE.selectedTour(tour);
     adapter.select( tour );
+
+    for(Station station : tour.stations())
+    {String tmpNumber = ""+(station.number()-1);
+      markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,tmpNumber)));}
 
     // Unselect all other tours
     for( Tour t : tourlist.city( visibleCity ).tours() ){
@@ -323,6 +318,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     polylines.get(t.slug()).color( Color.parseColor( color ) );
     for( Station station : t.stations() ){
       markers.get( station.slug() ).alpha( 0f );
+
     }}
     else{unfadeTour(t);}
     }
@@ -354,6 +350,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     adapter.select( tour );
     unfadeTour( tour );
 
+    for(Station station : tour.stations())
+    {markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,"")));}
+
     // Unselect all other tours
     for( Tour t : tourlist.city( visibleCity ).tours() ){
       if( !t.slug().equals( tour.slug() ) ){
@@ -370,6 +369,22 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
     hideInfo( false );
     drawRoutes();
+  }
+
+  // Convert a view to bitmap
+  public static Bitmap createDrawableFromView(Context context, View view) {
+    DisplayMetrics displayMetrics = new DisplayMetrics();
+    ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+    view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+    view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+    view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+    view.buildDrawingCache();
+    Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+
+    Canvas canvas = new Canvas(bitmap);
+    view.draw(canvas);
+
+    return bitmap;
   }
 
 
@@ -914,18 +929,25 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     for( Station station : tour.stations() ){
       MarkerOptions marker = new MarkerOptions();
 
-      int id = getResources().getIdentifier( "pin_" + tour.trkid(), "drawable", getPackageName() );
-
-      Bitmap icon = BitmapFactory.decodeResource( getResources(), id );
-
       marker.position( station.latlng() );
-      marker.icon( BitmapDescriptorFactory.fromBitmap( icon ) );
+      marker.icon( BitmapDescriptorFactory.fromBitmap( markertext(tour,"") ) );
 
       markers.put( station.slug(), marker );
     }
 
   }
 
+public Bitmap markertext(Tour tour, String text)
+{
+  View markerlayout = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.marker_layout, null);
+  int id = getResources().getIdentifier( "pin_" + tour.trkid(), "drawable", getPackageName() );
+  TextView markertxt = (TextView)markerlayout.findViewById(R.id.markernumber);
+  ImageView markerimage = (ImageView) markerlayout.findViewById(R.id.marker);
+  markerimage.setImageResource(id);
+
+  markertxt.setText(text);
+  return createDrawableFromView(this, markerlayout);
+}
 
   /**
    * Loads the list of available tours
