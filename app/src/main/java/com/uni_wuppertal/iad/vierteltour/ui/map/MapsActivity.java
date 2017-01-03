@@ -267,17 +267,21 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
         //Stationenübersicht
         else if(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
-        { for( Tour tour : tourlist.city(visibleCity).tours() ){
-            for( int i=1; i<tour.stations().size(); i++)
-            {if( clickCoords.equals(tour.stations().get(i).latlng())){
-                markers.get(tour.stations().get(i).slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (tour.station(i).number()))));
+        { Tour tour = singlepage.INSTANCE.selectedTour();
+          for( Station station : tour.stations())
+            { if( clickCoords.equals(station.latlng())){
+                                //löscht alte Station
+                if(singlepage.INSTANCE.selectedStation()!=null)
+                {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()-1))));}
+
+                singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
+
+                markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1))));
                 drawRoutes();
-                mPager.setCurrentItem(tour.station(i).number());
-                for(int j=1; j<tour.stations().size(); j++)
-                {if(i!=j)
-                {markers.get(tour.stations().get(i).slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (tour.station(i).number()))));}}
+                mPager.setCurrentItem(station.number());
+                stationAdapter.notifyDataSetChanged();
             }
-        }
+
       }}
       }
     };
@@ -501,6 +505,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     title.setVisibility( View.GONE );
     mPager.setVisibility( View.GONE );
     player.reset();
+
+    if(singlepage.INSTANCE.selectedStation()!=null)
+    {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()-1))));
+     singlepage.INSTANCE.selectedStation(null);}
+
     selectTour(singlepage.INSTANCE.selectedTour());
     drawRoutes();
     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
