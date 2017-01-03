@@ -265,11 +265,17 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           }
           drawRoutes();
         }
+        //Stationenübersicht
         else if(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
         { for( Tour tour : tourlist.city(visibleCity).tours() ){
             for( int i=1; i<tour.stations().size(); i++)
             {if( clickCoords.equals(tour.stations().get(i).latlng())){
+                markers.get(tour.stations().get(i).slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (tour.station(i).number()))));
+                drawRoutes();
                 mPager.setCurrentItem(tour.station(i).number());
+                for(int j=1; j<tour.stations().size(); j++)
+                {if(i!=j)
+                {markers.get(tour.stations().get(i).slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (tour.station(i).number()))));}}
             }
         }
       }}
@@ -303,9 +309,18 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
   }
 
+  public Bitmap scaleMarker (Tour tour, String tmpNumber)
+  {Bitmap tmpMarker = markertext(tour,tmpNumber);
+    double height, width;
+    height = tmpMarker.getHeight();
+    width = tmpMarker.getWidth();
+    return Bitmap.createScaledBitmap(tmpMarker,(int) (width*1.5),(int) (height*1.5), true);}
+
+
   private void vanishTours( Tour tour ){
     adapter.select( tour );
 
+    //Set Numbers on selected Tour
     for(Station station : tour.stations())
     {String tmpNumber = ""+(station.number()-1);
       markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,tmpNumber)));}
