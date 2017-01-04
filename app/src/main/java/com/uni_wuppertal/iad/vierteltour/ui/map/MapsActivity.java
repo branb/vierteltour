@@ -139,8 +139,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   // Holds the configuration of the current markers drawn on the map
   private Map<String, MarkerOptions> markers = new HashMap<String, MarkerOptions>();
 
-  private Map<String, CircleOptions> circles = new HashMap<String, CircleOptions>();
-
+ // private Map<String, CircleOptions> circles = new HashMap<String, CircleOptions>();
+  private CircleOptions circle = new CircleOptions();
 
   @Override
   protected void onCreate( Bundle savedInstanceState ){
@@ -277,6 +277,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
                 singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
 
+                circle.center( station.latlng()).radius(15).fillColor(Color.parseColor(tour.color().substring(0,1) + "75" + tour.color().substring(1,tour.color().length()))).strokeColor(Color.parseColor(tour.color())).strokeWidth(8);
                 markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()))));
                 drawRoutes();
                 mPager.setCurrentItem(station.number()-1);
@@ -480,10 +481,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    */
   private void drawStations(){
     for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
-     if(marker.getValue().getPosition()==null)
-     {}
-      else {mMap.addMarker( marker.getValue() );}
+     if(marker.getValue().getPosition()!=null)
+     {mMap.addMarker( marker.getValue() );}
+
+  /*    for(Map.Entry<String, CircleOptions> circle : circles.entrySet())
+      {if(circle.getValue().getCenter()!=null)
+      {mMap.addCircle(circle.getValue());}}*/
     }
+    if(circle.getCenter()!=null && mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
+    {mMap.addCircle(circle);}
   }
 
 
@@ -524,7 +530,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     if(singlepage.INSTANCE.selectedStation()!=null)
     {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));
-     singlepage.INSTANCE.selectedStation(null);}
+     singlepage.INSTANCE.selectedStation(null);
+     circle = new CircleOptions();}
 
     selectTour(singlepage.INSTANCE.selectedTour());
     drawRoutes();
@@ -967,12 +974,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private void makeMarkers( Tour tour ){
     for( Station station : tour.stations() ){
       MarkerOptions marker = new MarkerOptions();
-      CircleOptions circle = new CircleOptions().center( station.latlng()).radius(15).fillColor(Color.parseColor(tour.color())).strokeColor(Color.parseColor(tour.color())).strokeWidth(8);;
+     // CircleOptions circle = new CircleOptions().center( station.latlng()).radius(15).fillColor(Color.parseColor(tour.color())).strokeColor(Color.parseColor(tour.color())).strokeWidth(8).visible(false);
 
       marker.position( station.latlng() );
       marker.icon( BitmapDescriptorFactory.fromBitmap( markertext(tour,"") ) );
 
-      circles.put(station.slug(), circle);
+    //  circles.put(station.slug(), circle);
       markers.put( station.slug(), marker );
     }
 
