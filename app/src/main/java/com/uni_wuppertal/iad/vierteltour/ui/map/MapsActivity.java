@@ -43,6 +43,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -137,6 +138,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   // Holds the configuration of the current markers drawn on the map
   private Map<String, MarkerOptions> markers = new HashMap<String, MarkerOptions>();
+
+  private Map<String, CircleOptions> circles = new HashMap<String, CircleOptions>();
 
 
   @Override
@@ -270,11 +273,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             { if( clickCoords.equals(station.latlng())){
                                 //löscht alte Station
                 if(singlepage.INSTANCE.selectedStation()!=null)
-                {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()-1))));}
+                {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));}
 
                 singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
 
-                markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1))));
+                markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()))));
                 drawRoutes();
                 mPager.setCurrentItem(station.number()-1);
                 stationAdapter.notifyDataSetChanged();
@@ -324,7 +327,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     //Set Numbers on selected Tour
     for(Station station : tour.stations())
-    {String tmpNumber = ""+(station.number()-1);
+    {String tmpNumber = ""+(station.number());
       markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,tmpNumber)));}
 
     // Unselect all other tours
@@ -426,10 +429,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
         for( Tour tour : tourlist.city(visibleCity).tours() ){
           for(Station station : tour.stations())
-          {System.out.println(station.latlng() +"     "+ pos);
-            if(pos.equals(station.latlng()))
-          {System.out.println("ASEDRJHTEGHTRZKJUFZHRTF");
-            //  Initialize SharedPreferences
+          {if(pos.equals(station.latlng()))
+          {//  Initialize SharedPreferences
             SharedPreferences getPrefs = PreferenceManager
               .getDefaultSharedPreferences( getBaseContext() );
 
@@ -437,7 +438,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             SharedPreferences.Editor e = getPrefs.edit();
 
             //  Edit preference to make it false because we don't want this to run again
-            e.putBoolean( station.slug(), false );
+            e.putBoolean( station.slug(), true);
             //  Apply changes
             e.apply();}}}
       }
@@ -522,7 +523,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     player.reset();
 
     if(singlepage.INSTANCE.selectedStation()!=null)
-    {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()-1))));
+    {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));
      singlepage.INSTANCE.selectedStation(null);}
 
     selectTour(singlepage.INSTANCE.selectedTour());
@@ -966,10 +967,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private void makeMarkers( Tour tour ){
     for( Station station : tour.stations() ){
       MarkerOptions marker = new MarkerOptions();
+      CircleOptions circle = new CircleOptions().center( station.latlng()).radius(15).fillColor(Color.parseColor(tour.color())).strokeColor(Color.parseColor(tour.color())).strokeWidth(8);;
 
       marker.position( station.latlng() );
       marker.icon( BitmapDescriptorFactory.fromBitmap( markertext(tour,"") ) );
 
+      circles.put(station.slug(), circle);
       markers.put( station.slug(), marker );
     }
 

@@ -125,9 +125,13 @@ public class StationActivity extends Activity{
   }
 
   public void checkGPS()
-  {if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false))
-    {System.out.println("                                           dsadsadas                  dsadsad");
+  {System.out.println("Checking GPS...");
+    System.out.println(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false));
+
+    if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false))
+    {System.out.println("SUCCESS");
       sperrvariable=false;}
+    else{System.out.println("FAILED.");}
   }
 
   public void parseData(){
