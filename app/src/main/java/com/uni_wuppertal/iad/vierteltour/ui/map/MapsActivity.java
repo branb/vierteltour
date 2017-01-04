@@ -96,6 +96,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                                            "hell / dunkel"
   };
 
+  private final double radius=25;
   private ActionBar actionBar;
   private DrawerLayout mDrawerLayout;
   private ListView mDrawerList;
@@ -277,7 +278,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
                 singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
 
-                circle.center( station.latlng()).radius(15).fillColor(Color.parseColor(tour.color().substring(0,1) + "75" + tour.color().substring(1,tour.color().length()))).strokeColor(Color.parseColor(tour.color())).strokeWidth(8);
+                circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(tour.color().substring(0,1) + "75" + tour.color().substring(1,tour.color().length()))).strokeColor(Color.parseColor(tour.color())).strokeWidth(8);
                 markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()))));
                 drawRoutes();
                 mPager.setCurrentItem(station.number()-1);
@@ -428,21 +429,32 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                                          //  .anchor( 0.5f, 0.5f );
         mMap.addMarker( CurrentMarker );
 
-        for( Tour tour : tourlist.city(visibleCity).tours() ){
-          for(Station station : tour.stations())
-          {if(pos.equals(station.latlng()))
-          {//  Initialize SharedPreferences
-            SharedPreferences getPrefs = PreferenceManager
-              .getDefaultSharedPreferences( getBaseContext() );
+        positionInCircle(pos);
 
-            //  Make a new preferences editor
-            SharedPreferences.Editor e = getPrefs.edit();
-
-            //  Edit preference to make it false because we don't want this to run again
-            e.putBoolean( station.slug(), true);
-            //  Apply changes
-            e.apply();}}}
       }
+
+
+      public void positionInCircle(LatLng pos)
+      {float[] distance = new float[2];
+
+        for( Tour tour : tourlist.city(visibleCity).tours() ){
+        for(Station station : tour.stations())
+        {if(station.latlng()!=null){Location.distanceBetween( pos.latitude, pos.longitude,
+          station.latlng().latitude, station.latlng().longitude, distance);
+          System.out.println(station.latlng());
+          if(distance[0] < radius )
+        {//  Initialize SharedPreferences
+          SharedPreferences getPrefs = PreferenceManager
+            .getDefaultSharedPreferences( getBaseContext() );
+
+          //  Make a new preferences editor
+          SharedPreferences.Editor e = getPrefs.edit();
+
+          //  Edit preference to make it false because we don't want this to run again
+          e.putBoolean( station.slug(), true);
+          //  Apply changes
+          e.apply();}}}}}
+
 
       @Override
       public void onStatusChanged( String provider, int status, Bundle extras ){
