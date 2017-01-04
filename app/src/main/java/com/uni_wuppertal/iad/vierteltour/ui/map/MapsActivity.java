@@ -27,9 +27,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -109,11 +111,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private TourAdapter adapter;
   private List<DrawerItem> drawerItems;
   private LatLng wuppertal;
-  private ImageButton xbtn, zumstart, homebtn, leftbtn, x_supl, arrowbtn, tarbtn, gpsbtn;
+  private ImageButton xbtn, zumstart, homebtn, leftbtn, x_supl, arrowbtn, tarbtn;
+  private Button gpsbtn;
   private ImageView up, down;
   private ListView lv;
   private TextView title, tourenliste, subtext1, subtext2;
-  private RelativeLayout panel;
+  private RelativeLayout panel, gpsinfo;
   public static RelativeLayout audiobar;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
@@ -185,7 +188,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     arrowbtn = (ImageButton) findViewById( R.id.arrowbtn );       //Top Twin Button
 
-    gpsbtn = (ImageButton) findViewById( R.id.gpsbtn );           //Red Button left Bottom corner
+    gpsbtn = (Button) findViewById( R.id.gpsbtn );           //Red Button left Bottom corner
 
     tarbtn = (ImageButton) findViewById( R.id.tarbtn );           //Bot Twin Button
 
@@ -195,6 +198,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     subtext2 = (TextView) findViewById( R.id.subinfo2 );
     up = (ImageView) findViewById( R.id.up );
     down = (ImageView) findViewById( R.id.down );
+
+    gpsinfo = (RelativeLayout) findViewById( R.id.gpsinfo );
   }
 
   // Show intro, but only if it's the first start of the app
@@ -631,22 +636,24 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onClick( View v ){
         // Navigation require current Location
-        if( MyLocation != null ){
+        if( MyLocation != null && singlepage.INSTANCE.selectedStation()!=null){
           // Uri for google navigation
           String start = MyLocation.getLatitude() + "," + MyLocation.getLongitude();
-          String target = wuppertal.latitude + "," + wuppertal.longitude;
-          String navigationUrl = "http://maps.google.com/maps?"
-            + "saddr=" + start
-            + "&daddr=" + target;
+          String target = singlepage.INSTANCE.selectedStation().latlng().latitude + "," + singlepage.INSTANCE.selectedStation().latlng().longitude;
+          String navigationUrl = "http://maps.google.com/maps?" + "saddr=" + start + "&daddr=" + target;
 
           Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( navigationUrl ) );
           intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS );
           intent.setClassName( "com.google.android.apps.maps", "com.google.android.maps.MapsActivity" );
           startActivity( intent );
-        } else {
-          Toast.makeText( getApplicationContext(), "Standort unbekannt", Toast.LENGTH_SHORT )
+        } else if (MyLocation == null){
+          Toast.makeText( getApplicationContext(), "Kein GPS Signal vorhanden.", Toast.LENGTH_SHORT )
                .show();
         }
+        else {
+          Toast.makeText( getApplicationContext(), "Keine Station ausgewählt.", Toast.LENGTH_SHORT )
+            .show();
+          }
 
       }
     });
@@ -664,10 +671,17 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       }
     });
 
-    gpsbtn.setOnClickListener(new View.OnClickListener() {
+    gpsbtn.setOnTouchListener(new View.OnTouchListener() {
       @Override
-      public void onClick(View view) {
-        System.out.println("CLICK");
+      public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+          gpsinfo.setVisibility(View.VISIBLE);
+
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+          gpsinfo.setVisibility(View.GONE);
+
+        }
+        return false;
       }
     });
 
