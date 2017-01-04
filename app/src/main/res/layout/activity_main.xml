@@ -51,6 +51,20 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="22.5dp"/>
 
+              <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/gpsbtn"
+                android:background="@drawable/roundbutton"
+                android:layout_above="@+id/pager"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                />
+
                 <android.support.v4.view.ViewPager
                     android:id="@+id/pager"
                     android:layout_width="match_parent"

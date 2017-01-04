@@ -109,7 +109,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private TourAdapter adapter;
   private List<DrawerItem> drawerItems;
   private LatLng wuppertal;
-  private ImageButton xbtn, zumstart, homebtn, leftbtn, x_supl, arrowbtn, tarbtn;
+  private ImageButton xbtn, zumstart, homebtn, leftbtn, x_supl, arrowbtn, tarbtn, gpsbtn;
   private ImageView up, down;
   private ListView lv;
   private TextView title, tourenliste, subtext1, subtext2;
@@ -185,7 +185,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     arrowbtn = (ImageButton) findViewById( R.id.arrowbtn );       //Top Twin Button
 
-
+    gpsbtn = (ImageButton) findViewById( R.id.gpsbtn );           //Red Button left Bottom corner
 
     tarbtn = (ImageButton) findViewById( R.id.tarbtn );           //Bot Twin Button
 
@@ -281,6 +281,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                 circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(tour.color().substring(0,1) + "75" + tour.color().substring(1,tour.color().length()))).strokeColor(Color.parseColor(tour.color())).strokeWidth(8);
                 markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()))));
                 drawRoutes();
+
+                if(!PreferenceManager
+                .getDefaultSharedPreferences( getBaseContext() ).getBoolean(station.slug(), false))
+                {gpsbtn.setVisibility(View.VISIBLE);}
+                else {gpsbtn.setVisibility(View.GONE);}
+
                 mPager.setCurrentItem(station.number()-1);
                 stationAdapter.notifyDataSetChanged();
             }
@@ -441,7 +447,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         for(Station station : tour.stations())
         {if(station.latlng()!=null){Location.distanceBetween( pos.latitude, pos.longitude,
           station.latlng().latitude, station.latlng().longitude, distance);
-          System.out.println(station.latlng());
           if(distance[0] < radius )
         {//  Initialize SharedPreferences
           SharedPreferences getPrefs = PreferenceManager
@@ -453,7 +458,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           //  Edit preference to make it false because we don't want this to run again
           e.putBoolean( station.slug(), true);
           //  Apply changes
-          e.apply();}}}}}
+          e.apply();
+        gpsbtn.setVisibility(View.GONE);
+        }}}}}
 
 
       @Override
@@ -543,6 +550,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if(singlepage.INSTANCE.selectedStation()!=null)
     {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));
      singlepage.INSTANCE.selectedStation(null);
+      gpsbtn.setVisibility(View.GONE);
      circle = new CircleOptions();}
 
     selectTour(singlepage.INSTANCE.selectedTour());
@@ -655,6 +663,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
       }
     });
+
+    gpsbtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        System.out.println("CLICK");
+      }
+    });
+
   }
 
   @Override
