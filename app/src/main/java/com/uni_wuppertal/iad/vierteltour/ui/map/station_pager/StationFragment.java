@@ -19,14 +19,16 @@ import java.util.ArrayList;
 
 public class StationFragment extends Fragment{
   private static final String ARG_PAGE_NUMBER = "pageNumber", TITLE = "title", STATIONNAME = "stationname";
-  private static String TOURNAME, AUTOR, TIME, LENGHT, COLOR, DESCRIPTION, SIZE;
+  private static String TOURNAME, AUTOR, TIME, LENGHT, COLOR, SIZE;
   private static ArrayList<String> descriptions = new ArrayList<>();
+  private static ArrayList<String> slug = new ArrayList<>();
   private static Bundle arguments;
   private static ArrayList<String> ztitle = new ArrayList<>();
   private static ArrayList<String> img = new ArrayList<>();
   private static ArrayList<String> aud = new ArrayList<>();
   private static ArrayList<String> vid = new ArrayList<>();
   private TextView title;
+  private Station station;
   private int position;
 
   public static StationFragment create( int pageNumber, Tour tour ){
@@ -41,6 +43,9 @@ public class StationFragment extends Fragment{
     img.add( station.imagesToString() );
     aud.add( station.audio() );
     vid.add( station.videosToString() );
+
+    slug.add( station.slug() );
+
     TOURNAME = tour.name();
     AUTOR = tour.author();
     TIME = tour.time();
@@ -73,9 +78,11 @@ public class StationFragment extends Fragment{
       btItem.setOnClickListener( new View.OnClickListener(){
         @Override
         public void onClick( View v ){
+
           Intent myIntent = new Intent( getActivity(), StationActivity.class );
 
           //myIntent.putExtra("key", arguments.getInt(ARG_PAGE_NUMBER)); //Optional parameters
+          myIntent.putExtra( "slug", slug.get(position) );
           myIntent.putExtra( "station", title.getText() );
           myIntent.putExtra( "name", TOURNAME );
           myIntent.putExtra( "autor", AUTOR );

@@ -2,6 +2,7 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.view.ViewPager;
@@ -56,7 +58,7 @@ public class StationActivity extends Activity{
   int dotsCount;
   String video, audio;
   ArrayList<String> stationImagePaths;
-  String station, farbe, autor, tourname, laenge, desc, zeit, size, number;
+  String station, farbe, autor, tourname, laenge, desc, zeit, size, number, slug;
   ImageView dots[];
   Intent myIntent2;
   Bundle b;
@@ -65,7 +67,7 @@ public class StationActivity extends Activity{
   InformationPagerAdapter mAdapter;
   LinearLayout pager_indicator;
   RelativeLayout gesperrt;
-  boolean sperrvariable=false;
+  boolean sperrvariable=true;
   TextView ausrufe;
 
 
@@ -114,15 +116,24 @@ public class StationActivity extends Activity{
 
   public void getInit(){
     initAll();
+
+    checkGPS();
+
     hide();
     initAudio();
     initImages();
   }
 
+  public void checkGPS()
+  {if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false))
+    {System.out.println("                                           dsadsadas                  dsadsad");
+      sperrvariable=false;}
+  }
 
   public void parseData(){
     myIntent2 = getIntent();
     b = myIntent2.getExtras();
+    slug = (String) b.get( "slug" );
     station = (String) b.get( "station" );
     tourname = (String) b.get( "name" );
     autor = (String) b.get( "autor" );

@@ -205,6 +205,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           Intent i = new Intent( MapsActivity.this, IntroActivity.class );
           startActivity( i );
         }
+
       }
     });
 
@@ -275,7 +276,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
                 markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1))));
                 drawRoutes();
-                mPager.setCurrentItem(station.number());
+                mPager.setCurrentItem(station.number()-1);
                 stationAdapter.notifyDataSetChanged();
             }
 
@@ -422,6 +423,23 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                                            .icon( BitmapDescriptorFactory.fromBitmap( icon ) );
                                          //  .anchor( 0.5f, 0.5f );
         mMap.addMarker( CurrentMarker );
+
+        for( Tour tour : tourlist.city(visibleCity).tours() ){
+          for(Station station : tour.stations())
+          {System.out.println(station.latlng() +"     "+ pos);
+            if(pos.equals(station.latlng()))
+          {System.out.println("ASEDRJHTEGHTRZKJUFZHRTF");
+            //  Initialize SharedPreferences
+            SharedPreferences getPrefs = PreferenceManager
+              .getDefaultSharedPreferences( getBaseContext() );
+
+            //  Make a new preferences editor
+            SharedPreferences.Editor e = getPrefs.edit();
+
+            //  Edit preference to make it false because we don't want this to run again
+            e.putBoolean( station.slug(), false );
+            //  Apply changes
+            e.apply();}}}
       }
 
       @Override
@@ -746,7 +764,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
           //  Edit preference to make it false because we don't want this to run again
           e.putBoolean( "firstStart", true );
-
           //  Apply changes
           e.apply();
 
