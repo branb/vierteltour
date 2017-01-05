@@ -274,9 +274,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
         //Stationenübersicht
         else if(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
-        { Tour tour = singlepage.INSTANCE.selectedTour();
+        { Boolean onMapClicked=false;       //unselect Stations
+          Tour tour = singlepage.INSTANCE.selectedTour();
           for( Station station : tour.stations())
             { if( clickCoords.equals(station.latlng())){
+              onMapClicked=true;
                                 //löscht alte Station
                 if(singlepage.INSTANCE.selectedStation()!=null)
                 {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));}
@@ -296,7 +298,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                 stationAdapter.notifyDataSetChanged();
             }
 
-      }}
+      }
+        if(!onMapClicked)
+        {if(singlepage.INSTANCE.selectedStation()!=null)
+        {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));
+        singlepage.INSTANCE.selectedStation(null);
+          circle.center(null);
+        drawRoutes();}
+        }}
       }
     };
     mMap.setOnMapClickListener( listener );
@@ -507,10 +516,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
      if(marker.getValue().getPosition()!=null)
      {mMap.addMarker( marker.getValue() );}
-
-  /*    for(Map.Entry<String, CircleOptions> circle : circles.entrySet())
-      {if(circle.getValue().getCenter()!=null)
-      {mMap.addCircle(circle.getValue());}}*/
     }
     if(circle.getCenter()!=null && mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
     {mMap.addCircle(circle);}

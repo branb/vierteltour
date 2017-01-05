@@ -80,7 +80,7 @@
                   android:layout_centerHorizontal="true"
                   android:layout_below="@+id/arrowwhite"
                   android:textColor="@color/white"
-                  android:text="Bitte begib dich zur\nausgewählten Station"/>
+                  android:text="Bitte begib dich zur\nausgewählten Station."/>
                 <TextView
                   android:id="@+id/gpssubinfotxt"
                   android:layout_width="wrap_content"
