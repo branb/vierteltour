@@ -76,11 +76,12 @@ public class TourAdapter extends BaseAdapter{
     txtTimeLength.setText( tour.time() + "/" + tour.length() );
     txtDescription.setText( tour.description() );
 
-    if( tour.slug().equals( singlepage.INSTANCE.selectedTour().slug() ) ){
+    if(singlepage.INSTANCE.selectedTour()!=null)
+    {if( tour.slug().equals( singlepage.INSTANCE.selectedTour().slug() ) ){
       txtDescription.setVisibility( View.VISIBLE );
       btnStart.setVisibility( View.VISIBLE );
       divider.setVisibility( View.VISIBLE );
-    } else {
+    }} else {
       txtDescription.setVisibility( View.GONE );
       btnStart.setVisibility( View.GONE );
       divider.setVisibility( View.GONE );

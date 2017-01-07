@@ -454,6 +454,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   //Setzt alle Touren auf Sichtbar zurück
   public void resetTour(){
+    singlepage.INSTANCE.selectedTour(null);
     for( Tour tour : tourlist.city( visibleCity ).tours() ){
       unfadeTour( tour );
     }
@@ -896,7 +897,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     return new SlidingUpPanelLayout.PanelSlideListener(){
       @Override
       public void onPanelSlide( View view, float v ){
-        if( !singlepage.INSTANCE.selectedTour().slug().isEmpty() ){
+        if( singlepage.INSTANCE.selectedTour()!= null ){
           showInfo( true );
         } else {
           hideInfo( false );
@@ -907,17 +908,19 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onPanelCollapsed( View view ){
         //ändere Pfeilrichtung nach oben
-        if( !singlepage.INSTANCE.selectedTour().slug().isEmpty() ){
+        if( singlepage.INSTANCE.selectedTour()!=null){
           showInfo( true );
         } else {
           showInfo( false );
         }
+        adapter.notifyDataSetChanged();
       }
 
       @Override
       public void onPanelExpanded( View view ){//Ändere Pfeilimage nach unten
         hideInfo( true );
         panel.setVisibility( View.GONE );
+        adapter.notifyDataSetChanged();
       }
 
       @Override
