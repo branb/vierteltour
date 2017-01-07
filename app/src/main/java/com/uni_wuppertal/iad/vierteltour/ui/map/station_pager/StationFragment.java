@@ -75,7 +75,7 @@ public class StationFragment extends Fragment{
       position = getArguments().getInt( ARG_PAGE_NUMBER );
       title.setText( ztitle.get( position ) );
 
-      btItem.setOnClickListener( new View.OnClickListener(){
+      /*btItem.setOnClickListener( new View.OnClickListener(){
         @Override
         public void onClick( View v ){
 
@@ -101,7 +101,7 @@ public class StationFragment extends Fragment{
           getActivity().startActivity( myIntent );
           getActivity().overridePendingTransition( R.anim.fade_in, R.anim.map_out );
         }
-      } );
+      } );*/
     } else {
       btItem.setVisibility( View.GONE );
     }

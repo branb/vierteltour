@@ -105,7 +105,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private ActionBarDrawerToggle mDrawerToggle;
   private SlidingUpPanelLayout mLayout;
   private RelativeLayout mDrawer;
-  private ViewPager mPager;
+  private ClickableViewpager mPager;
   private StationAdapter stationAdapter;
   private DrawerAdapter draweradapter;
   private TourAdapter adapter;
@@ -171,9 +171,20 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void initAll() {
     ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this); //initMap
 
-    mPager = (ViewPager) findViewById(R.id.pager);
+    mPager = (ClickableViewpager) findViewById(R.id.pager);
     stationAdapter = new StationAdapter(getSupportFragmentManager(), this);
     mPager.setAdapter(stationAdapter);
+
+    mPager.setOnItemClickListener(new ClickableViewpager.OnItemClickListener() {
+      @Override
+      public void onItemClick(int position) {
+
+        selectStation(singlepage.INSTANCE.selectedTour().station(position));
+
+        startStationActivity();
+      }
+    });
+
     audiobar = (RelativeLayout) findViewById(R.id.audiobar);
 
 
@@ -284,20 +295,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           for( Station station : tour.stations())
             { if( clickCoords.equals(station.latlng())){
               onMapClicked=true;
-                                //löscht alte Station
-                if(singlepage.INSTANCE.selectedStation()!=null)
-                {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));}
 
-                singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
-
-                circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(tour.color().substring(0,1) + "75" + tour.color().substring(1,tour.color().length()))).strokeColor(Color.parseColor(tour.color())).strokeWidth(8);
-                markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()))));
-                drawRoutes();
-
-                if(!PreferenceManager
-                .getDefaultSharedPreferences( getBaseContext() ).getBoolean(station.slug(), false))
-                {gpsbtn.setVisibility(View.VISIBLE);}
-                else {gpsbtn.setVisibility(View.GONE);}
+                selectStation(station);
 
                 mPager.setCurrentItem(station.number()-1);
                 stationAdapter.notifyDataSetChanged();
@@ -325,6 +324,24 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   }
 
+  public void selectStation(Station station)
+  {                //löscht alte Station
+    if(singlepage.INSTANCE.selectedStation()!=null)
+    {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));}
+
+    singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
+
+    circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0,1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1,singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8);
+    markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()))));
+    drawRoutes();
+
+    if(!PreferenceManager
+      .getDefaultSharedPreferences( getBaseContext() ).getBoolean(station.slug(), false))
+    {gpsbtn.setVisibility(View.VISIBLE);}
+    else {gpsbtn.setVisibility(View.GONE);}
+  }
+
+
   /**
    * Put a tour into the background, giving it's polylines and station markers a high alpha value so
    * it blends into the background
@@ -348,6 +365,32 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     width = tmpMarker.getWidth();
     return Bitmap.createScaledBitmap(tmpMarker,(int) (width*1.5),(int) (height*1.5), true);}
 
+  public void startStationActivity()
+  {Intent tmpIntent = new Intent( getApplicationContext(), StationActivity.class );
+
+
+    // Tour data
+    Tour tour = singlepage.INSTANCE.selectedTour();
+    tmpIntent.putExtra( "name", tour.name() );
+    tmpIntent.putExtra( "autor", tour.author() );
+    tmpIntent.putExtra( "zeit", tour.time() );
+    tmpIntent.putExtra( "laenge", tour.length() );
+    tmpIntent.putExtra( "farbe", tour.color() );
+    tmpIntent.putExtra( "size", "" + tour.stations().size() );
+    // Selected Station
+    Station station = singlepage.INSTANCE.selectedStation();
+    tmpIntent.putExtra("slug", station.slug());
+    tmpIntent.putExtra( "station", station.name() );
+    tmpIntent.putExtra( "desc", station.description() );
+    tmpIntent.putExtra( "pos", "" + (station.number()) );
+    // Station media
+    tmpIntent.putExtra( "img", station.imagesToString() );
+    tmpIntent.putExtra( "audio", station.audio());
+    tmpIntent.putExtra( "video", station.videosToString() );
+
+
+    startActivity( tmpIntent );
+    overridePendingTransition( R.anim.fade_in, R.anim.map_out );}
 
   private void vanishTours( Tour tour ){
     adapter.select( tour );
@@ -602,27 +645,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onClick(View view) {
 
-        Intent tmpIntent = new Intent( getApplicationContext(), StationActivity.class );
-
-        // Tour data
-        tmpIntent.putExtra( "name", singlepage.INSTANCE.selectedTour().name() );
-        tmpIntent.putExtra( "autor", singlepage.INSTANCE.selectedTour().author() );
-        tmpIntent.putExtra( "zeit", singlepage.INSTANCE.selectedTour().time() );
-        tmpIntent.putExtra( "laenge", singlepage.INSTANCE.selectedTour().length() );
-        tmpIntent.putExtra( "farbe", singlepage.INSTANCE.selectedTour().color() );
-        tmpIntent.putExtra( "size", "" + singlepage.INSTANCE.selectedTour().stations().size() );
-        // Selected Station
-        Station station = singlepage.INSTANCE.selectedTour().stations().get( singlepage.INSTANCE.position());
-        tmpIntent.putExtra( "station", station.name() );
-        tmpIntent.putExtra( "desc", station.description() );
-        tmpIntent.putExtra( "pos", "" + (singlepage.INSTANCE.position() + 1) );
-        // Station media
-        tmpIntent.putExtra( "img", station.imagesToString() );
-        tmpIntent.putExtra( "audio", station.audio());
-        tmpIntent.putExtra( "video", station.videosToString() );
-
-        overridePendingTransition( R.anim.fade_in, R.anim.map_out );
-        startActivity( tmpIntent );
+        startStationActivity();
       }});
   }
 

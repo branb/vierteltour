@@ -126,6 +126,7 @@ public class StationActivity extends Activity{
 
   public void checkGPS()
   {System.out.println("Checking GPS...");
+    System.out.println(slug + "   " + number);
     System.out.println(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false));
 
     if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false))

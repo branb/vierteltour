@@ -95,7 +95,6 @@ public class TourAdapter extends BaseAdapter{
    * @param tour Tour to be selected
    */
   public void select( Tour tour ){
-    singlepage.INSTANCE.selectedTour(tour);
     notifyDataSetChanged();
   }
 }
