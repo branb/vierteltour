@@ -441,20 +441,16 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     locationListener = new LocationListener(){
       @Override
       public void onLocationChanged( Location location ){
-        drawRoutes();
+
 
         // define new Location
         MyLocation = location;
         pos = new LatLng( location.getLatitude(), location.getLongitude() );
-        // Draw new position of marker
-        int id = getResources().getIdentifier( "current3", "drawable", getPackageName() );
-        Bitmap icon = BitmapFactory.decodeResource( getResources(), id );
-        CurrentMarker = new MarkerOptions().position( pos )
-                                           .icon( BitmapDescriptorFactory.fromBitmap( icon ) );
-                                         //  .anchor( 0.5f, 0.5f );
-        mMap.addMarker( CurrentMarker );
 
-        positionInCircle(pos);
+        if(tourlist!=null)
+        {positionInCircle(pos);}
+
+        drawRoutes();
 
       }
 
@@ -505,6 +501,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    */
   private void drawRoutes(){
   if(mMap!=null)  mMap.clear();
+
+    if(pos!=null)
+    {MarkerOptions marker = new MarkerOptions();
+      marker.position(pos);
+      marker.icon(BitmapDescriptorFactory.fromBitmap( BitmapFactory.decodeResource( getResources(), getResources().getIdentifier( "current3", "drawable", getPackageName() ) )));
+      mMap.addMarker(marker);}
 
     for( Map.Entry<String, PolylineOptions> polyline : polylines.entrySet() ){
       mMap.addPolyline( polyline.getValue() );
@@ -673,9 +675,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         if( MyLocation != null ){ // GPS-Signal ist da
           Toast.makeText( getApplicationContext(), "Signal da!", Toast.LENGTH_SHORT )
                .show();
-          mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, CurrentZoom ) );
+          mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );
         } else { // GPS-Signal nicht da
-          Toast.makeText( getApplicationContext(), "Kein Signal", Toast.LENGTH_SHORT )
+          Toast.makeText( getApplicationContext(), "Bitte starten Sie die GPS Funktion und warten einen Moment.", Toast.LENGTH_SHORT )
                .show();
         }
       }
