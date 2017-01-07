@@ -231,7 +231,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if( !checkedForUpdates ){
       Updater.get( getBaseContext() ).updateListener( this );
       Updater.get( getBaseContext() ).updatesOnTourdata();
-    }}
+    }
+    else if( !Updater.get( getBaseContext() ).checkingForUpdates() ) {
+      loadTourdata();
+    }
+
+  }
 
 
   /**
@@ -983,7 +988,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   @Override
   public void onRestart(){
     super.onRestart();
-    checkForUpdates();
     locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locationListener );
   }
 
@@ -995,7 +999,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   /**
    * Will create polylines for all the tours in the visibleCity
    */
-  // TODO: Remove the old polylines before you add new ones!
   private void makePolylines(){
     for( Tour tour : tourlist.city(visibleCity).tours() ){
       PolylineOptions polyline = new PolylineOptions();
@@ -1017,7 +1020,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * Will create the markers on the map
    * @param tour Tour object to create the markers from
    */
-  // TODO: Rmove the old markers before adding new ones
   private void makeMarkers( Tour tour ){
     for( Station station : tour.stations() ){
       MarkerOptions marker = new MarkerOptions();
