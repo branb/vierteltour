@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
 
@@ -23,6 +24,7 @@ import java.util.List;
 public class TourAdapter extends BaseAdapter{
 
   private Context context;
+  private View view;
 
   private Singletonint singlepage;
   private List<Tour> tours;
@@ -57,6 +59,7 @@ public class TourAdapter extends BaseAdapter{
       convertView = mInflater.inflate( R.layout.touren_list_single, null );
     }
 
+    view = convertView;
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
     TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
