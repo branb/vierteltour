@@ -57,7 +57,6 @@ public class TourAdapter extends BaseAdapter{
       convertView = mInflater.inflate( R.layout.touren_list_single, null );
     }
 
-    System.out.println("START" + position);
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
     TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );

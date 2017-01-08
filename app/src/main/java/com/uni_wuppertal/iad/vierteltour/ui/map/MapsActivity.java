@@ -116,6 +116,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Button gpsbtn;
   private ImageView up, down;
   private ListView lv;
+  private View listelement;
   private TextView title, tourenliste, subtext1, subtext2;
   private RelativeLayout panel, gpsinfo;
   public static RelativeLayout audiobar;
@@ -627,17 +628,29 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void initSupl(){
 
 
-    lv.setOnItemClickListener( new AdapterView.OnItemClickListener(){
+    lv.setOnItemClickListener( new AdapterView.OnItemClickListener() {
       @Override
-      public void onItemClick( AdapterView<?> parent, View view, int position, long id ){
-        System.out.println( tourlist.city( visibleCity ).tours().get( position)  + "     " +singlepage.INSTANCE.selectedTour());
-        if( tourlist.city( visibleCity ).tours().get( position ).equals(singlepage.INSTANCE.selectedTour()))
-        {System.out.println( tourlist.city( visibleCity ).tours().get( position)  + "     " +singlepage.INSTANCE.selectedTour());
-          resetTour();}
-        else{selectTour( tourlist.city( visibleCity ).tours().get( position ) );}
-        adapter.notifyDataSetChanged();
-        drawRoutes();
-      }
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+       if(!tourlist.city(visibleCity).tours().get(position).equals(singlepage.INSTANCE.selectedTour()))
+       { if(listelement!=null)listelement.setClickable(false);
+         selectTour(tourlist.city(visibleCity).tours().get(position));}
+
+       listelement = view.findViewById(R.id.listelement);
+        listelement.setClickable(true);
+        listelement.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            resetTour();
+            adapter.notifyDataSetChanged();
+            listelement.setClickable(false);
+          }
+        });
+
+
+      adapter.notifyDataSetChanged();
+
+      drawRoutes();
+    }
     });
 
     adapter = new TourAdapter( this, tourlist.city( visibleCity ).tours());
@@ -662,6 +675,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     zumstart.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
+        //listelement.setClickable(false);
         swapToViewPager( v );
       }
     });
