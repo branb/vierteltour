@@ -24,10 +24,10 @@ public class TourAdapter extends BaseAdapter{
 
   private Context context;
 
-  private List<Tour> tours;
   private Singletonint singlepage;
+  private List<Tour> tours;
 
-  public TourAdapter( Context context, List<Tour> tours ){
+  public TourAdapter( Context context , List<Tour> tours){
     this.context = context;
     this.tours = tours;
   }
@@ -57,6 +57,7 @@ public class TourAdapter extends BaseAdapter{
       convertView = mInflater.inflate( R.layout.touren_list_single, null );
     }
 
+    System.out.println("START" + position);
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
     TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
@@ -76,26 +77,18 @@ public class TourAdapter extends BaseAdapter{
     txtTimeLength.setText( tour.time() + "/" + tour.length() );
     txtDescription.setText( tour.description() );
 
-    if(singlepage.INSTANCE.selectedTour()!=null)
-    {if( tour.slug().equals( singlepage.INSTANCE.selectedTour().slug() ) ){
-      txtDescription.setVisibility( View.VISIBLE );
-      btnStart.setVisibility( View.VISIBLE );
-      divider.setVisibility( View.VISIBLE );
-    }} else {
+    if(singlepage.INSTANCE.selectedTour()==null || !tour.slug().equals(singlepage.INSTANCE.selectedTour().slug())) {
       txtDescription.setVisibility( View.GONE );
       btnStart.setVisibility( View.GONE );
       divider.setVisibility( View.GONE );
     }
+    else if( tour.slug().equals( singlepage.INSTANCE.selectedTour().slug() ) ){
+      txtDescription.setVisibility( View.VISIBLE );
+      btnStart.setVisibility( View.VISIBLE );
+      divider.setVisibility( View.VISIBLE );
+    }
+
 
     return convertView;
-  }
-
-  /**
-   * Select a tour
-   *
-   * @param tour Tour to be selected
-   */
-  public void select( Tour tour ){
-    notifyDataSetChanged();
   }
 }

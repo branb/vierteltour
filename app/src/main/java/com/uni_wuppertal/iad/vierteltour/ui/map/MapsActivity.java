@@ -23,6 +23,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Visibility;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -280,7 +281,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             if( PolyUtil.isLocationOnPath( clickCoords, tour.route().latLngs(), true, 20 ) && !tourSelected ){
               tourSelected = true;
               selectTour( tour );
-              showInfo( true );
+              suplInfo( "showall" );
             }
           }
           if( !tourSelected ){
@@ -393,7 +394,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     overridePendingTransition( R.anim.fade_in, R.anim.map_out );}
 
   private void vanishTours( Tour tour ){
-    adapter.select( tour );
+    adapter.notifyDataSetChanged();
 
     //Set Numbers on selected Tour
     for(Station station : tour.stations())
@@ -437,7 +438,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    */
   public void selectTour( Tour tour ){
     singlepage.INSTANCE.selectedTour(tour);
-    adapter.select( tour );
+    //adapter.notifyDataSetChanged();
     unfadeTour( tour );
 
     for(Station station : tour.stations())
@@ -458,7 +459,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     for( Tour tour : tourlist.city( visibleCity ).tours() ){
       unfadeTour( tour );
     }
-    hideInfo( false );
+    suplInfo( "invisible" );
     drawRoutes();
   }
 
@@ -629,7 +630,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     lv.setOnItemClickListener( new AdapterView.OnItemClickListener(){
       @Override
       public void onItemClick( AdapterView<?> parent, View view, int position, long id ){
-        selectTour( tourlist.city( visibleCity ).tours().get( position ) );
+        System.out.println( tourlist.city( visibleCity ).tours().get( position)  + "     " +singlepage.INSTANCE.selectedTour());
+        if( tourlist.city( visibleCity ).tours().get( position ).equals(singlepage.INSTANCE.selectedTour()))
+        {System.out.println( tourlist.city( visibleCity ).tours().get( position)  + "     " +singlepage.INSTANCE.selectedTour());
+          resetTour();}
+        else{selectTour( tourlist.city( visibleCity ).tours().get( position ) );}
+        adapter.notifyDataSetChanged();
         drawRoutes();
       }
     });
@@ -898,29 +904,30 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onPanelSlide( View view, float v ){
         if( singlepage.INSTANCE.selectedTour()!= null ){
-          showInfo( true );
+          suplInfo( "showall" );
         } else {
-          hideInfo( false );
+          suplInfo( "invisible" );
         }
         panel.setVisibility( View.VISIBLE );
+        adapter.notifyDataSetChanged();
       }
 
       @Override
       public void onPanelCollapsed( View view ){
         //ändere Pfeilrichtung nach oben
         if( singlepage.INSTANCE.selectedTour()!=null){
-          showInfo( true );
+          suplInfo( "showall" );
         } else {
-          showInfo( false );
+          suplInfo( "show" );
         }
-        adapter.notifyDataSetChanged();
+     //   adapter.notifyDataSetChanged();
       }
 
       @Override
       public void onPanelExpanded( View view ){//Ändere Pfeilimage nach unten
-        hideInfo( true );
+        suplInfo( "gone" );
         panel.setVisibility( View.GONE );
-        adapter.notifyDataSetChanged();
+      //  adapter.notifyDataSetChanged();
       }
 
       @Override
@@ -933,59 +940,45 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     };
   }
 
-  //zeigt, wenn gewünscht, alle Informationen auf dem Panel an
-  // TODO: Turn this and hideinfo into a toggle method, and rename those silly names here as well...
-  private void showInfo( boolean all ){
+  //zeigt/versteckt, wenn gewünscht, alle Informationen auf dem Panel an
+  private void suplInfo(String info){
 
-
-
-    up.setVisibility( View.VISIBLE );
+    if(info.contains("show"))
+    {up.setVisibility( View.VISIBLE );
     down.setVisibility( View.GONE );
     tourenliste.setVisibility( View.VISIBLE );
 
-    if( all ){
-
+    if(info=="showall"){
 
       x_supl.setVisibility( View.VISIBLE );
       zumstart.setVisibility( View.VISIBLE );
       subtext1.setVisibility( View.VISIBLE );
       subtext2.setVisibility( View.VISIBLE );
-      if( !singlepage.INSTANCE.selectedTour().slug().isEmpty() ){
-        tourenliste.setText( singlepage.INSTANCE.selectedTour().name() );
-        subtext1.setText( singlepage.INSTANCE.selectedTour().author() );
-        subtext2.setText( singlepage.INSTANCE.selectedTour().time() + "/" + singlepage.INSTANCE.selectedTour().length() );
+      tourenliste.setText( singlepage.INSTANCE.selectedTour().name() );
+      subtext1.setText( singlepage.INSTANCE.selectedTour().author() );
+      subtext2.setText( singlepage.INSTANCE.selectedTour().time() + "/" + singlepage.INSTANCE.selectedTour().length() );
       } else {
         tourenliste.setText( "Tourenliste" );
       }
     }
+   if(info=="invisible")
+     {x_supl.setVisibility( View.INVISIBLE );
+        zumstart.setVisibility( View.INVISIBLE );
+        subtext1.setVisibility( View.INVISIBLE );
+        subtext2.setVisibility( View.INVISIBLE );
+        tourenliste.setVisibility( View.VISIBLE );
+        tourenliste.setText( "Tourenliste" );}
 
-
-  }
-
-  //versteckt, wenn gewünscht, alle Informationen auf dem Panel
-  private void hideInfo( boolean all ){
-
-    if( !all ){
-
-
-      x_supl.setVisibility( View.INVISIBLE );
-      zumstart.setVisibility( View.INVISIBLE );
-      subtext1.setVisibility( View.INVISIBLE );
-      subtext2.setVisibility( View.INVISIBLE );
-      tourenliste.setVisibility( View.VISIBLE );
-      tourenliste.setText( "Tourenliste" );
-    } else {
-
-      tourenliste.setVisibility( View.GONE );
+    if(info=="gone")
+    {tourenliste.setVisibility( View.GONE );
       x_supl.setVisibility( View.GONE );
       zumstart.setVisibility( View.GONE );
       subtext1.setVisibility( View.GONE );
       subtext2.setVisibility( View.GONE );
       up.setVisibility( View.GONE );
-      down.setVisibility( View.VISIBLE );
-    }
-  }
+      down.setVisibility( View.VISIBLE );}
 
+  }
 
   @Override
   public void onBackPressed(){
