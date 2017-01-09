@@ -634,7 +634,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-      System.out.println("CLICK");
     if(!tourlist.city(visibleCity).tours().get(position).equals(singlepage.INSTANCE.selectedTour()))
        { singlepage.INSTANCE.selectedTour(tourlist.city(visibleCity).tours().get(position));
          selectTour(tourlist.city(visibleCity).tours().get(position));}
@@ -649,6 +648,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   }
 
+  public ListView lv()
+  {return lv;}
 
   public void initPager(){
     //Initialisiere Pager

@@ -89,6 +89,7 @@ public class TourAdapter extends BaseAdapter{
       txtDescription.setVisibility(View.VISIBLE);
       btnStart.setVisibility(View.VISIBLE);
       divider.setVisibility(View.VISIBLE);
+      mapsActivity.lv().smoothScrollToPosition(position);
       convertView.setClickable(true);
       convertView.setOnClickListener(new View.OnClickListener() {
         @Override
