@@ -51,6 +51,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tagmanager.Container;
 import com.google.maps.android.PolyUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -81,7 +82,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public LatLng pos;
   public LocationManager locationManager;
   public LocationListener locationListener;
-  public MarkerOptions CurrentMarker;
   public int CurrentZoom = 15;
   int[] drawerIcons = new int[]{ R.drawable.einstellungen,
                                  R.drawable.hilfe,
@@ -110,6 +110,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private StationAdapter stationAdapter;
   private DrawerAdapter draweradapter;
   private TourAdapter adapter;
+  private List<View> tourlistview;
   private List<DrawerItem> drawerItems;
   private LatLng wuppertal;
   private ImageButton xbtn, zumstart, homebtn, leftbtn, x_supl, arrowbtn, tarbtn;
@@ -213,6 +214,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     down = (ImageView) findViewById( R.id.down );
 
     gpsinfo = (RelativeLayout) findViewById( R.id.gpsinfo );
+
   }
 
   // Show intro, but only if it's the first start of the app
@@ -277,14 +279,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onMapClick( LatLng clickCoords ){
         if( mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED ){
           boolean tourSelected = false;
-          int i=-1;
+
           for( Tour tour : tourlist.city(visibleCity).tours() ){
-            i++;
+
             if( PolyUtil.isLocationOnPath( clickCoords, tour.route().latLngs(), true, 20 ) && !tourSelected ){
               tourSelected = true;
-              //selectTour( tour );
+              selectTour( tour );
               suplInfo( "showall" );
-              lv.performItemClick(lv.getAdapter().getView(i, null, null), i, lv.getAdapter().getItemId(i));
+
             }
           }
           if( !tourSelected ){
@@ -629,36 +631,22 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   //Erstelle den Slider
   public void initSupl(){
 
-
-    lv.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-      System.out.println("rtest");
-       if(!tourlist.city(visibleCity).tours().get(position).equals(singlepage.INSTANCE.selectedTour()))
+      public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+      System.out.println("CLICK");
+    if(!tourlist.city(visibleCity).tours().get(position).equals(singlepage.INSTANCE.selectedTour()))
        { singlepage.INSTANCE.selectedTour(tourlist.city(visibleCity).tours().get(position));
-         if(listelement!=null)listelement.setClickable(false);
          selectTour(tourlist.city(visibleCity).tours().get(position));}
 
-       listelement = view.findViewById(R.id.listelement);
-        listelement.setClickable(true);
-        listelement.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            resetTour();
-            adapter.notifyDataSetChanged();
-            listelement.setClickable(false);
-          }
-        });
-
-
       adapter.notifyDataSetChanged();
-
       drawRoutes();
     }
     });
 
     adapter = new TourAdapter( this, tourlist.city( visibleCity ).tours());
     lv.setAdapter( adapter );
+
   }
 
 

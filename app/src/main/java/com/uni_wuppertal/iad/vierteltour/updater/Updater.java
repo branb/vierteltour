@@ -385,8 +385,8 @@ public class Updater extends ContextWrapper{
           // unzip
           unzipFile( request.getDestinationURI().toString() );
 
-          statusToast.setText( "Die Tourdaten wurden vollständig heruntergeladen." );
-          statusToast.show();
+          //statusToast.setText( "Die Tourdaten wurden vollständig heruntergeladen." );
+          //statusToast.show();
 
           // Save local tour data version
           SharedPreferences getPrefs = PreferenceManager
@@ -416,8 +416,8 @@ public class Updater extends ContextWrapper{
             if( updateProgress ){
               Log.d( DEBUG_TAG, progressMessage + downlaodedBytes + " / " + totalBytes + ") - Progress? => " + progress + " (" + updateProgress.toString() + ")" );
 
-              toastText = toastText + ".";
-              statusToast.setText( toastText );
+             // toastText = toastText + ".";
+             // statusToast.setText( toastText );
               updateProgress = false;
             }
           } else {

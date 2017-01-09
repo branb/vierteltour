@@ -35,6 +35,9 @@ public class Tour extends TourListData{
     if( details != null )
       return details;
 
+    if(home().contains("null/"))
+      return new TourDetails();
+
     Serializer serializer = new Persister();
 
     String xmlDataPath = home() + "/" + xmlFile;

@@ -23,15 +23,14 @@ import java.util.List;
  */
 public class TourAdapter extends BaseAdapter{
 
-  private Context context;
+  private MapsActivity mapsActivity;
   private View view;
-
   private Singletonint singlepage;
   private List<Tour> tours;
 
-  public TourAdapter( Context context , List<Tour> tours){
-    this.context = context;
+  public TourAdapter( MapsActivity m, List<Tour> tours){
     this.tours = tours;
+    mapsActivity = m;
   }
 
   @Override
@@ -55,11 +54,11 @@ public class TourAdapter extends BaseAdapter{
   @Override
   public View getView( final int position, View convertView, ViewGroup parent ){
     if( convertView == null ){
-      LayoutInflater mInflater = (LayoutInflater) context.getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
+      LayoutInflater mInflater = (LayoutInflater) mapsActivity.getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
       convertView = mInflater.inflate( R.layout.touren_list_single, null );
     }
 
-    view = convertView;
+
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
     TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
@@ -78,19 +77,29 @@ public class TourAdapter extends BaseAdapter{
     txtAuthor.setText( tour.author() );
     txtTimeLength.setText( tour.time() + "/" + tour.length() );
     txtDescription.setText( tour.description() );
+    convertView.setClickable(false);
 
     if(singlepage.INSTANCE.selectedTour()==null || !tour.slug().equals(singlepage.INSTANCE.selectedTour().slug())) {
       txtDescription.setVisibility( View.GONE );
       btnStart.setVisibility( View.GONE );
       divider.setVisibility( View.GONE );
-    }
-    else if( tour.slug().equals( singlepage.INSTANCE.selectedTour().slug() ) ){
-      txtDescription.setVisibility( View.VISIBLE );
-      btnStart.setVisibility( View.VISIBLE );
-      divider.setVisibility( View.VISIBLE );
-    }
 
-
+    }
+    else if( tour.slug().equals( singlepage.INSTANCE.selectedTour().slug() ) ) {
+      txtDescription.setVisibility(View.VISIBLE);
+      btnStart.setVisibility(View.VISIBLE);
+      divider.setVisibility(View.VISIBLE);
+      convertView.setClickable(true);
+      convertView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          mapsActivity.resetTour();
+          notifyDataSetChanged();
+          view.setClickable(false);
+        }
+      });
+    }
+    view = convertView;
     return convertView;
   }
 }
