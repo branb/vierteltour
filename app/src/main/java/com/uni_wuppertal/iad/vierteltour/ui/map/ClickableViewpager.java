@@ -49,6 +49,7 @@ public class ClickableViewpager extends ViewPager {
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
       if(mOnItemClickListener != null) {
+
         mOnItemClickListener.onItemClick(getCurrentItem()+1);
       }
       return true;

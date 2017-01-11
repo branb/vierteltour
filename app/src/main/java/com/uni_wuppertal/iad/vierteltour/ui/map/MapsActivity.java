@@ -181,10 +181,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mPager.setOnItemClickListener(new ClickableViewpager.OnItemClickListener() {
       @Override
       public void onItemClick(int position) {
-
-        selectStation(singlepage.INSTANCE.selectedTour().station(position));
-
-        startStationActivity();
+        if(singlepage.INSTANCE.onfragmentclicked() && singlepage.INSTANCE.selectedStation()==singlepage.INSTANCE.selectedOldStation())
+        {selectStation(singlepage.INSTANCE.selectedStation());
+        startStationActivity();}
+        else if(singlepage.INSTANCE.onfragmentclicked())
+        {mPager.setCurrentItem(singlepage.INSTANCE.selectedStation().number()-1);
+          selectStation(singlepage.INSTANCE.selectedStation());}
+        singlepage.INSTANCE.onfragmentclicked(false);
       }
     });
 
@@ -333,7 +336,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void selectStation(Station station)
   {                //löscht alte Station
     if(singlepage.INSTANCE.selectedStation()!=null)
-    {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));}
+    {for(int i=0; i<singlepage.INSTANCE.selectedTour().stations().size();i++){markers.get(singlepage.INSTANCE.selectedTour().station(i+1).slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (i+1))));
+    System.out.println(i);}}
 
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
 
@@ -468,7 +472,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     drawRoutes();
   }
 
-  // Convert a view to bitmap
+  // Convert a view to bitmap for Pins with Numbers
   public static Bitmap createDrawableFromView(Context context, View view) {
     DisplayMetrics displayMetrics = new DisplayMetrics();
     ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
