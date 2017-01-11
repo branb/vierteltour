@@ -111,6 +111,19 @@
                 android:textStyle="bold"
                 />
 
+              <com.ogaclejapan.smarttablayout.SmartTabLayout
+                android:id="@+id/viewpagertab"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_alignParentBottom="true"
+                app:stl_indicatorAlwaysInCenter="true"
+                app:stl_indicatorWithoutPadding="false"
+                app:stl_indicatorInFront="false"
+                app:stl_indicatorInterpolation="smart"
+                app:stl_clickable="true"
+                app:stl_titleOffset="24dp"
+                app:stl_drawDecorationAfterTab="false"
+                />
 
 
                 <com.uni_wuppertal.iad.vierteltour.ui.map.ClickableViewpager

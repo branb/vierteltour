@@ -53,6 +53,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tagmanager.Container;
 import com.google.maps.android.PolyUtil;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import com.uni_wuppertal.iad.vierteltour.ui.intro.IntroActivity;
@@ -107,6 +108,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private SlidingUpPanelLayout mLayout;
   private RelativeLayout mDrawer;
   private ClickableViewpager mPager;
+  private SmartTabLayout viewPagerTab;
   private StationAdapter stationAdapter;
   private DrawerAdapter draweradapter;
   private TourAdapter adapter;
@@ -177,6 +179,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mPager = (ClickableViewpager) findViewById(R.id.pager);
     stationAdapter = new StationAdapter(getSupportFragmentManager(), this);
     mPager.setAdapter(stationAdapter);
+    SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
+    viewPagerTab.setViewPager(mPager);
     mPager.setOnItemClickListener(new ClickableViewpager.OnItemClickListener() {
       @Override
       public void onItemClick(int position) {
