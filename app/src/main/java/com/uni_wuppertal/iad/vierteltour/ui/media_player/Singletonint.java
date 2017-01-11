@@ -36,7 +36,8 @@ public enum Singletonint {
     public Tour selectedTour() {return selectedTour;}
     public void selectedTour(Tour selectedTour) {this.selectedTour = selectedTour;}
 
-    public Station selectedStation() {return selectedStation;}
+    public Station selectedStation() {if(selectedStation!=null)return selectedStation;
+                                      else return null;}
     public void selectedStation(Station selectedStation) {this.selectedStation = selectedStation;}
 
     public Station selectedOldStation() {return selectedOldStation;}

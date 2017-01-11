@@ -29,7 +29,10 @@ public class TourListData{
    * @return String The sanitized name of the data node
    */
   public String slug(){
+    if(slug!=null)
     return slug;
+    else
+      return null;
   }
 
 

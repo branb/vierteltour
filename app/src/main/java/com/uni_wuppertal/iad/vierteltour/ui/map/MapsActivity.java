@@ -576,10 +576,18 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * (Re-)Draw the station markers of the currently visible tours
    */
   private void drawStations(){
+    MarkerOptions tmpmarker = null;
     for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
-     if(marker.getValue().getPosition()!=null)
+      if(singlepage.INSTANCE.selectedStation()!=null)
+      {if(marker.getValue().getPosition()!=null && marker.getKey()!=singlepage.INSTANCE.selectedStation().slug())
      {mMap.addMarker( marker.getValue() );}
-    }
+      else if(marker.getValue().getPosition()!=null && marker.getKey()==singlepage.INSTANCE.selectedStation().slug())
+     {tmpmarker = marker.getValue();}}
+    else if(marker.getValue().getPosition()!=null)
+    {mMap.addMarker( marker.getValue() );}}
+    if(tmpmarker!=null)
+    mMap.addMarker(tmpmarker);
+
     if(circle.getCenter()!=null && mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
     {mMap.addCircle(circle);}
   }
