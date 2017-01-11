@@ -177,7 +177,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mPager = (ClickableViewpager) findViewById(R.id.pager);
     stationAdapter = new StationAdapter(getSupportFragmentManager(), this);
     mPager.setAdapter(stationAdapter);
-
     mPager.setOnItemClickListener(new ClickableViewpager.OnItemClickListener() {
       @Override
       public void onItemClick(int position) {
@@ -336,8 +335,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void selectStation(Station station)
   {                //löscht alte Station
     if(singlepage.INSTANCE.selectedStation()!=null)
-    {for(int i=0; i<singlepage.INSTANCE.selectedTour().stations().size();i++){markers.get(singlepage.INSTANCE.selectedTour().station(i+1).slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (i+1))));
-    System.out.println(i);}}
+    {for(int i=0; i<singlepage.INSTANCE.selectedTour().stations().size();i++){markers.get(singlepage.INSTANCE.selectedTour().station(i+1).slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (i+1))));}}
 
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
 
@@ -664,6 +662,22 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
         startStationActivity();
       }});
+
+    mPager.setOnPageChangeListener(new ClickableViewpager.OnPageChangeListener() {
+
+      public void onPageSelected(int index) {selectStation(singlepage.INSTANCE.selectedTour().station(index+1));
+      singlepage.INSTANCE.onfragmentclicked(false);
+      }
+
+      public void onPageScrolled(int arg0, float arg1, int arg2) {
+      }
+
+      public void onPageScrollStateChanged(int arg0) {
+
+
+      }
+    });
+
   }
 
 

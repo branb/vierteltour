@@ -76,7 +76,7 @@ public class Station extends TourListData{
    * @return LatLng
    */
   public LatLng latlng(){
-    if(coordinates.isEmpty() || coordinates==null)
+    if(coordinates==null || coordinates.isEmpty())
     {return null;}
     StringTokenizer tok = new StringTokenizer( coordinates, "," );
 

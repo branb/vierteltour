@@ -1,11 +1,15 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 import android.content.Context;
+
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
+
+import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
 
 /**
  * Created by Kevin-Laptop on 07.01.2017.
@@ -34,6 +38,9 @@ public class ClickableViewpager extends ViewPager {
         return false;
       }
     });
+
+    setClipToPadding(false);
+    setOffscreenPageLimit(3);
   }
 
   public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -43,6 +50,32 @@ public class ClickableViewpager extends ViewPager {
   public interface OnItemClickListener {
     void onItemClick(int position);
   }
+
+ /* @Override
+  private void scrollToItem(int item, boolean smoothScroll, int velocity,
+                            boolean dispatchSelected) {
+    final ItemInfo curInfo = infoForPosition(item);
+    int destX = 0;
+    if (curInfo != null) {
+      final int width = getClientWidth();
+      destX = (int) (width * Math.max(mFirstOffset,
+        Math.min(curInfo.offset, mLastOffset)));
+    }
+    if (smoothScroll) {
+      smoothScrollTo(destX, 0, velocity);
+      if (dispatchSelected) {
+        dispatchOnPageSelected(item);
+      }
+    } else {
+      if (dispatchSelected) {
+        dispatchOnPageSelected(item);
+      }
+      completeScroll(false);
+      scrollTo(destX, 0);
+      pageScrolled(destX);
+    }
+  }*/
+
 
   private class TapGestureListener extends GestureDetector.SimpleOnGestureListener {
 
@@ -55,5 +88,4 @@ public class ClickableViewpager extends ViewPager {
       return true;
     }
   }
-
 }
