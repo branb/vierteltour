@@ -148,7 +148,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   // Holds the configuration of the current markers drawn on the map
   private Map<String, MarkerOptions> markers = new HashMap<String, MarkerOptions>();
 
- // private Map<String, CircleOptions> circles = new HashMap<String, CircleOptions>();
   private CircleOptions circle = new CircleOptions();
 
   @Override
@@ -325,6 +324,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       }
     };
     mMap.setOnMapClickListener( listener );
+    mMap.setInfoWindowAdapter(new MapWindowAdapter(this));
 
     mMap.setOnMarkerClickListener( new GoogleMap.OnMarkerClickListener(){
       @Override
@@ -333,7 +333,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         return true;    // false: OnMarkerClick aktiv und zoomt zum Marker
       }
     } );
-
   }
 
   public void selectStation(Station station)
@@ -342,7 +341,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     {for(int i=0; i<singlepage.INSTANCE.selectedTour().stations().size();i++){markers.get(singlepage.INSTANCE.selectedTour().station(i+1).slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (i+1))));}}
 
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
-
+   // markers.get(station.slug());
     circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0,1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1,singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8);
     markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()))));
     drawRoutes();
@@ -576,17 +575,16 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * (Re-)Draw the station markers of the currently visible tours
    */
   private void drawStations(){
-    MarkerOptions tmpmarker = null;
+    Marker tmpmarker = null;
     for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
       if(singlepage.INSTANCE.selectedStation()!=null)
       {if(marker.getValue().getPosition()!=null && marker.getKey()!=singlepage.INSTANCE.selectedStation().slug())
      {mMap.addMarker( marker.getValue() );}
       else if(marker.getValue().getPosition()!=null && marker.getKey()==singlepage.INSTANCE.selectedStation().slug())
-     {tmpmarker = marker.getValue();}}
+     {tmpmarker = mMap.addMarker(marker.getValue());
+     tmpmarker.showInfoWindow();}}
     else if(marker.getValue().getPosition()!=null)
     {mMap.addMarker( marker.getValue() );}}
-    if(tmpmarker!=null)
-    mMap.addMarker(tmpmarker);
 
     if(circle.getCenter()!=null && mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
     {mMap.addCircle(circle);}
@@ -1081,12 +1079,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private void makeMarkers( Tour tour ){
     for( Station station : tour.stations() ){
       MarkerOptions marker = new MarkerOptions();
-     // CircleOptions circle = new CircleOptions().center( station.latlng()).radius(15).fillColor(Color.parseColor(tour.color())).strokeColor(Color.parseColor(tour.color())).strokeWidth(8).visible(false);
 
       marker.position( station.latlng() );
       marker.icon( BitmapDescriptorFactory.fromBitmap( markertext(tour,"") ) );
 
-    //  circles.put(station.slug(), circle);
       markers.put( station.slug(), marker );
     }
 
