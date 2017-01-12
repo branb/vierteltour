@@ -3,20 +3,23 @@ package com.uni_wuppertal.iad.vierteltour.ui.map.station_pager;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.uni_wuppertal.iad.vierteltour.ui.map.Station;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StationAdapter extends FragmentPagerAdapter{
-  public List<StationFragment> fragments = new ArrayList<>();
-  private LayoutInflater mInflater;
+public class StationAdapter extends FragmentStatePagerAdapter {
+  public List<StationFragment> fragments;
 
-  public StationAdapter( FragmentManager fm, Context context ){
+  public StationAdapter( FragmentManager fm ){
     super( fm );
-    mInflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+    fragments = new ArrayList<>();
   }
 
   @Override
@@ -24,11 +27,11 @@ public class StationAdapter extends FragmentPagerAdapter{
     return fragments.size();
   }
 
-  public StationFragment addFragment( int position, Tour tour ){
-    StationFragment xfragment = StationFragment.create( position, tour );
-    fragments.add( position, xfragment );
-    notifyDataSetChanged();
-    return xfragment;
+  public View getFragmentViewAt(int position) {return fragments.get(position).getView();}
+
+  public void addFragment( Station station ){
+    StationFragment fragment = StationFragment.create(station);
+    fragments.add( fragment );
   }
 
   @Override
@@ -36,9 +39,16 @@ public class StationAdapter extends FragmentPagerAdapter{
     return fragments.get( position );
   }
 
-  @Override
+ /* @Override
   public float getPageWidth( int position ){
     return 0.4f;
+  }*/
+
+  @Override
+  public Object instantiateItem(ViewGroup container, int position) {
+    Object fragment = super.instantiateItem(container, position);
+    fragments.set(position, (StationFragment) fragment);
+    return fragment;
   }
 
   @Override

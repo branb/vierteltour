@@ -51,31 +51,6 @@ public class ClickableViewpager extends ViewPager {
     void onItemClick(int position);
   }
 
- /* @Override
-  private void scrollToItem(int item, boolean smoothScroll, int velocity,
-                            boolean dispatchSelected) {
-    final ItemInfo curInfo = infoForPosition(item);
-    int destX = 0;
-    if (curInfo != null) {
-      final int width = getClientWidth();
-      destX = (int) (width * Math.max(mFirstOffset,
-        Math.min(curInfo.offset, mLastOffset)));
-    }
-    if (smoothScroll) {
-      smoothScrollTo(destX, 0, velocity);
-      if (dispatchSelected) {
-        dispatchOnPageSelected(item);
-      }
-    } else {
-      if (dispatchSelected) {
-        dispatchOnPageSelected(item);
-      }
-      completeScroll(false);
-      scrollTo(destX, 0);
-      pageScrolled(destX);
-    }
-  }*/
-
 
   private class TapGestureListener extends GestureDetector.SimpleOnGestureListener {
 

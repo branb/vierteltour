@@ -28,37 +28,29 @@ public class StationFragment extends Fragment{
   private Singletonint singlepage;
   private int position;
 
-  public static StationFragment create( int pageNumber, Tour tour ){
+  public static StationFragment create( Station station ){
     StationFragment fragment = new StationFragment();
     arguments = new Bundle();
-    arguments.putInt( ARG_PAGE_NUMBER, pageNumber );
+    arguments.putInt( ARG_PAGE_NUMBER, station.number() );
     fragment.setArguments( arguments );
 
-    Station station = tour.station( pageNumber + 1);
     ztitle.add( station.name() );
 
     return fragment;
   }
 
   @Override
-  public void onCreate( Bundle savedInstanceState ){
-    super.onCreate( savedInstanceState );
-  }
-
-  @Override
-  public View onCreateView( LayoutInflater inflater,
-                            @Nullable
-                            ViewGroup container,
-                            @Nullable
-                            Bundle savedInstanceState ){
+  public View onCreateView( LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState ){
     View rootView = inflater.inflate( R.layout.fragment_page, container, false );
     RelativeLayout btItem = (RelativeLayout) rootView.findViewById( R.id.clicklayout );
+
 
     title = (TextView) rootView.findViewById( R.id.titlefrag );
 
     if( arguments != null ){
       position = getArguments().getInt( ARG_PAGE_NUMBER );
-      title.setText( ztitle.get( position ) );
+      System.out.println(position);
+      title.setText( ztitle.get( position-1 ) );
 
       btItem.setOnTouchListener(new View.OnTouchListener() {
         @Override
@@ -78,6 +70,5 @@ public class StationFragment extends Fragment{
   public void deleteStrings(){
     ztitle.clear();
   }
-
 
 }

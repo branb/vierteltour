@@ -53,7 +53,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tagmanager.Container;
 import com.google.maps.android.PolyUtil;
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import com.uni_wuppertal.iad.vierteltour.ui.intro.IntroActivity;
@@ -108,7 +107,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private SlidingUpPanelLayout mLayout;
   private RelativeLayout mDrawer;
   private ClickableViewpager mPager;
-  private SmartTabLayout viewPagerTab;
   private StationAdapter stationAdapter;
   private DrawerAdapter draweradapter;
   private TourAdapter adapter;
@@ -120,6 +118,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private ImageView up, down;
   private ListView lv;
   private View listelement;
+  private ShadowTransformer mFragmentShadowTransformer;
   private TextView title, tourenliste, subtext1, subtext2;
   private RelativeLayout panel, gpsinfo;
   public static RelativeLayout audiobar;
@@ -170,16 +169,19 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     initActionBar();
     initDrawer();
 
+  /*  mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter);
+    mPager.setPageTransformer(false, mFragmentShadowTransformer);
+    mFragmentShadowTransformer.enableScaling(true);*/
   }
 
   public void initAll() {
     ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this); //initMap
 
     mPager = (ClickableViewpager) findViewById(R.id.pager);
-    stationAdapter = new StationAdapter(getSupportFragmentManager(), this);
+    stationAdapter = new StationAdapter(getSupportFragmentManager());
     mPager.setAdapter(stationAdapter);
-    SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
-    viewPagerTab.setViewPager(mPager);
+    mPager.setClipToPadding(false);
+    mPager.setOffscreenPageLimit(5);
     mPager.setOnItemClickListener(new ClickableViewpager.OnItemClickListener() {
       @Override
       public void onItemClick(int position) {
@@ -603,9 +605,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     // Create a page for every station
     for( Station station : singlepage.INSTANCE.selectedTour().stations() ){
-      stationAdapter.addFragment( station.number() - 1, singlepage.INSTANCE.selectedTour() );
+      stationAdapter.addFragment( station  );
     }
-
+    stationAdapter.notifyDataSetChanged();
     vanishTours(singlepage.INSTANCE.selectedTour());
     Typeface tf = Typeface.createFromAsset(getAssets(), "Bariol_Regular.ttf");
     title.setTypeface(tf);
