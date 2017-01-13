@@ -315,13 +315,16 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             }
 
       }
-        if(!onMapClicked)
+
+          //Unselect Station on Map Click
+      /*  if(!onMapClicked)
         {if(singlepage.INSTANCE.selectedStation()!=null)
         {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));
         singlepage.INSTANCE.selectedStation(null);
           circle.center(null);
         drawRoutes();}
-        }}
+        }*/
+        }
       }
     };
     mMap.setOnMapClickListener( listener );
@@ -343,7 +346,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
    // markers.get(station.slug());
-    circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0,1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1,singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8);
+    circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0,1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1,singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8).visible(true);
     markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()))));
     drawRoutes();
 
@@ -587,7 +590,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     else if(marker.getValue().getPosition()!=null)
     {mMap.addMarker( marker.getValue() );}}
 
-    if(circle.getCenter()!=null && mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
+    if(circle.getCenter()!=null)
     {mMap.addCircle(circle);}
   }
 
@@ -616,6 +619,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     title.setText( singlepage.INSTANCE.selectedTour().name() );
     title.setVisibility( View.VISIBLE );
     mPager.setVisibility( View.VISIBLE );
+    if(stationAdapter.getItem(0)!=null)
+    {selectStation(singlepage.INSTANCE.selectedTour().station(1));
+    mPager.setCurrentItem(0);}
    // mFragmentShadowTransformer.enableScaling(true);
   }
 
