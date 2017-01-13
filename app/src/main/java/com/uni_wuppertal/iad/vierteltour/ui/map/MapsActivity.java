@@ -565,7 +565,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     {MarkerOptions marker = new MarkerOptions();
       marker.position(pos);
       marker.icon(BitmapDescriptorFactory.fromBitmap( BitmapFactory.decodeResource( getResources(), getResources().getIdentifier( "current3", "drawable", getPackageName() ) )));
-      mMap.addMarker(marker);}
+      if(marker!=null)mMap.addMarker(marker);}
 
     for( Map.Entry<String, PolylineOptions> polyline : polylines.entrySet() ){
       mMap.addPolyline( polyline.getValue() );

@@ -9,13 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="20dp">
+        android:paddingRight="5dp">
+
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 <RelativeLayout
     android:id="@+id/clicklayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey"
+    android:layout_marginTop="20dp"
     >
         <ImageView
             android:layout_width="100dp"
@@ -43,6 +49,34 @@
             android:paddingLeft="20dp"
             android:visibility="invisible"/>
 </RelativeLayout>
+
+      <RelativeLayout
+        android:id="@+id/numberlayout"
+        android:layout_width="22dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pagefragmentnumber"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp">
+
+        <TextView
+          android:id="@+id/numbertext"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="@color/black"
+          android:layout_centerHorizontal="true"
+          android:layout_centerVertical="true"
+          android:gravity="center"
+          android:layout_marginTop="15dp"
+          android:paddingTop="5dp"
+          android:textStyle="bold"
+          />
+
+</RelativeLayout>
+
+</RelativeLayout>
+
 
     </FrameLayout>
 
