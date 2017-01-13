@@ -16,7 +16,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
 
     public ShadowTransformer(ClickableViewpager viewPager, StationAdapter adapter) {
         mViewPager = viewPager;
-        viewPager.addOnPageChangeListener(this);
+        //viewPager.addOnPageChangeListener(this);
         mAdapter = adapter;
     }
 
@@ -25,7 +25,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
             // shrink main card
             StationFragment currentFragment = mAdapter.getItem(mViewPager.getCurrentItem());
             if (currentFragment != null) {
-              //  currentFragment.animate().scaleY(1);
+            //    currentFragment.setPadding(mViewPager.getCurrentItem(),0,0,(int)(2*120 * mViewPager.getResources().getDisplayMetrics().density + 0.5f),0);
              // currentFragment.animate().scaleX(1);
             }
         }else if(!mScalingEnabled && enable){

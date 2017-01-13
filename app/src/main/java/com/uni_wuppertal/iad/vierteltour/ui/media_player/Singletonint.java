@@ -20,7 +20,9 @@ public enum Singletonint {
 
     Singletonint(){
       id=-1;
-      selectedTour=new Tour();
+      selectedTour=null;
+      selectedStation=null;
+      selectedOldStation=null;
     }
 
     public int getId(){

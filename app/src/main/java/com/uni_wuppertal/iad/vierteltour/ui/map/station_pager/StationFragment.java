@@ -24,6 +24,7 @@ public class StationFragment extends Fragment{
   private static final String ARG_PAGE_NUMBER = "pageNumber";
   private static Bundle arguments;
   private static ArrayList<String> ztitle = new ArrayList<>();
+  private static ArrayList<View> fragments = new ArrayList<>();
   private TextView title;
   private Singletonint singlepage;
   private int position;
@@ -49,7 +50,7 @@ public class StationFragment extends Fragment{
 
     if( arguments != null ){
       position = getArguments().getInt( ARG_PAGE_NUMBER );
-      System.out.println(position);
+
       title.setText( ztitle.get( position-1 ) );
 
       btItem.setOnTouchListener(new View.OnTouchListener() {
@@ -57,13 +58,15 @@ public class StationFragment extends Fragment{
         public boolean onTouch(View view, MotionEvent motionEvent) {
           singlepage.INSTANCE.onfragmentclicked(true);
           singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());
-          singlepage.INSTANCE.selectedStation(singlepage.INSTANCE.selectedTour().station(position+1));
+          singlepage.INSTANCE.selectedStation(singlepage.INSTANCE.selectedTour().station(position));
           return false;
         }
       } );
     } else {
       btItem.setVisibility( View.GONE );
     }
+  //  if(position==1){rootView.setPadding(0,0,120,0);}
+    fragments.add( rootView);
     return rootView;
   }
 
@@ -71,4 +74,5 @@ public class StationFragment extends Fragment{
     ztitle.clear();
   }
 
+ // public void setPadding(int position, int left, int top, int right, int bottom) {fragments.get(position).setPadding(left,top,right,bottom);}
 }

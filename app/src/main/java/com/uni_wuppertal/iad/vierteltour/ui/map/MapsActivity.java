@@ -169,9 +169,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     initActionBar();
     initDrawer();
 
-  /*  mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter);
+    mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
-    mFragmentShadowTransformer.enableScaling(true);*/
+
   }
 
   public void initAll() {
@@ -293,7 +293,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
               tourSelected = true;
               selectTour( tour );
               suplInfo( "showall" );
-
             }
           }
           if( !tourSelected ){
@@ -617,7 +616,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     title.setText( singlepage.INSTANCE.selectedTour().name() );
     title.setVisibility( View.VISIBLE );
     mPager.setVisibility( View.VISIBLE );
-
+   // mFragmentShadowTransformer.enableScaling(true);
   }
 
   //Stationenübersicht schließen und zurück zur Tourenauswahl
@@ -627,6 +626,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     title.setVisibility( View.GONE );
     mPager.setVisibility( View.GONE );
     player.reset();
+   // mFragmentShadowTransformer.enableScaling(false);
 
     if(singlepage.INSTANCE.selectedStation()!=null)
     {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));
@@ -679,6 +679,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
       public void onPageSelected(int index) {selectStation(singlepage.INSTANCE.selectedTour().station(index+1));
       singlepage.INSTANCE.onfragmentclicked(false);
+        /*if(index==0)mPager.setPadding(0,0,(int)(2*120 * getResources().getDisplayMetrics().density + 0.5f),0);
+        else if(index==singlepage.INSTANCE.selectedTour().stations().size()-1)mPager.setPadding((int)(2*120 * getResources().getDisplayMetrics().density + 0.5f),0,0,0);
+        else mPager.setPadding((int)(120 * getResources().getDisplayMetrics().density + 0.5f),0,(int)(120 * getResources().getDisplayMetrics().density + 0.5f),0);*/
       }
 
       public void onPageScrolled(int arg0, float arg1, int arg2) {
