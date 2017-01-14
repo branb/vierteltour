@@ -1,8 +1,13 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
+import android.animation.ArgbEvaluator;
+import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.StationAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.StationFragment;
 
@@ -11,98 +16,88 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
 
     private ClickableViewpager mViewPager;
     private StationAdapter mAdapter;
+    private Context context;
     private float mLastOffset;
-    private boolean mScalingEnabled;
 
-    public ShadowTransformer(ClickableViewpager viewPager, StationAdapter adapter) {
+
+
+    public ShadowTransformer(ClickableViewpager viewPager, StationAdapter adapter, Context context) {
         mViewPager = viewPager;
-        //viewPager.addOnPageChangeListener(this);
+        viewPager.addOnPageChangeListener(this);
         mAdapter = adapter;
+        this.context = context;
     }
 
-    public void enableScaling(boolean enable) {
-        if (mScalingEnabled && !enable) {
-            // shrink main card
-            StationFragment currentFragment = mAdapter.getItem(mViewPager.getCurrentItem());
-            if (currentFragment != null) {
-            //    currentFragment.setPadding(mViewPager.getCurrentItem(),0,0,(int)(2*120 * mViewPager.getResources().getDisplayMetrics().density + 0.5f),0);
-             // currentFragment.animate().scaleX(1);
-            }
-        }else if(!mScalingEnabled && enable){
-            // grow main card
-          StationFragment currentFragment = mAdapter.getItem(mViewPager.getCurrentItem());
-            if (currentFragment != null) {
-            //  currentFragment.animate().scaleY(1.1f);
-            //  currentFragment.animate().scaleX(1.1f);
-            }
-        }
+  @Override
+  public void transformPage(View page, float position) {
 
-        mScalingEnabled = enable;
+  }
+
+  @Override
+  public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    int realCurrentPosition;
+    int nextPosition;
+    float realOffset;
+    boolean goingLeft = mLastOffset > positionOffset;
+    ArgbEvaluator color = new ArgbEvaluator();
+
+    // If we're going backwards, onPageScrolled receives the last position
+    // instead of the current one
+    if (goingLeft) {
+      realCurrentPosition = position + 1;
+      nextPosition = position;
+      realOffset = 1 - positionOffset;
+      System.out.println("nextPosition: "+nextPosition);
+      System.out.println("CurPosition: "+realCurrentPosition);
+      System.out.println("Offset: "+realOffset);
+    } else {
+      nextPosition = position+1 ;
+      realCurrentPosition = position;
+      realOffset = positionOffset;
+
+      System.out.println("nextPosition: "+nextPosition);
+      System.out.println("CurPosition: "+realCurrentPosition);
+      System.out.println("Offset: "+realOffset);
     }
 
-    @Override
-    public void transformPage(View page, float position) {
-
+    // Avoid crash on overscroll
+    if (nextPosition > mAdapter.getCount() - 1
+      || realCurrentPosition > mAdapter.getCount() - 1/* || lastPosition<0 || lastPosition < mAdapter.getCount() -1*/) {
+      return;
     }
 
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        int realCurrentPosition;
-        int nextPosition;
-      //  float baseElevation = mAdapter.getBaseElevation();
-        float realOffset;
-        boolean goingLeft = mLastOffset > positionOffset;
+    StationFragment currentFragment = mAdapter.getItem(realCurrentPosition);
 
-        // If we're going backwards, onPageScrolled receives the last position
-        // instead of the current one
-        if (goingLeft) {
-            realCurrentPosition = position + 1;
-            nextPosition = position;
-            realOffset = 1 - positionOffset;
-        } else {
-            nextPosition = position + 1;
-            realCurrentPosition = position;
-            realOffset = positionOffset;
-        }
-
-        // Avoid crash on overscroll
-        if (nextPosition > mAdapter.getCount() - 1
-                || realCurrentPosition > mAdapter.getCount() - 1) {
-            return;
-        }
-
-      StationFragment currentFragment = mAdapter.getItem(realCurrentPosition);
-
-        // This might be null if a fragment is being used
-        // and the views weren't created yet
-        if (currentFragment != null) {
-            if (mScalingEnabled) {
-          //    currentFragment.setScaleX((float) (1 + 0.1 * (1 - realOffset)));
-          //    currentFragment.setScaleY((float) (1 + 0.1 * (1 - realOffset)));
-            }
-        }
-
-        StationFragment nextFragment = mAdapter.getItem(nextPosition);
-
-        // We might be scrolling fast enough so that the next (or previous) card
-        // was already destroyed or a fragment might not have been created yet
-        if (nextFragment != null) {
-            if (mScalingEnabled) {
-              //nextFragment.setScaleX((float) (1 + 0.1 * (realOffset)));
-             // nextFragment.setScaleY((float) (1 + 0.1 * (realOffset)));
-            }
-        }
-
-        mLastOffset = positionOffset;
+    // This might be null if a fragment is being used
+    // and the views weren't created yet
+    if (currentFragment != null) {
+      currentFragment.getView().setScaleX((float) (1 + 0.2 * (1 - realOffset)));
+      currentFragment.getView().setScaleY((float) (1 + 0.2 * (1 - realOffset)));
+      if(goingLeft)currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.grey), context.getResources().getColor(R.color.white)));
+      else currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.white), context.getResources().getColor(R.color.grey)));
     }
 
-    @Override
-    public void onPageSelected(int position) {
+    StationFragment nextFragment = mAdapter.getItem(nextPosition);
 
+    // We might be scrolling fast enough so that the next (or previous) card
+    // was already destroyed or a fragment might not have been created yet
+    if (nextFragment != null) {
+      nextFragment.getView().setScaleX((float) (1 + 0.2 * (realOffset)));
+      nextFragment.getView().setScaleY((float) (1 + 0.2 * (realOffset)));
+      if(goingLeft)nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.white), context.getResources().getColor(R.color.grey)));
+        else nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.grey) , context.getResources().getColor(R.color.white)));
     }
 
-    @Override
-    public void onPageScrollStateChanged(int state) {
+    mLastOffset = positionOffset;
+  }
 
-    }
+  @Override
+  public void onPageSelected(int position) {
+   // mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.white));
+  }
+
+  @Override
+  public void onPageScrollStateChanged(int state) {
+
+  }
 }

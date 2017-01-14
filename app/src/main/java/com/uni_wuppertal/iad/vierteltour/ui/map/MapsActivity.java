@@ -169,7 +169,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     initActionBar();
     initDrawer();
 
-    mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter);
+    mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
 
   }
@@ -681,13 +681,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         startStationActivity();
       }});
 
-    mPager.setOnPageChangeListener(new ClickableViewpager.OnPageChangeListener() {
+   /* mPager.setOnPageChangeListener(new ClickableViewpager.OnPageChangeListener() {
 
       public void onPageSelected(int index) {selectStation(singlepage.INSTANCE.selectedTour().station(index+1));
       singlepage.INSTANCE.onfragmentclicked(false);
-        /*if(index==0)mPager.setPadding(0,0,(int)(2*120 * getResources().getDisplayMetrics().density + 0.5f),0);
-        else if(index==singlepage.INSTANCE.selectedTour().stations().size()-1)mPager.setPadding((int)(2*120 * getResources().getDisplayMetrics().density + 0.5f),0,0,0);
-        else mPager.setPadding((int)(120 * getResources().getDisplayMetrics().density + 0.5f),0,(int)(120 * getResources().getDisplayMetrics().density + 0.5f),0);*/
       }
 
       public void onPageScrolled(int arg0, float arg1, int arg2) {
@@ -697,7 +694,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
       }
-    });
+    });*/
 
   }
 

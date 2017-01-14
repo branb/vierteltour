@@ -83,5 +83,4 @@ public class StationFragment extends Fragment{
     ztitle.clear();
   }
 
- // public void setPadding(int position, int left, int top, int right, int bottom) {fragments.get(position).setPadding(left,top,right,bottom);}
 }
