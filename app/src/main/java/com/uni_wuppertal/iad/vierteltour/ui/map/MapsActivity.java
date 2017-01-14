@@ -619,9 +619,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     title.setText( singlepage.INSTANCE.selectedTour().name() );
     title.setVisibility( View.VISIBLE );
     mPager.setVisibility( View.VISIBLE );
-    if(stationAdapter.getItem(0)!=null)
-    {selectStation(singlepage.INSTANCE.selectedTour().station(1));
-    mPager.setCurrentItem(0);}
    // mFragmentShadowTransformer.enableScaling(true);
   }
 
@@ -631,6 +628,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     xbtn.setVisibility( View.GONE );
     title.setVisibility( View.GONE );
     mPager.setVisibility( View.GONE );
+    if(stationAdapter.getItem(0)!=null)
+    {selectStation(singlepage.INSTANCE.selectedTour().station(1));
+      mPager.setCurrentItem(0);}
     player.reset();
    // mFragmentShadowTransformer.enableScaling(false);
 

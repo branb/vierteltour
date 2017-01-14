@@ -125,14 +125,8 @@ public class StationActivity extends Activity{
   }
 
   public void checkGPS()
-  {System.out.println("Checking GPS...");
-    System.out.println(slug + "   " + number);
-    System.out.println(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false));
-
-    if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false))
-    {System.out.println("SUCCESS");
-      sperrvariable=false;}
-    else{System.out.println("FAILED.");}
+  {if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false))
+    {sperrvariable=false;}
   }
 
   public void parseData(){
@@ -164,9 +158,6 @@ public class StationActivity extends Activity{
     if(!video.isEmpty()){
       stationImagePaths.add(video);
     }
-
-    for(int i=0;i<stationImagePaths.size();i++)
-    {System.out.println(stationImagePaths.get(i));}
 
     audio = (String) b.get( "audio" );
 
@@ -237,7 +228,8 @@ public class StationActivity extends Activity{
 
   //zeigt nur Ressourcen an, die vorhanden sind
   public void hide(){
-    if( audio.isEmpty() || sperrvariable ){
+    System.out.println("Audio: "+ audio);
+    if( !audio.contains(".mp3") || sperrvariable ){
       seekbar.setVisibility( View.GONE );
       play_button.setVisibility( View.GONE );
       duration.setVisibility( View.GONE );
@@ -254,7 +246,7 @@ public class StationActivity extends Activity{
         public void onClick(View view) {
           sperrvariable=false;
           gesperrt.setVisibility(View.GONE);
-          if(!audio.isEmpty())
+          if(audio.contains(".mp3"))
           {seekbar.setVisibility( View.VISIBLE );
             play_button.setVisibility( View.VISIBLE );
             duration.setVisibility( View.VISIBLE );}
@@ -295,7 +287,7 @@ public class StationActivity extends Activity{
 
 
   public void initAudio(){
-    if( !audio.endsWith("mp3") ){
+    if( !audio.contains(".mp3") ){
       play_button.setVisibility(View.GONE);
       seekbar.setVisibility(View.GONE);
       duration.setVisibility(View.GONE);
