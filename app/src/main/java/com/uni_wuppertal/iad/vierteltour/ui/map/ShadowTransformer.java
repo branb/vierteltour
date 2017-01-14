@@ -10,22 +10,24 @@ import android.view.View;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.StationAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.StationFragment;
+import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
 
 
 public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
 
     private ClickableViewpager mViewPager;
     private StationAdapter mAdapter;
-    private Context context;
     private float mLastOffset;
+    private Singletonint singlepage;
+    private MapsActivity mapsActivity;
 
 
 
-    public ShadowTransformer(ClickableViewpager viewPager, StationAdapter adapter, Context context) {
+    public ShadowTransformer(ClickableViewpager viewPager, StationAdapter adapter, MapsActivity context) {
         mViewPager = viewPager;
-        viewPager.addOnPageChangeListener(this);
+        mViewPager.addOnPageChangeListener(this);
         mAdapter = adapter;
-        this.context = context;
+        mapsActivity = context;
     }
 
   @Override
@@ -37,6 +39,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
   public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     int realCurrentPosition;
     int nextPosition;
+    int lastPosition;
     float realOffset;
     boolean goingLeft = mLastOffset > positionOffset;
     ArgbEvaluator color = new ArgbEvaluator();
@@ -44,20 +47,23 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
     // If we're going backwards, onPageScrolled receives the last position
     // instead of the current one
     if (goingLeft) {
+      lastPosition = position + 2;
       realCurrentPosition = position + 1;
       nextPosition = position;
       realOffset = 1 - positionOffset;
-      System.out.println("nextPosition: "+nextPosition);
-      System.out.println("CurPosition: "+realCurrentPosition);
-      System.out.println("Offset: "+realOffset);
+      System.out.println("last: "+lastPosition);
+      System.out.println("next: "+nextPosition);
+      System.out.println("real: "+realCurrentPosition);
+      System.out.println("off: "+realOffset);
     } else {
+      lastPosition = position - 1;
       nextPosition = position+1 ;
       realCurrentPosition = position;
       realOffset = positionOffset;
-
-      System.out.println("nextPosition: "+nextPosition);
-      System.out.println("CurPosition: "+realCurrentPosition);
-      System.out.println("Offset: "+realOffset);
+      System.out.println("last: "+lastPosition);
+      System.out.println("next: "+nextPosition);
+      System.out.println("real: "+realCurrentPosition);
+      System.out.println("off: "+realOffset);
     }
 
     // Avoid crash on overscroll
@@ -65,6 +71,14 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
       || realCurrentPosition > mAdapter.getCount() - 1/* || lastPosition<0 || lastPosition < mAdapter.getCount() -1*/) {
       return;
     }
+    if(lastPosition>=0 && lastPosition<mAdapter.getCount())
+    {StationFragment lastFragment = mAdapter.getItem(lastPosition);
+    if(lastFragment!=null)
+    {lastFragment.getView().setScaleX(1);
+     lastFragment.getView().setScaleY(1);
+     lastFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.grey));}
+    }
+
 
     StationFragment currentFragment = mAdapter.getItem(realCurrentPosition);
 
@@ -73,8 +87,8 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
     if (currentFragment != null) {
       currentFragment.getView().setScaleX((float) (1 + 0.2 * (1 - realOffset)));
       currentFragment.getView().setScaleY((float) (1 + 0.2 * (1 - realOffset)));
-      if(goingLeft)currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.grey), context.getResources().getColor(R.color.white)));
-      else currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.white), context.getResources().getColor(R.color.grey)));
+      if(goingLeft)currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, mapsActivity.getResources().getColor(R.color.grey), mapsActivity.getResources().getColor(R.color.white)));
+      else currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, mapsActivity.getResources().getColor(R.color.white), mapsActivity.getResources().getColor(R.color.grey)));
     }
 
     StationFragment nextFragment = mAdapter.getItem(nextPosition);
@@ -84,8 +98,8 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
     if (nextFragment != null) {
       nextFragment.getView().setScaleX((float) (1 + 0.2 * (realOffset)));
       nextFragment.getView().setScaleY((float) (1 + 0.2 * (realOffset)));
-      if(goingLeft)nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.white), context.getResources().getColor(R.color.grey)));
-        else nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.grey) , context.getResources().getColor(R.color.white)));
+      if(goingLeft)nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, mapsActivity.getResources().getColor(R.color.white), mapsActivity.getResources().getColor(R.color.grey)));
+        else nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, mapsActivity.getResources().getColor(R.color.grey) , mapsActivity.getResources().getColor(R.color.white)));
     }
 
     mLastOffset = positionOffset;
@@ -93,7 +107,20 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
 
   @Override
   public void onPageSelected(int position) {
-   // mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.white));
+    mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.white));
+    mAdapter.getItem(position).getView().setScaleX(1.2f);
+    mAdapter.getItem(position).getView().setScaleY(1.2f);
+
+    if(position+1<mAdapter.getCount()){mAdapter.getItem(position+1).getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.grey));
+    mAdapter.getItem(position+1).getView().setScaleX(1f);
+    mAdapter.getItem(position+1).getView().setScaleY(1f);}
+
+    if(position-1>0){mAdapter.getItem(position-1).getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.grey));
+    mAdapter.getItem(position-1).getView().setScaleX(1f);
+    mAdapter.getItem(position-1).getView().setScaleY(1f);}
+
+    mapsActivity.selectStation(singlepage.INSTANCE.selectedTour().station(position+1));
+    singlepage.INSTANCE.onfragmentclicked(false);
   }
 
   @Override

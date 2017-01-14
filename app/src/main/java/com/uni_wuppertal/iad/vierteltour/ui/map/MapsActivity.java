@@ -619,7 +619,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     title.setText( singlepage.INSTANCE.selectedTour().name() );
     title.setVisibility( View.VISIBLE );
     mPager.setVisibility( View.VISIBLE );
-   // mFragmentShadowTransformer.enableScaling(true);
+    selectStation(singlepage.INSTANCE.selectedTour().station(1));
   }
 
   //Stationenübersicht schließen und zurück zur Tourenauswahl
@@ -680,21 +680,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
         startStationActivity();
       }});
-
-   /* mPager.setOnPageChangeListener(new ClickableViewpager.OnPageChangeListener() {
-
-      public void onPageSelected(int index) {selectStation(singlepage.INSTANCE.selectedTour().station(index+1));
-      singlepage.INSTANCE.onfragmentclicked(false);
-      }
-
-      public void onPageScrolled(int arg0, float arg1, int arg2) {
-      }
-
-      public void onPageScrollStateChanged(int arg0) {
-
-
-      }
-    });*/
 
   }
 

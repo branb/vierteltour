@@ -61,11 +61,13 @@ public class StationFragment extends Fragment{
       final GradientDrawable shape = (GradientDrawable)   bgDrawable.findDrawableByLayerId(R.id.shape_id);
       shape.setColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color()));
 
-      //numberlayout.setBackgroundColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color()));
+
       btItem.setOnTouchListener(new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
           singlepage.INSTANCE.onfragmentclicked(true);
+          //mPager.setCurrentItem(4,true);
+          //fragments.get(singlepage.INSTANCE.selectedOldStation().number()).setBackgroundColor(getResources().getColor(R.color.grey));
           singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());
           singlepage.INSTANCE.selectedStation(singlepage.INSTANCE.selectedTour().station(position));
           return false;

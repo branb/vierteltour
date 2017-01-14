@@ -39,11 +39,6 @@ public class StationAdapter extends FragmentStatePagerAdapter {
     return fragments.get( position );
   }
 
- /* @Override
-  public float getPageWidth( int position ){
-    return 0.4f;
-  }*/
-
   @Override
   public Object instantiateItem(ViewGroup container, int position) {
     Object fragment = super.instantiateItem(container, position);
