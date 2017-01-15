@@ -7,6 +7,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,8 +30,11 @@ public class StationFragment extends Fragment{
   private static Bundle arguments;
   private static ArrayList<String> ztitle = new ArrayList<>();
   private static ArrayList<View> fragments = new ArrayList<>();
+  private long mDeBounce;
   private Singletonint singlepage;
   private int position;
+
+
 
   public static StationFragment create( Station station ){
     StationFragment fragment = new StationFragment();
@@ -65,18 +69,14 @@ public class StationFragment extends Fragment{
       btItem.setOnTouchListener(new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-          singlepage.INSTANCE.onfragmentclicked(true);
-          //mPager.setCurrentItem(4,true);
-          //fragments.get(singlepage.INSTANCE.selectedOldStation().number()).setBackgroundColor(getResources().getColor(R.color.grey));
-          singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());
-          singlepage.INSTANCE.selectedStation(singlepage.INSTANCE.selectedTour().station(position));
+          singlepage.INSTANCE.onfragmentclicked(position);
           return false;
         }
       } );
     } else {
       btItem.setVisibility( View.GONE );
     }
-  //  if(position==1){rootView.setPadding(0,0,120,0);}
+
     fragments.add( rootView);
     return rootView;
   }

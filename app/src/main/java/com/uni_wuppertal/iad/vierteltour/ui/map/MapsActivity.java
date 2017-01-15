@@ -185,13 +185,18 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mPager.setOnItemClickListener(new ClickableViewpager.OnItemClickListener() {
       @Override
       public void onItemClick(int position) {
-        if(singlepage.INSTANCE.onfragmentclicked() && singlepage.INSTANCE.selectedStation()==singlepage.INSTANCE.selectedOldStation())
+  if(singlepage.INSTANCE.onfragmentclicked()!=-1)
+  {singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());
+  singlepage.INSTANCE.selectedStation(singlepage.INSTANCE.selectedTour().station(singlepage.INSTANCE.onfragmentclicked()));
+
+        if(singlepage.INSTANCE.selectedStation()==singlepage.INSTANCE.selectedOldStation())
         {selectStation(singlepage.INSTANCE.selectedStation());
         startStationActivity();}
-        else if(singlepage.INSTANCE.onfragmentclicked())
+        else
         {mPager.setCurrentItem(singlepage.INSTANCE.selectedStation().number()-1);
           selectStation(singlepage.INSTANCE.selectedStation());}
-        singlepage.INSTANCE.onfragmentclicked(false);
+  singlepage.INSTANCE.onfragmentclicked(-1);
+  }
       }
     });
 
@@ -565,7 +570,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     {MarkerOptions marker = new MarkerOptions();
       marker.position(pos);
       marker.icon(BitmapDescriptorFactory.fromBitmap( BitmapFactory.decodeResource( getResources(), getResources().getIdentifier( "current3", "drawable", getPackageName() ) )));
-      if(marker!=null)mMap.addMarker(marker);}
+      if(mMap!=null)mMap.addMarker(marker);}
 
     for( Map.Entry<String, PolylineOptions> polyline : polylines.entrySet() ){
       mMap.addPolyline( polyline.getValue() );
