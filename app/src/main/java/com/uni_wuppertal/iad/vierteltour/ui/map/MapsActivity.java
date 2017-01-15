@@ -120,6 +120,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private View listelement;
   private ShadowTransformer mFragmentShadowTransformer;
   private TextView title, tourenliste, subtext1, subtext2;
+  private Marker tmpmarker;
   private RelativeLayout panel, gpsinfo;
   public static RelativeLayout audiobar;
   private ViertelTourMediaPlayer player;
@@ -320,6 +321,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             }
 
       }
+          if(!onMapClicked && tmpmarker!=null) tmpmarker.showInfoWindow();
 
           //Unselect Station on Map Click
       /*  if(!onMapClicked)
@@ -332,6 +334,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
       }
     };
+
     mMap.setOnMapClickListener( listener );
     mMap.setInfoWindowAdapter(new MapWindowAdapter(this));
 
@@ -584,7 +587,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * (Re-)Draw the station markers of the currently visible tours
    */
   private void drawStations(){
-    Marker tmpmarker = null;
+    tmpmarker = null;
+    System.out.println("DRAW");
     for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
       if(singlepage.INSTANCE.selectedStation()!=null)
       {if(marker.getValue().getPosition()!=null && marker.getKey()!=singlepage.INSTANCE.selectedStation().slug())
@@ -619,6 +623,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     Typeface tf = Typeface.createFromAsset(getAssets(), "Bariol_Regular.ttf");
     title.setTypeface(tf);
 
+    mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( wuppertal, CurrentZoom ) );
     mLayout.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
     xbtn.setVisibility( View.VISIBLE );
     title.setText( singlepage.INSTANCE.selectedTour().name() );
@@ -647,6 +652,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     selectTour(singlepage.INSTANCE.selectedTour());
     drawRoutes();
+
     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
     audiobar.setLayoutParams(layoutParams);

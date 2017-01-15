@@ -65,7 +65,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
     }
     if(lastPosition>=0 && lastPosition<mAdapter.getCount())
     {StationFragment lastFragment = mAdapter.getItem(lastPosition);
-    if(lastFragment!=null)
+    if(lastFragment.getView()!=null)
     {lastFragment.getView().setScaleX(1);
      lastFragment.getView().setScaleY(1);
      lastFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.grey));}
@@ -76,7 +76,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
 
     // This might be null if a fragment is being used
     // and the views weren't created yet
-    if (currentFragment != null) {
+    if (currentFragment.getView() != null) {
       currentFragment.getView().setScaleX((float) (1 + 0.2 * (1 - realOffset)));
       currentFragment.getView().setScaleY((float) (1 + 0.2 * (1 - realOffset)));
       if(goingLeft)currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, mapsActivity.getResources().getColor(R.color.grey), mapsActivity.getResources().getColor(R.color.white)));
@@ -87,7 +87,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
 
     // We might be scrolling fast enough so that the next (or previous) card
     // was already destroyed or a fragment might not have been created yet
-    if (nextFragment != null) {
+    if (nextFragment.getView() != null) {
       nextFragment.getView().setScaleX((float) (1 + 0.2 * (realOffset)));
       nextFragment.getView().setScaleY((float) (1 + 0.2 * (realOffset)));
       if(goingLeft)nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, mapsActivity.getResources().getColor(R.color.white), mapsActivity.getResources().getColor(R.color.grey)));
@@ -99,7 +99,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
 
   @Override
   public void onPageSelected(int position) {
-    System.out.println(position);
+
     mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.white));
     mAdapter.getItem(position).getView().setScaleX(1.2f);
     mAdapter.getItem(position).getView().setScaleY(1.2f);
