@@ -195,7 +195,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         startStationActivity();}
         else
         {mPager.setCurrentItem(singlepage.INSTANCE.selectedStation().number()-1);
-          selectStation(singlepage.INSTANCE.selectedStation());}
+          }
   singlepage.INSTANCE.onfragmentclicked(-1);
   }
       }
@@ -313,8 +313,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           for( Station station : tour.stations())
             { if( clickCoords.equals(station.latlng())){
               onMapClicked=true;
-
-                selectStation(station);
 
                 mPager.setCurrentItem(station.number()-1);
                 stationAdapter.notifyDataSetChanged();
