@@ -45,6 +45,7 @@ import java.util.concurrent.TimeUnit;
 public class StationActivity extends Activity{
 
   //Declare Var
+  static boolean stationActivityRunning=false;
   SeekBar seekbar;        //Fortschrittsbalken
   ImageButton play_button;      //diverse Bilderbuttons
   ViertelTourMediaPlayer player;          //Media player
@@ -83,6 +84,7 @@ public class StationActivity extends Activity{
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
     setContentView( R.layout.information );
+    stationActivityRunning=true;
     parseData();      //übergibt Daten von MapsActivity
     getInit();        //Initialisierung
    }
@@ -90,7 +92,9 @@ public class StationActivity extends Activity{
   @Override
   protected void onDestroy()
   {super.onDestroy();
-    singlepage.INSTANCE.position(0);}
+    singlepage.INSTANCE.position(0);
+    stationActivityRunning=false;
+  }
 
   @Override
   public void onBackPressed(){
@@ -326,15 +330,21 @@ public class StationActivity extends Activity{
     player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){
       @Override
       public void onCompletion( MediaPlayer player ){
-        Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
-
-        if(size.equals(number)){background.putExtra("vergleich", 1);}
-        else {background.putExtra("vergleich", 0);}
-        startActivity(background);
         startaudio = false;
         seekbar.setProgress(0);
         duration.setText("0:00");
         play_button.setImageResource(R.drawable.play_hell);
+
+        if(stationActivityRunning){Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
+
+        if(size.equals(number)){background.putExtra("vergleich", 1);}
+        else {background.putExtra("vergleich", 0);}
+        startActivity(background);}
+        else
+        { RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
+          layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+          MapsActivity.audiobar.setLayoutParams(layoutParams);
+        }
       }
 
     });
