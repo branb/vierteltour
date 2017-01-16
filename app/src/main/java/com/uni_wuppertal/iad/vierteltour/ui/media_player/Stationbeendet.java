@@ -80,7 +80,7 @@ public class Stationbeendet extends Activity {
         next.putExtra( "img", station.imagesToString() );
         next.putExtra( "audio", station.audio());
         next.putExtra( "video", station.videosToString() );
-
+        MapsActivity.mPager.setCurrentItem(station.number()-1);
         startActivity(next);
       }
     });
@@ -89,6 +89,9 @@ public class Stationbeendet extends Activity {
       @Override
       public void onClick( View v ){
         Intent back = new Intent(getApplicationContext(), MapsActivity.class);
+        singlepage.INSTANCE.selectedTour(null);
+        singlepage.INSTANCE.selectedStation(null);
+        singlepage.INSTANCE.selectedOldStation(null);
         back.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(back);
       }

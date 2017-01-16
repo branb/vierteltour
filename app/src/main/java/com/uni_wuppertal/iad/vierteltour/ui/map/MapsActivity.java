@@ -106,7 +106,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private ActionBarDrawerToggle mDrawerToggle;
   private SlidingUpPanelLayout mLayout;
   private RelativeLayout mDrawer;
-  private ClickableViewpager mPager;
+  public static ClickableViewpager mPager;
   private StationAdapter stationAdapter;
   private DrawerAdapter draweradapter;
   private TourAdapter adapter;
@@ -409,7 +409,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     tmpIntent.putExtra( "video", station.videosToString() );
 
 
-    startActivity( tmpIntent );
+    startActivityForResult( tmpIntent, 1 );
     overridePendingTransition( R.anim.fade_in, R.anim.map_out );}
 
   private void vanishTours( Tour tour ){

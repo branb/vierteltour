@@ -199,7 +199,6 @@ public class StationActivity extends Activity{
     mAdapter = new InformationPagerAdapter( this, stationImagePaths, this);
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
     imagePager.setAdapter( mAdapter );
-    //imagePager.setBackgroundColor(Color.parseColor(farbe));
     seekbar.setOnSeekBarChangeListener(customSeekBarListener);
 
 
@@ -330,9 +329,8 @@ public class StationActivity extends Activity{
     player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){
       @Override
       public void onCompletion( MediaPlayer player ){
+        player.seekTo(0);
         startaudio = false;
-        seekbar.setProgress(0);
-        duration.setText("0:00");
         play_button.setImageResource(R.drawable.play_hell);
 
         if(stationActivityRunning){Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
