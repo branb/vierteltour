@@ -53,22 +53,12 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
       nextPosition = position;
       realOffset = 1 - positionOffset;
 
-      System.out.println("LEFT");
-      System.out.println("cur: "+realCurrentPosition);
-      System.out.println("next: "+nextPosition);
-      System.out.println("last: "+lastPosition);
-      System.out.println("off: "+realOffset);
     } else {
       lastPosition = position - 1;
       nextPosition = position+1 ;
       realCurrentPosition = position;
       realOffset = positionOffset;
 
-      System.out.println("Right OTHER");
-      System.out.println("cur: "+realCurrentPosition);
-      System.out.println("next: "+nextPosition);
-      System.out.println("last: "+lastPosition);
-      System.out.println("off: "+realOffset);
     }
     if(position==mAdapter.getCount()-1 && positionOffset==0)
     {mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.white));
@@ -78,7 +68,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
 
     // Avoid crash on overscroll
     if (nextPosition > mAdapter.getCount() - 1
-      || realCurrentPosition > mAdapter.getCount() -1 /* || lastPosition<0 || lastPosition < mAdapter.getCount() -1*/) {
+      || realCurrentPosition > mAdapter.getCount() -1 ) {
       return;
     }
     if(lastPosition>=0 && lastPosition<mAdapter.getCount())

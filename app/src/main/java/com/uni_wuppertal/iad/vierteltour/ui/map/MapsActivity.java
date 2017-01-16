@@ -289,6 +289,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     final GoogleMap.OnMapClickListener listener = new GoogleMap.OnMapClickListener(){
       @Override
       public void onMapClick( LatLng clickCoords ){
+
         if( mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED ){
           boolean tourSelected = false;
 
@@ -312,8 +313,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           for( Station station : tour.stations())
             { if( clickCoords.equals(station.latlng())){
               onMapClicked=true;
-
-
                 mPager.setCurrentItem(station.number()-1);
                 stationAdapter.notifyDataSetChanged();
             }
@@ -339,6 +338,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mMap.setOnMarkerClickListener( new GoogleMap.OnMarkerClickListener(){
       @Override
       public boolean onMarkerClick( Marker marker ){
+
         listener.onMapClick( marker.getPosition() );
         return true;    // false: OnMarkerClick aktiv und zoomt zum Marker
       }
@@ -588,11 +588,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     tmpmarker = null;
     for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
       if(singlepage.INSTANCE.selectedStation()!=null)
-      {if(marker.getValue().getPosition()!=null && marker.getKey()!=singlepage.INSTANCE.selectedStation().slug())
-     {mMap.addMarker( marker.getValue() );}
-      else if(marker.getValue().getPosition()!=null && marker.getKey()==singlepage.INSTANCE.selectedStation().slug())
-     {tmpmarker = mMap.addMarker(marker.getValue());
-     tmpmarker.showInfoWindow();}}
+      {for(Station station : singlepage.INSTANCE.selectedTour().stations())
+        { if(marker.getValue().getPosition()!=null && marker.getKey()==singlepage.INSTANCE.selectedStation().slug())
+        {tmpmarker = mMap.addMarker(marker.getValue());
+          tmpmarker.showInfoWindow();
+        System.out.println("Add Big "+marker.getKey());}
+          else if(marker.getValue().getPosition()!=null && marker.getKey()==station.slug())
+        {mMap.addMarker(marker.getValue());
+          System.out.println("Add small "+marker.getKey());}}}
+
     else if(marker.getValue().getPosition()!=null)
     {mMap.addMarker( marker.getValue() );}}
 
