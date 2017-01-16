@@ -338,7 +338,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mMap.setOnMarkerClickListener( new GoogleMap.OnMarkerClickListener(){
       @Override
       public boolean onMarkerClick( Marker marker ){
-
         listener.onMapClick( marker.getPosition() );
         return true;    // false: OnMarkerClick aktiv und zoomt zum Marker
       }
@@ -589,13 +588,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
       if(singlepage.INSTANCE.selectedStation()!=null)
       {for(Station station : singlepage.INSTANCE.selectedTour().stations())
-        { if(marker.getValue().getPosition()!=null && marker.getKey()==singlepage.INSTANCE.selectedStation().slug())
+        { if(marker.getValue().getPosition()!=null && marker.getKey()==singlepage.INSTANCE.selectedStation().slug() && marker.getKey()==station.slug())
         {tmpmarker = mMap.addMarker(marker.getValue());
-          tmpmarker.showInfoWindow();
-        System.out.println("Add Big "+marker.getKey());}
+          tmpmarker.showInfoWindow();}
           else if(marker.getValue().getPosition()!=null && marker.getKey()==station.slug())
-        {mMap.addMarker(marker.getValue());
-          System.out.println("Add small "+marker.getKey());}}}
+        {mMap.addMarker(marker.getValue());}}}
 
     else if(marker.getValue().getPosition()!=null)
     {mMap.addMarker( marker.getValue() );}}
@@ -649,7 +646,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));
      singlepage.INSTANCE.selectedStation(null);
       gpsbtn.setVisibility(View.GONE);
-     circle = new CircleOptions();}
+     circle = new CircleOptions();
+    }
 
     selectTour(singlepage.INSTANCE.selectedTour());
     drawRoutes();
