@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StationAdapter extends FragmentStatePagerAdapter {
-  public List<StationFragment> fragments;
+  public ArrayList<StationFragment> fragments;
 
   public StationAdapter( FragmentManager fm ){
     super( fm );
@@ -27,8 +27,6 @@ public class StationAdapter extends FragmentStatePagerAdapter {
     return fragments.size();
   }
 
-  public View getFragmentViewAt(int position) {return fragments.get(position).getView();}
-
   public void addFragment( Station station ){
     StationFragment fragment = StationFragment.create(station);
     fragments.add( fragment );
@@ -36,15 +34,15 @@ public class StationAdapter extends FragmentStatePagerAdapter {
 
   @Override
   public StationFragment getItem( int position ){
-    return fragments.get( position );
+    return fragments.get( position);
   }
 
-  @Override
+ /* @Override
   public Object instantiateItem(ViewGroup container, int position) {
     Object fragment = super.instantiateItem(container, position);
     fragments.set(position, (StationFragment) fragment);
     return fragment;
-  }
+  }*/
 
   @Override
   public int getItemPosition( Object object ){

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.TextView;
 
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.StationAdapter;
@@ -51,16 +52,33 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
       realCurrentPosition = position + 1;
       nextPosition = position;
       realOffset = 1 - positionOffset;
+
+      System.out.println("LEFT");
+      System.out.println("cur: "+realCurrentPosition);
+      System.out.println("next: "+nextPosition);
+      System.out.println("last: "+lastPosition);
+      System.out.println("off: "+realOffset);
     } else {
       lastPosition = position - 1;
       nextPosition = position+1 ;
       realCurrentPosition = position;
       realOffset = positionOffset;
+
+      System.out.println("Right OTHER");
+      System.out.println("cur: "+realCurrentPosition);
+      System.out.println("next: "+nextPosition);
+      System.out.println("last: "+lastPosition);
+      System.out.println("off: "+realOffset);
     }
+    if(position==mAdapter.getCount()-1 && positionOffset==0)
+    {mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.white));
+      mAdapter.getItem(position).getView().setScaleX(1.2f);
+      mAdapter.getItem(position).getView().setScaleY(1.2f);}
+
 
     // Avoid crash on overscroll
     if (nextPosition > mAdapter.getCount() - 1
-      || realCurrentPosition > mAdapter.getCount() - 1/* || lastPosition<0 || lastPosition < mAdapter.getCount() -1*/) {
+      || realCurrentPosition > mAdapter.getCount() -1 /* || lastPosition<0 || lastPosition < mAdapter.getCount() -1*/) {
       return;
     }
     if(lastPosition>=0 && lastPosition<mAdapter.getCount())
@@ -99,8 +117,9 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
 
   @Override
   public void onPageSelected(int position) {
+  //  for(int i=0; i<mAdapter.getCount()-1; i++)System.out.println(mAdapter.getItem(i));
 
-    //mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.white));
+    mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.white));
     mAdapter.getItem(position).getView().setScaleX(1.2f);
     mAdapter.getItem(position).getView().setScaleY(1.2f);
 

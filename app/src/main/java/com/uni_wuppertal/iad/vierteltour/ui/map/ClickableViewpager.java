@@ -40,7 +40,7 @@ public class ClickableViewpager extends ViewPager {
     });
 
     setClipToPadding(false);
-    setOffscreenPageLimit(3);
+    setOffscreenPageLimit(5);
   }
 
   public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

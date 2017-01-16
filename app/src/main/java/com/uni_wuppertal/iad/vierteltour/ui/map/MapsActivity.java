@@ -181,8 +181,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mPager = (ClickableViewpager) findViewById(R.id.pager);
     stationAdapter = new StationAdapter(getSupportFragmentManager());
     mPager.setAdapter(stationAdapter);
-    mPager.setClipToPadding(false);
-    mPager.setOffscreenPageLimit(5);
+
     mPager.setOnItemClickListener(new ClickableViewpager.OnItemClickListener() {
       @Override
       public void onItemClick(int position) {
@@ -313,6 +312,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           for( Station station : tour.stations())
             { if( clickCoords.equals(station.latlng())){
               onMapClicked=true;
+
 
                 mPager.setCurrentItem(station.number()-1);
                 stationAdapter.notifyDataSetChanged();
@@ -586,7 +586,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    */
   private void drawStations(){
     tmpmarker = null;
-    System.out.println("DRAW");
     for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
       if(singlepage.INSTANCE.selectedStation()!=null)
       {if(marker.getValue().getPosition()!=null && marker.getKey()!=singlepage.INSTANCE.selectedStation().slug())
