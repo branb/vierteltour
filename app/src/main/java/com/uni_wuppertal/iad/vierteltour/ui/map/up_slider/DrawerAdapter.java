@@ -48,14 +48,12 @@ public class DrawerAdapter extends BaseAdapter{
 
     ImageView imgIcon = (ImageView) convertView.findViewById( R.id.menuimg );
     TextView txtTitle = (TextView) convertView.findViewById( R.id.menutxt );
-    TextView subtxtTitle1 = (TextView) convertView.findViewById( R.id.menusubtxt1 );
 
     //Setzt jeweilige Informationen an die richtigen Views
     DrawerItem row_pos = drawerItem.get( position );
 
     imgIcon.setImageResource( row_pos.getIcon() );
     txtTitle.setText( row_pos.getTitle() );
-    subtxtTitle1.setText( row_pos.getSubtitle() );
 
     return convertView;
 

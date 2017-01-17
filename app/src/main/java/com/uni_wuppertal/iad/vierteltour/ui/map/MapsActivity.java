@@ -57,6 +57,8 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import com.uni_wuppertal.iad.vierteltour.ui.intro.IntroActivity;
 
+import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.About;
+import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.Einstellungen;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.StationActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
@@ -85,18 +87,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public int CurrentZoom = 15;
   int[] drawerIcons = new int[]{ R.drawable.einstellungen,
                                  R.drawable.hilfe,
-                                 R.drawable.about,
-                                 R.drawable.karte
+                                 R.drawable.about
   };
   String[] drawertitles = new String[]{ "Einstellungen",
-                                        "Hilfe",
-                                        "About",
-                                        "Karte"
-  };
-  String[] drawersubtitles = new String[]{ " ",
-                                           " ",
-                                           " ",
-                                           "hell / dunkel"
+                                        "Info",
+                                        "About"
   };
 
   private final double radius=25;
@@ -866,7 +861,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     drawerItems = new ArrayList<DrawerItem>();
     mDrawerLayout.setDrawerListener( createDrawerToggle() );
     for( int i = 0; i < drawertitles.length; i++ ){
-      DrawerItem items = new DrawerItem( drawertitles[i], drawersubtitles[i], drawerIcons[i] );
+      DrawerItem items = new DrawerItem( drawertitles[i], drawerIcons[i] );
       drawerItems.add( items );
     }
     draweradapter = new DrawerAdapter( this, drawerItems );
@@ -880,6 +875,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         // FragmentManager fragmentManager = getSupportFragmentManager();
         // FragmentTransaction ftx = fragmentManager.beginTransaction();
         if( position == 0 ){
+          Intent i = new Intent(MapsActivity.this, Einstellungen.class);
+          startActivity(i);
 
         } else if( position == 1 ){
 
@@ -898,6 +895,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           e.apply();
 
         }
+        else if(position == 2)
+        {Intent i = new Intent(MapsActivity.this, About.class);
+          startActivity(i);}
+
         //  ftx.commit();
       }
 
