@@ -373,6 +373,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
   }
 
+  public TourList tourlist()
+  {return tourlist;}
+
   public Bitmap scaleMarker (Tour tour, String tmpNumber)
   {Bitmap tmpMarker = markertext(tour,tmpNumber);
     double height, width;
@@ -876,6 +879,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         // FragmentTransaction ftx = fragmentManager.beginTransaction();
         if( position == 0 ){
           Intent i = new Intent(MapsActivity.this, Einstellungen.class);
+          //i.putExtra("tours", tourlist.tours());     //gib touren weiter
           startActivity(i);
 
         } else if( position == 1 ){

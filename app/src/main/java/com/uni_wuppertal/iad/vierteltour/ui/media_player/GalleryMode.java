@@ -56,7 +56,6 @@ public class GalleryMode extends Activity {
     setContentView( R.layout.gallerymode );
 
     initAll();
-    //initOrientation();
     gallerymode();
   }
 
@@ -108,7 +107,7 @@ public void initAll()
   player = ViertelTourMediaPlayer.getInstance( this );
   images();
 }
-//App soll nicht neustarten bei orientationwechsel
+
   @Override
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
@@ -138,6 +137,27 @@ public void initAll()
 
   public void gallerymode(){
     gallerytitle.setText( station );
+
+    if ( getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE) {
+      x_button.setVisibility(View.GONE);
+      gallerytitle.setVisibility(View.GONE);
+      gallerytitletop.setText(station);
+      hideGalleryVideoBar();
+      ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
+      params.height = ViewPager.LayoutParams.MATCH_PARENT;
+      imagePagerGallery.setLayoutParams(params);}
+    else if (getResources().getConfiguration().orientation  == Configuration.ORIENTATION_PORTRAIT){
+      relGalleryBot.setVisibility(View.GONE);
+      relGalleryTop.setVisibility(View.GONE);
+      x_button.setVisibility(View.VISIBLE);
+      gallerytitle.setVisibility(View.VISIBLE);
+      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4"))showGalleryVideoBar();
+
+      ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
+      params.height = calculateDP(300);
+      imagePagerGallery.setLayoutParams(params);
+    }
+
     if(res.get(singlepage.INSTANCE.position()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
     {showGalleryVideoBar();}
     else
