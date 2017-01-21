@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uni_wuppertal.iad.vierteltour.R;
@@ -25,6 +26,7 @@ public class TourAdapter extends BaseAdapter{
 
   private MapsActivity mapsActivity;
   private View view;
+  private ImageView downloadbutton;
   private Singletonint singlepage;
   private List<Tour> tours;
 
@@ -61,6 +63,7 @@ public class TourAdapter extends BaseAdapter{
 
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
+    downloadbutton = (ImageView) convertView.findViewById( R.id.downloadview);
     TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
     TextView txtAuthor = (TextView) convertView.findViewById( R.id.subtxt1 );
     TextView txtTimeLength = (TextView) convertView.findViewById( R.id.subtxt2 );
@@ -73,6 +76,7 @@ public class TourAdapter extends BaseAdapter{
 
     // TODO: Insert author image
     imgAuthor.setImageResource( R.drawable.ic_drawer );
+
     txtTitle.setText( tour.name() );
     txtAuthor.setText( tour.author() );
     txtTimeLength.setText( tour.time() + "/" + tour.length() );
@@ -80,12 +84,14 @@ public class TourAdapter extends BaseAdapter{
     convertView.setClickable(false);
 
     if(singlepage.INSTANCE.selectedTour()==null || !tour.slug().equals(singlepage.INSTANCE.selectedTour().slug())) {
+      setDownloadButtonInPosition(false);
       txtDescription.setVisibility( View.GONE );
       btnStart.setVisibility( View.GONE );
       divider.setVisibility( View.GONE );
 
     }
     else if( tour.slug().equals( singlepage.INSTANCE.selectedTour().slug() ) ) {
+      setDownloadButtonInPosition(true);
       txtDescription.setVisibility(View.VISIBLE);
       btnStart.setVisibility(View.VISIBLE);
       divider.setVisibility(View.VISIBLE);
@@ -103,4 +109,17 @@ public class TourAdapter extends BaseAdapter{
     view = convertView;
     return convertView;
   }
+
+  public void setDownloadButtonInPosition(boolean open)
+  {if(open)
+  {RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+    lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
+    lp.addRule(RelativeLayout.ABOVE, R.id.divider);
+    downloadbutton.setLayoutParams(lp);}
+  else{RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
+    lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
+    lp.addRule(RelativeLayout.ABOVE, 0);
+    downloadbutton.setLayoutParams(lp);}}
 }

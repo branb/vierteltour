@@ -32,6 +32,28 @@
         android:id="@+id/subtxt2"
         android:layout_toRightOf="@+id/img"
         android:layout_below="@+id/subtxt1"/>
+
+    <TextView
+      android:id="@+id/downloadtext"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="geladen"
+      android:layout_alignParentBottom="true"
+      android:textStyle="bold"
+      android:visibility="gone"
+      android:layout_toLeftOf="@+id/downloadview"/>
+    <ImageView
+      android:id="@+id/downloadview"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentBottom="true"
+      android:layout_above="@+id/divider"
+      android:paddingRight="10dp"
+      android:src="@drawable/laden"
+      />
+
+
     <View
         android:id="@+id/divider"
         android:layout_width="fill_parent"

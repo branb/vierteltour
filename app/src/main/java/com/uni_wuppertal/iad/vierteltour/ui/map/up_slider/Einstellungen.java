@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.TourList;
 import com.uni_wuppertal.iad.vierteltour.ui.map.TourListReader;
-
-import java.util.ArrayList;
 
 /**
  * Created by Kevin-Laptop on 17.01.2017.
@@ -25,9 +22,9 @@ public class Einstellungen extends Activity{
   private RelativeLayout layoutEinstellungen, layoutTouren, tourenLoeschen;
   private TourList tourlist = new TourListReader( this ).readTourList();
   private String[] items = new String[] {"Tour löschen", "Nach Aktualisierungen suchen"};
-  private EinstellungenAda einstellungen;
+  private EinstellungenAdapter einstellungen;
 
-  private EinstellungenAdapter einstellungenAdapter = new EinstellungenAdapter(tourlist.tours(), this);
+  private EinstellungenTourAdapter einstellungenTourAdapter = new EinstellungenTourAdapter(tourlist.tours(), this);
 
   @Override
   public void onBackPressed()
@@ -44,7 +41,7 @@ public class Einstellungen extends Activity{
       Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
     setContentView( R.layout.einstellungen );
-    einstellungen = new EinstellungenAda(this, items);
+    einstellungen = new EinstellungenAdapter(this, items);
     listViewEinstellungen = (ListView) findViewById(R.id.listEinstellungen);
     layoutEinstellungen = (RelativeLayout) findViewById(R.id.listLayout1);
     layoutTouren = (RelativeLayout) findViewById(R.id.listLayout2);
@@ -60,7 +57,7 @@ public class Einstellungen extends Activity{
       }
     });
     listViewTouren = (ListView) findViewById(R.id.listTouren);
-    listViewTouren.setAdapter(einstellungenAdapter);
+    listViewTouren.setAdapter(einstellungenTourAdapter);
     listViewTouren.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

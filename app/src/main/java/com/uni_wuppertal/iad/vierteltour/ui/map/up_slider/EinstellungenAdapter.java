@@ -21,22 +21,22 @@ import java.util.List;
 
 public class EinstellungenAdapter extends BaseAdapter {
 
-  private List<Tour> tours;
+  private String[] values;
   private Context context;
 
-  public EinstellungenAdapter(List<Tour> tours, Context context){
-    this.tours=tours;
+  public EinstellungenAdapter(Context context, String[] values){
     this.context = context;
-    }
+    this.values=values;
+  }
 
   @Override
-  public int getCount(){return tours.size();}
+  public int getCount(){return values.length;}
 
   @Override
-  public Object getItem( int position ){return tours.get(position);}
+  public Object getItem( int position ){return values[position];}
 
   @Override
-  public long getItemId( int position ){return tours.indexOf(getItem( position ));}
+  public long getItemId( int position ){return values.hashCode();}
 
   /**
    * This is being called every time the connected ListView is refreshing itself
@@ -44,22 +44,12 @@ public class EinstellungenAdapter extends BaseAdapter {
   @Override
   public View getView(final int position, View convertView, ViewGroup parent ){
     if(convertView==null)
-    {convertView = LayoutInflater.from(context).inflate( R.layout.touren_list_single, null );}
+    {convertView = LayoutInflater.from(context).inflate( R.layout.einstellungen_single_item, null );}
 
     // Define the visible elements of a single item inside of our ListView
-    ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
-    TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
-    TextView txtAuthor = (TextView) convertView.findViewById( R.id.subtxt1 );
-    TextView txtTimeLength = (TextView) convertView.findViewById( R.id.subtxt2 );
+    TextView txtEinstellungen = (TextView) convertView.findViewById( R.id.einstellungentext );
 
-    Tour tour = tours.get( position );
-    convertView.setBackgroundColor( Color.parseColor( tour.color() ) );
-
-    // TODO: Insert author image
-    imgAuthor.setImageResource( R.drawable.ic_drawer );
-    txtTitle.setText( tour.name() );
-    txtAuthor.setText( tour.author() );
-    txtTimeLength.setText( tour.time() + "/" + tour.length() );
+    txtEinstellungen.setText( values[position] );
 
     return convertView;
   }
