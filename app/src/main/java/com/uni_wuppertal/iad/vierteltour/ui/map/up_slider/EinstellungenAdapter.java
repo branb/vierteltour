@@ -27,7 +27,7 @@ public class EinstellungenAdapter extends BaseAdapter {
   public EinstellungenAdapter(List<Tour> tours, Context context){
     this.tours=tours;
     this.context = context;
-  }
+    }
 
   @Override
   public int getCount(){return tours.size();}
