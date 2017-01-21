@@ -24,8 +24,8 @@ public class Einstellungen extends Activity{
   private ListView listViewTouren, listViewEinstellungen;
   private RelativeLayout layoutEinstellungen, layoutTouren, tourenLoeschen;
   private TourList tourlist = new TourListReader( this ).readTourList();
-  private String[] items = {"Tour löschen", "Nach Aktualisierungen suchen"};
-  private ArrayAdapter<String> einstellungen;
+  private String[] items = new String[] {"Tour löschen", "Nach Aktualisierungen suchen"};
+  private EinstellungenAda einstellungen;
 
   private EinstellungenAdapter einstellungenAdapter = new EinstellungenAdapter(tourlist.tours(), this);
 
@@ -44,7 +44,7 @@ public class Einstellungen extends Activity{
       Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
     setContentView( R.layout.einstellungen );
-    einstellungen = new ArrayAdapter<String>(this,  android.R.layout.simple_list_item_1, items);
+    einstellungen = new EinstellungenAda(this, items);
     listViewEinstellungen = (ListView) findViewById(R.id.listEinstellungen);
     layoutEinstellungen = (RelativeLayout) findViewById(R.id.listLayout1);
     layoutTouren = (RelativeLayout) findViewById(R.id.listLayout2);
