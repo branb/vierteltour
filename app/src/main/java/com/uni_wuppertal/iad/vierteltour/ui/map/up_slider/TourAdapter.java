@@ -27,7 +27,9 @@ public class TourAdapter extends BaseAdapter{
   private MapsActivity mapsActivity;
   private View view;
   private ImageView downloadbutton;
+  private TextView downloadtext;
   private Singletonint singlepage;
+  private ViewGroup ownContainer;
   private List<Tour> tours;
 
   public TourAdapter( MapsActivity m, List<Tour> tours){
@@ -64,6 +66,9 @@ public class TourAdapter extends BaseAdapter{
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
     downloadbutton = (ImageView) convertView.findViewById( R.id.downloadview);
+    downloadbutton.setTag("ok"+position);
+    downloadtext = (TextView) convertView.findViewById(R.id.downloadtext);
+    downloadtext.setTag("text"+position);
     TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
     TextView txtAuthor = (TextView) convertView.findViewById( R.id.subtxt1 );
     TextView txtTimeLength = (TextView) convertView.findViewById( R.id.subtxt2 );
@@ -76,7 +81,17 @@ public class TourAdapter extends BaseAdapter{
 
     // TODO: Insert author image
     imgAuthor.setImageResource( R.drawable.ic_drawer );
-
+    downloadbutton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        //(ImageView) ownContainer.findViewWithTag("ok"+position).setImageResource(R.drawable.ok);
+        downloadbutton = (ImageView) ownContainer.findViewWithTag("ok"+position);
+        downloadbutton.setImageResource(R.drawable.ok);
+        downloadtext = (TextView) ownContainer.findViewWithTag("text"+position);
+        downloadtext.setText("geladen");
+        downloadtext.setVisibility(View.VISIBLE);
+      }
+    });
     txtTitle.setText( tour.name() );
     txtAuthor.setText( tour.author() );
     txtTimeLength.setText( tour.time() + "/" + tour.length() );
@@ -107,6 +122,8 @@ public class TourAdapter extends BaseAdapter{
       });
     }
     view = convertView;
+    ownContainer=parent;
+
     return convertView;
   }
 
@@ -114,12 +131,29 @@ public class TourAdapter extends BaseAdapter{
   {if(open)
   {RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
     lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
-    lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
     lp.addRule(RelativeLayout.ABOVE, R.id.divider);
-    downloadbutton.setLayoutParams(lp);}
+    lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
+    downloadbutton.setLayoutParams(lp);
+
+    RelativeLayout.LayoutParams lptext = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    lptext.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+    lptext.addRule(RelativeLayout.ABOVE, R.id.divider);
+    lptext.addRule(RelativeLayout.LEFT_OF, R.id.downloadview);
+    downloadtext.setLayoutParams(lptext);
+
+  }
   else{RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
     lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
-    lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
     lp.addRule(RelativeLayout.ABOVE, 0);
-    downloadbutton.setLayoutParams(lp);}}
+    lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
+    downloadbutton.setLayoutParams(lp);
+
+    RelativeLayout.LayoutParams lptext = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    lptext.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
+    lptext.addRule(RelativeLayout.ABOVE, 0);
+    lptext.addRule(RelativeLayout.LEFT_OF, R.id.downloadview);
+    downloadtext.setLayoutParams(lptext);
+  }}
+
+
 }
