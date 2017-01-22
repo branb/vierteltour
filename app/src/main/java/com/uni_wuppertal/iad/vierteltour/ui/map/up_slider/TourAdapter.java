@@ -2,7 +2,9 @@ package com.uni_wuppertal.iad.vierteltour.ui.map.up_slider;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +33,12 @@ public class TourAdapter extends BaseAdapter{
   private Singletonint singlepage;
   private ViewGroup ownContainer;
   private List<Tour> tours;
+  private SharedPreferences sharedPreferences;
+  private SharedPreferences.Editor e;
 
-  public TourAdapter( MapsActivity m, List<Tour> tours){
+  public TourAdapter( MapsActivity m, List<Tour> tours, Context context){
+    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    e = sharedPreferences.edit();
     this.tours = tours;
     mapsActivity = m;
   }
@@ -76,15 +82,26 @@ public class TourAdapter extends BaseAdapter{
     ImageButton btnStart = (ImageButton) convertView.findViewById( R.id.zumstartlist );
     View divider = convertView.findViewById( R.id.divider );
 
-    Tour tour = tours.get( position );
+    final Tour tour = tours.get( position );
     convertView.setBackgroundColor( Color.parseColor( tour.color() ) );
+
+    if(sharedPreferences.getBoolean(tour.slug(), false))
+      {downloadbutton.setImageResource(R.drawable.ok);
+      downloadtext.setText("geladen");
+      downloadtext.setVisibility(View.VISIBLE);}
+    else{downloadbutton.setImageResource(R.drawable.laden);
+      downloadtext.setVisibility(View.GONE);}
+
 
     // TODO: Insert author image
     imgAuthor.setImageResource( R.drawable.ic_drawer );
     downloadbutton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        //(ImageView) ownContainer.findViewWithTag("ok"+position).setImageResource(R.drawable.ok);
+
+        //Add downloaded Tour to prefs
+        e.putBoolean( tour.slug(), true);
+        e.apply();
         downloadbutton = (ImageView) ownContainer.findViewWithTag("ok"+position);
         downloadbutton.setImageResource(R.drawable.ok);
         downloadtext = (TextView) ownContainer.findViewWithTag("text"+position);

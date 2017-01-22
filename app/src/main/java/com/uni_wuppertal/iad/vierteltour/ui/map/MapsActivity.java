@@ -104,7 +104,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public static ClickableViewpager mPager;
   private StationAdapter stationAdapter;
   private DrawerAdapter draweradapter;
-  private TourAdapter adapter;
+  public static TourAdapter adapter;
   private List<View> tourlistview;
   private List<DrawerItem> drawerItems;
   private LatLng wuppertal;
@@ -480,6 +480,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     drawRoutes();
   }
 
+  public ListView lv()
+  {return lv;}
+
   // Convert a view to bitmap for Pins with Numbers
   public static Bitmap createDrawableFromView(Context context, View view) {
     DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -671,13 +674,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
     });
 
-    adapter = new TourAdapter( this, tourlist.city( visibleCity ).tours());
+    adapter = new TourAdapter( this, tourlist.city( visibleCity ).tours(), this);
     lv.setAdapter( adapter );
 
   }
-
-  public ListView lv()
-  {return lv;}
 
   public void initPager(){
     //Initialisiere Pager
@@ -879,6 +879,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         // FragmentTransaction ftx = fragmentManager.beginTransaction();
         if( position == 0 ){
           Intent i = new Intent(MapsActivity.this, Einstellungen.class);
+
           //i.putExtra("tours", tourlist.tours());     //gib touren weiter
           startActivity(i);
 

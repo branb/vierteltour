@@ -1,7 +1,9 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map.up_slider;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ public class EinstellungenTourAdapter extends BaseAdapter {
 
   private List<Tour> tours;
   private Context context;
+
 
   public EinstellungenTourAdapter(List<Tour> tours, Context context){
     this.tours=tours;
