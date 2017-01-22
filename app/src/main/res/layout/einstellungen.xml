@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+  android:color="@color/ColorPrimary">
 
 
   <RelativeLayout
     android:id="@+id/listLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="visible">
+    android:visibility="visible"
+    android:color="@color/ColorPrimary">
 
     <ListView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:id="@+id/listEinstellungen"/>
+      android:id="@+id/listEinstellungen"
+      android:color="@color/ColorPrimary"/>
   </RelativeLayout>
 
 

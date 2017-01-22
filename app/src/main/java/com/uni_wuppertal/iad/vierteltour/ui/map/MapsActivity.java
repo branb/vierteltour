@@ -4,7 +4,9 @@ package com.uni_wuppertal.iad.vierteltour.ui.map;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -41,6 +43,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -75,6 +87,7 @@ import com.uni_wuppertal.iad.vierteltour.utility.ReplaceFont;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -84,6 +97,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public LatLng pos;
   public LocationManager locationManager;
   public LocationListener locationListener;
+  final static int REQUEST_LOCATION = 1;
+  private GoogleApiClient googleApiClient;
   public int CurrentZoom = 15;
   int[] drawerIcons = new int[]{ R.drawable.einstellungen,
                                  R.drawable.hilfe,
@@ -152,7 +167,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     setContentView( R.layout.activity_main );
 
     player = ViertelTourMediaPlayer.getInstance( this );
-
 
     initLocationServices();
     initAll();
@@ -253,8 +267,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if( !checkedForUpdates ){
       Updater.get( getBaseContext() ).updateListener( this );
       Updater.get( getBaseContext() ).updatesOnTourdata();
+      System.out.println("Check");
     }
     else if( !Updater.get( getBaseContext() ).checkingForUpdates() ) {
+      System.out.println("TEST");
       loadTourdata();
     }
 
@@ -738,6 +754,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     tarbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
+
+      final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {enableLoc();
+        googleApiClient=null;}
+
+
         if( MyLocation != null ){ // GPS-Signal ist da
           Toast.makeText( getApplicationContext(), "Signal da!", Toast.LENGTH_SHORT )
                .show();
@@ -764,6 +786,81 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     });
 
   }
+
+  private void enableLoc() {
+    if (googleApiClient == null) {
+      googleApiClient = new GoogleApiClient.Builder(this)
+        .addApi(LocationServices.API)
+        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+          @Override
+          public void onConnected(Bundle bundle) {
+
+          }
+          @Override
+          public void onConnectionSuspended(int i) {
+            googleApiClient.connect();
+          }
+        })
+        .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+          @Override
+          public void onConnectionFailed(ConnectionResult connectionResult) {
+
+            Log.d("Location error","Location error " + connectionResult.getErrorCode());
+          }
+        }).build();
+      googleApiClient.connect();
+
+      LocationRequest locationRequest = LocationRequest.create();
+      locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+      locationRequest.setInterval(30 * 1000);
+      locationRequest.setFastestInterval(5 * 1000);
+      LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+        .addLocationRequest(locationRequest);
+
+      builder.setAlwaysShow(true);
+
+      PendingResult<LocationSettingsResult> result =
+        LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+      result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+        @Override
+        public void onResult(LocationSettingsResult result) {
+          final Status status = result.getStatus();
+          switch (status.getStatusCode()) {
+            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+              try {
+                // Show the dialog by calling startResolutionForResult(),
+                // and check the result in onActivityResult().
+                status.startResolutionForResult(MapsActivity.this, REQUEST_LOCATION);
+              } catch (IntentSender.SendIntentException e) {
+                // Ignore the error.
+              }
+              break;
+          }
+        }
+      });
+    }
+
+  }
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    switch (requestCode) {
+      case REQUEST_LOCATION:
+        switch (resultCode) {
+          case Activity.RESULT_CANCELED: {
+            // The user was asked to change settings, but chose not to
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+        break;
+    }
+
+  }
+
+
 
   @Override
   protected void onPostCreate( Bundle savedInstanceState ){
@@ -1114,16 +1211,6 @@ public Bitmap markertext(Tour tour, String text)
    */
   private void loadTourdata(){
     tourlist = new TourListReader( this ).readTourList();
-
-    Log.d( "Xml/getCity", "Searching for City 'wuppertal': " + tourlist.city( "wuppertal" ).name() );
-
-    Tour tourFortschrott = tourlist.tour( "fortschrott" );
-    Log.d( "Xml/getTour", "Searching for Tour 'fortschrott': " + tourFortschrott.name() );
-    Log.d( "Xml/getFortschrottHome", "Home directory': " + tourFortschrott.home() );
-
-    RouteWaypoint waypointFortschrott = tourFortschrott.route().waypoints().get( 0 );
-    Log.d( "Xml/getFortschrottRoute", "First coordinates of Fortschrott Route: " + waypointFortschrott.latitude() + " / " + waypointFortschrott.longitude() );
-
     makePolylines();
     drawRoutes();
 
@@ -1138,8 +1225,7 @@ public Bitmap markertext(Tour tour, String text)
   @Override
   public void noNewTourdataAvailable(){
     checkedForUpdates = true;
-    loadTourdata();
-  }
+    loadTourdata();}
 
   @Override
   public void tourlistDownloaded(){

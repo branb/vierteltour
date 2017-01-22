@@ -117,6 +117,8 @@ public class Updater extends ContextWrapper{
     if( !isNetworkAvailable() ){
       // TODO: Replace Toasts (all of them, not just this one) with proper UI elements (modals etc.)
       Toast.makeText( getApplicationContext(), "Can't check for updates: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
+      //if()
+      updateListener.noNewTourdataAvailable();
       return false;
     }
 
