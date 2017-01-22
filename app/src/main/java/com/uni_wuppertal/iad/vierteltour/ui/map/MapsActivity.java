@@ -164,6 +164,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
     ReplaceFont.replaceDefaultFont(this, "MONOSPACE", "Bariol_Regular.ttf");
+
     setContentView( R.layout.activity_main );
 
     player = ViertelTourMediaPlayer.getInstance( this );
@@ -725,10 +726,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     });
 
 
-
     arrowbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {enableLoc();
+          googleApiClient=null;
+        }
         // Navigation require current Location
         if( MyLocation != null && singlepage.INSTANCE.selectedStation()!=null){
           // Uri for google navigation
@@ -757,18 +761,19 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
       final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {enableLoc();
-        googleApiClient=null;}
-
+        googleApiClient=null;
+        }
+        if(MyLocation==null)Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT ).show();
+       // while(MyLocation==null){}
 
         if( MyLocation != null ){ // GPS-Signal ist da
-          Toast.makeText( getApplicationContext(), "Signal da!", Toast.LENGTH_SHORT )
-               .show();
           mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );
         } else { // GPS-Signal nicht da
-          Toast.makeText( getApplicationContext(), "Bitte starten Sie die GPS Funktion und warten einen Moment.", Toast.LENGTH_SHORT )
-               .show();
+
         }
-      }
+
+
+    }
     });
 
     gpsbtn.setOnTouchListener(new View.OnTouchListener() {
@@ -816,7 +821,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       locationRequest.setFastestInterval(5 * 1000);
       LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
         .addLocationRequest(locationRequest);
-
       builder.setAlwaysShow(true);
 
       PendingResult<LocationSettingsResult> result =
