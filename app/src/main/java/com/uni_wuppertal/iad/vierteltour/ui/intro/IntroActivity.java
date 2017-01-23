@@ -44,7 +44,7 @@ public class IntroActivity extends AppIntro{
 
     // Turn vibration on and set intensity.
     // NOTE: you will probably need to ask VIBRATE permission in Manifest.
-//    setVibrate( true );
+    // setVibrate( true );
     setVibrateIntensity( 30 );
 
 

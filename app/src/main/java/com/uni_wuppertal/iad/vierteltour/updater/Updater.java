@@ -62,8 +62,7 @@ public class Updater extends ContextWrapper{
     super( base );
 
     // TODO: Move the URL to the resources once you have finetuned the updater behaviour
-    updateServerUrl = PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getString( "updateServerUrl", "http://smallfish.eu/vierteltour/" );
-    //updateServerUrl = PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getString( "updateServerUrl", "http://10.0.2.2:8888" );
+    updateServerUrl = PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getString( "updateServerUrl", "http://www.vierteltour.uni-wuppertal.de/files/" );
 
     downloadManager = new ThinDownloadManager();
   }

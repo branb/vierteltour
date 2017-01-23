@@ -6,11 +6,11 @@ package com.uni_wuppertal.iad.vierteltour.updater;
  */
 public interface UpdateListener{
 
-  public void newTourdataAvailable();
+  void newTourdataAvailable();
 
-  public void noNewTourdataAvailable();
+  void noNewTourdataAvailable();
 
-  public void tourlistDownloaded();
+  void tourlistDownloaded();
 
-  public void tourdataDownloaded();
+  void tourdataDownloaded();
 }
