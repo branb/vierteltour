@@ -150,6 +150,7 @@ public class TourAdapter extends BaseAdapter{
     lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
     lp.addRule(RelativeLayout.ABOVE, R.id.divider);
     lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
+
     downloadbutton.setLayoutParams(lp);
 
     RelativeLayout.LayoutParams lptext = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);

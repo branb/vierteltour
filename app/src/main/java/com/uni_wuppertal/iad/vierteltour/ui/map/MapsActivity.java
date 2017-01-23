@@ -745,7 +745,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           intent.setClassName( "com.google.android.apps.maps", "com.google.android.maps.MapsActivity" );
           startActivity( intent );
         } else if (MyLocation == null){
-          Toast.makeText( getApplicationContext(), "Kein GPS Signal vorhanden.", Toast.LENGTH_SHORT )
+          Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT )
                .show();
         }
         else {
@@ -763,16 +763,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {enableLoc();
         googleApiClient=null;
         }
-        if(MyLocation==null)Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT ).show();
-       // while(MyLocation==null){}
+        if(MyLocation==null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER))Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT ).show();
 
         if( MyLocation != null ){ // GPS-Signal ist da
           mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );
-        } else { // GPS-Signal nicht da
-
         }
-
-
     }
     });
 
