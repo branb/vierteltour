@@ -71,7 +71,7 @@ public class StationActivity extends Activity{
   LinearLayout pager_indicator;
   RelativeLayout gesperrt;
   boolean sperrvariable=true;
-  TextView ausrufe;
+  ImageView pfeilhell;
 
 
   //Runnables zuständig für Aktualisierung der fortgeschrittenen Zeit der Player
@@ -196,7 +196,7 @@ public class StationActivity extends Activity{
     duration = (TextView) findViewById( R.id.duration );
     duration.setTextColor( Color.GRAY );
     gesperrt = (RelativeLayout) findViewById(R.id.gesperrt);
-    ausrufe = (TextView) findViewById(R.id.ausrufezeichen);
+    pfeilhell = (ImageView) findViewById(R.id.pfeilhell);
     imagePager = (ViewPager) findViewById( R.id.ImagePager );
     mAdapter = new InformationPagerAdapter( this, stationImagePaths, this);
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
@@ -246,7 +246,7 @@ public class StationActivity extends Activity{
 
     if(sperrvariable)
     {gesperrt.setVisibility(View.VISIBLE);
-      ausrufe.setOnClickListener(new View.OnClickListener() {
+      pfeilhell.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
           sperrvariable=false;

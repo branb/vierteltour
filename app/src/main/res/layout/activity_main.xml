@@ -68,7 +68,8 @@
                   android:id="@+id/arrowwhite"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:src="@drawable/google_navi_dunkel"
+                  android:src="@drawable/google_navi_hell"
+                  android:paddingBottom="5dp"
                   android:layout_centerHorizontal="true"
                   android:layout_alignParentTop="true"/>
 
