@@ -339,7 +339,9 @@ public class StationActivity extends Activity{
 
         if(size.equals(number)){background.putExtra("vergleich", 1);}
         else {background.putExtra("vergleich", 0);}
-        startActivity(background);}
+        startActivity(background);
+        duration.setText("0:00");
+        seekbar.setProgress(0);}
         else
         { RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
           layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
