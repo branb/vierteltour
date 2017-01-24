@@ -297,7 +297,7 @@ public class StationActivity extends Activity{
 
 
   public void initAudio(){
-    if( !audio.contains(".mp3") ){
+    if( !audio.contains(".mp3") || OurStorage.get(getApplicationContext()).pathToFile(audio)==null){
       play_button.setVisibility(View.GONE);
       seekbar.setVisibility(View.GONE);
       duration.setVisibility(View.GONE);

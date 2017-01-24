@@ -30,6 +30,7 @@ public class InformationPagerAdapter extends PagerAdapter{
   private ArrayList<String> stationImagePaths;
   private ImageView imageView;
   private Intent gallery;
+  private boolean fileAvailable=true;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
 
@@ -67,18 +68,21 @@ public class InformationPagerAdapter extends PagerAdapter{
       {Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
         MediaStore.Images.Thumbnails.MINI_KIND);
       imageView.setImageBitmap(thumbnail);}
-    else{imageView.setImageResource(R.drawable.i);}}
+    else{imageView.setImageResource(R.drawable.i);
+      fileAvailable=false;}}
 
     else if (resources.endsWith("jpg")) {
       imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
       {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );}
-      else{imageView.setImageResource(R.drawable.i);}}
+      else{imageView.setImageResource(R.drawable.i);
+        fileAvailable=false;}}
 
     container.addView( itemView );
 
-    imageView.setOnClickListener(new View.OnClickListener()
+    if(fileAvailable)
+    {imageView.setOnClickListener(new View.OnClickListener()
     {
       @Override
       public void onClick(View v)
@@ -90,7 +94,7 @@ public class InformationPagerAdapter extends PagerAdapter{
         singlepage.INSTANCE.position(position);
         stationActivity.startActivityForResult(gallery, 1);
       }
-    });
+    });}
 
     return itemView;
   }
