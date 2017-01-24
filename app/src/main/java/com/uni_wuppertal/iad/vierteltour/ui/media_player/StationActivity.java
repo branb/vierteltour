@@ -165,6 +165,12 @@ public class StationActivity extends Activity{
       stationImagePaths.add(video);
     }
 
+    //Dont show Media of not downloaded tours
+    /*for(int i=stationImagePaths.size()-1;i>=0;i--)
+    {if(OurStorage.get(this).pathToFile(stationImagePaths.get(i))==null)
+    stationImagePaths.remove(i);}*/
+
+
     audio = (String) b.get( "audio" );
 
 
@@ -233,8 +239,7 @@ public class StationActivity extends Activity{
 
   //zeigt nur Ressourcen an, die vorhanden sind
   public void hide(){
-    System.out.println("Audio: "+ audio);
-    if( !audio.contains(".mp3") || sperrvariable ){
+    if( !audio.contains(".mp3") || sperrvariable || OurStorage.get(this).pathToFile(audio)==null){
       seekbar.setVisibility( View.GONE );
       play_button.setVisibility( View.GONE );
       duration.setVisibility( View.GONE );
@@ -251,7 +256,7 @@ public class StationActivity extends Activity{
         public void onClick(View view) {
           sperrvariable=false;
           gesperrt.setVisibility(View.GONE);
-          if(audio.contains(".mp3"))
+          if(audio.contains(".mp3") && OurStorage.get(getApplicationContext()).pathToFile(audio)!=null)
           {seekbar.setVisibility( View.VISIBLE );
             play_button.setVisibility( View.VISIBLE );
             duration.setVisibility( View.VISIBLE );}

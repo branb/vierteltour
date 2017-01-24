@@ -50,7 +50,6 @@ public class InformationPagerAdapter extends PagerAdapter{
   }
 
 
-  //Probleme wegen final int?
   @Override
   public Object instantiateItem( ViewGroup container,final int position ){
     View itemView = LayoutInflater.from( mContext )
@@ -64,14 +63,18 @@ public class InformationPagerAdapter extends PagerAdapter{
     //TODO: HIER WURDE TMP EDITIERT
     if(resources.endsWith("mp4"))
     { imageView.setVisibility(View.VISIBLE);
-      Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
+      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
+      {Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
         MediaStore.Images.Thumbnails.MINI_KIND);
       imageView.setImageBitmap(thumbnail);}
+    else{imageView.setImageResource(R.drawable.i);}}
 
     else if (resources.endsWith("jpg")) {
       imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
-      imageView.setImageURI( Uri.fromFile( new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))) ) );}
+      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
+      {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );}
+      else{imageView.setImageResource(R.drawable.i);}}
 
     container.addView( itemView );
 
@@ -105,18 +108,4 @@ public class InformationPagerAdapter extends PagerAdapter{
 
   public ImageView getImageView()
   {return imageView;}
-
-
-   /* mAdapter.getImageView().setOnClickListener(new View.OnClickListener(){
-      @Override
-      public void onClick( View v ){
-        startvideo = true;
-        player.getVideoview().setVisibility(View.VISIBLE);
-        mAdapter.hideImage();
-        player.getVideoview().start();
-        play_buttonGallery.setImageResource( R.drawable.stop_hell );
-        seekUpdationVideo();
-      }
-    });
-*/
 }

@@ -66,14 +66,17 @@ public class GalleryPagerAdapter extends PagerAdapter {
 //TODO: stationimagepaths to stationresourcepaths with video and images to show
     //TODO: HIER WURDE TMP EDITIERT
     if(resources.endsWith("mp4"))
-    { videoView.setVideoPath(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)));
-      videoView.setVisibility(View.GONE);
+    { videoView.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
-      Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
+      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
+      {videoView.setVideoPath(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)));
+        Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
         MediaStore.Images.Thumbnails.MINI_KIND);
-      imageView.setImageBitmap(thumbnail);
-      imageBtn.setVisibility(View.VISIBLE);
-      player.setVideoview(videoView);
+        imageView.setImageBitmap(thumbnail);
+        imageBtn.setVisibility(View.VISIBLE);
+        player.setVideoview(videoView);}
+      else{imageView.setImageResource(R.drawable.i);}
+
 
       videoView.setOnTouchListener(new View.OnTouchListener() {
         @Override
@@ -119,7 +122,9 @@ public class GalleryPagerAdapter extends PagerAdapter {
       videoView.setVisibility(View.GONE);
       imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
-      imageView.setImageURI( Uri.fromFile( new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))) ) );}
+      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
+      {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );}
+      else{imageView.setImageResource(R.drawable.i);}}
 
     container.addView( itemView );
     ownContainer = container;

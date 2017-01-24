@@ -359,12 +359,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void selectStation(Station station)
   {                //löscht alte Station
     if(singlepage.INSTANCE.selectedStation()!=null)
-    {for(int i=0; i<singlepage.INSTANCE.selectedTour().stations().size();i++){markers.get(singlepage.INSTANCE.selectedTour().station(i+1).slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (i+1))));}}
+    {for(int i=0; i<singlepage.INSTANCE.selectedTour().stations().size();i++){markers.get(singlepage.INSTANCE.selectedTour().station(i+1).slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (i))));}}
 
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
    // markers.get(station.slug());
     circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0,1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1,singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8).visible(true);
-    markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()))));
+    markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1))));
     drawRoutes();
 
     if(!PreferenceManager
@@ -432,8 +432,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     //Set Numbers on selected Tour
     for(Station station : tour.stations())
-    {String tmpNumber = ""+(station.number());
-      markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,tmpNumber)));}
+    {
+      markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,(station.number()-1)+"")));}
 
     // Unselect all other tours
     for( Tour t : tourlist.city( visibleCity ).tours() ){

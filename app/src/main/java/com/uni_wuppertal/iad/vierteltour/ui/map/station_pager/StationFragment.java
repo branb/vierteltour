@@ -30,7 +30,6 @@ public class StationFragment extends Fragment{
   private static Bundle arguments;
   private static ArrayList<String> ztitle = new ArrayList<>();
   private static ArrayList<View> fragments = new ArrayList<>();
-  private long mDeBounce;
   private Singletonint singlepage;
   private int position;
 
@@ -60,10 +59,12 @@ public class StationFragment extends Fragment{
       position = getArguments().getInt( ARG_PAGE_NUMBER );
 
       title.setText( ztitle.get( position-1 ) );
-      number.setText(position + "");
+      if(singlepage.INSTANCE.selectedTour().station(position).latlng()!=null)
+      {number.setText((position-1) + "");
       LayerDrawable bgDrawable = (LayerDrawable)numberlayout.getBackground();
       final GradientDrawable shape = (GradientDrawable)   bgDrawable.findDrawableByLayerId(R.id.shape_id);
-      shape.setColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color()));
+      shape.setColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color()));}
+      else numberlayout.setVisibility(View.GONE);
 
 
       btItem.setOnTouchListener(new View.OnTouchListener() {

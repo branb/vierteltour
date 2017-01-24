@@ -25,6 +25,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -383,7 +384,7 @@ public void initAll()
       isimages=singlepage.INSTANCE.position();
       imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
 
-      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
+      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE && OurStorage.get(getApplicationContext()).pathToFile(getExternalFilesDir( null ) +"/" + res.get(position))!=null)
       {player.getVideoview().setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position));
         showGalleryVideoBar();}
       else
