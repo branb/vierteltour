@@ -98,7 +98,6 @@ public class OurStorage extends ContextWrapper{
     String pathToFile;
 
     if( !isFileAccessible( path ) ){
-      System.out.println("not found");
       return null;
     } else {
       File file = new File( externalFilesDir, path );

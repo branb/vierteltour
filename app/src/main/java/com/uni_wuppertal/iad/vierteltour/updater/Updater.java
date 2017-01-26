@@ -21,10 +21,16 @@ import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListenerV1;
 import com.thin.downloadmanager.ThinDownloadManager;
 
+import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
+import com.uni_wuppertal.iad.vierteltour.ui.map.TourList;
+import com.uni_wuppertal.iad.vierteltour.ui.map.TourListReader;
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
+
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -269,6 +275,7 @@ public class Updater extends ContextWrapper{
 
     final UpdateListener listener = updateListener;
 
+
     Log.d( DEBUG_TAG, "Starting download of tourlist..." );
 
     String url = updateServerUrl + "/tourlist";
@@ -358,9 +365,16 @@ public class Updater extends ContextWrapper{
 
     Log.d( DEBUG_TAG, "Starting file download..." );
 
+    TourListReader tourListReader = new TourListReader(this);
+    TourList tourlist = tourListReader.readTourList();
+
+    //System.out.println(tourlist.);
+
     String destination = new File( OurStorage.get( Updater.this ).storagePath() )  + "/tours.zip";
 
+
     Uri downloadUri = Uri.parse( updateServerUrl + "/tours.zip" );
+
     Uri destinationUri = Uri.parse( destination );
 
     // Setup the download, with nice callback function on different events throughout the download
