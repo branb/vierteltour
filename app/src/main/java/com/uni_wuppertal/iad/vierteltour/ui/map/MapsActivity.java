@@ -2,6 +2,7 @@ package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -12,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,6 +26,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.transition.Visibility;
 import android.util.DisplayMetrics;
@@ -35,6 +38,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -182,6 +186,19 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
+
+
+    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+// ...Irrelevant code for customizing the buttons and title
+    LayoutInflater inflater = this.getLayoutInflater();
+    View dialogView = inflater.inflate(R.layout.alert_dialog, null);
+   // dialogView.setBackground(new ColorDrawable(Color.TRANSPARENT));
+   // .setStyle(DialogFragment.STYLE_NO_FRAME, 0);
+    dialogBuilder.setView(dialogView);
+
+    Dialog alertDialog = dialogBuilder.create();
+    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    alertDialog.show();
 
   }
 
@@ -731,7 +748,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onClick( View v ){
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {enableLoc();
-          googleApiClient=null;
+      //    googleApiClient=null;
         }
         // Navigation require current Location
         if( MyLocation != null && singlepage.INSTANCE.selectedStation()!=null){
@@ -761,7 +778,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
       final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {enableLoc();
-        googleApiClient=null;
+     //   googleApiClient=null;
         }
         if(MyLocation==null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER))Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT ).show();
 
