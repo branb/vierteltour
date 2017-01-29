@@ -31,11 +31,13 @@ import android.support.v7.widget.Toolbar;
 import android.transition.Visibility;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -187,19 +189,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
 
-
-    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-// ...Irrelevant code for customizing the buttons and title
-    LayoutInflater inflater = this.getLayoutInflater();
-    View dialogView = inflater.inflate(R.layout.alert_dialog, null);
-   // dialogView.setBackground(new ColorDrawable(Color.TRANSPARENT));
-   // .setStyle(DialogFragment.STYLE_NO_FRAME, 0);
-    dialogBuilder.setView(dialogView);
-
-    Dialog alertDialog = dialogBuilder.create();
-    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-    alertDialog.show();
-
+    createDialog("test");
   }
 
   public void initAll() {
@@ -512,6 +502,37 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
     suplInfo( "invisible" );
     drawRoutes();
+  }
+
+  public void createDialog(String txt)
+  {// Create custom dialog object
+    final Dialog dialog = new Dialog(this);
+    // Include dialog.xml file
+    dialog.setContentView(R.layout.alert_dialog);
+    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    dialog.show();
+    // set values for custom dialog components - text, image and button
+    TextView text = (TextView) dialog.findViewById(R.id.main_text);
+    text.setText(txt);
+
+
+    Button okayButton = (Button) dialog.findViewById(R.id.left_btn);
+    // if decline button is clicked, close the custom dialog
+    okayButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Close dialog
+        System.out.println("Okay");
+        dialog.dismiss();}});
+
+    Button declineButton = (Button) dialog.findViewById(R.id.right_btn);
+    // if decline button is clicked, close the custom dialog
+    declineButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Close dialog
+        dialog.dismiss();}});
+
   }
 
   public ListView lv()

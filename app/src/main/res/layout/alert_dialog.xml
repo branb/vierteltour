@@ -2,85 +2,46 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-  android:background="@drawable/round_layout">
+  android:background="@drawable/round_layout"
+  android:layout_centerVertical="true"
+  android:layout_centerHorizontal="true">
 
-  <TextView
-    android:id="@+id/main_text"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:text="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    android:layout_centerHorizontal="true"
-    android:gravity="center"/>
+    <TextView
+      android:id="@+id/main_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:text="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      android:layout_centerHorizontal="true"
+      android:gravity="center"
+      android:paddingBottom="20dp"
+      android:paddingTop="10dp"/>
 
-  <RelativeLayout
-    android:id="@+id/center"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:visibility="invisible">
-  </RelativeLayout>
-
-
-  <Button
+  <LinearLayout
+    android:id="@+id/dialog_buttons"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/left_btn"
-    android:layout_alignParentLeft="true"
-    android:layout_toLeftOf="@+id/center"
-    android:text="Okay"
+    android:layout_centerHorizontal="true"
     android:layout_below="@+id/main_text"
-    android:background="@drawable/border_layout_left"
-    >
+    android:weightSum="2">
+    <Button
+      android:layout_width="0dp"
+      android:layout_weight="1"
+      android:layout_height="wrap_content"
+      android:id="@+id/left_btn"
+      android:text="Okay"
+      android:background="@drawable/border_layout_left"
+      />
 
-  </Button>
+    <Button
+      android:layout_width="0dp"
+      android:layout_weight="1"
+      android:layout_height="wrap_content"
+      android:id="@+id/right_btn"
+      android:text="Abbrechen"
+      android:background="@drawable/border_layout_right" />
+    </LinearLayout>
 
-
-  <Button
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/right_btn"
-    android:layout_alignParentRight="true"
-    android:layout_toRightOf="@+id/center"
-    android:text="Abbrechen"
-    android:background="@drawable/border_layout_right"
-    android:layout_below="@+id/main_text">
-
-  </Button>
-
-
- <!--     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/left_btn"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/center"
-        android:layout_below="@+id/main_text"
-        android:src="@drawable/border_layout_left"
-        >
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Okay"
-          android:gravity="center"
-          android:layout_centerHorizontal="true" />
-      </RelativeLayout>
-
-
-      <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/right_btn"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/center"
-        android:src="@drawable/border_layout_left"
-        android:layout_below="@+id/main_text">
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Abbrechen"
-          android:gravity="center"
-          android:layout_centerHorizontal="true" />
-      </RelativeLayout>-->
 
 </RelativeLayout>
