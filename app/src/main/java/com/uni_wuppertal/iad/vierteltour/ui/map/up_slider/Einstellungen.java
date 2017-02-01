@@ -81,6 +81,7 @@ public class Einstellungen extends Activity{
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         e.remove(tours.get(position).slug()).apply();
         tours.remove(position);
+        //TODO ADD DIALOG AND DELETE TOUR
         einstellungenTourAdapter.notifyDataSetChanged();
         MapsActivity.adapter.notifyDataSetChanged();
         if(tours.size()<2) tourenLoeschen.setVisibility(View.GONE);
@@ -93,6 +94,9 @@ public class Einstellungen extends Activity{
         for(int i=tours.size()-1;i>=0;i--)
         {e.remove(tours.get(i).slug()).apply();
           tours.remove(i);}
+
+        //TODO ADD DIALOG AND DELETE TOURS
+
         einstellungenTourAdapter.notifyDataSetChanged();
         MapsActivity.adapter.notifyDataSetChanged();
         tourenLoeschen.setVisibility(View.GONE);

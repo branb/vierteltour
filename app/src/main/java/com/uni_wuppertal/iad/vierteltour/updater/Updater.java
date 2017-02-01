@@ -125,7 +125,7 @@ public class Updater extends ContextWrapper{
     // If the phone has no connection to the internet, tell this to the user.
     if( !isNetworkAvailable() ){
       // TODO: Replace Toasts (all of them, not just this one) with proper UI elements (modals etc.)
-      Toast.makeText( getApplicationContext(), "Can't check for updates: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
+     // Toast.makeText( getApplicationContext(), "Can't check for updates: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
       //if()
       updateListener.noNewTourdataAvailable();
       return false;
@@ -271,7 +271,7 @@ public class Updater extends ContextWrapper{
   public boolean downloadTourlist(){
     // If the phone has no connection to the internet, tell this to the user.
     if( !isNetworkAvailable() ){
-      Toast.makeText( getApplicationContext(), "Can't download tourlist: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
+     // Toast.makeText( getApplicationContext(), "Can't download tourlist: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
       return false;
     }
 
@@ -296,20 +296,20 @@ public class Updater extends ContextWrapper{
         // Define a Toast object so we can update it and display it for as long as the onProgress-object fires
         // It's only a temporary solution during development anyways, so, don't tweak it further, e.g. it would still disappear
         // if onProgress doesn't fire for more than 3.5s due to network delay etc.
-        Toast statusToast = Toast.makeText( getApplicationContext(), "intentionally left blank - or, something like that", Toast.LENGTH_LONG );
+   //     Toast statusToast = Toast.makeText( getApplicationContext(), "intentionally left blank - or, something like that", Toast.LENGTH_LONG );
 
         String successMessage = "Download completed!";
         String errorMessage = "Download FAILED!\n" + "Message:\n";
         String progressMessage = "Download in progress! (";
-        String toastText = "Tourenliste wird heruntergeladen - bitte einen Moment Geduld";
+       // String toastText = "Tourenliste wird heruntergeladen - bitte einen Moment Geduld";
         Boolean updateProgress = true;
 
         @Override
         public void onDownloadComplete( DownloadRequest request ) {
           Log.d( DEBUG_TAG, successMessage  + request.getDestinationURI().toString() );
 
-          statusToast.setText( "Die Tourenliste wurde vollständig heruntergeladen." );
-          statusToast.show();
+       //   statusToast.setText( "Die Tourenliste wurde vollständig heruntergeladen." );
+      //    statusToast.show();
 
           checkingForUpdates = false;
           listener.tourlistDownloaded();
@@ -319,8 +319,8 @@ public class Updater extends ContextWrapper{
         public void onDownloadFailed( DownloadRequest request, int returnCode, String returnMessage ) {
           Log.d( DEBUG_TAG, errorMessage + returnMessage + " (" + returnCode + ")" );
 
-          statusToast.setText( "Beim Herunterladen der Tourenliste ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat." );
-          statusToast.show();
+         // statusToast.setText( "Beim Herunterladen der Tourenliste ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat." );
+       //   statusToast.show();
 
           checkingForUpdates = false;
         }
@@ -331,20 +331,20 @@ public class Updater extends ContextWrapper{
             if( updateProgress ){
               Log.d( DEBUG_TAG, progressMessage + downlaodedBytes + " / " + totalBytes + ") - Progress? => " + progress + " (" + updateProgress.toString() + ")" );
 
-              toastText = toastText + ".";
-              statusToast.setText( toastText );
+            //  toastText = toastText + ".";
+           //   statusToast.setText( toastText );
               updateProgress = false;
             }
           } else {
             updateProgress = true;
           }
 
-          statusToast.show();
+      //    statusToast.show();
         }
       });
 
     // Display the message to the user for as long as the download lasts
-    Toast.makeText( getApplicationContext(), "Beginne die Tourenliste herunterzuladen...", Toast.LENGTH_LONG ).show();
+ //   Toast.makeText( getApplicationContext(), "Beginne die Tourenliste herunterzuladen...", Toast.LENGTH_LONG ).show();
 
     // Start the download
     this.tourlistDownloadId = downloadManager.add( downloadRequest );
@@ -359,7 +359,7 @@ public class Updater extends ContextWrapper{
   public boolean downloadTourdata( ){
     // If the phone has no connection to the internet, tell this to the user.
     if( !isNetworkAvailable() ){
-      Toast.makeText( getApplicationContext(), "Can't download file: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
+   //   Toast.makeText( getApplicationContext(), "Can't download file: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
       return false;
     }
 
@@ -395,12 +395,12 @@ public class Updater extends ContextWrapper{
         // Define a Toast object so we can update it and display it for as long as the onProgress-object fires
         // It's only a temporary solution during development anyways, so, don't tweak it further, e.g. it would still disappear
         // if onProgress doesn't fire for more than 3.5s due to network delay etc.
-        Toast statusToast = Toast.makeText( getApplicationContext(), "intentionally left blank - or, something like that", Toast.LENGTH_LONG );
+   //     Toast statusToast = Toast.makeText( getApplicationContext(), "intentionally left blank - or, something like that", Toast.LENGTH_LONG );
 
         String successMessage = "Download completed!";
         String errorMessage = "Download FAILED!\n" + "Message:\n";
         String progressMessage = "Download in progress! (";
-        String toastText = "Tourdaten werden heruntergeladen - bitte einen Moment Geduld";
+   //     String toastText = "Tourdaten werden heruntergeladen - bitte einen Moment Geduld";
         Boolean updateProgress = true;
 
         @Override
@@ -429,8 +429,8 @@ public class Updater extends ContextWrapper{
         public void onDownloadFailed( DownloadRequest request, int returnCode, String returnMessage ) {
           Log.d( DEBUG_TAG, errorMessage + returnMessage + " (" + returnCode + ")" );
 
-          statusToast.setText( "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat." );
-          statusToast.show();
+      //    statusToast.setText( "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat." );
+     //     statusToast.show();
 
           checkingForUpdates = false;
         }
@@ -449,14 +449,14 @@ public class Updater extends ContextWrapper{
             updateProgress = true;
           }
 
-          statusToast.show();
+    //      statusToast.show();
         }
       });
 
     // Start the download
 
     // Display the message to the user for as long as the download lasts
-    Toast.makeText( getApplicationContext(), "Beginne die Tourdaten herunterzuladen...", Toast.LENGTH_LONG ).show();
+   // Toast.makeText( getApplicationContext(), "Beginne die Tourdaten herunterzuladen...", Toast.LENGTH_LONG ).show();
 
     this.manifestDownloadId = downloadManager.add( downloadRequest );
 
@@ -471,7 +471,7 @@ public class Updater extends ContextWrapper{
   public boolean downloadTourMedia(String slug){
     // If the phone has no connection to the internet, tell this to the user.
     if( !isNetworkAvailable() ){
-      Toast.makeText( getApplicationContext(), "Can't download file: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
+   //   Toast.makeText( getApplicationContext(), "Can't download file: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
       return false;
     }
 
@@ -507,12 +507,12 @@ public class Updater extends ContextWrapper{
         // Define a Toast object so we can update it and display it for as long as the onProgress-object fires
         // It's only a temporary solution during development anyways, so, don't tweak it further, e.g. it would still disappear
         // if onProgress doesn't fire for more than 3.5s due to network delay etc.
-        Toast statusToast = Toast.makeText( getApplicationContext(), "intentionally left blank - or, something like that", Toast.LENGTH_LONG );
+      //  Toast statusToast = Toast.makeText( getApplicationContext(), "intentionally left blank - or, something like that", Toast.LENGTH_LONG );
 
         String successMessage = "Download completed!";
         String errorMessage = "Download FAILED!\n" + "Message:\n";
         String progressMessage = "Download in progress! (";
-        String toastText = "Tourdaten werden heruntergeladen - bitte einen Moment Geduld";
+     //   String toastText = "Tourdaten werden heruntergeladen - bitte einen Moment Geduld";
         Boolean updateProgress = true;
 
         @Override
@@ -538,8 +538,8 @@ public class Updater extends ContextWrapper{
         public void onDownloadFailed( DownloadRequest request, int returnCode, String returnMessage ) {
           Log.d( DEBUG_TAG, errorMessage + returnMessage + " (" + returnCode + ")" );
 
-          statusToast.setText( "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat." );
-          statusToast.show();
+        //  statusToast.setText( "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat." );
+       //   statusToast.show();
 
           checkingForUpdates = false;
         }
@@ -558,14 +558,14 @@ public class Updater extends ContextWrapper{
             updateProgress = true;
           }
 
-          statusToast.show();
+        //  statusToast.show();
         }
       });
 
     // Start the download
 
     // Display the message to the user for as long as the download lasts
-    Toast.makeText( getApplicationContext(), "Beginne die Tourdaten herunterzuladen...", Toast.LENGTH_LONG ).show();
+   // Toast.makeText( getApplicationContext(), "Beginne die Tourdaten herunterzuladen...", Toast.LENGTH_LONG ).show();
 
     this.manifestDownloadId = downloadManager.add( downloadRequest );
 

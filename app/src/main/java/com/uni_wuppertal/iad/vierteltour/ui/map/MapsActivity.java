@@ -189,7 +189,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
 
-    createDialog("test");
+   // createDialog("test");
   }
 
   public void initAll() {
@@ -210,8 +210,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         {selectStation(singlepage.INSTANCE.selectedStation());
         startStationActivity();}
         else
-        {mPager.setCurrentItem(singlepage.INSTANCE.selectedStation().number()-1);
-          }
+        {mPager.setCurrentItem(singlepage.INSTANCE.selectedStation().number()-1);}
   singlepage.INSTANCE.onfragmentclicked(-1);
   }
       }
@@ -503,6 +502,50 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
     suplInfo( "invisible" );
     drawRoutes();
+  }
+
+  public void createDownloadDialog(String txt, String slug)
+  {// Create custom dialog object
+    final Dialog dialog = new Dialog(this);
+    // Include dialog.xml file
+    dialog.setContentView(R.layout.alert_dialog);
+    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    dialog.show();
+    // set values for custom dialog components - text, image and button
+    TextView text = (TextView) dialog.findViewById(R.id.main_text);
+    text.setText(txt);
+
+    final String tourslug = slug;
+
+    Button okayButton = (Button) dialog.findViewById(R.id.left_btn);
+    // if decline button is clicked, close the custom dialog
+    okayButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Close dialog
+        if(Updater.get(getBaseContext()).downloadTourMedia(tourslug));
+        {SharedPreferences getPrefs = PreferenceManager
+          .getDefaultSharedPreferences( getBaseContext() );
+
+          //  Make a new preferences editor
+          SharedPreferences.Editor e = getPrefs.edit();
+          e.putBoolean( tourslug, true);
+        e.apply();
+        /*downloadbutton = (ImageView) ownContainer.findViewWithTag("ok"+position);
+        downloadbutton.setImageResource(R.drawable.ok);
+        downloadtext = (TextView) ownContainer.findViewWithTag("text"+position);
+        downloadtext.setText("geladen");
+        downloadtext.setVisibility(View.VISIBLE);*/}
+        dialog.dismiss();}});
+
+    Button declineButton = (Button) dialog.findViewById(R.id.right_btn);
+    // if decline button is clicked, close the custom dialog
+    declineButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Close dialog
+        dialog.dismiss();}});
+
   }
 
   public void createDialog(String txt)

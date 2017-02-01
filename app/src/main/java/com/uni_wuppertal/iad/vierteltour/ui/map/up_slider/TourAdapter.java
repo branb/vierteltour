@@ -75,7 +75,7 @@ public class TourAdapter extends BaseAdapter{
     downloadbutton.setTag("ok"+position);
     downloadtext = (TextView) convertView.findViewById(R.id.downloadtext);
     downloadtext.setTag("text"+position);
-    TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
+    final TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
     TextView txtAuthor = (TextView) convertView.findViewById( R.id.subtxt1 );
     TextView txtTimeLength = (TextView) convertView.findViewById( R.id.subtxt2 );
     TextView txtDescription = (TextView) convertView.findViewById( R.id.addinfo );
@@ -98,10 +98,8 @@ public class TourAdapter extends BaseAdapter{
     downloadbutton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-
+        mapsActivity.createDownloadDialog("Willst du die Tour "+ txtTitle.getText() + " wirklich runterladen?", tour.slug());
         //Add downloaded Tour to prefs
-        e.putBoolean( tour.slug(), true);
-        e.apply();
         downloadbutton = (ImageView) ownContainer.findViewWithTag("ok"+position);
         downloadbutton.setImageResource(R.drawable.ok);
         downloadtext = (TextView) ownContainer.findViewWithTag("text"+position);
@@ -109,6 +107,7 @@ public class TourAdapter extends BaseAdapter{
         downloadtext.setVisibility(View.VISIBLE);
       }
     });
+
     txtTitle.setText( tour.name() );
     txtAuthor.setText( tour.author() );
     txtTimeLength.setText( tour.time() + "/" + tour.length() );
