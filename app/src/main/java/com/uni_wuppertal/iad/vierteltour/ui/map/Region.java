@@ -6,7 +6,7 @@ import org.simpleframework.xml.Root;
 import java.util.List;
 
 @Root( name = "region" )
-class Region extends TourListData{
+public class Region extends TourListData{
   public Region(){ super(); }
 
   @ElementList( name = "area", inline = true )

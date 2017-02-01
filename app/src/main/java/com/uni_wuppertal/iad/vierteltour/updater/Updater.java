@@ -21,6 +21,9 @@ import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListenerV1;
 import com.thin.downloadmanager.ThinDownloadManager;
 
+import com.uni_wuppertal.iad.vierteltour.ui.map.Region;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Area;
+import com.uni_wuppertal.iad.vierteltour.ui.map.City;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 import com.uni_wuppertal.iad.vierteltour.ui.map.TourList;
 import com.uni_wuppertal.iad.vierteltour.ui.map.TourListReader;
@@ -40,6 +43,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Map;
 
 
@@ -365,16 +369,22 @@ public class Updater extends ContextWrapper{
 
     Log.d( DEBUG_TAG, "Starting file download..." );
 
+    ArrayList<String> citiesPath = new ArrayList<>();
     TourListReader tourListReader = new TourListReader(this);
     TourList tourlist = tourListReader.readTourList();
 
-    //System.out.println(tourlist.);
+    for( Region region : tourlist.regions() ){
+      for( Area area : region.areas() ){
+        for( City city : area.cities() ){
+         citiesPath.add(city.home());}}}
 
-    String destination = new File( OurStorage.get( Updater.this ).storagePath() )  + "/tours.zip";
+    //TODO: Works for one City only at the moment, expand it for more cities
+    Uri downloadUri = null;
+    for(int i=0;i<citiesPath.size();i++)
+    {downloadUri = Uri.parse( updateServerUrl + citiesPath.get(i) + "/tours.zip" );}
 
-
-    Uri downloadUri = Uri.parse( updateServerUrl + "/tours.zip" );
-
+    //Uri downloadUri = Uri.parse( updateServerUrl + "/tours/europe/germany/wuppertal"  + "/tours.zip" );
+    String destination = new File( OurStorage.get( Updater.this ).storagePath() ) + "/tours.zip";
     Uri destinationUri = Uri.parse( destination );
 
     // Setup the download, with nice callback function on different events throughout the download
@@ -399,7 +409,7 @@ public class Updater extends ContextWrapper{
 
           // unzip
           unzipFile( request.getDestinationURI().toString() );
-
+          System.out.println(request.getDestinationURI().toString());
           //statusToast.setText( "Die Tourdaten wurden vollständig heruntergeladen." );
           //statusToast.show();
 
@@ -453,6 +463,114 @@ public class Updater extends ContextWrapper{
     return true;
   }
 
+
+  /**
+   *
+   * @return true if the download was successful, false else
+   */
+  public boolean downloadTourMedia(String slug){
+    // If the phone has no connection to the internet, tell this to the user.
+    if( !isNetworkAvailable() ){
+      Toast.makeText( getApplicationContext(), "Can't download file: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
+      return false;
+    }
+
+    checkingForUpdates = true;
+
+    final UpdateListener listener = updateListener;
+
+    Log.d( DEBUG_TAG, "Starting file download..." );
+
+    String path="";
+    TourListReader tourListReader = new TourListReader(this);
+    TourList tourlist = tourListReader.readTourList();
+
+    for( Region region : tourlist.regions() ){
+      for( Area area : region.areas() ){
+        for( City city : area.cities() ){
+          for(Tour tour : city.tours()){
+            if(tour.slug().equals(slug)){
+              path = city.home();
+            }}}}}
+
+    System.out.println(updateServerUrl + path + "/" + slug + ".zip");
+    Uri downloadUri = Uri.parse( updateServerUrl + path + "/" + slug + ".zip" );
+
+    String destination = new File( OurStorage.get( Updater.this ).storagePath() ) + "/" + path + "/" + slug + ".zip";
+    Uri destinationUri = Uri.parse( destination );
+
+    // Setup the download, with nice callback function on different events throughout the download
+    DownloadRequest downloadRequest = new DownloadRequest( downloadUri)
+      .setRetryPolicy( new DefaultRetryPolicy() )
+      .setDestinationURI( destinationUri ).setPriority( DownloadRequest.Priority.LOW )
+      .setStatusListener( new DownloadStatusListenerV1() {
+        // Define a Toast object so we can update it and display it for as long as the onProgress-object fires
+        // It's only a temporary solution during development anyways, so, don't tweak it further, e.g. it would still disappear
+        // if onProgress doesn't fire for more than 3.5s due to network delay etc.
+        Toast statusToast = Toast.makeText( getApplicationContext(), "intentionally left blank - or, something like that", Toast.LENGTH_LONG );
+
+        String successMessage = "Download completed!";
+        String errorMessage = "Download FAILED!\n" + "Message:\n";
+        String progressMessage = "Download in progress! (";
+        String toastText = "Tourdaten werden heruntergeladen - bitte einen Moment Geduld";
+        Boolean updateProgress = true;
+
+        @Override
+        public void onDownloadComplete( DownloadRequest request ) {
+          Log.d( DEBUG_TAG, successMessage  + request.getDestinationURI().toString() );
+
+          // unzip
+          unzipFile( request.getDestinationURI().toString() );
+
+          // Save local tour data version
+          SharedPreferences getPrefs = PreferenceManager
+            .getDefaultSharedPreferences( getBaseContext() );
+
+          getPrefs.edit()
+            .putString( "localTourdataVersion", getPrefs.getString( "remoteTourdataVersion", "" ) )
+            .apply();
+
+          checkingForUpdates = false;
+          listener.tourdataDownloaded();
+        }
+
+        @Override
+        public void onDownloadFailed( DownloadRequest request, int returnCode, String returnMessage ) {
+          Log.d( DEBUG_TAG, errorMessage + returnMessage + " (" + returnCode + ")" );
+
+          statusToast.setText( "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat." );
+          statusToast.show();
+
+          checkingForUpdates = false;
+        }
+
+        @Override
+        public void onProgress( DownloadRequest request, long totalBytes, long downlaodedBytes, int progress) {
+          if( (progress % 5) == 0 ){
+            if( updateProgress ){
+              Log.d( DEBUG_TAG, progressMessage + downlaodedBytes + " / " + totalBytes + ") - Progress? => " + progress + " (" + updateProgress.toString() + ")" );
+
+              // toastText = toastText + ".";
+              // statusToast.setText( toastText );
+              updateProgress = false;
+            }
+          } else {
+            updateProgress = true;
+          }
+
+          statusToast.show();
+        }
+      });
+
+    // Start the download
+
+    // Display the message to the user for as long as the download lasts
+    Toast.makeText( getApplicationContext(), "Beginne die Tourdaten herunterzuladen...", Toast.LENGTH_LONG ).show();
+
+    this.manifestDownloadId = downloadManager.add( downloadRequest );
+
+    return true;
+  }
 
   public boolean checkingForUpdates(){
     return checkingForUpdates;

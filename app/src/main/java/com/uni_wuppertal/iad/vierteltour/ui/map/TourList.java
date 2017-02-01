@@ -50,13 +50,31 @@ public class TourList{
 
           for( Tour tour : city.tours() ){
             tour.home( city.home() );
+          }
+        }
+      }}
+    return this;}
 
-            for( Station station : tour.stations() ){
-              station.home( tour.home() );
+    public TourList initAll( String storagePath ){
+      // Set home directories for all objects
+      for( Region region : regions ){
+        region.home( storagePath );
+
+        for( Area area : region.areas() ){
+          area.home( region.home() );
+
+          for( City city : area.cities() ){
+            city.home( area.home() );
+
+            for( Tour tour : city.tours() ){
+              tour.home( city.home() );
+
+              for( Station station : tour.stations() ){
+                station.home( tour.home() );
+              }
             }
           }
         }
-      }
     }
 
 

@@ -37,7 +37,6 @@ public class TourListReader{
   }
 
 
-
   public TourList readTourList(){
     Serializer serializer = new Persister();
 
@@ -57,10 +56,35 @@ public class TourListReader{
       for( Region region : tourlist.regions() ){
         Log.d( DEBUG_TAG, "#" + ++i + " has " + region.areas().size() + " areas" );
       }
-
       // Initialize tourlist
       tourlist.init( toursHome );
+      return tourlist;
+    } catch( Exception e ) {
+      Log.d( DEBUG_TAG, e.toString() );
+      return new TourList();
+    }}
 
+  public TourList readTourData(){
+    Serializer serializer = new Persister();
+
+    String xmlDataPath = OurStorage.get( context ).pathToFile( xmlFile );
+
+
+    try{
+      Log.d( DEBUG_TAG, "Reading " + xmlDataPath );
+
+      TourList tourlist = serializer.read( TourList.class, OurStorage.get( context ).file( xmlFile ), false );
+
+      Log.d( DEBUG_TAG, "Version: " + tourlist.version() );
+      Log.d( DEBUG_TAG, "Found " + tourlist.regions().size() + " region(s)" );
+
+      Integer i = 0;
+
+      for( Region region : tourlist.regions() ){
+        Log.d( DEBUG_TAG, "#" + ++i + " has " + region.areas().size() + " areas" );
+      }
+      // Initialize tourlist
+      tourlist.initAll( toursHome );
       return tourlist;
     } catch( Exception e ) {
       Log.d( DEBUG_TAG, e.toString() );

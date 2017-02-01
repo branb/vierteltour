@@ -275,6 +275,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if( !checkedForUpdates ){
       Updater.get( getBaseContext() ).updateListener( this );
       Updater.get( getBaseContext() ).updatesOnTourdata();
+      //Updater.get(getBaseContext()).downloadTourMedia("fortschrott");
       System.out.println("Check");
     }
     else if( !Updater.get( getBaseContext() ).checkingForUpdates() ) {
@@ -1247,7 +1248,7 @@ public Bitmap markertext(Tour tour, String text)
    * Loads the list of available tours
    */
   private void loadTourdata(){
-    tourlist = new TourListReader( this ).readTourList();
+    tourlist = new TourListReader( this ).readTourData();
     makePolylines();
     drawRoutes();
 
