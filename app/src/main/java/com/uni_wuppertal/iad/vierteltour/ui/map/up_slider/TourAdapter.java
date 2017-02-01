@@ -1,14 +1,17 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map.up_slider;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -18,15 +21,17 @@ import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
+import com.uni_wuppertal.iad.vierteltour.updater.Updater;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Connects the ListView inside of the SUPL of the Maps Activity with a List<Tour>
  */
 public class TourAdapter extends BaseAdapter{
 
-  private MapsActivity mapsActivity;
+  private Context context;
   private View view;
   private ImageView downloadbutton;
   private TextView downloadtext;
@@ -36,11 +41,12 @@ public class TourAdapter extends BaseAdapter{
   private SharedPreferences sharedPreferences;
   private SharedPreferences.Editor e;
 
-  public TourAdapter( MapsActivity m, List<Tour> tours, Context context){
+
+  public TourAdapter( List<Tour> tours, Context context){
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     e = sharedPreferences.edit();
     this.tours = tours;
-    mapsActivity = m;
+    this.context = context;
   }
 
   @Override
@@ -63,8 +69,8 @@ public class TourAdapter extends BaseAdapter{
    */
   @Override
   public View getView( final int position, View convertView, ViewGroup parent ){
-    if( convertView == null ){
-      LayoutInflater mInflater = (LayoutInflater) mapsActivity.getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
+    if( convertView == null && context instanceof MapsActivity){
+      LayoutInflater mInflater = (LayoutInflater) (context).getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
       convertView = mInflater.inflate( R.layout.touren_list_single, null );
     }
 
@@ -98,15 +104,9 @@ public class TourAdapter extends BaseAdapter{
     downloadbutton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        mapsActivity.createDownloadDialog("Willst du die Tour "+ txtTitle.getText() + " wirklich runterladen?", tour.slug());
-        //Add downloaded Tour to prefs
-        downloadbutton = (ImageView) ownContainer.findViewWithTag("ok"+position);
-        downloadbutton.setImageResource(R.drawable.ok);
-        downloadtext = (TextView) ownContainer.findViewWithTag("text"+position);
-        downloadtext.setText("geladen");
-        downloadtext.setVisibility(View.VISIBLE);
-      }
-    });
+        if(context instanceof MapsActivity){
+          createDownloadDialog("Willst du die Tour "+ txtTitle.getText() + " wirklich runterladen?", tour.slug(), position);
+      }}});
 
     txtTitle.setText( tour.name() );
     txtAuthor.setText( tour.author() );
@@ -126,12 +126,12 @@ public class TourAdapter extends BaseAdapter{
       txtDescription.setVisibility(View.VISIBLE);
       btnStart.setVisibility(View.VISIBLE);
       divider.setVisibility(View.VISIBLE);
-      mapsActivity.lv().smoothScrollToPosition(position);
+      if(context instanceof MapsActivity) ((MapsActivity)context).lv().smoothScrollToPosition(position);
       convertView.setClickable(true);
       convertView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          mapsActivity.resetTour();
+          if(context instanceof MapsActivity) ((MapsActivity)context).resetTour();
           notifyDataSetChanged();
           view.setClickable(false);
         }
@@ -172,5 +172,45 @@ public class TourAdapter extends BaseAdapter{
     downloadtext.setLayoutParams(lptext);
   }}
 
+
+  public void createDownloadDialog(String txt, String slug, int position)
+  {// Create custom dialog object
+    final Dialog dialog = new Dialog(context);
+    // Include dialog.xml file
+    dialog.setContentView(R.layout.alert_dialog);
+    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    dialog.show();
+    // set values for custom dialog components - text, image and button
+    TextView text = (TextView) dialog.findViewById(R.id.main_text);
+    text.setText(txt);
+
+    final String tourslug = slug;
+    final int pos = position;
+
+    Button okayButton = (Button) dialog.findViewById(R.id.left_btn);
+    // if decline button is clicked, close the custom dialog
+    okayButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Close dialog
+        if(context instanceof MapsActivity)  Updater.get(((MapsActivity)context).getBaseContext()).downloadTourMedia(tourslug);
+        e.putBoolean( tourslug, true);
+        e.apply();
+        downloadbutton = (ImageView) ownContainer.findViewWithTag("ok"+pos);
+        downloadbutton.setImageResource(R.drawable.ok);
+        downloadtext = (TextView) ownContainer.findViewWithTag("text"+pos);
+        downloadtext.setText("geladen");
+        downloadtext.setVisibility(View.VISIBLE);
+        dialog.dismiss();}});
+
+    Button declineButton = (Button) dialog.findViewById(R.id.right_btn);
+    // if decline button is clicked, close the custom dialog
+    declineButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Close dialog
+        dialog.dismiss();
+      }});
+  }
 
 }

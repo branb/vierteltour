@@ -230,9 +230,9 @@ public class StationActivity extends Activity{
     if (requestCode == 1) {
       if(resultCode == RESULT_OK){
         imagePager.setCurrentItem(singlepage.INSTANCE.position());
-      /*  if(!player.isPlaying())
+        if(!audio.contains(".mp3") || !player.isPlaying())
         {startaudio=false;
-          play_button.setImageResource( R.drawable.play_hell );}*/}
+          play_button.setImageResource( R.drawable.play_hell );}}
     }
   }
 
