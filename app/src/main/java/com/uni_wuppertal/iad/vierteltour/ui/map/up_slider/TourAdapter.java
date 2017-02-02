@@ -2,7 +2,9 @@ package com.uni_wuppertal.iad.vierteltour.ui.map.up_slider;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -105,7 +107,7 @@ public class TourAdapter extends BaseAdapter{
       @Override
       public void onClick(View view) {
         if(context instanceof MapsActivity){
-          createDownloadDialog("Willst du die Tour "+ txtTitle.getText() + " wirklich runterladen?", tour.slug(), position);
+          createDownloadDialog("Willst du die Tour "+ txtTitle.getText() + " runterladen?\nHinweis: Verwende dein WLAN", tour.slug(), position);
       }}});
 
     txtTitle.setText( tour.name() );
@@ -192,10 +194,9 @@ public class TourAdapter extends BaseAdapter{
     okayButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        // Close dialog
+
         if(context instanceof MapsActivity)  Updater.get(((MapsActivity)context).getBaseContext()).downloadTourMedia(tourslug);
-        e.putBoolean( tourslug, true);
-        e.apply();
+
         downloadbutton = (ImageView) ownContainer.findViewWithTag("ok"+pos);
         downloadbutton.setImageResource(R.drawable.ok);
         downloadtext = (TextView) ownContainer.findViewWithTag("text"+pos);

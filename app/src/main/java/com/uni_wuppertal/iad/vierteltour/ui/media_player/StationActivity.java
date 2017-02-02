@@ -204,6 +204,7 @@ public class StationActivity extends Activity{
     gesperrt = (RelativeLayout) findViewById(R.id.gesperrt);
     pfeilhell = (ImageView) findViewById(R.id.pfeilhell);
     imagePager = (ViewPager) findViewById( R.id.ImagePager );
+    imagePager.setOffscreenPageLimit(5);
     mAdapter = new InformationPagerAdapter( this, stationImagePaths, this);
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
     imagePager.setAdapter( mAdapter );

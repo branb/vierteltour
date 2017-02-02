@@ -274,11 +274,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if( !checkedForUpdates ){
       Updater.get( getBaseContext() ).updateListener( this );
       Updater.get( getBaseContext() ).updatesOnTourdata();
-      //Updater.get(getBaseContext()).downloadTourMedia("fortschrott");
-      System.out.println("Check");
     }
     else if( !Updater.get( getBaseContext() ).checkingForUpdates() ) {
-      System.out.println("TEST");
       loadTourdata();
     }
 
@@ -522,7 +519,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onClick(View v) {
         // Close dialog
-        System.out.println("Okay");
         dialog.dismiss();}});
 
     Button declineButton = (Button) dialog.findViewById(R.id.right_btn);

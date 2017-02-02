@@ -15,7 +15,9 @@
       android:layout_centerHorizontal="true"
       android:gravity="center"
       android:paddingBottom="20dp"
-      android:paddingTop="10dp"/>
+      android:paddingTop="10dp"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"/>
 
   <LinearLayout
     android:id="@+id/dialog_buttons"

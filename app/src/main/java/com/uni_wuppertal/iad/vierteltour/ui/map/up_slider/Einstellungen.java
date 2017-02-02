@@ -1,23 +1,32 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map.up_slider;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Area;
+import com.uni_wuppertal.iad.vierteltour.ui.map.City;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Region;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 import com.uni_wuppertal.iad.vierteltour.ui.map.TourList;
 import com.uni_wuppertal.iad.vierteltour.ui.map.TourListReader;
+import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -79,28 +88,15 @@ public class Einstellungen extends Activity{
     listViewTouren.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        e.remove(tours.get(position).slug()).apply();
-        tours.remove(position);
-        //TODO ADD DIALOG AND DELETE TOUR
-        einstellungenTourAdapter.notifyDataSetChanged();
-        MapsActivity.adapter.notifyDataSetChanged();
-        if(tours.size()<2) tourenLoeschen.setVisibility(View.GONE);
-        if(tours.isEmpty()) keineTouren.setVisibility(View.VISIBLE);
+        createTourDialog("Willst du die Tour " + tours.get(position).name() + " wirklich löschen?", position);
       }
     });
     tourenLoeschen.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        for(int i=tours.size()-1;i>=0;i--)
-        {e.remove(tours.get(i).slug()).apply();
-          tours.remove(i);}
+        createAllToursDialog("Willst du alle Touren wirklich löschen?");
 
-        //TODO ADD DIALOG AND DELETE TOURS
 
-        einstellungenTourAdapter.notifyDataSetChanged();
-        MapsActivity.adapter.notifyDataSetChanged();
-        tourenLoeschen.setVisibility(View.GONE);
-        keineTouren.setVisibility(View.VISIBLE);
       }
     });
 
@@ -115,5 +111,124 @@ public class Einstellungen extends Activity{
     {tours.remove(i);}}
     einstellungenTourAdapter = new EinstellungenTourAdapter(tours, this);
    }
+
+  public void createTourDialog(String txt, int pos)
+  {// Create custom dialog object
+    final Dialog dialog = new Dialog(this);
+    final int position = pos;
+
+    // Include dialog.xml file
+    dialog.setContentView(R.layout.alert_dialog);
+    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    dialog.show();
+    // set values for custom dialog components - text, image and button
+    TextView text = (TextView) dialog.findViewById(R.id.main_text);
+    text.setText(txt);
+
+    String path="";
+    TourListReader tourListReader = new TourListReader(this);
+    TourList tourlist = tourListReader.readTourList();
+
+    for( Region region : tourlist.regions() ){
+      for( Area area : region.areas() ){
+        for( City city : area.cities() ){
+          for(Tour tour : city.tours()){
+            if(tour.slug().equals(tours.get(position).slug())){
+              path = tour.home();
+            }}}}}
+
+    final String testpath = path ;
+
+    Button okayButton = (Button) dialog.findViewById(R.id.left_btn);
+    // if decline button is clicked, close the custom dialog
+    okayButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        File test = new File(getExternalFilesDir(null), testpath);
+        deleteRecursive(test);
+        e.remove(tours.get(position).slug()).apply();
+        tours.remove(position);
+
+        einstellungenTourAdapter.notifyDataSetChanged();
+        MapsActivity.adapter.notifyDataSetChanged();
+        if(tours.size()<2) tourenLoeschen.setVisibility(View.GONE);
+        if(tours.isEmpty()) keineTouren.setVisibility(View.VISIBLE);
+
+        dialog.dismiss();}});
+
+    Button declineButton = (Button) dialog.findViewById(R.id.right_btn);
+    // if decline button is clicked, close the custom dialog
+    declineButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Close dialog
+        dialog.dismiss();}});
+
+  }
+
+  public void createAllToursDialog(String txt)
+  {// Create custom dialog object
+    final Dialog dialog = new Dialog(this);
+
+    // Include dialog.xml file
+    dialog.setContentView(R.layout.alert_dialog);
+    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    dialog.show();
+    // set values for custom dialog components - text, image and button
+    TextView text = (TextView) dialog.findViewById(R.id.main_text);
+    text.setText(txt);
+
+    String path="";
+    TourListReader tourListReader = new TourListReader(this);
+    TourList tourlist = tourListReader.readTourList();
+
+    for( Region region : tourlist.regions() ){
+      for( Area area : region.areas() ){
+        for( City city : area.cities() ){
+          for(Tour tour : city.tours()){
+            if(tour.slug().equals(tours.get(0).slug())){
+              path = city.home();
+            }}}}}
+
+    final String testpath = path ;
+
+    Button okayButton = (Button) dialog.findViewById(R.id.left_btn);
+    // if decline button is clicked, close the custom dialog
+    okayButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        File test = new File(getExternalFilesDir(null), testpath);
+        deleteRecursive(test);
+        for(int i=tours.size()-1;i>=0;i--)
+        {e.remove(tours.get(i).slug()).apply();
+          tours.remove(i);}
+
+        einstellungenTourAdapter.notifyDataSetChanged();
+        MapsActivity.adapter.notifyDataSetChanged();
+        tourenLoeschen.setVisibility(View.GONE);
+        keineTouren.setVisibility(View.VISIBLE);
+
+        dialog.dismiss();}});
+
+    Button declineButton = (Button) dialog.findViewById(R.id.right_btn);
+    // if decline button is clicked, close the custom dialog
+    declineButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Close dialog
+        dialog.dismiss();}});
+
+  }
+
+  public void deleteRecursive(File fileOrDirectory) {
+
+    if (fileOrDirectory.isDirectory()) {
+      for (File child : fileOrDirectory.listFiles()) {
+        if(!child.getName().equals("routes.gpx") && !child.getName().equals("details.xml"))deleteRecursive(child);
+      }
+    }
+
+    fileOrDirectory.delete();
+  }
 
 }

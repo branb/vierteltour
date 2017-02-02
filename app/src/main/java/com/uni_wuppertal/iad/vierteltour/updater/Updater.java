@@ -1,8 +1,10 @@
 package com.uni_wuppertal.iad.vierteltour.updater;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -409,7 +411,6 @@ public class Updater extends ContextWrapper{
 
           // unzip
           unzipFile( request.getDestinationURI().toString() );
-          System.out.println(request.getDestinationURI().toString());
           //statusToast.setText( "Die Tourdaten wurden vollständig heruntergeladen." );
           //statusToast.show();
 
@@ -478,7 +479,7 @@ public class Updater extends ContextWrapper{
     checkingForUpdates = true;
 
     final UpdateListener listener = updateListener;
-
+    final String tourslug = slug;
     Log.d( DEBUG_TAG, "Starting file download..." );
 
     String path="";
@@ -493,11 +494,11 @@ public class Updater extends ContextWrapper{
               path = city.home();
             }}}}}
 
-    System.out.println(updateServerUrl + path + "/" + slug + ".zip");
     Uri downloadUri = Uri.parse( updateServerUrl + path + "/" + slug + ".zip" );
 
     String destination = new File( OurStorage.get( Updater.this ).storagePath() ) + "/" + path + "/" + slug + ".zip";
     Uri destinationUri = Uri.parse( destination );
+
 
     // Setup the download, with nice callback function on different events throughout the download
     DownloadRequest downloadRequest = new DownloadRequest( downloadUri)
@@ -522,16 +523,18 @@ public class Updater extends ContextWrapper{
           // unzip
           unzipFile( request.getDestinationURI().toString() );
 
-          // Save local tour data version
+
           SharedPreferences getPrefs = PreferenceManager
             .getDefaultSharedPreferences( getBaseContext() );
 
           getPrefs.edit()
-            .putString( "localTourdataVersion", getPrefs.getString( "remoteTourdataVersion", "" ) )
+            .putBoolean( tourslug, true)
             .apply();
 
+          System.out.println("PUT "+tourslug);
+
           checkingForUpdates = false;
-          listener.tourdataDownloaded();
+          //listener.tourdataDownloaded();
         }
 
         @Override
@@ -561,6 +564,7 @@ public class Updater extends ContextWrapper{
         //  statusToast.show();
         }
       });
+    //createProgressDialog(downloadRequest);
 
     // Start the download
 
@@ -620,5 +624,26 @@ public class Updater extends ContextWrapper{
     updateListener = listener;
   }
 
+
+  public void createProgressDialog(DownloadRequest dl)
+  {// declare the dialog as a member field of your activity
+    final ProgressDialog mProgressDialog;
+    final DownloadRequest downloadRequest = dl;
+
+// instantiate it within the onCreate method
+    mProgressDialog = new ProgressDialog(getBaseContext());
+    mProgressDialog.setMessage("A message");
+    mProgressDialog.setIndeterminate(true);
+    mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+    mProgressDialog.setCancelable(true);
+    mProgressDialog.show();
+
+    mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+      @Override
+      public void onCancel(DialogInterface dialog) {
+      downloadRequest.cancel();
+      mProgressDialog.dismiss();
+      }
+    });}
 
 }

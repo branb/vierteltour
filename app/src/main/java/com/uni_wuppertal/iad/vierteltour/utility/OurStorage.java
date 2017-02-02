@@ -148,6 +148,7 @@ public class OurStorage extends ContextWrapper{
 
   }
 
-
+  public void deleteTour(String slug)
+  {}
 
 }
