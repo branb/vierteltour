@@ -245,7 +245,6 @@ public void initAll()
     player.getVideoview().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
       @Override
       public void onCompletion(MediaPlayer mediaPlayer) {
-        System.out.println("FINISH");
         stopVideoplay();
       }});
 
@@ -384,8 +383,6 @@ public void initAll()
       isimages=singlepage.INSTANCE.position();
       imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
 
-      System.out.println(res.get(position));
-      System.out.println(getExternalFilesDir( null ));
       if(res.get(singlepage.INSTANCE.position()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE && res.get(position)!=null)
       { player.getVideoview().setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position));
         showGalleryVideoBar();}

@@ -157,7 +157,6 @@ public class StationActivity extends Activity{
     String imagesFromXML = (String) b.get( "img" );
 
     video = (String) b.get( "video" );
-    System.out.println(imagesFromXML+ "\n" + video);
     if( !imagesFromXML.isEmpty() ){
       stationImagePaths = new ArrayList<String>(Arrays.asList(imagesFromXML.split("\\s*,\\s*")));
     }
@@ -165,19 +164,13 @@ public class StationActivity extends Activity{
       stationImagePaths.add(video);
     }
 
-    //Dont show Media of not downloaded tours
-    /*for(int i=stationImagePaths.size()-1;i>=0;i--)
-    {if(OurStorage.get(this).pathToFile(stationImagePaths.get(i))==null)
-    stationImagePaths.remove(i);}*/
-
-
     audio = (String) b.get( "audio" );
-
 
     layout = (RelativeLayout) findViewById( R.id.rellayout );
     layout.setBackgroundColor( Color.parseColor( farbe ) );
     title = (TextView) findViewById( R.id.stationtitle );
-    title.setText( station + "  (" + number + "/" + size + ")" );
+    title.setText( station + "  (" + (Integer.parseInt(number)-1) + "/" + (Integer.parseInt(size)-1) + ")" );
+    if(number.equals("1")) title.setVisibility(View.INVISIBLE);
     routenname = (TextView) findViewById( R.id.routenname );
     routenname.setText( tourname );
     prof = (TextView) findViewById( R.id.routeninfo1 );

@@ -692,7 +692,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     {selectStation(singlepage.INSTANCE.selectedTour().station(1));
       mPager.setCurrentItem(0);}
     player.reset();
-   // mFragmentShadowTransformer.enableScaling(false);
 
     if(singlepage.INSTANCE.selectedStation()!=null)
     {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));
