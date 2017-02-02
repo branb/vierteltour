@@ -131,7 +131,7 @@ public class StationActivity extends Activity{
   }
 
   public void checkGPS()
-  {if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false))
+  {if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false) || number.equals("1"))
     {sperrvariable=false;}
   }
 
@@ -367,10 +367,6 @@ public class StationActivity extends Activity{
               play_button.setImageResource( R.drawable.play_hell );
             }break;}}});
   }
-
-
-  public ViewPager getImagePager()
-  {return imagePager;}
 
   public void initImages(){
     if( stationImagePaths.size() == 0 ){

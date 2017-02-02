@@ -199,7 +199,7 @@ public class TourAdapter extends BaseAdapter{
       @Override
       public void onClick(View v) {
 
-        if(context instanceof MapsActivity)  Updater.get(((MapsActivity)context).getBaseContext()).downloadTourMedia(tourslug);
+        if(context instanceof MapsActivity)  Updater.get(((MapsActivity)context).getBaseContext()).downloadTourMedia(tourslug, context);
         dialog.dismiss();}});
 
     Button declineButton = (Button) dialog.findViewById(R.id.right_btn);

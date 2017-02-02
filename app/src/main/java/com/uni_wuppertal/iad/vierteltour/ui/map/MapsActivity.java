@@ -3,7 +3,9 @@ package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -73,6 +75,7 @@ import com.google.android.gms.tagmanager.Container;
 import com.google.maps.android.PolyUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import com.thin.downloadmanager.DownloadRequest;
 import com.uni_wuppertal.iad.vierteltour.ui.intro.IntroActivity;
 
 import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.About;
@@ -139,6 +142,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Marker tmpmarker;
   private RelativeLayout panel, gpsinfo;
   public static RelativeLayout audiobar;
+  ProgressDialog progressDoalog;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
   // All the tour information that is currently available to us
@@ -189,8 +193,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
 
-   // createDialog("test");
   }
+
+
 
   public void initAll() {
     ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this); //initMap
@@ -371,10 +376,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1))));
     drawRoutes();
 
-    if(!PreferenceManager
-      .getDefaultSharedPreferences( getBaseContext() ).getBoolean(station.slug(), false))
-    {gpsbtn.setVisibility(View.VISIBLE);}
-    else {gpsbtn.setVisibility(View.GONE);}
+    if(PreferenceManager
+      .getDefaultSharedPreferences( getBaseContext() ).getBoolean(station.slug(), false) || station.number()==1)
+    {gpsbtn.setVisibility(View.GONE);}
+    else {gpsbtn.setVisibility(View.VISIBLE);}
   }
 
 
