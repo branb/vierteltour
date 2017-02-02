@@ -23,6 +23,7 @@ import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListenerV1;
 import com.thin.downloadmanager.ThinDownloadManager;
 
+import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Region;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Area;
 import com.uni_wuppertal.iad.vierteltour.ui.map.City;
@@ -520,6 +521,7 @@ public class Updater extends ContextWrapper{
         public void onDownloadComplete( DownloadRequest request ) {
           Log.d( DEBUG_TAG, successMessage  + request.getDestinationURI().toString() );
 
+          MapsActivity.adapter.notifyDataSetChanged();
           // unzip
           unzipFile( request.getDestinationURI().toString() );
 
@@ -531,10 +533,11 @@ public class Updater extends ContextWrapper{
             .putBoolean( tourslug, true)
             .apply();
 
+
           System.out.println("PUT "+tourslug);
 
           checkingForUpdates = false;
-          //listener.tourdataDownloaded();
+
         }
 
         @Override

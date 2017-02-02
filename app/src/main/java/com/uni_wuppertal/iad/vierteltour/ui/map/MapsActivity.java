@@ -719,8 +719,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if(!tourlist.city(visibleCity).tours().get(position).equals(singlepage.INSTANCE.selectedTour()))
        { singlepage.INSTANCE.selectedTour(tourlist.city(visibleCity).tours().get(position));
          selectTour(tourlist.city(visibleCity).tours().get(position));}
+        System.out.println("Scroll");
 
       adapter.notifyDataSetChanged();
+        lv.smoothScrollToPosition(position);
       drawRoutes();
     }
     });

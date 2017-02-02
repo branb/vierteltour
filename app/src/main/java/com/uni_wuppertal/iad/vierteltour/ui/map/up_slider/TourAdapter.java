@@ -98,7 +98,8 @@ public class TourAdapter extends BaseAdapter{
       downloadtext.setText("geladen");
       downloadtext.setVisibility(View.VISIBLE);}
     else{downloadbutton.setImageResource(R.drawable.laden);
-      downloadtext.setVisibility(View.GONE);}
+      downloadtext.setVisibility(View.GONE);
+     }
 
 
     // TODO: Insert author image
@@ -106,9 +107,12 @@ public class TourAdapter extends BaseAdapter{
     downloadbutton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        if(context instanceof MapsActivity){
+        TextView checkVisibility = (TextView)ownContainer.findViewWithTag("text"+position);
+        if(checkVisibility.getVisibility()==View.GONE)
+        {if(context instanceof MapsActivity){
           createDownloadDialog("Willst du die Tour "+ txtTitle.getText() + " runterladen?\nHinweis: Verwende dein WLAN", tour.slug(), position);
-      }}});
+
+        }}}});
 
     txtTitle.setText( tour.name() );
     txtAuthor.setText( tour.author() );
@@ -128,7 +132,7 @@ public class TourAdapter extends BaseAdapter{
       txtDescription.setVisibility(View.VISIBLE);
       btnStart.setVisibility(View.VISIBLE);
       divider.setVisibility(View.VISIBLE);
-      if(context instanceof MapsActivity) ((MapsActivity)context).lv().smoothScrollToPosition(position);
+      //if(context instanceof MapsActivity && ) ((MapsActivity)context).lv().smoothScrollToPosition(position);
       convertView.setClickable(true);
       convertView.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -196,12 +200,6 @@ public class TourAdapter extends BaseAdapter{
       public void onClick(View v) {
 
         if(context instanceof MapsActivity)  Updater.get(((MapsActivity)context).getBaseContext()).downloadTourMedia(tourslug);
-
-        downloadbutton = (ImageView) ownContainer.findViewWithTag("ok"+pos);
-        downloadbutton.setImageResource(R.drawable.ok);
-        downloadtext = (TextView) ownContainer.findViewWithTag("text"+pos);
-        downloadtext.setText("geladen");
-        downloadtext.setVisibility(View.VISIBLE);
         dialog.dismiss();}});
 
     Button declineButton = (Button) dialog.findViewById(R.id.right_btn);
@@ -213,5 +211,7 @@ public class TourAdapter extends BaseAdapter{
         dialog.dismiss();
       }});
   }
+
+
 
 }
