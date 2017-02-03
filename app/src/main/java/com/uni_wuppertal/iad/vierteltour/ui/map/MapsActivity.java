@@ -152,7 +152,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private GoogleMap mMap;
 
   // Indicates, if we have checked for new updates on tourdata. Needed at the start of the app
-  private boolean checkedForUpdates = false;
+  private boolean checkedForUpdates = false, tourdataAvailable = false;
 
   // TODO: Save the currently displayed city into shared preferences and load them on startup
   // Slug of the currently displayed city, e.g. the currently available and displayed tours
@@ -184,11 +184,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     showIntro();
 
 
+
     initPager();
-    initBtns();
+
     moveDrawerToTop();
     initActionBar();
     initDrawer();
+
+
 
     mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
@@ -225,7 +228,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
     mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-    mLayout.setPanelSlideListener(onSlideListener());
+
     lv = (ListView) findViewById(R.id.list);
     panel = (RelativeLayout) findViewById(R.id.panelhalf);
 
@@ -310,8 +313,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     final GoogleMap.OnMapClickListener listener = new GoogleMap.OnMapClickListener(){
       @Override
       public void onMapClick( LatLng clickCoords ){
-
-        if( mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED ){
+      if(tourdataAvailable)
+      {  if( mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED ){
           boolean tourSelected = false;
 
           for( Tour tour : tourlist.city(visibleCity).tours() ){
@@ -350,7 +353,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         drawRoutes();}
         }*/
         }
-      }
+      }}
     };
 
     mMap.setOnMapClickListener( listener );
@@ -716,7 +719,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   //Erstelle den Slider
   public void initSupl(){
-
+    mLayout.setPanelSlideListener(onSlideListener());
     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -733,7 +736,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     adapter = new TourAdapter( tourlist.city( visibleCity ).tours(), this);
     lv.setAdapter( adapter );
-
+    initBtns();
   }
 
   public void initPager(){
@@ -904,7 +907,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   @Override
   protected void onPostCreate( Bundle savedInstanceState ){
     super.onPostCreate( savedInstanceState );
-    mDrawerToggle.syncState();
+    //mDrawerToggle.syncState();
   }
 
   //DRAWER START
@@ -1013,32 +1016,34 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         mDrawerLayout.closeDrawer( mDrawer );
         // FragmentManager fragmentManager = getSupportFragmentManager();
         // FragmentTransaction ftx = fragmentManager.beginTransaction();
-        if( position == 0 ){
-          Intent i = new Intent(MapsActivity.this, Einstellungen.class);
+        try{
+          if( position == 0 && tourdataAvailable){
+            Intent i = new Intent(MapsActivity.this, Einstellungen.class);
 
-          //i.putExtra("tours", tourlist.tours());     //gib touren weiter
-          startActivity(i);
+            //i.putExtra("tours", tourlist.tours());     //gib touren weiter
+            startActivity(i);
 
-        } else if( position == 1 ){
+          } else if( position == 1 ){
 
-          showIntro();
+            showIntro();
 
-          //  Initialize SharedPreferences
-          SharedPreferences getPrefs = PreferenceManager
-            .getDefaultSharedPreferences( getBaseContext() );
+            //  Initialize SharedPreferences
+            SharedPreferences getPrefs = PreferenceManager
+              .getDefaultSharedPreferences( getBaseContext() );
 
-          //  Make a new preferences editor
-          SharedPreferences.Editor e = getPrefs.edit();
+            //  Make a new preferences editor
+            SharedPreferences.Editor e = getPrefs.edit();
 
-          //  Edit preference to make it false because we don't want this to run again
-          e.putBoolean( "firstStart", true );
-          //  Apply changes
-          e.apply();
+            //  Edit preference to make it false because we don't want this to run again
+            e.putBoolean( "firstStart", true );
+            //  Apply changes
+            e.apply();
 
-        }
-        else if(position == 2)
-        {Intent i = new Intent(MapsActivity.this, About.class);
-          startActivity(i);}
+          }
+          else if(position == 2)
+          {Intent i = new Intent(MapsActivity.this, About.class);
+            startActivity(i);}
+        }catch(Exception e){System.out.println("Settings not working!");}
 
         //  ftx.commit();
       }
@@ -1251,8 +1256,8 @@ public Bitmap markertext(Tour tour, String text)
     tourlist = new TourListReader( this ).readTourData();
     makePolylines();
     drawRoutes();
-
     initSupl();
+    tourdataAvailable=true;
   }
 
   @Override

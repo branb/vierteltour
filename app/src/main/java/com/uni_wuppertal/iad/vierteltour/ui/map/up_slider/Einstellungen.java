@@ -82,15 +82,7 @@ public class Einstellungen extends Activity{
           if(tours.size()<2)tourenLoeschen.setVisibility(View.GONE);
           if(tours.isEmpty())keineTouren.setVisibility(View.VISIBLE);}
         if(i==1) {e.remove("localTourdataVersion").remove("remoteTourdataVersion").apply();
-          Set<String> keys = sharedPreferences.getAll().keySet();
-          for(String key : keys) {
-            System.out.println(key);
-          }
           Updater.get( getBaseContext() ).updatesOnTourdata(Einstellungen.this);
-          Set<String> key2 = sharedPreferences.getAll().keySet();
-          for(String key : key2) {
-            System.out.println(key);
-          }
         }
       }
     });
