@@ -499,6 +499,7 @@ public class Updater extends ContextWrapper{
 
           getPrefs.edit()
             .putBoolean( tourslug, true)
+            .putBoolean( "einleitung-"+tourslug, true)
             .apply();
 
           progressDialog.dismiss();

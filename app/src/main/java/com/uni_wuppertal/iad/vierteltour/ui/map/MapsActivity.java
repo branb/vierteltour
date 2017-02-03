@@ -380,7 +380,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     drawRoutes();
 
     if(PreferenceManager
-      .getDefaultSharedPreferences( getBaseContext() ).getBoolean(station.slug(), false) || station.number()==1)
+      .getDefaultSharedPreferences( getBaseContext() ).getBoolean(station.slug(), false))
     {gpsbtn.setVisibility(View.GONE);}
     else {gpsbtn.setVisibility(View.VISIBLE);}
   }

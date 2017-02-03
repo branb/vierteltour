@@ -228,11 +228,11 @@ public class Einstellungen extends Activity{
 
     if (fileOrDirectory.isDirectory()) {
       for (File child : fileOrDirectory.listFiles()) {
-        if(!child.getName().equals("routes.gpx") && !child.getName().equals("details.xml"))deleteRecursive(child);
+       deleteRecursive(child);
       }
     }
-
-    fileOrDirectory.delete();
+    if(!fileOrDirectory.toString().endsWith(".png") && !fileOrDirectory.toString().endsWith(".xml") && !fileOrDirectory.toString().endsWith(".gpx") )
+    {fileOrDirectory.delete();}
   }
 
 }
