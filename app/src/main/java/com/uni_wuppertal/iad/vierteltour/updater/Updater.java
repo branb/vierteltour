@@ -124,7 +124,7 @@ public class Updater extends ContextWrapper{
    *
    * @return true if there is either new data or data has changed, false else
    */
-  public boolean updatesOnTourdata(){
+  public boolean updatesOnTourdata(Context context){
     // If the phone has no connection to the internet, tell this to the user.
     if( !isNetworkAvailable() ){
       // TODO: Replace Toasts (all of them, not just this one) with proper UI elements (modals etc.)
@@ -150,12 +150,12 @@ public class Updater extends ContextWrapper{
     // If we've never stored a tour data version, use the remote one as the local version
     if( !getPrefs.contains( "localTourdataVersion" ) ) {
       e.putString( "localTourdataVersion", getPrefs.getString( "remoteTourdataVersion", "" ) ).apply();
-      updateListener.newTourdataAvailable();
+      updateListener.newTourdataAvailable(context);
       return true;
     }
 
     if( !getPrefs.getString( "localTourdataVersion", "" ).equals( getPrefs.getString( "remoteTourdataVersion", "" ) )  ){
-      updateListener.newTourdataAvailable();
+      updateListener.newTourdataAvailable(context);
       return true;
     }
 
@@ -303,17 +303,13 @@ public class Updater extends ContextWrapper{
 
         String successMessage = "Download completed!";
         String errorMessage = "Download FAILED!\n" + "Message:\n";
-        String progressMessage = "Download in progress! (";
-       // String toastText = "Tourenliste wird heruntergeladen - bitte einen Moment Geduld";
-        Boolean updateProgress = true;
-
         @Override
         public void onDownloadComplete( DownloadRequest request ) {
           Log.d( DEBUG_TAG, successMessage  + request.getDestinationURI().toString() );
 
           progressDialog.dismiss();
           checkingForUpdates = false;
-          listener.tourlistDownloaded();
+          listener.tourlistDownloaded(con);
         }
 
         @Override
@@ -491,7 +487,7 @@ public class Updater extends ContextWrapper{
 
          /* runOnUiThread(changeMessage);*/
 
-          MapsActivity.adapter.notifyDataSetChanged();
+          ((MapsActivity)con).adapter.notifyDataSetChanged();
           // unzip
           unzipFile( request.getDestinationURI().toString() );
 

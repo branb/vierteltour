@@ -24,11 +24,13 @@ import com.uni_wuppertal.iad.vierteltour.ui.map.Region;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 import com.uni_wuppertal.iad.vierteltour.ui.map.TourList;
 import com.uni_wuppertal.iad.vierteltour.ui.map.TourListReader;
+import com.uni_wuppertal.iad.vierteltour.updater.Updater;
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Kevin-Laptop on 17.01.2017.
@@ -79,7 +81,17 @@ public class Einstellungen extends Activity{
           layoutTouren.setVisibility(View.VISIBLE);
           if(tours.size()<2)tourenLoeschen.setVisibility(View.GONE);
           if(tours.isEmpty())keineTouren.setVisibility(View.VISIBLE);}
-        if(i==1) System.out.println("UPDATES");
+        if(i==1) {e.remove("localTourdataVersion").remove("remoteTourdataVersion").apply();
+          Set<String> keys = sharedPreferences.getAll().keySet();
+          for(String key : keys) {
+            System.out.println(key);
+          }
+          Updater.get( getBaseContext() ).updatesOnTourdata(Einstellungen.this);
+          Set<String> key2 = sharedPreferences.getAll().keySet();
+          for(String key : key2) {
+            System.out.println(key);
+          }
+        }
       }
     });
     initEinstellungenTourAdapter();

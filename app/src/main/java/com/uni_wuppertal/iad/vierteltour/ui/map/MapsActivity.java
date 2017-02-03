@@ -142,7 +142,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Marker tmpmarker;
   private RelativeLayout panel, gpsinfo;
   public static RelativeLayout audiobar;
-  ProgressDialog progressDoalog;
+  ProgressDialog progressDialog;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
   // All the tour information that is currently available to us
@@ -278,7 +278,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private void checkForUpdates(){
     if( !checkedForUpdates ){
       Updater.get( getBaseContext() ).updateListener( this );
-      Updater.get( getBaseContext() ).updatesOnTourdata();
+      Updater.get( getBaseContext() ).updatesOnTourdata(this);
     }
     else if( !Updater.get( getBaseContext() ).checkingForUpdates() ) {
       loadTourdata();
@@ -1256,8 +1256,8 @@ public Bitmap markertext(Tour tour, String text)
   }
 
   @Override
-  public void newTourdataAvailable(){
-    Updater.get( getBaseContext() ).downloadTourlist(MapsActivity.this);
+  public void newTourdataAvailable(Context context){
+    Updater.get( getBaseContext() ).downloadTourlist(context);
   }
 
   @Override
@@ -1266,8 +1266,8 @@ public Bitmap markertext(Tour tour, String text)
     loadTourdata();}
 
   @Override
-  public void tourlistDownloaded(){
-    Updater.get( getBaseContext() ).downloadTourdata(MapsActivity.this);
+  public void tourlistDownloaded(Context context){
+    Updater.get( getBaseContext() ).downloadTourdata(context);
   }
 
   @Override
