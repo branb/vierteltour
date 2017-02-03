@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,9 @@ import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.updater.Updater;
+import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -101,10 +104,9 @@ public class TourAdapter extends BaseAdapter{
       downloadtext.setVisibility(View.GONE);
      }
 
+    imgAuthor.setImageURI( Uri.fromFile(new File(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourImage(((MapsActivity)context).tourlist(), tour.image())+tour.image()+".png")));
 
-    // TODO: Insert author image
-    imgAuthor.setImageResource( R.drawable.ic_drawer );
-    downloadbutton.setOnClickListener(new View.OnClickListener() {
+      downloadbutton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         TextView checkVisibility = (TextView)ownContainer.findViewWithTag("text"+position);
@@ -132,7 +134,6 @@ public class TourAdapter extends BaseAdapter{
       txtDescription.setVisibility(View.VISIBLE);
       btnStart.setVisibility(View.VISIBLE);
       divider.setVisibility(View.VISIBLE);
-      //if(context instanceof MapsActivity && ) ((MapsActivity)context).lv().smoothScrollToPosition(position);
       convertView.setClickable(true);
       convertView.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -147,6 +148,11 @@ public class TourAdapter extends BaseAdapter{
     ownContainer=parent;
 
     return convertView;
+  }
+
+  public static int getImageId(Context context, String imageName) {
+    //System.out.println(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourImage(((MapsActivity)context).tourlist(), imageName)+imageName);
+    return context.getResources().getIdentifier(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourImage(((MapsActivity)context).tourlist(), imageName)+imageName, null, context.getPackageName());
   }
 
   public void setDownloadButtonInPosition(boolean open)

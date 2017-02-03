@@ -1077,7 +1077,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   //DRAWER END
 
-
   //SUPL START
   private SlidingUpPanelLayout.PanelSlideListener onSlideListener(){
     return new SlidingUpPanelLayout.PanelSlideListener(){
@@ -1258,7 +1257,7 @@ public Bitmap markertext(Tour tour, String text)
 
   @Override
   public void newTourdataAvailable(){
-    Updater.get( getBaseContext() ).downloadTourlist();
+    Updater.get( getBaseContext() ).downloadTourlist(MapsActivity.this);
   }
 
   @Override
@@ -1268,7 +1267,7 @@ public Bitmap markertext(Tour tour, String text)
 
   @Override
   public void tourlistDownloaded(){
-    Updater.get( getBaseContext() ).downloadTourdata();
+    Updater.get( getBaseContext() ).downloadTourdata(MapsActivity.this);
   }
 
   @Override

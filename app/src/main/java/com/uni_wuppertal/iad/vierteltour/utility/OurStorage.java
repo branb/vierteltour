@@ -5,6 +5,13 @@ import android.content.ContextWrapper;
 import android.os.Environment;
 import android.util.Log;
 
+import com.uni_wuppertal.iad.vierteltour.ui.map.Area;
+import com.uni_wuppertal.iad.vierteltour.ui.map.City;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Region;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
+import com.uni_wuppertal.iad.vierteltour.ui.map.TourList;
+import com.uni_wuppertal.iad.vierteltour.ui.map.TourListReader;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,9 +34,6 @@ public class OurStorage extends ContextWrapper{
 
 
   private File externalFilesDir;
-
-
-
   /** The main constructor.
    *
    *  Checks if the external storage medium is available and writable
@@ -108,6 +112,18 @@ public class OurStorage extends ContextWrapper{
     return pathToFile;
   }
 
+  public String lookForTourImage(TourList tourList, String file)
+  {
+    String path="";
+    for( Region region : tourList.regions() ){
+      for( Area area : region.areas() ){
+        for( City city : area.cities() ){
+          for(Tour tour : city.tours()){
+            if(tour.image().equals(file)){
+              path = tour.home();
+            }}}}}
+  return path;
+  }
 
   /**
    * Helper method to check if a file exists and is readable. Only for internal use.
