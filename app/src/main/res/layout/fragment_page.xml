@@ -29,7 +29,7 @@
             android:id="@+id/imagefrag"
             android:gravity="center"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/i_04_01_01"/>
+            android:src="@drawable/i"/>
 
         <TextView
             android:id="@+id/titlefrag"

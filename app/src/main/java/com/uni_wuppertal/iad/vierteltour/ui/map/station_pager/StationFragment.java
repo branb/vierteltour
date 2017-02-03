@@ -1,10 +1,13 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map.station_pager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.GestureDetector;
@@ -17,12 +20,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uni_wuppertal.iad.vierteltour.ui.map.ClickableViewpager;
+import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Station;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.StationActivity;
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class StationFragment extends Fragment{
@@ -53,10 +59,22 @@ public class StationFragment extends Fragment{
 
     TextView number = (TextView) rootView.findViewById(R.id.numbertext);
     TextView title = (TextView) rootView.findViewById( R.id.titlefrag );
+    ImageView image = (ImageView) rootView.findViewById(R.id.imagefrag);
     View numberlayout = (View) rootView.findViewById(R.id.numberlayout);
 
     if( arguments != null ){
       position = getArguments().getInt( ARG_PAGE_NUMBER );
+
+      //Change Image Dynamically TODO: OnLocationChanged check and show image
+      String externalPath=OurStorage.get(getContext()).storagePath()+"/";
+      String appPath=OurStorage.get(getContext()).lookForTourFile(((MapsActivity)getContext()).tourlist(), singlepage.INSTANCE.selectedTour().image())+"/"+singlepage.INSTANCE.selectedTour().station(position).slug()+"/";
+      String file="i_"+(singlepage.INSTANCE.selectedTour().trkid()<10?"0"+singlepage.INSTANCE.selectedTour().trkid():singlepage.INSTANCE.selectedTour().trkid())+"_"+(position<10?"0"+position:position)+"_01.jpg";
+
+      SharedPreferences getPrefs = PreferenceManager
+        .getDefaultSharedPreferences( ((MapsActivity) getContext()).getBaseContext() );
+
+      if(OurStorage.get(getContext()).pathToFile(appPath+file)!=null && getPrefs.getBoolean(singlepage.INSTANCE.selectedTour().station(position).slug(), false))
+      {image.setImageURI(Uri.fromFile(new File(externalPath+appPath+file)));}
 
       title.setText( ztitle.get( position-1 ) );
       if(singlepage.INSTANCE.selectedTour().station(position).latlng()!=null)

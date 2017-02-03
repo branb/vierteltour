@@ -104,7 +104,7 @@ public class TourAdapter extends BaseAdapter{
       downloadtext.setVisibility(View.GONE);
      }
 
-    imgAuthor.setImageURI( Uri.fromFile(new File(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourImage(((MapsActivity)context).tourlist(), tour.image())+tour.image()+".png")));
+    imgAuthor.setImageURI( Uri.fromFile(new File(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(), tour.image())+tour.image()+".png")));
 
       downloadbutton.setOnClickListener(new View.OnClickListener() {
       @Override

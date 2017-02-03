@@ -112,7 +112,7 @@ public class OurStorage extends ContextWrapper{
     return pathToFile;
   }
 
-  public String lookForTourImage(TourList tourList, String file)
+  public String lookForTourFile(TourList tourList, String file)
   {
     String path="";
     for( Region region : tourList.regions() ){

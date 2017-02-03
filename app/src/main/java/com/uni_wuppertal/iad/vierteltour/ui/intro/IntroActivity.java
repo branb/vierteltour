@@ -28,10 +28,10 @@ public class IntroActivity extends AppIntro{
 
     // Instead of fragments, you can also use our default slide
     // Just set a title, description, background and image. AppIntro will do the rest.
-    addSlide( AppIntroFragment.newInstance( "Überschrift", "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte.", R.drawable.i_04_01_01, Color.parseColor( "#fbc55e") ) );
-    addSlide( AppIntroFragment.newInstance( "Überschrift", "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte.", R.drawable.i_04_01_01, Color.parseColor( "#ec6e5e") ) );
-    addSlide( AppIntroFragment.newInstance( "Überschrift", "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte.", R.drawable.i_04_01_01, Color.parseColor( "#8cafdc") ) );
-    addSlide( AppIntroFragment.newInstance( "Überschrift", "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte.", R.drawable.i_04_01_01, Color.parseColor( "#d1e096") ) );
+    addSlide( AppIntroFragment.newInstance( "Überschrift", "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte.", R.drawable.i, Color.parseColor( "#fbc55e") ) );
+    addSlide( AppIntroFragment.newInstance( "Überschrift", "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte.", R.drawable.i, Color.parseColor( "#ec6e5e") ) );
+    addSlide( AppIntroFragment.newInstance( "Überschrift", "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte.", R.drawable.i, Color.parseColor( "#8cafdc") ) );
+    addSlide( AppIntroFragment.newInstance( "Überschrift", "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte.", R.drawable.i, Color.parseColor( "#d1e096") ) );
 
     // OPTIONAL METHODS
     // Override bar/separator color.
