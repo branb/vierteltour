@@ -150,11 +150,6 @@ public class TourAdapter extends BaseAdapter{
     return convertView;
   }
 
-  public static int getImageId(Context context, String imageName) {
-    //System.out.println(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourImage(((MapsActivity)context).tourlist(), imageName)+imageName);
-    return context.getResources().getIdentifier(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourImage(((MapsActivity)context).tourlist(), imageName)+imageName, null, context.getPackageName());
-  }
-
   public void setDownloadButtonInPosition(boolean open)
   {if(open)
   {RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
