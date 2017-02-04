@@ -66,6 +66,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -172,6 +173,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Map<String, Marker> tourMarker = new HashMap<String, Marker>();
 
   private CircleOptions circle = new CircleOptions();
+  private Circle mapCircle;
 
   @Override
   protected void onCreate( Bundle savedInstanceState ){
@@ -220,8 +222,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onItemClick(int position) {
   if(singlepage.INSTANCE.onfragmentclicked()!=-1)
-  {singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());
-  singlepage.INSTANCE.selectedStation(singlepage.INSTANCE.selectedTour().station(singlepage.INSTANCE.onfragmentclicked()));
+  {selectStation(singlepage.INSTANCE.selectedTour().station(singlepage.INSTANCE.onfragmentclicked()));
 
         if(singlepage.INSTANCE.selectedStation()==singlepage.INSTANCE.selectedOldStation())
         {selectStation(singlepage.INSTANCE.selectedStation());
@@ -386,14 +387,21 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     { removeStation(singlepage.INSTANCE.selectedOldStation().slug());
       markers.put( singlepage.INSTANCE.selectedOldStation().slug(), createMarker(singlepage.INSTANCE.selectedOldStation(), singlepage.INSTANCE.selectedTour() ));
       Marker m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number()-1+""))));
-      tourMarker.put(singlepage.INSTANCE.selectedOldStation().slug(), m);}
+      tourMarker.put(singlepage.INSTANCE.selectedOldStation().slug(), m);
 
-   // Setze Kreis auf neue Station
-    circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0,1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1,singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8).visible(true);
+    //delete Circle
+      mapCircle.remove();}
+
+
 
     //Lösche neue Station und setze vergrößerten Pin
     if(singlepage.INSTANCE.selectedStation().number()!=1)
-    { removeStation(singlepage.INSTANCE.selectedStation().slug());
+    {// Setze Kreis auf neue Station
+      circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0,1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1,singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8).visible(true);
+      mapCircle = mMap.addCircle(circle);
+
+
+      removeStation(singlepage.INSTANCE.selectedStation().slug());
       markers.put( singlepage.INSTANCE.selectedStation().slug(), createMarker(singlepage.INSTANCE.selectedStation(), singlepage.INSTANCE.selectedTour() ));
       Marker m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1)))));
       m.showInfoWindow();
@@ -601,6 +609,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * (Re-)Draw the routes of the currently visible tours and their station markers
    */
   private void drawRoutes(){
+    System.out.println("draw everything");
     //lösche alles
   if(mMap!=null)  mMap.clear();
     drawOwnLocation();
@@ -660,7 +669,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     //Wenn ein Kreis gesetzt wurde, zeichne ihn
     if(circle.getCenter()!=null)
-    {mMap.addCircle(circle);}
+    {mapCircle = mMap.addCircle(circle);}
   }
 
   private void removeStation(String slug)
@@ -711,12 +720,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     tourMarker.clear();
     singlepage.INSTANCE.selectedStation(null);
     singlepage.INSTANCE.selectedOldStation(null);
-    if(singlepage.INSTANCE.selectedStation()!=null)
-    {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));
-
-      gpsbtn.setVisibility(View.GONE);
-     circle = new CircleOptions();
-    }
+    circle = new CircleOptions();
 
     selectTour(singlepage.INSTANCE.selectedTour());
     drawRoutes();
