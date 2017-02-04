@@ -842,7 +842,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   public void stopGPS(){
-    googleApiClient.disconnect();
+    if(googleApiClient!=null) googleApiClient.disconnect();
   }
 
   private void enableLoc() {
