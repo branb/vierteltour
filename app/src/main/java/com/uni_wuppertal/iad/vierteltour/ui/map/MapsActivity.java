@@ -169,6 +169,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   // Holds the configuration of the current markers drawn on the map
   private Map<String, MarkerOptions> markers = new HashMap<String, MarkerOptions>();
 
+  private Map<String, Marker> tourMarker = new HashMap<String, Marker>();
+
   private CircleOptions circle = new CircleOptions();
 
   @Override
@@ -315,7 +317,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
      * When the user clicks anywhere on the map, check which tour he clicked onto and mark it as
      * selected
      *
-     * TODO: Improve click recognition. Currently, it only checks if the user has clicked a polyline, not station markers
+     *
      */
     final GoogleMap.OnMapClickListener listener = new GoogleMap.OnMapClickListener(){
       @Override
@@ -376,15 +378,26 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   public void selectStation(Station station)
-  {                //löscht alte Station
-    if(singlepage.INSTANCE.selectedStation()!=null)
-    {for(int i=0; i<singlepage.INSTANCE.selectedTour().stations().size();i++){markers.get(singlepage.INSTANCE.selectedTour().station(i+1).slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (i))));}}
-
+  { singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());   //vorherige Station wird alte Station
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
-   // markers.get(station.slug());
+
+    //löscht alte Station, setzt Größe auf Ursprung zurück
+    if(singlepage.INSTANCE.selectedOldStation()!=null && singlepage.INSTANCE.selectedOldStation().number()!=1)
+    { removeStation(singlepage.INSTANCE.selectedOldStation().slug());
+      markers.put( singlepage.INSTANCE.selectedOldStation().slug(), createMarker(singlepage.INSTANCE.selectedOldStation(), singlepage.INSTANCE.selectedTour() ));
+      Marker m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number()-1+""))));
+      tourMarker.put(singlepage.INSTANCE.selectedOldStation().slug(), m);}
+
+   // Setze Kreis auf neue Station
     circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0,1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1,singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8).visible(true);
-    markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1))));
-    drawRoutes();
+
+    //Lösche neue Station und setze vergrößerten Pin
+    if(singlepage.INSTANCE.selectedStation().number()!=1)
+    { removeStation(singlepage.INSTANCE.selectedStation().slug());
+      markers.put( singlepage.INSTANCE.selectedStation().slug(), createMarker(singlepage.INSTANCE.selectedStation(), singlepage.INSTANCE.selectedTour() ));
+      Marker m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1)))));
+      m.showInfoWindow();
+      tourMarker.put(singlepage.INSTANCE.selectedStation().slug(), m);}
 
     if(PreferenceManager
       .getDefaultSharedPreferences( getBaseContext() ).getBoolean(station.slug(), false))
@@ -467,6 +480,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }}
     else{unfadeTour(t);}
     }
+    selectStation(tour.station(1));
     drawRoutes();
   }
 
@@ -587,43 +601,74 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * (Re-)Draw the routes of the currently visible tours and their station markers
    */
   private void drawRoutes(){
+    //lösche alles
   if(mMap!=null)  mMap.clear();
+    drawOwnLocation();
+    drawPolylines();
+    drawStations();
+  }
 
+  /**
+   * (Re-)Draw current Location of the User
+   */
+  private void drawOwnLocation()
+  {//Eigene Position zeichnen
     if(pos!=null)
     {MarkerOptions marker = new MarkerOptions();
       marker.position(pos);
       marker.icon(BitmapDescriptorFactory.fromBitmap( BitmapFactory.decodeResource( getResources(), getResources().getIdentifier( "current3", "drawable", getPackageName() ) )));
-      if(mMap!=null)mMap.addMarker(marker);}
+      if(mMap!=null)mMap.addMarker(marker);}}
 
-    for( Map.Entry<String, PolylineOptions> polyline : polylines.entrySet() ){
+
+  /**
+   * (Re-)Draw the Path of the currently visible tours
+   */
+  private void drawPolylines()
+  {//nur Pfad der ausgewählten Tour anzeigen
+    if(singlepage.INSTANCE.selectedStation()!=null)
+    {for( Map.Entry<String, PolylineOptions> polyline : polylines.entrySet() )
+      if(singlepage.INSTANCE.selectedTour().slug().equals(polyline.getKey()))
       mMap.addPolyline( polyline.getValue() );
     }
+    //sonst Pfad aller Touren anzeigen
+    else{
+    for( Map.Entry<String, PolylineOptions> polyline : polylines.entrySet() ){
 
-    drawStations();
-  }
-
+      mMap.addPolyline( polyline.getValue() );
+    }}}
 
   /**
    * (Re-)Draw the station markers of the currently visible tours
    */
   private void drawStations(){
     tmpmarker = null;
+    //Setze Marker
     for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
+      //Wenn Tour ausgewählt, zeichne nur Stationen der Tour
       if(singlepage.INSTANCE.selectedStation()!=null)
       {for(Station station : singlepage.INSTANCE.selectedTour().stations())
         { if(marker.getValue().getPosition()!=null && marker.getKey()==singlepage.INSTANCE.selectedStation().slug() && marker.getKey()==station.slug())
         {tmpmarker = mMap.addMarker(marker.getValue());
-          tmpmarker.showInfoWindow();}
+          tourMarker.put(station.slug(), tmpmarker);}
           else if(marker.getValue().getPosition()!=null && marker.getKey()==station.slug())
-        {mMap.addMarker(marker.getValue());}}}
+        {Marker m = mMap.addMarker(marker.getValue());
+        tourMarker.put(station.slug(), m);}}}
 
+    //Sonst zeichne alle Marker
     else if(marker.getValue().getPosition()!=null)
     {mMap.addMarker( marker.getValue() );}}
 
+    //Wenn ein Kreis gesetzt wurde, zeichne ihn
     if(circle.getCenter()!=null)
     {mMap.addCircle(circle);}
   }
 
+  private void removeStation(String slug)
+  {
+    for( Map.Entry<String, Marker> marker : tourMarker.entrySet() ){
+    if(marker.getKey().equals(slug))
+    {marker.getValue().remove();}
+  }}
 
 
   //Durch Auswahl einer Tour wird zur Stationenübersicht gewechselt
@@ -650,7 +695,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     title.setText( singlepage.INSTANCE.selectedTour().name() );
     title.setVisibility( View.VISIBLE );
     mPager.setVisibility( View.VISIBLE );
-    selectStation(singlepage.INSTANCE.selectedTour().station(1));
   }
 
   //Stationenübersicht schließen und zurück zur Tourenauswahl
@@ -664,9 +708,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       mPager.setCurrentItem(0);}
     player.reset();
 
+    tourMarker.clear();
+    singlepage.INSTANCE.selectedStation(null);
+    singlepage.INSTANCE.selectedOldStation(null);
     if(singlepage.INSTANCE.selectedStation()!=null)
     {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));
-     singlepage.INSTANCE.selectedStation(null);
+
       gpsbtn.setVisibility(View.GONE);
      circle = new CircleOptions();
     }
@@ -1186,15 +1233,19 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    */
   private void makeMarkers( Tour tour ){
     for( Station station : tour.stations() ){
-      MarkerOptions marker = new MarkerOptions();
-
-      marker.position( station.latlng() );
-      marker.icon( BitmapDescriptorFactory.fromBitmap( markertext(tour,"") ) );
-
-      markers.put( station.slug(), marker );
+      markers.put( station.slug(), createMarker(station, tour) );
     }
 
   }
+
+  public MarkerOptions createMarker(Station station, Tour tour)
+  {
+    MarkerOptions marker = new MarkerOptions();
+
+    marker.position( station.latlng() );
+    marker.icon( BitmapDescriptorFactory.fromBitmap( markertext(tour,"") ) );
+
+  return marker;}
 
 public Bitmap markertext(Tour tour, String text)
 {

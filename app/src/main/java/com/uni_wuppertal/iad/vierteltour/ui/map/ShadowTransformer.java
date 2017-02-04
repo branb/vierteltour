@@ -20,15 +20,15 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
     private StationAdapter mAdapter;
     private float mLastOffset;
     private Singletonint singlepage;
-    private MapsActivity mapsActivity;
+    private Context context;
 
 
 
-    public ShadowTransformer(ClickableViewpager viewPager, StationAdapter adapter, MapsActivity context) {
+    public ShadowTransformer(ClickableViewpager viewPager, StationAdapter adapter, Context context) {
         mViewPager = viewPager;
         mViewPager.addOnPageChangeListener(this);
         mAdapter = adapter;
-        mapsActivity = context;
+        this.context = context;
     }
 
   @Override
@@ -61,7 +61,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
 
     }
     if(position==mAdapter.getCount()-1 && positionOffset==0)
-    {mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.white));
+    {mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.white));
       mAdapter.getItem(position).getView().setScaleX(1.2f);
       mAdapter.getItem(position).getView().setScaleY(1.2f);}
 
@@ -76,7 +76,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
     if(lastFragment.getView()!=null)
     {lastFragment.getView().setScaleX(1);
      lastFragment.getView().setScaleY(1);
-     lastFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.grey));}
+     lastFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.grey));}
     }
 
 
@@ -87,8 +87,8 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
     if (currentFragment.getView() != null) {
       currentFragment.getView().setScaleX((float) (1 + 0.2 * (1 - realOffset)));
       currentFragment.getView().setScaleY((float) (1 + 0.2 * (1 - realOffset)));
-      if(goingLeft)currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, mapsActivity.getResources().getColor(R.color.grey), mapsActivity.getResources().getColor(R.color.white)));
-      else currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, mapsActivity.getResources().getColor(R.color.white), mapsActivity.getResources().getColor(R.color.grey)));
+      if(goingLeft)currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.grey), context.getResources().getColor(R.color.white)));
+      else currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.white), context.getResources().getColor(R.color.grey)));
     }
 
     StationFragment nextFragment = mAdapter.getItem(nextPosition);
@@ -98,8 +98,8 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
     if (nextFragment.getView() != null) {
       nextFragment.getView().setScaleX((float) (1 + 0.2 * (realOffset)));
       nextFragment.getView().setScaleY((float) (1 + 0.2 * (realOffset)));
-      if(goingLeft)nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, mapsActivity.getResources().getColor(R.color.white), mapsActivity.getResources().getColor(R.color.grey)));
-        else nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, mapsActivity.getResources().getColor(R.color.grey) , mapsActivity.getResources().getColor(R.color.white)));
+      if(goingLeft)nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.white), context.getResources().getColor(R.color.grey)));
+        else nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.grey) , context.getResources().getColor(R.color.white)));
     }
 
     mLastOffset = positionOffset;
@@ -109,19 +109,19 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
   public void onPageSelected(int position) {
   //  for(int i=0; i<mAdapter.getCount()-1; i++)System.out.println(mAdapter.getItem(i));
 
-    mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.white));
+    mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.white));
     mAdapter.getItem(position).getView().setScaleX(1.2f);
     mAdapter.getItem(position).getView().setScaleY(1.2f);
 
-    if(position+1<mAdapter.getCount()){mAdapter.getItem(position+1).getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.grey));
+    if(position+1<mAdapter.getCount()){mAdapter.getItem(position+1).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.grey));
     mAdapter.getItem(position+1).getView().setScaleX(1f);
     mAdapter.getItem(position+1).getView().setScaleY(1f);}
 
-    if(position-1>0){mAdapter.getItem(position-1).getView().findViewById(R.id.clicklayout).setBackgroundColor(mapsActivity.getResources().getColor(R.color.grey));
+    if(position-1>0){mAdapter.getItem(position-1).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.grey));
     mAdapter.getItem(position-1).getView().setScaleX(1f);
     mAdapter.getItem(position-1).getView().setScaleY(1f);}
 
-    mapsActivity.selectStation(singlepage.INSTANCE.selectedTour().station(position+1));
+    ((MapsActivity)context).selectStation(singlepage.INSTANCE.selectedTour().station(position+1));
     singlepage.INSTANCE.onfragmentclicked(-1);
   }
 
