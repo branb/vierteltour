@@ -39,6 +39,7 @@ import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -61,8 +62,8 @@ public class StationActivity extends Activity{
   int dotsCount;
   String video, audio;
   ArrayList<String> stationImagePaths;
-  String station, farbe, autor, tourname, laenge, desc, zeit, size, number, slug;
-  ImageView dots[];
+  String station, farbe, autor, tourname, laenge, desc, zeit, size, number, slug, path;
+  ImageView dots[], tourimage;
   Intent myIntent2;
   Bundle b;
   RelativeLayout layout;
@@ -131,8 +132,21 @@ public class StationActivity extends Activity{
   }
 
   public void checkGPS()
-  {if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false) || number.equals("1"))
+  {SharedPreferences prefs =
+    PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+    if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false))
     {sperrvariable=false;}
+
+    SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+      @Override
+      public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        System.out.println("CHANGED: " + s);
+        if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false))
+        {sperrvariable=false;
+          hide();}
+      }
+    };
+    prefs.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
   }
 
   public void parseData(){
@@ -148,6 +162,7 @@ public class StationActivity extends Activity{
     desc = (String) b.get( "desc" );
     size = (String) b.get( "size" );
     number = (String) b.get( "pos" );
+    path = (String) b.get("path");
 
     // Currently in the format "img1.jpg,img2.jpg,..."
     // TODO: Convert XML-entry to have one <image>-tag per image entry
@@ -173,6 +188,8 @@ public class StationActivity extends Activity{
     if(number.equals("1")) title.setVisibility(View.INVISIBLE);
     routenname = (TextView) findViewById( R.id.routenname );
     routenname.setText( tourname );
+    tourimage = (ImageView) findViewById(R.id.routenbild);
+    tourimage.setImageURI( Uri.fromFile(new File(path+singlepage.INSTANCE.selectedTour().image()+".png")));
     prof = (TextView) findViewById( R.id.routeninfo1 );
     prof.setText( autor );
     info2 = (TextView) findViewById( R.id.routeninfo2 );
@@ -238,10 +255,13 @@ public class StationActivity extends Activity{
       play_button.setVisibility( View.GONE );
       duration.setVisibility( View.GONE );
     }
+    else{seekbar.setVisibility( View.VISIBLE );
+      play_button.setVisibility( View.VISIBLE );
+      duration.setVisibility( View.VISIBLE );}
 
     if( (stationImagePaths.size() == 0 && video.isEmpty()) || sperrvariable ){
       imagePager.setVisibility( View.GONE );
-    }
+    }else{imagePager.setVisibility( View.VISIBLE );}
 
     if(sperrvariable)
     {gesperrt.setVisibility(View.VISIBLE);

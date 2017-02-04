@@ -91,6 +91,7 @@ import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.DrawerAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.DrawerItem;
 import com.uni_wuppertal.iad.vierteltour.updater.Updater;
 import com.uni_wuppertal.iad.vierteltour.updater.UpdateListener;
+import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 import com.uni_wuppertal.iad.vierteltour.utility.ReplaceFont;
 
 import java.util.ArrayList;
@@ -430,6 +431,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     tmpIntent.putExtra( "laenge", tour.length() );
     tmpIntent.putExtra( "farbe", tour.color() );
     tmpIntent.putExtra( "size", "" + tour.stations().size() );
+    tmpIntent.putExtra("path", OurStorage.get(this).storagePath()+"/"+OurStorage.get(this).lookForTourFile(tourlist(), tour.image()));
     // Selected Station
     Station station = singlepage.INSTANCE.selectedStation();
     tmpIntent.putExtra("slug", station.slug());
