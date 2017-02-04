@@ -571,10 +571,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           e.putBoolean( station.slug(), true);
           //  Apply changes
           e.apply();
+          stationAdapter.notifyDataSetChanged();
+
         gpsbtn.setVisibility(View.GONE);
         }}}}}
     };
     // Start GPS
+  if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))enableLoc();
   }
 
 
@@ -684,7 +687,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if(!tourlist.city(visibleCity).tours().get(position).equals(singlepage.INSTANCE.selectedTour()))
        { singlepage.INSTANCE.selectedTour(tourlist.city(visibleCity).tours().get(position));
          selectTour(tourlist.city(visibleCity).tours().get(position));}
-        System.out.println("Scroll");
+
 
       adapter.notifyDataSetChanged();
         lv.smoothScrollToPosition(position);
@@ -731,10 +734,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onClick( View v ){
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {enableLoc();
-          System.out.println("GPS: "+locationManager.isProviderEnabled(locationManager.GPS_PROVIDER));
-          //    googleApiClient=null;
-        }
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {enableLoc();}
         // Navigation require current Location
         if( MyLocation != null && singlepage.INSTANCE.selectedStation()!=null){
           // Uri for google navigation
@@ -766,9 +766,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
         if(MyLocation==null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER))Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT ).show();
 
-        if( MyLocation != null ){ // GPS-Signal ist da
-          mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );
-        }
+        try{mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );}
+        catch(Exception e){
+          System.out.println("No Position Found!");}
     }
     });
 
@@ -798,7 +798,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
           @Override
           public void onConnected(Bundle bundle) {
-            MyLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient); //may be old
             LocationRequest locationRequest = LocationRequest.create();
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             locationRequest.setInterval(30 * 1000);
@@ -808,28 +807,25 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             builder.setAlwaysShow(true);
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,locationRequest,locationListener);
 
-            System.out.println("GPS4: "+locationManager.isProviderEnabled(locationManager.GPS_PROVIDER));
             PendingResult<LocationSettingsResult> result =
               LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
             result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
               @Override
               public void onResult(LocationSettingsResult result) {
-                final Status status = result.getStatus();System.out.println("GPS5: "+locationManager.isProviderEnabled(locationManager.GPS_PROVIDER));
+                final Status status = result.getStatus();
                 switch (status.getStatusCode()) {
                   case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                     try {
                       // Show the dialog by calling startResolutionForResult(),
                       // and check the result in onActivityResult().
                       status.startResolutionForResult(MapsActivity.this, REQUEST_LOCATION);
-                      System.out.println("GPS3: "+locationManager.isProviderEnabled(locationManager.GPS_PROVIDER));
-                    } catch (IntentSender.SendIntentException e) {
+                      } catch (IntentSender.SendIntentException e) {
                       // Ignore the error.
                     }
                     break;
                 }
               }
             });
-            System.out.println("GPS2: "+locationManager.isProviderEnabled(locationManager.GPS_PROVIDER));
 
           }
           @Override
