@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ViertelTour-App</string>
+    <string name="app_name">ViertelTour</string>
     <string name="title_activity_maps">ViertelTour</string>
 
     <string name="drawer_open">Open navigation drawer</string>
