@@ -154,7 +154,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private GoogleMap mMap;
 
   // Indicates, if we have checked for new updates on tourdata. Needed at the start of the app
-  private boolean checkedForUpdates = false, tourdataAvailable = false;
+  private boolean checkedForUpdates = false, tourdataAvailable = false, zoomToLocation=false;
 
   // TODO: Save the currently displayed city into shared preferences and load them on startup
   // Slug of the currently displayed city, e.g. the currently available and displayed tours
@@ -556,11 +556,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     locationListener = new LocationListener(){
       @Override
       public void onLocationChanged( Location location ){
-
-
-        // define new Location
         MyLocation = location;
         pos = new LatLng( MyLocation.getLatitude(), MyLocation.getLongitude() );
+
+        if(zoomToLocation)
+        {try{mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );}
+        catch(Exception e){
+          System.out.println("No Position Found!");}}
+        // define new Location
+
 
         if(tourlist!=null)
         {positionInCircle(pos);}
@@ -818,11 +822,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {enableLoc();
         }
-        if(MyLocation==null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER))Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT ).show();
-
-        try{mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );}
+        if(MyLocation==null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        {Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT ).show();
+        zoomToLocation=true;}
+        else
+        {try{mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );}
         catch(Exception e){
-          System.out.println("No Position Found!");}
+          System.out.println("No Position Found!");}}
+
+
     }
     });
 
