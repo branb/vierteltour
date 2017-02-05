@@ -118,8 +118,6 @@
                     android:layout_height="170dp"
                     android:layout_above="@+id/audiobar"
                     android:visibility="gone"
-                    android:paddingLeft="120dp"
-                    android:paddingRight="120dp"
                     android:clipToPadding="false"
                     />
 

@@ -754,6 +754,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   public void initPager(){
+    //Get Screen Sizes
+    DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+    float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+    float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+
+    float pagerPadding = (displayMetrics.widthPixels - 150*displayMetrics.density) /2;
+    mPager.setPadding((int)pagerPadding, 0,(int) pagerPadding, 0);
+    System.out.println("height: " + dpHeight + "\nwidth: " + dpWidth + "\npixelheight: " + displayMetrics.heightPixels + "\npixelwidth: " + displayMetrics.widthPixels+ "\npagerpadding: " + pagerPadding);
     //Initialisiere Pager
 
     audiobar.setOnClickListener(new View.OnClickListener() {
