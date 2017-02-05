@@ -61,7 +61,6 @@ public class InformationPagerAdapter extends PagerAdapter{
     String resources = stationImagePaths.get(position);     //v für video, i für image
 
 //TODO: stationimagepaths to stationresourcepaths with video and images to show
-    //TODO: HIER WURDE TMP EDITIERT
     if(resources.endsWith("mp4"))
     { imageView.setVisibility(View.VISIBLE);
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
@@ -74,10 +73,14 @@ public class InformationPagerAdapter extends PagerAdapter{
     else if (resources.endsWith("jpg")) {
       imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
-      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
-      {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );}
-      else{imageView.setImageResource(R.drawable.i);
-        fileAvailable=false;}}
+  //    if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
+   //   {
+        imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );
+    //}
+   //   else{
+  //     imageView.setImageResource(R.drawable.i);
+  //      fileAvailable=false;//}
+  }
 
     container.addView( itemView );
 

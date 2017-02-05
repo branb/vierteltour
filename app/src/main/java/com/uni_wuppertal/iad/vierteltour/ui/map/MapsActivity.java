@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -101,6 +102,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static android.location.GpsStatus.GPS_EVENT_STARTED;
+import static android.location.GpsStatus.GPS_EVENT_STOPPED;
+
 
 public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback, UpdateListener{
 
@@ -110,6 +114,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public LocationListener locationListener;
   final static int REQUEST_LOCATION = 1;
   private GoogleApiClient googleApiClient;
+  private LocationSettingsRequest.Builder builder;
   public int CurrentZoom = 15;
   int[] drawerIcons = new int[]{ R.drawable.einstellungen,
                                  R.drawable.hilfe,
@@ -141,7 +146,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private View listelement;
   private ShadowTransformer mFragmentShadowTransformer;
   private TextView title, tourenliste, subtext1, subtext2;
-  private Marker tmpmarker;
+  private Marker tmpmarker, curLocation;
   private RelativeLayout panel, gpsinfo;
   public static RelativeLayout audiobar;
   ProgressDialog progressDialog;
@@ -206,7 +211,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   @Override
   public void onDestroy(){
     super.onDestroy();
-    stopGPS();
+    if(googleApiClient!=null) googleApiClient.disconnect();
   }
 
 
@@ -553,6 +558,18 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void initLocationServices(){
     locationManager = (LocationManager) getSystemService( LOCATION_SERVICE );
 
+
+
+    GpsStatus.Listener gpsStatus = new GpsStatus.Listener() {
+      @Override
+      public void onGpsStatusChanged(int i) {
+        System.out.println("Status: " + i);
+        if(i==GPS_EVENT_STOPPED){if(curLocation!=null) curLocation.remove();}
+      }
+    };
+    System.out.println("Adding GPSListener...");
+    locationManager.addGpsStatusListener(gpsStatus);
+
     locationListener = new LocationListener(){
       @Override
       public void onLocationChanged( Location location ){
@@ -560,7 +577,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         pos = new LatLng( MyLocation.getLatitude(), MyLocation.getLongitude() );
 
         if(zoomToLocation)
-        {try{mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );}
+        {try{mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );
+        zoomToLocation=false;}
         catch(Exception e){
           System.out.println("No Position Found!");}}
         // define new Location
@@ -569,8 +587,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         if(tourlist!=null)
         {positionInCircle(pos);}
 
-        drawRoutes();
-
+        //Zeichne Location auf Map
+        if(curLocation!=null)curLocation.remove();
+        drawOwnLocation();
       }
 
 
@@ -598,10 +617,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         gpsbtn.setVisibility(View.GONE);
         }}}}}
     };
-    // Start GPS
-  if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))enableLoc();
-  }
-
+    initGoogleApiClient();
+    }
 
   /**
    * (Re-)Draw the routes of the currently visible tours and their station markers
@@ -623,8 +640,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if(pos!=null)
     {MarkerOptions marker = new MarkerOptions();
       marker.position(pos);
-      marker.icon(BitmapDescriptorFactory.fromBitmap( BitmapFactory.decodeResource( getResources(), getResources().getIdentifier( "current3", "drawable", getPackageName() ) )));
-      if(mMap!=null)mMap.addMarker(marker);}}
+      marker.icon(BitmapDescriptorFactory.fromBitmap( BitmapFactory.decodeResource( getResources(), getResources().getIdentifier( "current", "drawable", getPackageName() ) )));
+      if(mMap!=null)curLocation = mMap.addMarker(marker);}}
 
 
   /**
@@ -754,9 +771,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void initPager(){
     //Get Screen Sizes
     DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-    float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-    float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-
     float pagerPadding = (displayMetrics.widthPixels - 150*displayMetrics.density) /2;
     mPager.setPadding((int)pagerPadding, 0,(int) pagerPadding, 0);
     //Initialisiere Pager
@@ -791,8 +805,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     arrowbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {enableLoc();}
+        enableGPSMessage();
         // Navigation require current Location
         if( MyLocation != null && singlepage.INSTANCE.selectedStation()!=null){
           // Uri for google navigation
@@ -818,11 +831,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     tarbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
+        enableGPSMessage();
 
-      final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {enableLoc();
-        }
-        if(MyLocation==null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        if(MyLocation==null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
         {Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT ).show();
         zoomToLocation=true;}
         else
@@ -850,63 +861,64 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   }
 
-  public void stopGPS(){
+  private void enableGPSMessage()
+  {if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {
     if(googleApiClient!=null) googleApiClient.disconnect();
+    PendingResult<LocationSettingsResult> result =
+      LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+    result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+      @Override
+      public void onResult(LocationSettingsResult result) {
+        final Status status = result.getStatus();
+        switch (status.getStatusCode()) {
+          case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+            try {
+              // Show the dialog by calling startResolutionForResult(),
+              // and check the result in onActivityResult().
+              status.startResolutionForResult(MapsActivity.this, REQUEST_LOCATION);
+            } catch (IntentSender.SendIntentException e) {
+              // Ignore the error.
+            }
+            break;
+        }
+      }
+    });
+    googleApiClient.connect();
+  }}
+
+
+
+  private void initGoogleApiClient()
+  {googleApiClient = new GoogleApiClient.Builder(this)
+    .addApi(LocationServices.API)
+    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+      @Override
+      public void onConnected(Bundle bundle) {
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(30 * 1000);
+        locationRequest.setFastestInterval(5 * 1000);
+        builder = new LocationSettingsRequest.Builder()
+          .addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true);
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,locationRequest,locationListener);
+
+      }
+      @Override
+      public void onConnectionSuspended(int i) {
+        googleApiClient.connect();
+      }
+    })
+    .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+      @Override
+      public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        Log.d("Location error","Location error " + connectionResult.getErrorCode());
+      }
+    }).build();
+    googleApiClient.connect();
   }
 
-  private void enableLoc() {
-      googleApiClient = new GoogleApiClient.Builder(this)
-        .addApi(LocationServices.API)
-        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-          @Override
-          public void onConnected(Bundle bundle) {
-            LocationRequest locationRequest = LocationRequest.create();
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            locationRequest.setInterval(30 * 1000);
-            locationRequest.setFastestInterval(5 * 1000);
-            LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-              .addLocationRequest(locationRequest);
-            builder.setAlwaysShow(true);
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,locationRequest,locationListener);
-
-            PendingResult<LocationSettingsResult> result =
-              LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
-            result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-              @Override
-              public void onResult(LocationSettingsResult result) {
-                final Status status = result.getStatus();
-                switch (status.getStatusCode()) {
-                  case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                    try {
-                      // Show the dialog by calling startResolutionForResult(),
-                      // and check the result in onActivityResult().
-                      status.startResolutionForResult(MapsActivity.this, REQUEST_LOCATION);
-                      } catch (IntentSender.SendIntentException e) {
-                      // Ignore the error.
-                    }
-                    break;
-                }
-              }
-            });
-
-          }
-          @Override
-          public void onConnectionSuspended(int i) {
-            googleApiClient.connect();
-          }
-        })
-        .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-          @Override
-          public void onConnectionFailed(ConnectionResult connectionResult) {
-
-            Log.d("Location error","Location error " + connectionResult.getErrorCode());
-          }
-        }).build();
-      googleApiClient.connect();
-
-
-
-  }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
