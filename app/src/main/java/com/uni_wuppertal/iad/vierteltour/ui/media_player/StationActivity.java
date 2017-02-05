@@ -86,7 +86,7 @@ public class StationActivity extends Activity{
   @Override
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
-    setContentView( R.layout.information );
+    setContentView( R.layout.stationactivity );
     stationActivityRunning=true;
     parseData();      //übergibt Daten von MapsActivity
     getInit();        //Initialisierung
@@ -209,6 +209,7 @@ public class StationActivity extends Activity{
     });
     seekbar = (SeekBar) findViewById( R.id.seek_bar );
     play_button = (ImageButton) findViewById( R.id.play_button );
+    setImageResource(true);
     duration = (TextView) findViewById( R.id.duration );
     duration.setTextColor( Color.GRAY );
     gesperrt = (RelativeLayout) findViewById(R.id.gesperrt);
@@ -243,7 +244,7 @@ public class StationActivity extends Activity{
         imagePager.setCurrentItem(singlepage.INSTANCE.position());
         if(!audio.contains(".mp3") || !player.isPlaying())
         {startaudio=false;
-          play_button.setImageResource( R.drawable.play_hell );}}
+          setImageResource( true );}}
     }
   }
 
@@ -331,7 +332,7 @@ public class StationActivity extends Activity{
 
     else if(player.isPlaying())
     {startaudio = true;
-      play_button.setImageResource( R.drawable.stop_hell );
+      setImageResource( false );
       seekUpdationAudio();}
 
 
@@ -352,7 +353,7 @@ public class StationActivity extends Activity{
       public void onCompletion( MediaPlayer player ){
         player.seekTo(0);
         startaudio = false;
-        play_button.setImageResource(R.drawable.play_hell);
+        setImageResource( true );
 
         if(stationActivityRunning){Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
 
@@ -379,12 +380,12 @@ public class StationActivity extends Activity{
             if( !player.isPlaying() ){
               startaudio = true;
               player.start();
-              play_button.setImageResource( R.drawable.stop_hell );
+              setImageResource( false );
               seekUpdationAudio();
             } else {
               startaudio=false;
               player.pause();
-              play_button.setImageResource( R.drawable.play_hell );
+              setImageResource( true );
             }break;}}});
   }
 
@@ -442,4 +443,16 @@ public class StationActivity extends Activity{
   };
   //Viewpager.onPageChangeListener end
 
-}
+  public void setImageResource(boolean play)
+  {//get color und teile in rgb
+   //int color = Integer.parseInt(farbe);
+    int red = Integer.valueOf( farbe.substring( 1, 3 ), 16 );
+    int green = Integer.valueOf( farbe.substring( 3, 5 ), 16 );
+    int blue = Integer.valueOf( farbe.substring( 5, 7 ), 16 );
+    if ((red*0.299 + green*0.587 + blue*0.114) > 186)
+    {if(play)play_button.setImageResource(R.drawable.play_dunkel);
+    else play_button.setImageResource(R.drawable.stop_dunkel);}
+    else{
+  if(play)play_button.setImageResource(R.drawable.play_hell);
+    else play_button.setImageResource(R.drawable.stop_hell);}
+}}

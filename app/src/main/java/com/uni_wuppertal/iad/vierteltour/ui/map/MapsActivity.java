@@ -147,7 +147,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   ProgressDialog progressDialog;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
-  // All the tour information that is currently available to us
+  // All the tour stationactivity that is currently available to us
   private TourList tourlist;
 
 
