@@ -107,7 +107,6 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
 
   @Override
   public void onPageSelected(int position) {
-  //  for(int i=0; i<mAdapter.getCount()-1; i++)System.out.println(mAdapter.getItem(i));
 
     mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.white));
     mAdapter.getItem(position).getView().setScaleX(1.2f);

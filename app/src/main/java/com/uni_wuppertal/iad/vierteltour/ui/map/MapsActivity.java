@@ -222,16 +222,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onItemClick(int position) {
   if(singlepage.INSTANCE.onfragmentclicked()!=-1)
-  {selectStation(singlepage.INSTANCE.selectedTour().station(singlepage.INSTANCE.onfragmentclicked()));
-
-        if(singlepage.INSTANCE.selectedStation()==singlepage.INSTANCE.selectedOldStation())
-        {selectStation(singlepage.INSTANCE.selectedStation());
-        startStationActivity();}
-        else
-        {mPager.setCurrentItem(singlepage.INSTANCE.selectedStation().number()-1);}
-  singlepage.INSTANCE.onfragmentclicked(-1);
-  }
-      }
+  {mPager.setCurrentItem(singlepage.INSTANCE.onfragmentclicked()-1);
+        if(singlepage.INSTANCE.selectedStation().number()==singlepage.INSTANCE.onfragmentclicked())
+        {startStationActivity();}}}
     });
 
     audiobar = (RelativeLayout) findViewById(R.id.audiobar);
@@ -379,7 +372,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   public void selectStation(Station station)
-  { singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());   //vorherige Station wird alte Station
+  { System.out.println("SelectStation");
+    singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());   //vorherige Station wird alte Station
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
 
     //löscht alte Station, setzt Größe auf Ursprung zurück
@@ -761,7 +755,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     float pagerPadding = (displayMetrics.widthPixels - 150*displayMetrics.density) /2;
     mPager.setPadding((int)pagerPadding, 0,(int) pagerPadding, 0);
-    System.out.println("height: " + dpHeight + "\nwidth: " + dpWidth + "\npixelheight: " + displayMetrics.heightPixels + "\npixelwidth: " + displayMetrics.widthPixels+ "\npagerpadding: " + pagerPadding);
     //Initialisiere Pager
 
     audiobar.setOnClickListener(new View.OnClickListener() {
