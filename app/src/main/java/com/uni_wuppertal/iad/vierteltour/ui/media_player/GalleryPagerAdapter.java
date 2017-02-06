@@ -27,15 +27,13 @@ public class GalleryPagerAdapter extends PagerAdapter {
   private ArrayList<String> stationImagePaths;
   private ImageView imageView, imageBtn;
   private ViertelTourMediaPlayer player;
-  private GalleryMode gallery;
   private VideoView videoView;
   private ViewGroup ownContainer;
 
-  public GalleryPagerAdapter(Context mContext, ArrayList<String> stationImagePaths, GalleryMode gallery){
+  public GalleryPagerAdapter(Context mContext, ArrayList<String> stationImagePaths){
     this.mContext = mContext;
     this.stationImagePaths = stationImagePaths;
-    this.gallery = gallery;
-    player = ViertelTourMediaPlayer.getInstance( gallery );
+    player = ViertelTourMediaPlayer.getInstance( mContext );
   }
 
   @Override
@@ -81,8 +79,8 @@ public class GalleryPagerAdapter extends PagerAdapter {
       videoView.setOnTouchListener(new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-         if(gallery.getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE && player.getVideoview() != null)
-          {gallery.mediaplayerbars();}
+         if(mContext.getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE && player.getVideoview() != null)
+          {((GalleryMode)mContext).mediaplayerbars();}
 
           return false;
         }
@@ -91,7 +89,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
       videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
-          gallery.stopVideoplay();
+          ((GalleryMode)mContext).stopVideoplay();
         }
       });
 
@@ -133,7 +131,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
     imageBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        gallery.startVideoplay();
+        ((GalleryMode)mContext).startVideoplay();
       }
     });
 
@@ -143,13 +141,13 @@ public class GalleryPagerAdapter extends PagerAdapter {
       public void onClick(View v)
       {
         if(resources.endsWith("mp4")){
-          if(gallery.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-          {gallery.mediaplayerbars();}
-        else{gallery.startVideoplay();}
+          if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+          {((GalleryMode)mContext).mediaplayerbars();}
+        else{((GalleryMode)mContext).startVideoplay();}
 
         } else if (resources.endsWith("jpg")) {
-          if(gallery.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-          {gallery.imageBar();}
+          if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+          {((GalleryMode)mContext).imageBar();}
         }
 
       }});

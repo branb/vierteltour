@@ -102,7 +102,7 @@ public void initAll()
   relGalleryBot = (RelativeLayout) findViewById(R.id.relativeBot);
   relGalleryTop = (RelativeLayout) findViewById(R.id.relativeTop);
   stationbeendet = (RelativeLayout) findViewById(R.id.stationbeendet);
-  mAdapter2 = new GalleryPagerAdapter(this, res, this);
+  mAdapter2 = new GalleryPagerAdapter(this, res);
   imagePagerGallery.setAdapter( mAdapter2 );
   imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
   player = ViertelTourMediaPlayer.getInstance( this );

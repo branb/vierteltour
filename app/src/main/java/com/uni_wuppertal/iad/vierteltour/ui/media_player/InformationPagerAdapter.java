@@ -73,13 +73,10 @@ public class InformationPagerAdapter extends PagerAdapter{
     else if (resources.endsWith("jpg")) {
       imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
-  //    if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
-   //   {
-        imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );
-    //}
-   //   else{
-  //     imageView.setImageResource(R.drawable.i);
-  //      fileAvailable=false;//}
+      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
+      {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );}
+      else{imageView.setImageResource(R.drawable.i);
+        fileAvailable=false;}
   }
 
     container.addView( itemView );
