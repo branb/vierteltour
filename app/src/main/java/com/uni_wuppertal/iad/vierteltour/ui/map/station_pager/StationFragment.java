@@ -87,7 +87,7 @@ public class StationFragment extends Fragment{
       SharedPreferences getPrefs = PreferenceManager
         .getDefaultSharedPreferences( ((MapsActivity) getContext()).getBaseContext() );
 
-      if(OurStorage.get(getContext()).pathToFile(appPath+file)!=null && getPrefs.getBoolean(singlepage.INSTANCE.selectedTour().station(position).slug(), false))
+      if(OurStorage.get(getContext()).pathToFile(appPath+file)!=null && (getPrefs.getBoolean(singlepage.INSTANCE.selectedTour().station(position).slug(), false) || singlepage.INSTANCE.selectedTour().station(position).slug().startsWith("einleitung")))
       {BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 16;
         Bitmap mBitmapInsurance = BitmapFactory.decodeFile(externalPath+appPath+file ,options);
