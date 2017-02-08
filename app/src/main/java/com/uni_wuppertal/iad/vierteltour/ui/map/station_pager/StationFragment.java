@@ -2,6 +2,8 @@ package com.uni_wuppertal.iad.vierteltour.ui.map.station_pager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -57,7 +59,7 @@ public class StationFragment extends Fragment{
   public void onDestroyView(){
     super.onDestroyView();
     ImageView i =(ImageView) ownContainer.findViewWithTag("image"+position);
-    i.setImageURI(null);
+    i.setImageBitmap(null);
     i=null;
    // fragments.get(ARG_PAGE_NUMBER).image.setImageURI(null);
    // image = null;
@@ -86,7 +88,10 @@ public class StationFragment extends Fragment{
         .getDefaultSharedPreferences( ((MapsActivity) getContext()).getBaseContext() );
 
       if(OurStorage.get(getContext()).pathToFile(appPath+file)!=null && getPrefs.getBoolean(singlepage.INSTANCE.selectedTour().station(position).slug(), false))
-      {image.setImageURI(Uri.fromFile(new File(externalPath+appPath+file)));}
+      {BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 16;
+        Bitmap mBitmapInsurance = BitmapFactory.decodeFile(externalPath+appPath+file ,options);
+        image.setImageBitmap(mBitmapInsurance);}
 
       title.setText( ztitle.get( position-1 ) );
       if(singlepage.INSTANCE.selectedTour().station(position).latlng()!=null)

@@ -105,7 +105,7 @@ public class StationActivity extends Activity{
       startaudio=false;
 
       super.onBackPressed();
-      overridePendingTransition( R.anim.map_in, R.anim.fade_out );
+      //overridePendingTransition( R.anim.map_in, R.anim.fade_out );
 
       if(player != null)    //If no audio exists, player == null and error will show up
       {if(player.isPlaying())
@@ -126,7 +126,7 @@ public class StationActivity extends Activity{
 
     checkGPS();
 
-    hide();
+    setVisibility();
     initAudio();
     initImages();
   }
@@ -134,16 +134,15 @@ public class StationActivity extends Activity{
   public void checkGPS()
   {SharedPreferences prefs =
     PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-    if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false))
+    if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false) || slug.startsWith("einleitung"))
     {sperrvariable=false;}
 
     SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
       @Override
       public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        System.out.println("CHANGED: " + s);
-        if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false))
+        if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false) || slug.startsWith("einleitung"))
         {sperrvariable=false;
-          hide();}
+          setVisibility();}
       }
     };
     prefs.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
@@ -250,7 +249,7 @@ public class StationActivity extends Activity{
 
 
   //zeigt nur Ressourcen an, die vorhanden sind
-  public void hide(){
+  public void setVisibility(){
     if( !audio.contains(".mp3") || sperrvariable || OurStorage.get(this).pathToFile(audio)==null){
       seekbar.setVisibility( View.GONE );
       play_button.setVisibility( View.GONE );

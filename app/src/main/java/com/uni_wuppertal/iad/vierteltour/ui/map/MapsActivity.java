@@ -345,7 +345,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           for( Station station : tour.stations())
             { if( clickCoords.equals(station.latlng())){
               onMapClicked=true;
-                mPager.setCurrentItem(station.number()-1);
+                mPager.setCurrentItem(station.number()-1, false);
                 stationAdapter.notifyDataSetChanged();
             }
 
@@ -406,7 +406,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       tourMarker.put(singlepage.INSTANCE.selectedStation().slug(), m);}
 
     if(PreferenceManager
-      .getDefaultSharedPreferences( getBaseContext() ).getBoolean(station.slug(), false))
+      .getDefaultSharedPreferences( getBaseContext() ).getBoolean(station.slug(), false) || station.slug().startsWith("einleitung"))
     {gpsbtn.setVisibility(View.GONE);}
     else {gpsbtn.setVisibility(View.VISIBLE);}
   }
@@ -464,7 +464,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
     startActivityForResult( tmpIntent, 1 );
-    overridePendingTransition( R.anim.fade_in, R.anim.map_out );}
+   // overridePendingTransition( R.anim.fade_in, R.anim.map_out );
+    }
 
   private void vanishTours( Tour tour ){
     adapter.notifyDataSetChanged();
@@ -723,7 +724,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mPager.setVisibility( View.GONE );
     if(stationAdapter.getItem(0)!=null)
     {selectStation(singlepage.INSTANCE.selectedTour().station(1));
-      mPager.setCurrentItem(0);}
+      mPager.setCurrentItem(0,false);}
     player.reset();
 
     tourMarker.clear();

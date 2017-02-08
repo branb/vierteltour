@@ -112,11 +112,11 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
     mAdapter.getItem(position).getView().setScaleX(1.2f);
     mAdapter.getItem(position).getView().setScaleY(1.2f);
 
-    if(position+1<mAdapter.getCount()){mAdapter.getItem(position+1).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.grey));
+    if(position+1<mAdapter.getCount() && mAdapter.getItem(position+1).getView()!=null){mAdapter.getItem(position+1).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.grey));
     mAdapter.getItem(position+1).getView().setScaleX(1f);
     mAdapter.getItem(position+1).getView().setScaleY(1f);}
 
-    if(position-1>0){mAdapter.getItem(position-1).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.grey));
+    if(position-1>0 && mAdapter.getItem(position-1).getView()!=null){mAdapter.getItem(position-1).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.grey));
     mAdapter.getItem(position-1).getView().setScaleX(1f);
     mAdapter.getItem(position-1).getView().setScaleY(1f);}
 
