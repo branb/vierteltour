@@ -166,7 +166,6 @@ public class TourList{
       for( Area area : region.areas() ){
         for( City city : area.cities() ){
           for( Tour tour : city.tours() ){
-            Log.d( "TourList", "Adding tour " + tour.name() );
             tours.add( tour );
           }
         }

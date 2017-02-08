@@ -35,9 +35,10 @@ public class StationFragment extends Fragment{
   private static final String ARG_PAGE_NUMBER = "pageNumber";
   private static Bundle arguments;
   private static ArrayList<String> ztitle = new ArrayList<>();
-  private static ArrayList<View> fragments = new ArrayList<>();
+  private ViewGroup ownContainer;
   private Singletonint singlepage;
   private int position;
+  private View view;
 
 
 
@@ -53,6 +54,16 @@ public class StationFragment extends Fragment{
   }
 
   @Override
+  public void onDestroyView(){
+    super.onDestroyView();
+    ImageView i =(ImageView) ownContainer.findViewWithTag("image"+position);
+    i.setImageURI(null);
+    i=null;
+   // fragments.get(ARG_PAGE_NUMBER).image.setImageURI(null);
+   // image = null;
+  }
+
+  @Override
   public View onCreateView( LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState ){
     View rootView = inflater.inflate( R.layout.fragment_page, container, false );
     RelativeLayout btItem = (RelativeLayout) rootView.findViewById( R.id.clicklayout );
@@ -60,12 +71,13 @@ public class StationFragment extends Fragment{
     TextView number = (TextView) rootView.findViewById(R.id.numbertext);
     TextView title = (TextView) rootView.findViewById( R.id.titlefrag );
     ImageView image = (ImageView) rootView.findViewById(R.id.imagefrag);
-    View numberlayout = (View) rootView.findViewById(R.id.numberlayout);
+
+    View numberlayout = rootView.findViewById(R.id.numberlayout);
 
     if( arguments != null ){
       position = getArguments().getInt( ARG_PAGE_NUMBER );
-
-      //Change Image Dynamically TODO: OnLocationChanged check and show image
+      image.setTag("image"+position);
+      //Change Image Dynamically
       String externalPath=OurStorage.get(getContext()).storagePath()+"/";
       String appPath=OurStorage.get(getContext()).lookForTourFile(((MapsActivity)getContext()).tourlist(), singlepage.INSTANCE.selectedTour().image())+"/"+singlepage.INSTANCE.selectedTour().station(position).slug()+"/";
       String file="i_"+(singlepage.INSTANCE.selectedTour().trkid()<10?"0"+singlepage.INSTANCE.selectedTour().trkid():singlepage.INSTANCE.selectedTour().trkid())+"_"+(position<10?"0"+position:position)+"_01.jpg";
@@ -96,7 +108,9 @@ public class StationFragment extends Fragment{
       btItem.setVisibility( View.GONE );
     }
 
-    fragments.add( rootView);
+    view = rootView;
+    ownContainer=container;
+
     return rootView;
   }
 

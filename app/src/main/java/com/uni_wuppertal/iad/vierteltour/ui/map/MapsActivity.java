@@ -377,8 +377,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   public void selectStation(Station station)
-  { System.out.println("SelectStation");
-    singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());   //vorherige Station wird alte Station
+  { singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());   //vorherige Station wird alte Station
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
 
     //löscht alte Station, setzt Größe auf Ursprung zurück
@@ -563,11 +562,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     GpsStatus.Listener gpsStatus = new GpsStatus.Listener() {
       @Override
       public void onGpsStatusChanged(int i) {
-        System.out.println("Status: " + i);
         if(i==GPS_EVENT_STOPPED){if(curLocation!=null) curLocation.remove();}
       }
     };
-    System.out.println("Adding GPSListener...");
     locationManager.addGpsStatusListener(gpsStatus);
 
     locationListener = new LocationListener(){
@@ -579,8 +576,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         if(zoomToLocation)
         {try{mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );
         zoomToLocation=false;}
-        catch(Exception e){
-          System.out.println("No Position Found!");}}
+        catch(Exception e){System.out.println("No Position Found!");}}
         // define new Location
 
 
@@ -624,7 +620,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * (Re-)Draw the routes of the currently visible tours and their station markers
    */
   private void drawRoutes(){
-    System.out.println("draw everything");
     //lösche alles
   if(mMap!=null)  mMap.clear();
     drawOwnLocation();
@@ -703,7 +698,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       stationAdapter.fragments.clear();
       stationAdapter.notifyDataSetChanged();
     }
-
     // Create a page for every station
     for( Station station : singlepage.INSTANCE.selectedTour().stations() ){
       stationAdapter.addFragment( station  );
