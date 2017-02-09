@@ -87,7 +87,7 @@ public class Einstellungen extends Activity{
         if(i==2){for(int k=0;k<tourlist.tours().size();k++)
         {for(int j=1;j<=tourlist.tours().get(k).stations().size();j++)
         {e.putBoolean(tourlist.tours().get(k).station(j).slug() ,true);}}
-       e.apply(); }
+       e.apply();}
         if(i==3)
         {for(int k=0;k<tourlist.tours().size();k++)
         {for(int j=1;j<=tourlist.tours().get(k).stations().size();j++)
