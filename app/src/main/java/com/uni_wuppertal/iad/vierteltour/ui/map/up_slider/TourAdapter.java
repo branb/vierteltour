@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -104,7 +106,11 @@ public class TourAdapter extends BaseAdapter{
       downloadtext.setVisibility(View.GONE);
      }
 
-    imgAuthor.setImageURI( Uri.fromFile(new File(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(), tour.image())+tour.image()+".png")));
+    BitmapFactory.Options options = new BitmapFactory.Options();
+    options.inSampleSize = 2;
+    Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png" ,options);
+    imgAuthor.setImageBitmap(mBitmapInsurance);
+    //imgAuthor.setImageURI( Uri.fromFile(new File(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(), tour.image())+tour.image()+".png")));
 
       downloadbutton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -112,7 +118,7 @@ public class TourAdapter extends BaseAdapter{
         TextView checkVisibility = (TextView)ownContainer.findViewWithTag("text"+position);
         if(checkVisibility.getVisibility()==View.GONE)
         {if(context instanceof MapsActivity){
-          createDownloadDialog("Willst du die Tour "+ txtTitle.getText() + " runterladen?\nHinweis: Verwende dein WLAN", tour.slug(), position);
+          createDownloadDialog("Willst du die Tour "+ txtTitle.getText() + " herunterladen?\nHinweis: Verwende dein WLAN", tour.slug(), position);
 
         }}}});
 
