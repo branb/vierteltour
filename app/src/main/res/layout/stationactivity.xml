@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/arrowdown"
             android:text="Stationenname (x/y)"
+            android:textColor="@color/black"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"/>
 
@@ -33,59 +34,73 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"/>
 
-        <RelativeLayout android:id="@+id/listitem"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_below="@+id/divider1">
-            <ImageView
-                android:id="@+id/routenbild"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                />
-            <TextView
-                android:id="@+id/routenname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/routenbild"
-                android:text="Tourenname"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/routeninfo1"
-                android:layout_toRightOf="@+id/routenbild"
-                android:layout_below="@+id/routenname"
-                android:text="Toureninfo1"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/routeninfo2"
-                android:layout_toRightOf="@+id/routenbild"
-                android:layout_below="@+id/routeninfo1"
-                android:text="Toureninfo2"/>
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="fill_parent"
-                android:layout_height="1.5dp"
-                android:background="#20000000"
-                android:layout_below="@+id/routeninfo2"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"/>
-        </RelativeLayout>
+  <RelativeLayout
+    android:id="@+id/listitem_base"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/divider1">
+    <ImageView
+      android:id="@+id/routenbild"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:layout_marginLeft="25dp"
+      android:layout_marginRight="40dp"
+      android:layout_centerVertical="true"
+      />
+
+    <RelativeLayout
+      android:id="@+id/listitem_text"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_toRightOf="@+id/routenbild"
+      android:paddingTop="10dp"
+      android:paddingBottom="20dp">
+      <!-- Diese Datei gibt den Aufbau einer Zeile der Liste vor
+       ImageView (img) ist das Bild links in der Liste, 1. TextView (txt) für Titel der Tour, 2. TextView (subtxt) für Autor und Zeit/Weg -->
+
+      <TextView
+        android:id="@+id/routenname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+
+        />
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/routeninfo1"
+        android:textStyle="italic"
+        android:layout_below="@+id/routenname"/>
+
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/routeninfo2"
+        android:textStyle="italic"
+        android:layout_below="@+id/routeninfo1"/>
+    </RelativeLayout>
+      <View
+        android:id="@+id/divider2"
+        android:layout_width="fill_parent"
+        android:layout_height="1.5dp"
+        android:background="#20000000"
+        android:layout_below="@+id/listitem_text"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"/>
+
+  </RelativeLayout>
 
         <TextView
             android:id="@+id/stationenbeschreibung"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hier kommt die Stationenbeschreibung hin!"
-            android:layout_below="@+id/listitem"
+            android:layout_below="@+id/listitem_base"
+            android:textColor="@color/black"
+            android:lineSpacingExtra="3dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"

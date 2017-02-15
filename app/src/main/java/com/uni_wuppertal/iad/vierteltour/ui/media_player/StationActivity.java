@@ -449,7 +449,11 @@ public class StationActivity extends Activity{
     int green = Integer.valueOf( farbe.substring( 3, 5 ), 16 );
     int blue = Integer.valueOf( farbe.substring( 5, 7 ), 16 );
     if ((red*0.299 + green*0.587 + blue*0.114) > 186)
-    {if(play)play_button.setImageResource(R.drawable.play_dunkel);
+    {if(play)
+    {play_button.setImageResource(R.drawable.play_dunkel);
+   System.out.println(R.color.black);
+    //duration.setTextColor(Color.parseColor(""+R.color.black));
+       }
     else play_button.setImageResource(R.drawable.stop_dunkel);}
     else{
   if(play)play_button.setImageResource(R.drawable.play_hell);
