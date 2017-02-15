@@ -208,9 +208,8 @@ public class StationActivity extends Activity{
     });
     seekbar = (SeekBar) findViewById( R.id.seek_bar );
     play_button = (ImageButton) findViewById( R.id.play_button );
-    setImageResource(true);
     duration = (TextView) findViewById( R.id.duration );
-    duration.setTextColor( Color.GRAY );
+    setImageResource(true);
     gesperrt = (RelativeLayout) findViewById(R.id.gesperrt);
     pfeilhell = (ImageView) findViewById(R.id.pfeilhell);
     imagePager = (ViewPager) findViewById( R.id.ImagePager );
@@ -449,13 +448,10 @@ public class StationActivity extends Activity{
     int green = Integer.valueOf( farbe.substring( 3, 5 ), 16 );
     int blue = Integer.valueOf( farbe.substring( 5, 7 ), 16 );
     if ((red*0.299 + green*0.587 + blue*0.114) > 186)
-    {if(play)
-    {play_button.setImageResource(R.drawable.play_dunkel);
-   System.out.println(R.color.black);
-    //duration.setTextColor(Color.parseColor(""+R.color.black));
-       }
+    {duration.setTextColor(Color.parseColor("#353535"));
+      if(play) play_button.setImageResource(R.drawable.play_dunkel);
     else play_button.setImageResource(R.drawable.stop_dunkel);}
-    else{
-  if(play)play_button.setImageResource(R.drawable.play_hell);
+    else{duration.setTextColor(Color.parseColor("#E6EBE0"));
+      if(play)play_button.setImageResource(R.drawable.play_hell);
     else play_button.setImageResource(R.drawable.stop_hell);}
 }}
