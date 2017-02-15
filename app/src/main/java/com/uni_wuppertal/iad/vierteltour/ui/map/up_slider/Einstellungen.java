@@ -179,6 +179,9 @@ public class Einstellungen extends Activity{
 
   }
 
+  public TourList tourlist()
+  {return tourlist;}
+
   public void createAllToursDialog(String txt)
   {// Create custom dialog object
     final Dialog dialog = new Dialog(this);

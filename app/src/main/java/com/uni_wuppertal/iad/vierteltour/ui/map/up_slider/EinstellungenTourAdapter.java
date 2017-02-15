@@ -2,6 +2,8 @@ package com.uni_wuppertal.iad.vierteltour.ui.map.up_slider;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -13,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
+import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
 import java.util.List;
 
@@ -62,7 +66,12 @@ public class EinstellungenTourAdapter extends BaseAdapter {
 
     // TODO: Insert author image
     delete.setImageResource( R.drawable.x );
-    imgAuthor.setImageResource( R.drawable.ic_drawer );
+
+    BitmapFactory.Options options = new BitmapFactory.Options();
+    options.inSampleSize = 2;
+    Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((Einstellungen)context).tourlist(),tour.image())+tour.image()+".png" ,options);
+    imgAuthor.setImageBitmap(mBitmapInsurance);
+
     geloescht.setText("löschen");
     geloescht.setVisibility(View.VISIBLE);
     txtTitle.setText( tour.name() );

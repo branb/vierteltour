@@ -129,14 +129,12 @@ public class TourAdapter extends BaseAdapter{
     convertView.setClickable(false);
 
     if(singlepage.INSTANCE.selectedTour()==null || !tour.slug().equals(singlepage.INSTANCE.selectedTour().slug())) {
-      setDownloadButtonInPosition(false);
       txtDescription.setVisibility( View.GONE );
       btnStart.setVisibility( View.GONE );
       divider.setVisibility( View.GONE );
 
     }
     else if( tour.slug().equals( singlepage.INSTANCE.selectedTour().slug() ) ) {
-      setDownloadButtonInPosition(true);
       txtDescription.setVisibility(View.VISIBLE);
       btnStart.setVisibility(View.VISIBLE);
       divider.setVisibility(View.VISIBLE);
@@ -155,36 +153,6 @@ public class TourAdapter extends BaseAdapter{
 
     return convertView;
   }
-
-  public void setDownloadButtonInPosition(boolean open)
-  {if(open)
-  {RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-    lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
-    lp.addRule(RelativeLayout.ABOVE, R.id.divider);
-    lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
-
-    downloadbutton.setLayoutParams(lp);
-
-    RelativeLayout.LayoutParams lptext = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-    lptext.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
-    lptext.addRule(RelativeLayout.ABOVE, R.id.divider);
-    lptext.addRule(RelativeLayout.LEFT_OF, R.id.downloadview);
-    downloadtext.setLayoutParams(lptext);
-
-  }
-  else{RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-    lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
-    lp.addRule(RelativeLayout.ABOVE, 0);
-    lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
-    downloadbutton.setLayoutParams(lp);
-
-    RelativeLayout.LayoutParams lptext = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-    lptext.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
-    lptext.addRule(RelativeLayout.ABOVE, 0);
-    lptext.addRule(RelativeLayout.LEFT_OF, R.id.downloadview);
-    downloadtext.setLayoutParams(lptext);
-  }}
-
 
   public void createDownloadDialog(String txt, String slug, int position)
   {// Create custom dialog object

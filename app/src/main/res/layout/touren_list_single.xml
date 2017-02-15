@@ -1,69 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/listelement"
-    android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+  <RelativeLayout
+    android:id="@+id/listelement_base"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+  <ImageView
+    android:id="@+id/img"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="40dp"
+    android:layout_centerVertical="true"
+    />
+
+  <TextView
+    android:id="@+id/downloadtext"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="geladen"
+    android:layout_alignParentBottom="true"
+    android:textColor="@color/black"
+    android:textStyle="bold"
+    android:visibility="gone"
+    android:paddingRight="3dp"
+    android:paddingBottom="11dp"
+    android:layout_toLeftOf="@+id/downloadview"/>
+
+  <ImageView
+    android:id="@+id/downloadview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentBottom="true"
+    android:paddingRight="15dp"
+    android:paddingBottom="15dp"
+    android:src="@drawable/laden"
+    />
+
+  <RelativeLayout
+    android:id="@+id/listelement_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@+id/img"
     android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:paddingBottom="20dp">
     <!-- Diese Datei gibt den Aufbau einer Zeile der Liste vor
      ImageView (img) ist das Bild links in der Liste, 1. TextView (txt) für Titel der Tour, 2. TextView (subtxt) für Autor und Zeit/Weg -->
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-      />
+
     <TextView
             android:id="@+id/txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/img"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+
             />
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/subtxt1"
-            android:layout_toRightOf="@+id/img"
+            android:textStyle="italic"
             android:layout_below="@+id/txt"/>
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/subtxt2"
-        android:layout_toRightOf="@+id/img"
+        android:textStyle="italic"
         android:layout_below="@+id/subtxt1"/>
+</RelativeLayout>
+</RelativeLayout>
 
-    <TextView
-      android:id="@+id/downloadtext"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="geladen"
-      android:layout_alignParentBottom="true"
-      android:textStyle="bold"
-      android:visibility="gone"
-      android:paddingRight="3dp"
-      android:layout_toLeftOf="@+id/downloadview"/>
-    <ImageView
-      android:id="@+id/downloadview"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentRight="true"
-      android:layout_alignParentBottom="true"
-      android:layout_above="@+id/divider"
-      android:paddingRight="10dp"
-      android:paddingBottom="5dp"
-      android:src="@drawable/laden"
-      />
-
+<RelativeLayout
+  android:id="@+id/listelement_below"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_below="@+id/listelement_base">
 
     <View
         android:id="@+id/divider"
         android:layout_width="fill_parent"
         android:layout_height="1.5dp"
         android:background="#20000000"
-        android:layout_below="@+id/subtxt2"
-        android:layout_marginTop="10dp"
         android:visibility="gone"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"/>
@@ -71,10 +95,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/addinfo"
+        android:lineSpacingExtra="3dp"
         android:visibility="gone"
+        android:textSize="15sp"
+        android:layout_marginLeft="70dp"
         android:layout_below="@+id/divider"
-        android:layout_toRightOf="@+id/img"
-        android:paddingRight="15dp"
+        android:textColor="@color/black"
+        android:paddingRight="20dp"
         android:layout_marginTop="10dp"/>
     <ImageButton
         android:layout_width="wrap_content"
@@ -82,9 +109,12 @@
         android:id="@+id/zumstartlist"
         android:layout_below="@+id/addinfo"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="5dp"
+        android:padding="15dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
         android:visibility="gone"
-        android:background="@drawable/zum_start"
+        android:src="@drawable/zum_start"
+        android:background="@color/transparent"
         android:onClick="swapToViewPager"/>
+</RelativeLayout>
 </RelativeLayout>
