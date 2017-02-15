@@ -28,10 +28,11 @@ public class IntroActivity extends AppIntro{
 
     // Instead of fragments, you can also use our default slide
     // Just set a title, description, background and image. AppIntro will do the rest.
-    addSlide( AppIntroFragment.newInstance( "Überschrift", "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte.", R.drawable.i, Color.parseColor( "#fbc55e") ) );
-    addSlide( AppIntroFragment.newInstance( "Überschrift", "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte.", R.drawable.i, Color.parseColor( "#ec6e5e") ) );
-    addSlide( AppIntroFragment.newInstance( "Überschrift", "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte.", R.drawable.i, Color.parseColor( "#8cafdc") ) );
-    addSlide( AppIntroFragment.newInstance( "Überschrift", "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte.", R.drawable.i, Color.parseColor( "#d1e096") ) );
+    addSlide( AppIntroFragment.newInstance( "Überschrift", "Die App ViertelTour nimmt Sie mit auf informative Stadtspaziergänge, die von unterschiedlichsten Experten durch eine dichte Ökologie- und Kulturlandschaft im Wuppertaler Innenstadtraum durchgeführt werden.\n" ,R.drawable.i, Color.parseColor( "#fbc55e") ) );
+    addSlide( AppIntroFragment.newInstance( "Überschrift", "Laden Sie sich die Touren am besten bevor Sie losgehen im Wlan Netz herunter. Es werden pro Tour etwa 100–200 MB Daten geladen.\n"+"Um die Audio-, Bild, und Video-Daten dann zu den Touren hören und sehen zu können, müssen Sie sich vor Ort befinden!", R.drawable.i, Color.parseColor( "#ec6e5e") ) );
+    addSlide( AppIntroFragment.newInstance( "Überschrift", "Wir haben ViertelTour bewusst so konzipiert, dass die Spaziergänge tatsächlich nur erlebt werden können, wenn Sie sich genau dort befinden, wo die entsprechende Expertin oder der entsprechende Experte Sie mit auf den Weg nehmen möchte, um Wuppertal vor Ort zu erfahren.", R.drawable.i, Color.parseColor( "#8cafdc") ) );
+    addSlide( AppIntroFragment.newInstance( "Überschrift", "Sie haben mit der App die Möglichkeit sich an die entsprechenden Ort navigieren zu lassen. \n"+"Wenn Sie dort angekommen sind, werden Ihnen die Daten jeweils Stationsweise zur Verfügung gestellt.", R.drawable.i, Color.parseColor( "#fbc55e") ) );
+    addSlide( AppIntroFragment.newInstance( "Überschrift", "Wir wünschen viel Spaß und hoffentlich neue Einsichten und Erfahrungen in einer hochinteressanten Stadt.\n"+"Projektgruppe Design Interaktiver Medien, Bergische Universität Wuppertal, Prof. Kristian Wolf", R.drawable.i, Color.parseColor( "#fbc55e") ) );
 
     // OPTIONAL METHODS
     // Override bar/separator color.
