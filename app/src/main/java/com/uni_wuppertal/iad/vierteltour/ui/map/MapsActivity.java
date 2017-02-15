@@ -130,7 +130,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private DrawerLayout mDrawerLayout;
   private ListView mDrawerList;
   private ActionBarDrawerToggle mDrawerToggle;
-  private SlidingUpPanelLayout mLayout;
+  private SlidingUpPanelLayout supl;
   private RelativeLayout mDrawer;
   public static ClickableViewpager mPager;
   private StationAdapter stationAdapter;
@@ -149,7 +149,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Marker tmpmarker, curLocation;
   private RelativeLayout panel, gpsinfo;
   public static RelativeLayout audiobar;
-  ProgressDialog progressDialog;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
   // All the tour stationactivity that is currently available to us
@@ -235,7 +234,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     audiobar = (RelativeLayout) findViewById(R.id.audiobar);
 
 
-    mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+    supl = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
 
     lv = (ListView) findViewById(R.id.list);
     panel = (RelativeLayout) findViewById(R.id.panelhalf);
@@ -322,7 +321,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onMapClick( LatLng clickCoords ){
       if(tourdataAvailable)
-      {  if( mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED ){
+      {  if( supl.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED ){
           boolean tourSelected = false;
 
           for( Tour tour : tourlist.city(visibleCity).tours() ){
@@ -339,7 +338,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           drawRoutes();
         }
         //Stationenübersicht
-        else if(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
+        else if(supl.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
         { Boolean onMapClicked=false;       //unselect Stations
           Tour tour = singlepage.INSTANCE.selectedTour();
           for( Station station : tour.stations())
@@ -709,7 +708,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     title.setTypeface(tf);
 
     mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( wuppertal, CurrentZoom ) );
-    mLayout.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
+    supl.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
     xbtn.setVisibility( View.VISIBLE );
     title.setText( singlepage.INSTANCE.selectedTour().name() );
     title.setVisibility( View.VISIBLE );
@@ -718,7 +717,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   //Stationenübersicht schließen und zurück zur Tourenauswahl
   public void swapToSupl(){
-    mLayout.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );    //Show Slider
+    supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );    //Show Slider
     xbtn.setVisibility( View.GONE );
     title.setVisibility( View.GONE );
     mPager.setVisibility( View.GONE );
@@ -743,7 +742,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   //Erstelle den Slider
   public void initSupl(){
-    mLayout.setPanelSlideListener(onSlideListener());
+    supl.setPanelSlideListener(onSlideListener());
     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -1197,9 +1196,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   @Override
   public void onBackPressed(){
-    if( mLayout != null && mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED )      //Wenn SUPL geöffnet, und zurück gedrückt wird, schließe nur SUPL
+    if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED )      //Wenn SUPL geöffnet, und zurück gedrückt wird, schließe nur SUPL
     {
-      mLayout.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );
+      supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );
     } else if( mPager.getVisibility() == View.VISIBLE ){
       swapToSupl();
     } else if( getFragmentManager().getBackStackEntryCount() == 0 ){
