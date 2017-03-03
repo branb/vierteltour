@@ -883,35 +883,35 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
   private void initGoogleApiClient()
-  {googleApiClient = new GoogleApiClient.Builder(this)
+  {//Erzeugt GoogleApiClient Objekt zum Verbinden der Google Play services
+    googleApiClient = new GoogleApiClient.Builder(this)
+     //Fügt LocationServices API hinzu
     .addApi(LocationServices.API)
     .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
       @Override
       public void onConnected(Bundle bundle) {
+        //Erzeugt LocationRequest Objekt, um GPS Genauigkeit und Intervalle zu definieren
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(30 * 1000);
         locationRequest.setFastestInterval(5 * 1000);
         builder = new LocationSettingsRequest.Builder()
+          //Fügt erstelltes LocationRequest Objekt hinzu
           .addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,locationRequest,locationListener);
-
-      }
+        //Verknüpft Client, GPS Konfigurationen und LocationListener
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,locationRequest,locationListener);}
       @Override
       public void onConnectionSuspended(int i) {
         googleApiClient.connect();
-      }
-    })
+      }})
     .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
       @Override
       public void onConnectionFailed(ConnectionResult connectionResult) {
-
-        Log.d("Location error","Location error " + connectionResult.getErrorCode());
-      }
+        Log.d("Location error","Location error " + connectionResult.getErrorCode());  }
     }).build();
-    googleApiClient.connect();
-  }
+    googleApiClient.connect();    //Verbindet Client mit Services
+    }
 
 
   @Override
