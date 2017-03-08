@@ -42,7 +42,7 @@ public class Einstellungen extends Activity{
   private RelativeLayout layoutEinstellungen, layoutTouren, tourenLoeschen;
   private TextView keineTouren;
   private TourList tourlist = new TourListReader( this ).readTourList();
-  private String[] items = new String[] {"Tour löschen", "Nach Aktualisierungen suchen", "Touren freischalten", "Touren sperren"};
+  private String[] items = new String[] {"Touren löschen", "Nach Aktualisierungen suchen", "Touren freischalten", "Touren sperren"};
   private EinstellungenAdapter einstellungen;
   private SharedPreferences sharedPreferences;
   private SharedPreferences.Editor e;
