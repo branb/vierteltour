@@ -807,19 +807,32 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         if( MyLocation != null && singlepage.INSTANCE.selectedStation()!=null){
           // Uri for google navigation
           String start = MyLocation.getLatitude() + "," + MyLocation.getLongitude();
-          String target = singlepage.INSTANCE.selectedStation().latlng().latitude + "," + singlepage.INSTANCE.selectedStation().latlng().longitude;
-          String navigationUrl = "http://maps.google.com/maps?saddr=&daddr=" + target;
+          String target;
+          if(singlepage.INSTANCE.selectedStation().number()!=1)
+          {target = singlepage.INSTANCE.selectedStation().latlng().latitude + "," + singlepage.INSTANCE.selectedStation().latlng().longitude;}
+          else{target = singlepage.INSTANCE.selectedTour().station(2).latlng().latitude + "," + singlepage.INSTANCE.selectedTour().station(2).latlng().longitude;}
+          String navigationUrl = "http://maps.google.com/maps?saddr=" + start + "&daddr=" + target;
 
           Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( navigationUrl ) );
           intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS );
           intent.setClassName( "com.google.android.apps.maps", "com.google.android.maps.MapsActivity" );
           startActivity( intent );
-        } else if (MyLocation == null){
+        }
+        else if(MyLocation != null && singlepage.INSTANCE.selectedTour()!=null)
+        {String start = MyLocation.getLatitude() + "," + MyLocation.getLongitude();
+          String target = singlepage.INSTANCE.selectedTour().station(2).latlng().latitude + "," + singlepage.INSTANCE.selectedTour().station(2).latlng().longitude;
+          String navigationUrl = "http://maps.google.com/maps?saddr=" + start + "&daddr=" + target;
+
+          Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( navigationUrl ) );
+          intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS );
+          intent.setClassName( "com.google.android.apps.maps", "com.google.android.maps.MapsActivity" );
+          startActivity( intent );}
+        else if (MyLocation == null){
           Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT )
                .show();
         }
         else {
-          Toast.makeText( getApplicationContext(), "Keine Station ausgewählt.", Toast.LENGTH_SHORT )
+          Toast.makeText( getApplicationContext(), "Keine Tour ausgewählt.", Toast.LENGTH_SHORT )
             .show();
           }
 
