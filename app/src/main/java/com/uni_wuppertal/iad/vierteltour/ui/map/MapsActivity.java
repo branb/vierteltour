@@ -211,6 +211,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void onDestroy(){
     super.onDestroy();
     if(googleApiClient!=null) googleApiClient.disconnect();
+    if( stationAdapter.fragments.size() != 0 ){
+      stationAdapter.deleteStrings();
+      stationAdapter.fragments.clear();
+    }
   }
 
 
@@ -692,7 +696,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   //Durch Auswahl einer Tour wird zur Stationenübersicht gewechselt
   public void swapToViewPager( View v ){
-
     if( stationAdapter.fragments.size() != 0 ){
       stationAdapter.deleteStrings();
       stationAdapter.fragments.clear();
