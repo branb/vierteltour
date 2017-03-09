@@ -808,7 +808,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           // Uri for google navigation
           String start = MyLocation.getLatitude() + "," + MyLocation.getLongitude();
           String target = singlepage.INSTANCE.selectedStation().latlng().latitude + "," + singlepage.INSTANCE.selectedStation().latlng().longitude;
-          String navigationUrl = "http://maps.google.com/maps?" + "saddr=" + start + "&daddr=" + target;
+          String navigationUrl = "http://maps.google.com/maps?saddr=&daddr=" + target;
 
           Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( navigationUrl ) );
           intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS );
