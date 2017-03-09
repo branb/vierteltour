@@ -184,7 +184,7 @@ public class StationActivity extends Activity{
     layout.setBackgroundColor( Color.parseColor( farbe ) );
     title = (TextView) findViewById( R.id.stationtitle );
     title.setText( station + "  (" + (Integer.parseInt(number)-1) + "/" + (Integer.parseInt(size)-1) + ")" );
-    if(number.equals("1")) title.setVisibility(View.INVISIBLE);
+    if(number.equals("1")) title.setText("Einleitung");
     routenname = (TextView) findViewById( R.id.routenname );
     routenname.setText( tourname );
     tourimage = (ImageView) findViewById(R.id.routenbild);
@@ -353,10 +353,11 @@ public class StationActivity extends Activity{
         startaudio = false;
         setImageResource( true );
 
-        if(stationActivityRunning){Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
-
+        if(stationActivityRunning){
+        Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
         if(size.equals(number)){background.putExtra("vergleich", 1);}
         else {background.putExtra("vergleich", 0);}
+          background.putExtra("pfad", path);
         startActivity(background);
         duration.setText("0:00");
         seekbar.setProgress(0);}

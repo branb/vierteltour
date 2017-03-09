@@ -132,6 +132,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private ActionBarDrawerToggle mDrawerToggle;
   private SlidingUpPanelLayout supl;
   private RelativeLayout mDrawer;
+  private LinearLayout slidingLayout;
   public static ClickableViewpager mPager;
   private StationAdapter stationAdapter;
   private DrawerAdapter draweradapter;
@@ -151,6 +152,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public static RelativeLayout audiobar;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
+
   // All the tour stationactivity that is currently available to us
   private TourList tourlist;
 
@@ -239,6 +241,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
     supl = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+    slidingLayout = (LinearLayout) findViewById(R.id.dragView);
 
     lv = (ListView) findViewById(R.id.list);
     panel = (RelativeLayout) findViewById(R.id.panelhalf);
@@ -696,6 +699,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   //Durch Auswahl einer Tour wird zur Stationenübersicht gewechselt
   public void swapToViewPager( View v ){
+
+
     if( stationAdapter.fragments.size() != 0 ){
       stationAdapter.deleteStrings();
       stationAdapter.fragments.clear();
@@ -712,6 +717,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( wuppertal, CurrentZoom ) );
     supl.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
+    slidingLayout.setVisibility(View.GONE);
     xbtn.setVisibility( View.VISIBLE );
     title.setText( singlepage.INSTANCE.selectedTour().name() );
     title.setVisibility( View.VISIBLE );
@@ -721,6 +727,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   //Stationenübersicht schließen und zurück zur Tourenauswahl
   public void swapToSupl(){
     supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );    //Show Slider
+    slidingLayout.setVisibility(View.VISIBLE);
     xbtn.setVisibility( View.GONE );
     title.setVisibility( View.GONE );
     mPager.setVisibility( View.GONE );
@@ -806,6 +813,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         // Navigation require current Location
         if( MyLocation != null && singlepage.INSTANCE.selectedStation()!=null){
           // Uri for google navigation
+          zoomToLocation=true;
           String start = MyLocation.getLatitude() + "," + MyLocation.getLongitude();
           String target;
           if(singlepage.INSTANCE.selectedStation().number()!=1)
@@ -819,7 +827,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           startActivity( intent );
         }
         else if(MyLocation != null && singlepage.INSTANCE.selectedTour()!=null)
-        {String start = MyLocation.getLatitude() + "," + MyLocation.getLongitude();
+        { zoomToLocation=true;
+          String start = MyLocation.getLatitude() + "," + MyLocation.getLongitude();
           String target = singlepage.INSTANCE.selectedTour().station(2).latlng().latitude + "," + singlepage.INSTANCE.selectedTour().station(2).latlng().longitude;
           String navigationUrl = "http://maps.google.com/maps?saddr=" + start + "&daddr=" + target;
 
@@ -909,8 +918,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         //Erzeugt LocationRequest Objekt, um GPS Genauigkeit und Intervalle zu definieren
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(30 * 1000);
-        locationRequest.setFastestInterval(5 * 1000);
+        locationRequest.setInterval(2000);
+        locationRequest.setFastestInterval(1000);
         builder = new LocationSettingsRequest.Builder()
           //Fügt erstelltes LocationRequest Objekt hinzu
           .addLocationRequest(locationRequest);

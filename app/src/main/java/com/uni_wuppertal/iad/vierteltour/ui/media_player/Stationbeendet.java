@@ -11,6 +11,7 @@ import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Station;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
+import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
@@ -39,6 +40,7 @@ public class Stationbeendet extends Activity {
     getIntent = getIntent();
     b = getIntent.getExtras();
     int var = b.getInt("vergleich");
+    final String path = b.getString("pfad");
     if(var==1){zur_tourenauswahl.setVisibility(View.VISIBLE);
     beendet_text.setText("Sie haben diese Tour\nbeendet!");}
     else{zur_naechsten_station.setVisibility(View.VISIBLE);}
@@ -69,6 +71,7 @@ public class Stationbeendet extends Activity {
         next.putExtra( "laenge", tour.length() );
         next.putExtra( "farbe", tour.color() );
         next.putExtra( "size", "" + tour.stations().size() );
+        next.putExtra("path", path);
         // Selected Station
         singlepage.INSTANCE.selectedStation(singlepage.INSTANCE.selectedTour().station(singlepage.INSTANCE.selectedStation().number()+1));
         Station station = singlepage.INSTANCE.selectedStation();

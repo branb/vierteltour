@@ -44,8 +44,8 @@
       android:id="@+id/routenbild"
       android:layout_width="50dp"
       android:layout_height="50dp"
-      android:layout_marginLeft="25dp"
-      android:layout_marginRight="40dp"
+      android:layout_marginLeft="40dp"
+      android:layout_marginRight="30dp"
       android:layout_centerVertical="true"
       />
 
