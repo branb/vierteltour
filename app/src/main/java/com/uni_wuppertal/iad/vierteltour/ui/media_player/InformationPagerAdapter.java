@@ -66,7 +66,8 @@ public class InformationPagerAdapter extends PagerAdapter{
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
       {Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
         MediaStore.Images.Thumbnails.MINI_KIND);
-      imageView.setImageBitmap(thumbnail);}
+      imageView.setImageBitmap(thumbnail);
+        imageBtn.setVisibility(View.VISIBLE);}
     else{imageView.setImageResource(R.drawable.i);
       fileAvailable=false;}}
 
@@ -87,14 +88,17 @@ public class InformationPagerAdapter extends PagerAdapter{
       @Override
       public void onClick(View v)
       {
-        gallery = new Intent(mContext, GalleryMode.class);
-        gallery.putExtra("resources", stationImagePaths);
-        gallery.putExtra("station", stationActivity.station);
-        gallery.putExtra("video", stationActivity.video);
-        singlepage.INSTANCE.position(position);
-        stationActivity.startActivityForResult(gallery, 1);
+        startGallery(position);
       }
-    });}
+    });
+      imageBtn.setOnClickListener(new View.OnClickListener()
+      {
+        @Override
+        public void onClick(View v)
+        {
+          startGallery(position);
+        }
+      });}
 
     return itemView;
   }
@@ -112,4 +116,12 @@ public class InformationPagerAdapter extends PagerAdapter{
 
   public ImageView getImageView()
   {return imageView;}
+
+  public void startGallery(int position)
+  {gallery = new Intent(mContext, GalleryMode.class);
+    gallery.putExtra("resources", stationImagePaths);
+    gallery.putExtra("station", stationActivity.station);
+    gallery.putExtra("video", stationActivity.video);
+    singlepage.INSTANCE.position(position);
+    stationActivity.startActivityForResult(gallery, 1);}
 }
