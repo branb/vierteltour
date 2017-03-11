@@ -68,7 +68,6 @@ public class EinstellungenTourAdapter extends BaseAdapter {
     delete.setImageResource( R.drawable.x );
 
     BitmapFactory.Options options = new BitmapFactory.Options();
-    options.inSampleSize = 2;
     Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((Einstellungen)context).tourlist(),tour.image())+tour.image()+".png" ,options);
     imgAuthor.setImageBitmap(mBitmapInsurance);
 

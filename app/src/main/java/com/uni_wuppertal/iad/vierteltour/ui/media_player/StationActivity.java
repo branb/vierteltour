@@ -240,9 +240,10 @@ public class StationActivity extends Activity{
     if (requestCode == 1) {
       if(resultCode == RESULT_OK){
         imagePager.setCurrentItem(singlepage.INSTANCE.position());
-        if(!audio.contains(".mp3") || !player.isPlaying())
+        if(player != null)
+        {if(!audio.contains(".mp3") || !player.isPlaying())
         {startaudio=false;
-          setImageResource( true );}}
+          setImageResource( true );}}}
     }
   }
 

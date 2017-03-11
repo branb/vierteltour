@@ -107,7 +107,6 @@ public class TourAdapter extends BaseAdapter{
      }
 
     BitmapFactory.Options options = new BitmapFactory.Options();
-    options.inSampleSize = 2;
     Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png" ,options);
     imgAuthor.setImageBitmap(mBitmapInsurance);
     //imgAuthor.setImageURI( Uri.fromFile(new File(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(), tour.image())+tour.image()+".png")));

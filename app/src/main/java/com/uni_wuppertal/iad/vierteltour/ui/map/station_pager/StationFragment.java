@@ -82,14 +82,13 @@ public class StationFragment extends Fragment{
       //Change Image Dynamically
       String externalPath=OurStorage.get(getContext()).storagePath()+"/";
       String appPath=OurStorage.get(getContext()).lookForTourFile(((MapsActivity)getContext()).tourlist(), singlepage.INSTANCE.selectedTour().image())+"/"+singlepage.INSTANCE.selectedTour().station(position).slug()+"/";
-      String file="i_"+(singlepage.INSTANCE.selectedTour().trkid()<10?"0"+singlepage.INSTANCE.selectedTour().trkid():singlepage.INSTANCE.selectedTour().trkid())+"_"+(position<10?"0"+position:position)+"_01.jpg";
+      String file="i_"+(singlepage.INSTANCE.selectedTour().trkid()<10?"0"+singlepage.INSTANCE.selectedTour().trkid():singlepage.INSTANCE.selectedTour().trkid())+"_"+(position<10?"0"+position:position)+"_01_400.jpg";
 
       SharedPreferences getPrefs = PreferenceManager
         .getDefaultSharedPreferences( ((MapsActivity) getContext()).getBaseContext() );
 
       if(OurStorage.get(getContext()).pathToFile(appPath+file)!=null && (getPrefs.getBoolean(singlepage.INSTANCE.selectedTour().station(position).slug(), false) || singlepage.INSTANCE.selectedTour().station(position).slug().startsWith("einleitung")))
       {BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 16;
         Bitmap mBitmapInsurance = BitmapFactory.decodeFile(externalPath+appPath+file ,options);
         image.setImageBitmap(mBitmapInsurance);}
 
