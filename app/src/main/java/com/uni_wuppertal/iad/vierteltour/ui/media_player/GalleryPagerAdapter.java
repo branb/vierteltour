@@ -162,7 +162,10 @@ public class GalleryPagerAdapter extends PagerAdapter {
   }
 
   public void showImage(int position)
-  {ownContainer.findViewWithTag("image" + position).setVisibility(View.VISIBLE);
+  {System.out.println(ownContainer.findViewWithTag("image" + position));
+    System.out.println("test"+ position);
+
+    ownContainer.findViewWithTag("image" + position).setVisibility(View.VISIBLE);
     if(stationImagePaths.get(position).endsWith("mp4"))
    ownContainer.findViewWithTag("button" + position).setVisibility(View.VISIBLE);}
 

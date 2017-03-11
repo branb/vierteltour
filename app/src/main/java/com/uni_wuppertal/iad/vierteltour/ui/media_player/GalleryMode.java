@@ -94,7 +94,6 @@ public void initAll()
   play_buttonGallery = (ImageButton) findViewById( R.id.play_buttonGallery );
   play_buttonGallery_bar = (ImageButton) findViewById( R.id.play_buttonGallery_bar );
   imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
-  imagePagerGallery.setOffscreenPageLimit(5);
   gallerytitle = (TextView) findViewById( R.id.titleGallery );
   gallerytitletop = (TextView) findViewById(R.id.titleGalleryTop_bar);
   durationGallery = (TextView) findViewById( R.id.durationGallery );
@@ -105,6 +104,7 @@ public void initAll()
   mAdapter2 = new GalleryPagerAdapter(this, res);
   imagePagerGallery.setAdapter( mAdapter2 );
   imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
+  imagePagerGallery.setOffscreenPageLimit(5);
   player = ViertelTourMediaPlayer.getInstance( this );
   images();
 }
@@ -372,7 +372,7 @@ public void initAll()
     public void onPageSelected( int position ){
       if(player.getVideoview().isPlaying())
       {stopVideoplay();
-      if(position < mAdapter2.getCount()) mAdapter2.showImage(position+1);
+      if(position < mAdapter2.getCount()) mAdapter2.showImage(position);
       if(position > 0) mAdapter2.showImage(position-1);}      //reset the Neighbours image
 
       hideBars();

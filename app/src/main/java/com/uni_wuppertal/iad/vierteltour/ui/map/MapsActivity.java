@@ -476,7 +476,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private void vanishTours( Tour tour ){
     adapter.notifyDataSetChanged();
 
-    System.out.println(tour.slug());
     //Set Numbers on selected Tour
     for(Station station : tour.stations())
     {markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,(station.number()-1)+"")));}
@@ -669,20 +668,16 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private void drawStations(){
     tmpmarker = null;
     //Setze Marker
-    System.out.println("aaaa");
     for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
       //Wenn Tour ausgewählt, zeichne nur Stationen der Tour
       if(singlepage.INSTANCE.selectedStation()!=null)
       {for(Station station : singlepage.INSTANCE.selectedTour().stations())
         { if(marker.getValue().getPosition()!=null && marker.getKey().equals(singlepage.INSTANCE.selectedStation().slug()) && marker.getKey().equals(station.slug()))
-        {System.out.println("add");
-          tmpmarker = mMap.addMarker(marker.getValue());
+        { tmpmarker = mMap.addMarker(marker.getValue());
           tourMarker.put(station.slug(), tmpmarker);}
           else if(marker.getValue().getPosition()!=null && marker.getKey().equals(station.slug()))
-        {System.out.println("add232");
-          Marker m = mMap.addMarker(marker.getValue());
-        tourMarker.put(station.slug(), m);}
-          System.out.println(marker.getValue().getPosition() + "   " + marker.getKey() + "  " + station.slug());}}
+        {Marker m = mMap.addMarker(marker.getValue());
+        tourMarker.put(station.slug(), m);}}}
 
     //Sonst zeichne alle Marker
     else if(marker.getValue().getPosition()!=null)

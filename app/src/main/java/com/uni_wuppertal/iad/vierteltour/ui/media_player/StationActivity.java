@@ -175,7 +175,7 @@ public class StationActivity extends Activity{
       stationImagePaths = new ArrayList<String>(Arrays.asList(imagesFromXML.split("\\s*,\\s*")));
     }
     if(!video.isEmpty()){
-      stationImagePaths.add(video);
+      stationImagePaths.add(0,video);
     }
 
     audio = (String) b.get( "audio" );
