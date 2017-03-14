@@ -93,11 +93,16 @@ public class StationFragment extends Fragment{
         image.setImageBitmap(mBitmapInsurance);}
 
       title.setText( ztitle.get( position-1 ) );
-      if(singlepage.INSTANCE.selectedTour().station(position).latlng()!=null)
+      if(singlepage.INSTANCE.selectedTour().station(position).latlng()!=null && singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
       {number.setText((position-1) + "");
       LayerDrawable bgDrawable = (LayerDrawable)numberlayout.getBackground();
       final GradientDrawable shape = (GradientDrawable)   bgDrawable.findDrawableByLayerId(R.id.shape_id);
       shape.setColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color()));}
+      else if(singlepage.INSTANCE.selectedTour().station(position).latlng()!=null)
+      {number.setText((position) + "");
+        LayerDrawable bgDrawable = (LayerDrawable)numberlayout.getBackground();
+        final GradientDrawable shape = (GradientDrawable)   bgDrawable.findDrawableByLayerId(R.id.shape_id);
+        shape.setColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color()));}
       else numberlayout.setVisibility(View.GONE);
 
 

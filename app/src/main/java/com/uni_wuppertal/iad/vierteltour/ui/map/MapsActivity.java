@@ -387,10 +387,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
 
     //löscht alte Station, setzt Größe auf Ursprung zurück
-    if(singlepage.INSTANCE.selectedOldStation()!=null && singlepage.INSTANCE.selectedOldStation().number()!=1)
+    if(singlepage.INSTANCE.selectedOldStation()!=null && !singlepage.INSTANCE.selectedOldStation().slug().contains("einleitung"))
     { removeStation(singlepage.INSTANCE.selectedOldStation().slug());
       markers.put( singlepage.INSTANCE.selectedOldStation().slug(), createMarker(singlepage.INSTANCE.selectedOldStation(), singlepage.INSTANCE.selectedTour() ));
-      Marker m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number()-1+""))));
+      Marker m;
+      if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")) m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number()-1+""))));
+      else m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number()+""))));
       tourMarker.put(singlepage.INSTANCE.selectedOldStation().slug(), m);
 
     //delete Circle
@@ -399,7 +401,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
     //Lösche neue Station und setze vergrößerten Pin
-    if(singlepage.INSTANCE.selectedStation().number()!=1)
+    if(!singlepage.INSTANCE.selectedStation().slug().contains("einleitung"))
     {// Setze Kreis auf neue Station
       circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0,1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1,singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8).visible(true);
       mapCircle = mMap.addCircle(circle);
@@ -407,7 +409,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
       removeStation(singlepage.INSTANCE.selectedStation().slug());
       markers.put( singlepage.INSTANCE.selectedStation().slug(), createMarker(singlepage.INSTANCE.selectedStation(), singlepage.INSTANCE.selectedTour() ));
-      Marker m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1)))));
+      Marker m;
+      if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")) m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1)))));
+      else m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number())))));
       m.showInfoWindow();
       tourMarker.put(singlepage.INSTANCE.selectedStation().slug(), m);}
 
@@ -455,14 +459,17 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     tmpIntent.putExtra( "zeit", tour.time() );
     tmpIntent.putExtra( "laenge", tour.length() );
     tmpIntent.putExtra( "farbe", tour.color() );
-    tmpIntent.putExtra( "size", "" + tour.stations().size() );
+
     tmpIntent.putExtra("path", OurStorage.get(this).storagePath()+"/"+OurStorage.get(this).lookForTourFile(tourlist(), tour.image()));
     // Selected Station
     Station station = singlepage.INSTANCE.selectedStation();
     tmpIntent.putExtra("slug", station.slug());
     tmpIntent.putExtra( "station", station.name() );
     tmpIntent.putExtra( "desc", station.description() );
-    tmpIntent.putExtra( "pos", "" + (station.number()) );
+    if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")){tmpIntent.putExtra( "pos", "" + (station.number()-1) );
+      tmpIntent.putExtra( "size", "" + (tour.stations().size()-1) );}
+    else {tmpIntent.putExtra( "pos", "" + (station.number()) );
+      tmpIntent.putExtra( "size", "" + tour.stations().size() );}
     // Station media
     tmpIntent.putExtra( "img", station.imagesToString() );
     tmpIntent.putExtra( "audio", station.audio());
@@ -478,7 +485,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     //Set Numbers on selected Tour
     for(Station station : tour.stations())
-    {markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,(station.number()-1)+"")));}
+    {if(tour.station(1).slug().contains("einleitung"))markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,(station.number()-1)+"")));
+    else markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,(station.number())+"")));}
 
     // Unselect all other tours
     for( Tour t : tourlist.city( visibleCity ).tours() ){
@@ -711,6 +719,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
     stationAdapter.notifyDataSetChanged();
     vanishTours(singlepage.INSTANCE.selectedTour());
+
     Typeface tf = Typeface.createFromAsset(getAssets(), "Bariol_Regular.ttf");
     title.setTypeface(tf);
 

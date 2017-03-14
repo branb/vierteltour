@@ -183,8 +183,8 @@ public class StationActivity extends Activity{
     layout = (RelativeLayout) findViewById( R.id.rellayout );
     layout.setBackgroundColor( Color.parseColor( farbe ) );
     title = (TextView) findViewById( R.id.stationtitle );
-    title.setText( station + "  (" + (Integer.parseInt(number)-1) + "/" + (Integer.parseInt(size)-1) + ")" );
-    if(number.equals("1")) title.setText("Einleitung");
+    title.setText( station + "  (" + (Integer.parseInt(number)) + "/" + (Integer.parseInt(size)) + ")" );
+    if(slug.contains("einleitung"))title.setText("Einleitung");
     routenname = (TextView) findViewById( R.id.routenname );
     routenname.setText( tourname );
     tourimage = (ImageView) findViewById(R.id.routenbild);
