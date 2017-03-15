@@ -396,7 +396,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       tourMarker.put(singlepage.INSTANCE.selectedOldStation().slug(), m);
 
     //delete Circle
-      mapCircle.remove();}
+      mapCircle.remove(); }
 
 
 
@@ -583,21 +583,22 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     locationListener = new LocationListener(){
       @Override
+      //Sobald neue GPS Informationen empfangen werden, wird die Methode aufgerufen
       public void onLocationChanged( Location location ){
         MyLocation = location;
+        //erstellt LatLng Variable fuer den Vergleich
         pos = new LatLng( MyLocation.getLatitude(), MyLocation.getLongitude() );
 
         if(zoomToLocation)
+        //Falls Variable durch Zentrierenfunktion auf true gesetzt, zoome zum aktuellen Standort
         {try{mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );
         zoomToLocation=false;}
         catch(Exception e){System.out.println("No Position Found!");}}
-        // define new Location
-
 
         if(tourlist!=null)
-        {positionInCircle(pos);}
+        {positionInCircle(pos);}   //Ueberprueft eigenen Standort mit allen Stationskoordinaten
 
-        //Zeichne Location auf Map
+        //Entferne letzte Position und zeichne neue Location auf Map
         if(curLocation!=null)curLocation.remove();
         drawOwnLocation();
       }
