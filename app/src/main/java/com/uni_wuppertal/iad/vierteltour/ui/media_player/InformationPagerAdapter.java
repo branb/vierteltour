@@ -122,6 +122,7 @@ public class InformationPagerAdapter extends PagerAdapter{
     gallery.putExtra("resources", stationImagePaths);
     gallery.putExtra("station", stationActivity.station);
     gallery.putExtra("video", stationActivity.video);
+    gallery.putExtra("pfad", stationActivity.path);
     singlepage.INSTANCE.position(position);
     stationActivity.startActivityForResult(gallery, 1);}
 }

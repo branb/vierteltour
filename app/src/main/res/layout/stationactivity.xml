@@ -9,10 +9,14 @@
             android:id="@+id/arrowdown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/pfeil_runter"
+            android:src="@drawable/pfeil_runter"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"/>
+          android:background="@color/transparent"
+            android:paddingTop="15dp"
+          android:paddingRight="15dp"
+          android:paddingLeft="15dp"/>
+
 
         <TextView
             android:id="@+id/stationtitle"

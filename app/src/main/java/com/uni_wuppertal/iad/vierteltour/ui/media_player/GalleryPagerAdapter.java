@@ -25,7 +25,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
   private Context mContext;
   private ArrayList<String> stationImagePaths;
-  private ImageView imageView, imageBtn;
+  private ImageView imageView/*, imageBtn*/;
   private ViertelTourMediaPlayer player;
   private VideoView videoView;
   private ViewGroup ownContainer;
@@ -53,16 +53,13 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
     imageView = (ImageView) itemView.findViewById( R.id.img_pager_item_gallery );
     imageView.setTag("image" + position);
-    imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button_gallery );
-    imageBtn.setTag("button" + position);
+    //imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button_gallery );
+    //imageBtn.setTag("button" + position);
     videoView = (VideoView) itemView.findViewById( R.id.vid_pager_item_gallery );
     videoView.setTag("video" + position);
     final String resources = stationImagePaths.get(position);     //v für video, i für image
 
 
-
-//TODO: stationimagepaths to stationresourcepaths with video and images to show
-    //TODO: HIER WURDE TMP EDITIERT
     if(resources.endsWith("mp4"))
     { videoView.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
@@ -71,7 +68,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
         Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
         MediaStore.Images.Thumbnails.MINI_KIND);
         imageView.setImageBitmap(thumbnail);
-        imageBtn.setVisibility(View.VISIBLE);
+        //imageBtn.setVisibility(View.VISIBLE);
         player.setVideoview(videoView);}
       else{imageView.setImageResource(R.drawable.i);}
 
@@ -86,31 +83,10 @@ public class GalleryPagerAdapter extends PagerAdapter {
         }
       });
 
-      videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+    /*  videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
           ((GalleryMode)mContext).stopVideoplay();
-        }
-      });
-
-    /*  videoView.setOnTouchListener( new View.OnTouchListener(){
-        @Override
-        public boolean onTouch( View v, MotionEvent motionEvent ){
-          System.out.println("Touch");
-          if( player.getVideoview().isPlaying() && gallery.getResources().getConfiguration().orientation== Configuration.ORIENTATION_PORTRAIT){
-            gallery.startvideo = false;
-            player.getVideoview().pause();
-            gallery.play_buttonGallery.setImageResource( R.drawable.play_hell );
-          }
-          else if(gallery.getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE && player.getVideoview() != null)
-          {gallery.mediaplayerbars();
-          }
-          else {
-            gallery.startvideo = true;
-            player.getVideoview().start();
-            gallery.play_buttonGallery.setImageResource( R.drawable.stop_hell );
-            gallery.seekUpdationVideo();}
-          return true;
         }
       });*/
 
@@ -118,7 +94,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
     else if (resources.endsWith("jpg")) {
       videoView.setVisibility(View.GONE);
-      imageBtn.setVisibility(View.GONE);
+     // imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       System.out.println(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)));
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
@@ -128,12 +104,12 @@ public class GalleryPagerAdapter extends PagerAdapter {
     container.addView( itemView );
     ownContainer = container;
 
-    imageBtn.setOnClickListener(new View.OnClickListener() {
+   /* imageBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         ((GalleryMode)mContext).startVideoplay();
       }
-    });
+    });*/
 
     imageView.setOnClickListener(new View.OnClickListener()
     {
@@ -163,15 +139,16 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
   public void showImage(int position)
   {System.out.println(ownContainer.findViewWithTag("image" + position));
-    System.out.println("test"+ position);
 
     ownContainer.findViewWithTag("image" + position).setVisibility(View.VISIBLE);
-    if(stationImagePaths.get(position).endsWith("mp4"))
-   ownContainer.findViewWithTag("button" + position).setVisibility(View.VISIBLE);}
+   // if(stationImagePaths.get(position).endsWith("mp4"))
+   //ownContainer.findViewWithTag("button" + position).setVisibility(View.VISIBLE);
+  }
 
   public void hideImage(int position)
   {ownContainer.findViewWithTag("image" + position).setVisibility(View.GONE);
-   ownContainer.findViewWithTag("button" + position).setVisibility(View.GONE);}
+  // ownContainer.findViewWithTag("button" + position).setVisibility(View.GONE);
+  }
 
   public VideoView videoView(int position)
   {return (VideoView) ownContainer.findViewWithTag("video" + position);}
@@ -182,18 +159,4 @@ public class GalleryPagerAdapter extends PagerAdapter {
   public ImageView getImageView()
   {return imageView;}
 
-
-
-  /* mAdapter.getImageView().setOnClickListener(new View.OnClickListener(){
-      @Override
-      public void onClick( View v ){
-        startvideo = true;
-        player.getVideoview().setVisibility(View.VISIBLE);
-        mAdapter.hideImage();
-        player.getVideoview().start();
-        play_buttonGallery.setImageResource( R.drawable.stop_hell );
-        seekUpdationVideo();
-      }
-    });
-*/
 }

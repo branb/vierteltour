@@ -13,8 +13,9 @@ android:id="@+id/stationbeendet">
   android:src="@drawable/beenden_hell"
   android:layout_alignParentRight="true"
   android:layout_alignParentTop="true"
-  android:layout_marginTop="20dp"
-  android:layout_marginRight="20dp"
+  android:paddingTop="20dp"
+  android:paddingRight="20dp"
+  android:paddingLeft="20dp"
   android:background="@color/transparent"
   />
 

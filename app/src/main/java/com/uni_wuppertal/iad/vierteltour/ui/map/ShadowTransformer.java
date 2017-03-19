@@ -61,7 +61,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
 
     }
     if(position==mAdapter.getCount()-1 && positionOffset==0)
-    {mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.white));
+    {mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.whitewhite));
       mAdapter.getItem(position).getView().setScaleX(1.2f);
       mAdapter.getItem(position).getView().setScaleY(1.2f);}
 
@@ -87,8 +87,8 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
     if (currentFragment.getView() != null) {
       currentFragment.getView().setScaleX((float) (1 + 0.2 * (1 - realOffset)));
       currentFragment.getView().setScaleY((float) (1 + 0.2 * (1 - realOffset)));
-      if(goingLeft)currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.grey), context.getResources().getColor(R.color.white)));
-      else currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.white), context.getResources().getColor(R.color.grey)));
+      if(goingLeft)currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.grey), context.getResources().getColor(R.color.whitewhite)));
+      else currentFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.whitewhite), context.getResources().getColor(R.color.grey)));
     }
 
     StationFragment nextFragment = mAdapter.getItem(nextPosition);
@@ -98,8 +98,8 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
     if (nextFragment.getView() != null) {
       nextFragment.getView().setScaleX((float) (1 + 0.2 * (realOffset)));
       nextFragment.getView().setScaleY((float) (1 + 0.2 * (realOffset)));
-      if(goingLeft)nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.white), context.getResources().getColor(R.color.grey)));
-        else nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.grey) , context.getResources().getColor(R.color.white)));
+      if(goingLeft)nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.whitewhite), context.getResources().getColor(R.color.grey)));
+        else nextFragment.getView().findViewById(R.id.clicklayout).setBackgroundColor((Integer) color.evaluate(positionOffset, context.getResources().getColor(R.color.grey) , context.getResources().getColor(R.color.whitewhite)));
     }
 
     mLastOffset = positionOffset;
@@ -108,7 +108,7 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
   @Override
   public void onPageSelected(int position) {
 
-    mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.white));
+    mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.whitewhite));
     mAdapter.getItem(position).getView().setScaleX(1.2f);
     mAdapter.getItem(position).getView().setScaleY(1.2f);
 

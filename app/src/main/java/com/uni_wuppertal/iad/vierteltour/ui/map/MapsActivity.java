@@ -741,7 +741,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   /**
    * After Selecting a tour, the interface is switching to the viewpager with station overview
      */
-  public void swapToViewPager(  ){
+  public void swapToViewPager(View v){
 
 
     if( stationAdapter.fragments.size() != 0 ){
@@ -848,7 +848,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onClick( View v ){
         //listelement.setClickable(false);
-        swapToViewPager( );
+        swapToViewPager(v);
       }
     });
     x_supl.setOnClickListener( new View.OnClickListener(){

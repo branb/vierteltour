@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -172,7 +173,6 @@ public class StationActivity extends Activity{
     // Currently in the format "img1.jpg,img2.jpg,..."
     // TODO: Convert XML-entry to have one <image>-tag per image entry
     // TODO: Set Video and Image Resources in <Resources></Resources> in right order
-//TODO: HIER WURDE TMP EDITIERT
     stationImagePaths = new ArrayList<String>();
     String imagesFromXML = (String) b.get( "img" );
 
@@ -215,7 +215,7 @@ public class StationActivity extends Activity{
     seekbar = (SeekBar) findViewById( R.id.seek_bar );
     play_button = (ImageButton) findViewById( R.id.play_button );
     duration = (TextView) findViewById( R.id.duration );
-    setImageResource(true);
+
     gesperrt = (RelativeLayout) findViewById(R.id.gesperrt);
     pfeilhell = (ImageView) findViewById(R.id.pfeilhell);
     imagePager = (ViewPager) findViewById( R.id.ImagePager );
@@ -224,6 +224,7 @@ public class StationActivity extends Activity{
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
     imagePager.setAdapter( mAdapter );
     seekbar.setOnSeekBarChangeListener(customSeekBarListener);
+    setImageResource(true);
 
 
   }
@@ -473,9 +474,18 @@ public class StationActivity extends Activity{
     int blue = Integer.valueOf( farbe.substring( 5, 7 ), 16 );
     if ((red*0.299 + green*0.587 + blue*0.114) > 186)
     {duration.setTextColor(Color.parseColor("#353535"));
+      seekbar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#353535")));
+      seekbar.getProgressDrawable().setColorFilter(
+        Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
+      seekbar.getThumb().setColorFilter(Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
       if(play) play_button.setImageResource(R.drawable.play_dunkel);
     else play_button.setImageResource(R.drawable.stop_dunkel);}
     else{duration.setTextColor(Color.parseColor("#E6EBE0"));
+      seekbar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#E6EBE0")));
+      seekbar.getProgressDrawable().setColorFilter(
+        Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
+
+      seekbar.getThumb().setColorFilter(Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
       if(play)play_button.setImageResource(R.drawable.play_hell);
     else play_button.setImageResource(R.drawable.stop_hell);}
 }}

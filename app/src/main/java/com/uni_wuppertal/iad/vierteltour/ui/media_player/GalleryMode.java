@@ -42,7 +42,7 @@ public class GalleryMode extends Activity {
   SeekBar seekbarGallery, seekbarGallery_bar;
   TextView gallerytitle, gallerytitletop, durationGallery, durationGallery_bar;
   GalleryPagerAdapter mAdapter2;
-  RelativeLayout relGalleryBot, relGalleryTop, stationbeendet;
+  RelativeLayout relGalleryBot, relGalleryTop;
   Boolean startvideo = true;
   double timeElapsedGallery = 0;
   Handler seekHandlerGallery = new Handler();
@@ -50,7 +50,7 @@ public class GalleryMode extends Activity {
   Bundle gallerybundle;
   Intent galleryIntent;
   ArrayList<String> res;
-  String video, station;
+  String video, station, path;
 
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
@@ -86,6 +86,7 @@ public void initAll()
   res = (ArrayList<String>) gallerybundle.get("resources");
   video = (String) gallerybundle.get("video");
   station = (String) gallerybundle.get("station");
+  path = (String) gallerybundle.get("path");
 
   x_button = (ImageButton) findViewById( R.id.x_button );
   x_button_bar = (ImageButton) findViewById( R.id.x_button_bar );
@@ -100,7 +101,6 @@ public void initAll()
   durationGallery_bar = (TextView) findViewById( R.id.durationGallery_bar );
   relGalleryBot = (RelativeLayout) findViewById(R.id.relativeBot);
   relGalleryTop = (RelativeLayout) findViewById(R.id.relativeTop);
-  stationbeendet = (RelativeLayout) findViewById(R.id.stationbeendet);
   mAdapter2 = new GalleryPagerAdapter(this, res);
   imagePagerGallery.setAdapter( mAdapter2 );
   imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
@@ -156,7 +156,7 @@ public void initAll()
       relGalleryTop.setVisibility(View.GONE);
       x_button.setVisibility(View.VISIBLE);
       gallerytitle.setVisibility(View.VISIBLE);
-      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4"))showGalleryVideoBar();
+      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")){showGalleryVideoBar();}
 
       ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
       params.height = calculateDP(300);
@@ -252,15 +252,20 @@ public void initAll()
       @Override
       public void onCompletion(MediaPlayer mediaPlayer) {
         stopVideoplay();
-      }});
+    /*    if(station.contains("einleitung")){Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
 
+          background.putExtra("vergleich", 0);
+          background.putExtra("pfad", path);
+          startActivity(background);
+         }*/
+      }});
   }
 
   public void startVideoplay()
   {if(player.isPlaying())player.pause();
     startvideo = true;
     player.getVideoview().setVisibility(View.VISIBLE);
-    mAdapter2.hideImage(imagePagerGallery.getCurrentItem());
+    try{mAdapter2.hideImage(imagePagerGallery.getCurrentItem());}catch(Exception e){}
     player.getVideoview().start();
     play_buttonGallery.setImageResource( R.drawable.stop_hell );
     play_buttonGallery_bar.setImageResource( R.drawable.stop_hell );
@@ -395,6 +400,7 @@ public void initAll()
       else
       {hideGalleryVideoBar();}
 
+     /* if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")) startVideoplay();*/
     }
 
     @Override
