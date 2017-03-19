@@ -221,7 +221,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
 
-
+  /**
+   * Initializes everything on this activity
+   */
   public void initAll() {
     ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this); //initMap
 
@@ -268,7 +270,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   }
 
-  // Show intro, but only if it's the first start of the app
+  /**
+   * shows intro of the application
+   */
   private void showIntro(){
     //  Declare a new thread to do a preference check
     Thread t = new Thread( new Runnable(){
@@ -323,7 +327,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
     /**
-     * When the user clicks anywhere on the map, check which tour he clicked onto and mark it as
+     * When the user clicks anywhere on the map, check which tour or station he clicked onto and mark it as
      * selected
      *
      *
@@ -385,7 +389,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       }
     });
   }
-
+/**
+* Will be used if a station is selected
+ *
+ * @param station Station will be marked as selected
+* */
   public void selectStation(Station station)
   { singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());   //vorherige Station wird alte Station
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
@@ -402,14 +410,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     //delete Circle
       mapCircle.remove(); }
 
-
-
     //Lösche neue Station und setze vergrößerten Pin
     if(!singlepage.INSTANCE.selectedStation().slug().contains("einleitung"))
     {// Setze Kreis auf neue Station
       circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0,1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1,singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8).visible(true);
       mapCircle = mMap.addCircle(circle);
-
 
       removeStation(singlepage.INSTANCE.selectedStation().slug());
       markers.put( singlepage.INSTANCE.selectedStation().slug(), createMarker(singlepage.INSTANCE.selectedStation(), singlepage.INSTANCE.selectedTour() ));
@@ -445,6 +450,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public TourList tourlist()
   {return tourlist;}
 
+  /**
+   * Redraws Marker with a bigger size
+   * @param tour Tour is needed to get the right Marker Color
+   * @param tmpNumber Number is needed to draw the right number into the Marker
+   * @return Marker as Bitmap will be returned
+     */
   public Bitmap scaleMarker (Tour tour, String tmpNumber)
   {Bitmap tmpMarker = markertext(tour,tmpNumber);
     double height, width;
@@ -452,6 +463,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     width = tmpMarker.getWidth();
     return Bitmap.createScaledBitmap(tmpMarker,(int) (width*1.5),(int) (height*1.5), true);}
 
+  /**
+   * Starts Station Activity will all needed Extras
+   */
   public void startStationActivity()
   {Intent tmpIntent = new Intent( getApplicationContext(), StationActivity.class );
 
@@ -484,6 +498,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    // overridePendingTransition( R.anim.fade_in, R.anim.map_out );
     }
 
+  /**
+   * All tours except the select will be vanished
+   * @param tour Tour will stay on Map
+     */
   private void vanishTours( Tour tour ){
     adapter.notifyDataSetChanged();
 
@@ -545,7 +563,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
 
-  //Setzt alle Touren auf Sichtbar zurück
+  /**
+   * Reset all tours, make all markers and polylines visible again
+   */
   public void resetTour(){
     singlepage.INSTANCE.selectedTour(null);
     for( Tour tour : tourlist.city( visibleCity ).tours() ){
@@ -555,7 +575,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     drawRoutes();
   }
 
-  // Convert a view to bitmap for Pins with Numbers
+  /**
+   * Convert a view to bitmap with markers and numbers
+    */
+
   public static Bitmap createDrawableFromView(Context context, View view) {
     DisplayMetrics displayMetrics = new DisplayMetrics();
     ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -571,11 +594,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     return bitmap;
   }
 
-
+/**
+ * Preparing Location Services
+ */
   public void initLocationServices(){
     locationManager = (LocationManager) getSystemService( LOCATION_SERVICE );
-
-
 
     GpsStatus.Listener gpsStatus = new GpsStatus.Listener() {
       @Override
@@ -587,7 +610,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     locationListener = new LocationListener(){
       @Override
-      //Sobald neue GPS Informationen empfangen werden, wird die Methode aufgerufen
+      /**
+       * Whenever new location informations are retrieved,
+       * this method will be executed to update own position
+       * and compare station coordinates with new coordinates
+       * @param location location is used to save new location information
+       */
       public void onLocationChanged( Location location ){
         MyLocation = location;
         //erstellt LatLng Variable fuer den Vergleich
@@ -607,7 +635,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         drawOwnLocation();
       }
 
-
+      /**
+       * Checks if own coordinates are within the station range (circle)
+       * @param pos own position to compare
+         */
       public void positionInCircle(LatLng pos)
       {float[] distance = new float[2];
 
@@ -701,6 +732,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     {mapCircle = mMap.addCircle(circle);}
   }
 
+  /**
+   * Remove one marker of a station
+   * @param slug
+     */
   private void removeStation(String slug)
   {
     for( Map.Entry<String, Marker> marker : tourMarker.entrySet() ){
@@ -709,8 +744,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }}
 
 
-  //Durch Auswahl einer Tour wird zur Stationenübersicht gewechselt
-  public void swapToViewPager( View v ){
+  /**
+   * After Selecting a tour, the interface is switching to the viewpager with station overview
+     */
+  public void swapToViewPager(  ){
 
 
     if( stationAdapter.fragments.size() != 0 ){
@@ -737,7 +774,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mPager.setVisibility( View.VISIBLE );
   }
 
-  //Stationenübersicht schließen und zurück zur Tourenauswahl
+  /**
+   * After Removing a selected tour, the interface is switching to the viewpager with tour overview
+   */
   public void swapToSupl(){
     supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );    //Show Slider
     slidingLayout.setVisibility(View.VISIBLE);
@@ -763,7 +802,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     singlepage.INSTANCE.setId(0);
   }
 
-  //Erstelle den Slider
+  /**
+   * Initialize SUPL
+   */
   public void initSupl(){
     supl.setPanelSlideListener(onSlideListener());
     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -785,6 +826,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     initBtns();
   }
 
+  /**
+   * Initialize viewpager
+   */
   public void initPager(){
     //Get Screen Sizes
     DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -802,13 +846,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
 
-  //Initialisiere Alle Buttons in der Activity
+  /**
+   * Initialize all buttons
+   */
   public void initBtns(){
     zumstart.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
         //listelement.setClickable(false);
-        swapToViewPager( v );
+        swapToViewPager( );
       }
     });
     x_supl.setOnClickListener( new View.OnClickListener(){
@@ -893,6 +939,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   }
 
+  /**
+   * Show a GPS Dialog to active GPS by clicking ok
+   */
   private void enableGPSMessage()
   {if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {
     if(googleApiClient!=null) googleApiClient.disconnect();
@@ -919,7 +968,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }}
 
 
-
+  /**
+   * initializing googleapiclient with gps params
+   */
   private void initGoogleApiClient()
   {//Erzeugt GoogleApiClient Objekt zum Verbinden der Google Play services
     googleApiClient = new GoogleApiClient.Builder(this)
@@ -951,36 +1002,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     googleApiClient.connect();    //Verbindet Client mit Services
     }
 
-
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-    switch (requestCode) {
-      case REQUEST_LOCATION:
-        switch (resultCode) {
-          case Activity.RESULT_CANCELED: {
-            // The user was asked to change settings, but chose not to
-            break;
-          }
-          default: {
-            break;
-          }
-        }
-        break;
-    }
-
-  }
-
-
-
   @Override
   protected void onPostCreate( Bundle savedInstanceState ){
     super.onPostCreate( savedInstanceState );
-    //mDrawerToggle.syncState();
   }
 
-  //DRAWER START
-  //Trick um den Drawer über die ActionBar zu legen
+  /**
+   * Special method to set drawer on top of the screen (above action bar)
+   */
   private void moveDrawerToTop(){
     LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
     DrawerLayout drawer = (DrawerLayout) inflater.inflate( R.layout.decor, null ); // "null" is important.
@@ -1025,6 +1054,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     return super.onOptionsItemSelected( item );
   }
 
+  /**
+   * Initialize action bar
+   */
   private void initActionBar(){
     actionBar = getSupportActionBar();
 
@@ -1043,6 +1075,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     actionBar.setElevation( 0 );
   }
 
+  /**
+   * Initialize action bar buttons
+   */
   public void initActionBarBtn(){
     homebtn = (ImageButton) findViewById(R.id.homebtn);     //ActionBar Button: Right
     homebtn.setOnClickListener( new View.OnClickListener(){
@@ -1065,6 +1100,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     });
   }
 
+  /**
+   * Initialize drawer
+   */
   private void initDrawer(){
     mDrawerList = (ListView) findViewById( R.id.drawerlist );
     mDrawer = (RelativeLayout) findViewById( R.id.drawer );
@@ -1127,6 +1165,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     });
   }
 
+  /**
+   * Defines drawer actions
+   */
   private DrawerLayout.DrawerListener createDrawerToggle(){
     mDrawerToggle = new ActionBarDrawerToggle( this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close ){
 
@@ -1148,9 +1189,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
 
-  //DRAWER END
-
-  //SUPL START
+  /**
+   * SUPL Listener to define supl actions
+   * @return
+     */
   private SlidingUpPanelLayout.PanelSlideListener onSlideListener(){
     return new SlidingUpPanelLayout.PanelSlideListener(){
       @Override
@@ -1192,7 +1234,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     };
   }
 
-  //zeigt/versteckt, wenn gewünscht, alle Informationen auf dem Panel an
+  /**
+   * Shows or hides information on interface of supl
+   * @param info
+     */
   private void suplInfo(String info){
 
     if(info.contains("show"))
@@ -1232,6 +1277,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   }
 
+  /**
+   * standard method to define interaction when back button is pressed
+   */
   @Override
   public void onBackPressed(){
     if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED )      //Wenn SUPL geöffnet, und zurück gedrückt wird, schließe nur SUPL
@@ -1305,7 +1353,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   return marker;}
 
-public Bitmap markertext(Tour tour, String text)
+  /**
+   * Marker png and Text with number will be merged together to a bitmap
+   * @param tour to get pin color
+   * @param text to get number
+   * @return
+     */
+    public Bitmap markertext(Tour tour, String text)
 {
   View markerlayout = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.marker_layout, null);
   int id = getResources().getIdentifier( "pin_" + tour.trkid(), "drawable", getPackageName() );

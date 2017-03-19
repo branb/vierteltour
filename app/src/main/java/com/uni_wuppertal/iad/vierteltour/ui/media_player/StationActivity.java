@@ -131,6 +131,9 @@ public class StationActivity extends Activity{
     initImages();
   }
 
+  /**
+   * Checks with SharedPreferences, if the station can be shown
+   */
   public void checkGPS()
   {SharedPreferences prefs =
     PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -148,6 +151,9 @@ public class StationActivity extends Activity{
     prefs.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
   }
 
+  /**
+   * Method is parsing all saving all information got from previous activity
+   */
   public void parseData(){
     myIntent2 = getIntent();
     b = myIntent2.getExtras();
@@ -223,7 +229,9 @@ public class StationActivity extends Activity{
   }
 
 
-  //Audioupdater
+  /**
+   * Updating Audio seekbar and textview
+   */
   public void seekUpdationAudio(){
     if( player != null && startaudio ){
 
@@ -234,7 +242,9 @@ public class StationActivity extends Activity{
       seekHandler.postDelayed( run, 100 );
     }
   }
-
+  /**
+   * Feedback of Gallery Activity
+   */
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == 1) {
@@ -248,7 +258,9 @@ public class StationActivity extends Activity{
   }
 
 
-  //zeigt nur Ressourcen an, die vorhanden sind
+  /**
+   * Filters available layout
+   */
   public void setVisibility(){
     if( !audio.contains(".mp3") || sperrvariable || OurStorage.get(this).pathToFile(audio)==null){
       seekbar.setVisibility( View.GONE );
@@ -283,7 +295,9 @@ public class StationActivity extends Activity{
   }
 
 
-
+  /**
+   * Manages the dots below the viewpager
+   */
   private void setUiPageViewController(){
   if(mAdapter.getCount()>1) {
     dotsCount = mAdapter.getCount();
@@ -309,7 +323,9 @@ public class StationActivity extends Activity{
   }
 
 
-
+  /**
+   * Initialize audio
+   */
   public void initAudio(){
     if( !audio.contains(".mp3") || OurStorage.get(getApplicationContext()).pathToFile(audio)==null){
       play_button.setVisibility(View.GONE);
@@ -389,6 +405,9 @@ public class StationActivity extends Activity{
             }break;}}});
   }
 
+  /**
+   * Initializes images
+   */
   public void initImages(){
     if( stationImagePaths.size() == 0 ){
       return;
@@ -443,6 +462,10 @@ public class StationActivity extends Activity{
   };
   //Viewpager.onPageChangeListener end
 
+  /**
+   * calculates white or black color on seekbar in dependence of tour color
+   * @param play
+     */
   public void setImageResource(boolean play)
   {//get color und teile in rgb
    //int color = Integer.parseInt(farbe);

@@ -109,6 +109,10 @@ public void initAll()
   images();
 }
 
+  /**
+   * Used when switching between portrait and landscape mode
+   * @param newConfig
+     */
   @Override
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
@@ -189,7 +193,9 @@ public void initAll()
     }
   };
 
-  //Videoupdater
+  /**
+   * Updating Video seekbar and textview
+   */
   public void seekUpdationVideo(){
     if( player.getVideoview() != null && startvideo ){
       //System.out.println("222");
@@ -208,7 +214,7 @@ public void initAll()
   }
 
 
-  //TODO: Videoplayer auslagern und abändern
+
   public void video(){
 
     seekbarGallery.setOnSeekBarChangeListener( customSeekBarListenerVideo );

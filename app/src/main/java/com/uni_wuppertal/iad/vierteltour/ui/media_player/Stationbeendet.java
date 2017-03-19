@@ -15,9 +15,6 @@ import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 
-/**
- * Created by Kevin on 23.11.2016.
- */
 
 public class Stationbeendet extends Activity {
 
