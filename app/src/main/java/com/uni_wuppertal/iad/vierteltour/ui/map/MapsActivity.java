@@ -72,6 +72,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tagmanager.Container;
 import com.google.maps.android.PolyUtil;
@@ -318,6 +319,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     checkForUpdates();
 
+
+
+
     /**
      * When the user clicks anywhere on the map, check which tour he clicked onto and mark it as
      * selected
@@ -329,20 +333,21 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onMapClick( LatLng clickCoords ){
       if(tourdataAvailable)
       {  if( supl.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED ){
-          boolean tourSelected = false;
-
+          boolean test=false;
           for( Tour tour : tourlist.city(visibleCity).tours() ){
 
-            if( PolyUtil.isLocationOnPath( clickCoords, tour.route().latLngs(), true, 20 ) && !tourSelected ){
-              tourSelected = true;
-              selectTour( tour );
+            if( PolyUtil.isLocationOnPath( clickCoords, tour.route().latLngs(), false, 10) ){
+              test=true;
+              if(singlepage.INSTANCE.selectedTour()!=tour)
+              {selectTour( tour );
               suplInfo( "showall" );
+              drawRoutes();
+              break;}
             }
           }
-          if( !tourSelected ){
+          if( singlepage.INSTANCE.selectedTour()!=null && !test){
             resetTour();
           }
-          drawRoutes();
         }
         //Stationenübersicht
         else if(supl.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
@@ -358,14 +363,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       }
           if(!onMapClicked && tmpmarker!=null) tmpmarker.showInfoWindow();
 
-          //Unselect Station on Map Click
-      /*  if(!onMapClicked)
-        {if(singlepage.INSTANCE.selectedStation()!=null)
-        {markers.get(singlepage.INSTANCE.selectedStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (singlepage.INSTANCE.selectedStation().number()))));
-        singlepage.INSTANCE.selectedStation(null);
-          circle.center(null);
-        drawRoutes();}
-        }*/
+
         }
       }}
     };
@@ -380,6 +378,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         return true;    // false: OnMarkerClick aktiv und zoomt zum Marker
       }
     } );
+    mMap.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
+      @Override
+      public void onPolylineClick(Polyline polyline) {
+        listener.onMapClick( polyline.getPoints().get(0));
+      }
+    });
   }
 
   public void selectStation(Station station)
@@ -1295,7 +1299,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   {
     MarkerOptions marker = new MarkerOptions();
 
-    marker.position( station.latlng() );
+    try{marker.position( station.latlng() );}
+    catch (Exception e){}
     marker.icon( BitmapDescriptorFactory.fromBitmap( markertext(tour,"") ) );
 
   return marker;}

@@ -285,27 +285,27 @@ public class StationActivity extends Activity{
 
 
   private void setUiPageViewController(){
-
+  if(mAdapter.getCount()>1) {
     dotsCount = mAdapter.getCount();
     dots = new ImageView[dotsCount];
 
-    for( int i = 0; i < dotsCount; i++ ){
-      dots[i] = new ImageView( this );
-      dots[i].setImageDrawable( getResources().getDrawable( R.drawable.nonselecteditem ) );
+    for (int i = 0; i < dotsCount; i++) {
+      dots[i] = new ImageView(this);
+      dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));
 
       LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.WRAP_CONTENT,
         LinearLayout.LayoutParams.WRAP_CONTENT
       );
 
-      params.setMargins( 4, 0, 4, 0 );
+      params.setMargins(4, 0, 4, 0);
 
-      pager_indicator.addView( dots[i], params );
+      pager_indicator.addView(dots[i], params);
     }
 
-    dots[0].setImageDrawable( getResources().getDrawable( R.drawable.selecteditem ) );
+    dots[0].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
 
-
+  }
   }
 
 

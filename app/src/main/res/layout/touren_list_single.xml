@@ -24,7 +24,6 @@
     android:text="geladen"
     android:layout_alignParentBottom="true"
     android:textColor="@color/black"
-    android:textStyle="bold"
     android:visibility="gone"
     android:paddingRight="3dp"
     android:paddingBottom="11dp"
