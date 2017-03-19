@@ -377,17 +377,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     mMap.setOnMarkerClickListener( new GoogleMap.OnMarkerClickListener(){
       @Override
-      public boolean onMarkerClick( Marker marker ){
+      public boolean onMarkerClick(Marker marker ){
         listener.onMapClick( marker.getPosition() );
         return true;    // false: OnMarkerClick aktiv und zoomt zum Marker
       }
     } );
-    mMap.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
-      @Override
-      public void onPolylineClick(Polyline polyline) {
-        listener.onMapClick( polyline.getPoints().get(0));
-      }
-    });
   }
 /**
 * Will be used if a station is selected

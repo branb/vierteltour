@@ -467,8 +467,7 @@ public class StationActivity extends Activity{
    * @param play
      */
   public void setImageResource(boolean play)
-  {//get color und teile in rgb
-   //int color = Integer.parseInt(farbe);
+  {
     int red = Integer.valueOf( farbe.substring( 1, 3 ), 16 );
     int green = Integer.valueOf( farbe.substring( 3, 5 ), 16 );
     int blue = Integer.valueOf( farbe.substring( 5, 7 ), 16 );
