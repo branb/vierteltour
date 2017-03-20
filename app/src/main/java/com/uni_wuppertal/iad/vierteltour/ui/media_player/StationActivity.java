@@ -354,10 +354,8 @@ public class StationActivity extends Activity{
 
 
     //CustomKlasse Seekbar
-    seekbar.getProgressDrawable().setColorFilter( Color.GRAY, PorterDuff.Mode.SRC );
-    seekbar.setMax( player.getDuration() );
-  //  seekbar.getThumb().mutate().setAlpha( 0 );//seekbar.getthumb ist pin auf der seekbar
 
+    seekbar.setMax( player.getDuration() );
     seekbar.setProgress( player.getCurrentPosition() );
     timeElapsed = player.getCurrentPosition();
 
