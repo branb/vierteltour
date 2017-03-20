@@ -28,6 +28,10 @@ public class ClickableViewpager extends ViewPager {
     setup();
   }
 
+  /**
+   * Setup for CustomViewPager
+   * GestureDetector is used to filter different taps
+   */
   private void setup() {
     final GestureDetector tapGestureDetector = new GestureDetector(getContext(), new TapGestureListener());
 
@@ -39,8 +43,8 @@ public class ClickableViewpager extends ViewPager {
       }
     });
 
-    setClipToPadding(false);
-    setOffscreenPageLimit(3);
+    setClipToPadding(false);        //removes padding between Fragments of ViewPager
+    setOffscreenPageLimit(3);       //Limit of Neighbour Fragments
   }
 
   public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

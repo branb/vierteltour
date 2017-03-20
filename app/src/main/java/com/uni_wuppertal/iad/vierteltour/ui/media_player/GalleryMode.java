@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
@@ -145,12 +146,12 @@ public void initAll()
   public void gallerymode(){
     gallerytitle.setText( station );
 
-    if ( getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE) {
-      x_button.setVisibility(View.GONE);
+    if ( getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE) {   //do in Landscape mode
+      x_button.setVisibility(View.GONE);                                //Hide Layout except Image/Video
       gallerytitle.setVisibility(View.GONE);
       gallerytitletop.setText(station);
       hideGalleryVideoBar();
-      ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
+      ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();      //Resize Viewpager of Image/Video
       params.height = ViewPager.LayoutParams.MATCH_PARENT;
       imagePagerGallery.setLayoutParams(params);}
     else if (getResources().getConfiguration().orientation  == Configuration.ORIENTATION_PORTRAIT){
@@ -160,7 +161,7 @@ public void initAll()
       gallerytitle.setVisibility(View.VISIBLE);
       if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")){showGalleryVideoBar();}
 
-      ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
+      ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();//Resize Viewpager of Image/Video
       params.height = calculateDP(300);
       imagePagerGallery.setLayoutParams(params);
     }
@@ -185,9 +186,19 @@ public void initAll()
     });
 
     if(!video.isEmpty())video();
+
+    //White Color for Seekbar and Thumb
+    seekbarGallery.getProgressDrawable().setColorFilter(
+      Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
+    seekbarGallery.getThumb().setColorFilter(Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
+    seekbarGallery_bar.getProgressDrawable().setColorFilter(
+      Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
+    seekbarGallery_bar.getThumb().setColorFilter(Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
   }
 
-
+  /**
+   * Thread to refresh Progress of Seekbar in the background
+   */
   Runnable run2 = new Runnable(){
     @Override
     public void run(){
@@ -200,7 +211,6 @@ public void initAll()
    */
   public void seekUpdationVideo(){
     if( player.getVideoview() != null && startvideo ){
-      //System.out.println("222");
       seekbarGallery.setMax( player.getVideoview().getDuration() );
       seekbarGallery_bar.setMax( player.getVideoview().getDuration() );
       seekbarGallery.setProgress( player.getVideoview().getCurrentPosition() );
@@ -216,7 +226,9 @@ public void initAll()
   }
 
 
-
+  /**
+   * Used if viewpager contains video
+   */
   public void video(){
 
     seekbarGallery.setOnSeekBarChangeListener( customSeekBarListenerVideo );
@@ -250,6 +262,7 @@ public void initAll()
       }
     });
 
+    //After Video is finished, use this method
     player.getVideoview().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
       @Override
       public void onCompletion(MediaPlayer mediaPlayer) {
@@ -261,8 +274,13 @@ public void initAll()
           startActivity(background);
          }*/
       }});
+
+    startVideoplay();
   }
 
+  /**
+   * Stops Audio, Starts Video, Managing all Buttons
+   */
   public void startVideoplay()
   {if(player.isPlaying())player.pause();
     startvideo = true;
@@ -273,12 +291,18 @@ public void initAll()
     play_buttonGallery_bar.setImageResource( R.drawable.stop_hell );
     seekUpdationVideo();}
 
+  /**
+   * Pausing video and set buttons
+   */
   public void pauseVideoplay()
   {startvideo = false;
     player.getVideoview().pause();
     play_buttonGallery.setImageResource( R.drawable.play_hell );
     play_buttonGallery_bar.setImageResource( R.drawable.play_hell );}
 
+  /**
+   * Stops video and sets to 0
+   */
   public void stopVideoplay()
   {startvideo = false;
     player.getVideoview().pause();
@@ -291,6 +315,9 @@ public void initAll()
     durationGallery.setText("0:00");
     seekbarGallery.setProgress(0);}
 
+  /**
+   * Is Used to show/hide the Bars in Landscapemode on top and bottom of screen
+   */
   public void mediaplayerbars()
   {if (relGalleryBot.getVisibility() == View.VISIBLE) {
     Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_down);
@@ -310,6 +337,9 @@ public void initAll()
     relGalleryTop.setVisibility(View.VISIBLE);
   }}
 
+  /**
+   * Hides single Bar if shown
+   */
   public void hideBars()
   {if(relGalleryBot.getVisibility() == View.VISIBLE)
   {Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_down);
@@ -321,27 +351,41 @@ public void initAll()
     relGalleryTop.setVisibility(View.GONE);}
   }
 
+  /**
+   * Shows custom videoseekbar
+   */
   public void showGalleryVideoBar()
   {seekbarGallery.setVisibility(View.VISIBLE);
     play_buttonGallery.setVisibility(View.VISIBLE);
     durationGallery.setVisibility(View.VISIBLE);}
 
+  /**
+   * Hides custom videoseekbar
+   */
   public void hideGalleryVideoBar()
   {seekbarGallery.setVisibility(View.GONE);
     play_buttonGallery.setVisibility(View.GONE);
     durationGallery.setVisibility(View.GONE);}
 
+  /**
+   *
+   */
   public void imageBar()
   {if (relGalleryTop.getVisibility() == View.VISIBLE) {
     Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_up);
     relGalleryTop.startAnimation(slide2);
     relGalleryTop.setVisibility(View.GONE);}
-  else if(relGalleryBot.getVisibility() == View.GONE){
+  else if(relGalleryTop.getVisibility() == View.GONE){
     Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_down);
     relGalleryTop.startAnimation(slide2);
     relGalleryTop.setVisibility(View.VISIBLE);}
   }
 
+  /**
+   * calculates sizes for ViewPager depending on pixels and size on used screen
+   * @param pixel
+   * @return
+     */
   public int calculateDP(int pixel)
   {DisplayMetrics metrics = getResources().getDisplayMetrics();
     float dp = pixel;
@@ -381,6 +425,7 @@ public void initAll()
     public void onPageScrolled( int position, float positionOffset, int positionOffsetPixels ){
 
     }
+    //If Page is Selected, stop last videoplay and reset Neighbours
     @Override
     public void onPageSelected( int position ){
       if(player.getVideoview().isPlaying())
@@ -390,7 +435,7 @@ public void initAll()
 
       hideBars();
 
-      singlepage.INSTANCE.position(position);
+      singlepage.INSTANCE.position(position);   //Updating position
 
 
       isimages=singlepage.INSTANCE.position();
@@ -402,7 +447,7 @@ public void initAll()
       else
       {hideGalleryVideoBar();}
 
-     /* if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")) startVideoplay();*/
+      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")) startVideoplay();
     }
 
     @Override

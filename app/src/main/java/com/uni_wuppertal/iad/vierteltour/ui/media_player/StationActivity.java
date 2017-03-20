@@ -472,14 +472,14 @@ public class StationActivity extends Activity{
     int blue = Integer.valueOf( farbe.substring( 5, 7 ), 16 );
     if ((red*0.299 + green*0.587 + blue*0.114) > 186)
     {duration.setTextColor(Color.parseColor("#353535"));
-      seekbar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#353535")));
+
       seekbar.getProgressDrawable().setColorFilter(
         Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
       seekbar.getThumb().setColorFilter(Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
       if(play) play_button.setImageResource(R.drawable.play_dunkel);
     else play_button.setImageResource(R.drawable.stop_dunkel);}
     else{duration.setTextColor(Color.parseColor("#E6EBE0"));
-      seekbar.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#E6EBE0")));
+
       seekbar.getProgressDrawable().setColorFilter(
         Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
 
