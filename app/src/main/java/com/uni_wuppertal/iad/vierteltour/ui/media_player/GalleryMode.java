@@ -275,7 +275,8 @@ public void initAll()
          }*/
       }});
 
-    startVideoplay();
+
+    //startVideoplay();
   }
 
   /**
