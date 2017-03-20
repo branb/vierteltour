@@ -23,7 +23,7 @@ import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
 import java.io.File;
 import java.util.ArrayList;
 
-public class InformationPagerAdapter extends PagerAdapter{
+public class StationAdapter extends PagerAdapter{
 
   private Context mContext;
   private StationActivity stationActivity;
@@ -34,7 +34,7 @@ public class InformationPagerAdapter extends PagerAdapter{
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
 
-  public InformationPagerAdapter(Context mContext, ArrayList<String> stationImagePaths , StationActivity stationActivity){
+  public StationAdapter(Context mContext, ArrayList<String> stationImagePaths , StationActivity stationActivity){
     this.mContext = mContext;
     this.stationImagePaths = stationImagePaths;
     this.stationActivity= stationActivity;

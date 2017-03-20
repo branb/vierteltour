@@ -139,7 +139,9 @@ public void initAll()
       imagePagerGallery.setLayoutParams(params);
     }
   }
-
+/**
+  * Layout Setup
+ */
   public void gallerymode(){
     gallerytitle.setText( station );
 

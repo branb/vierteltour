@@ -195,15 +195,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     initAll();
     showIntro();
 
-
-
     initPager();
 
     moveDrawerToTop();
     initActionBar();
     initDrawer();
-
-
 
     mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
@@ -312,8 +308,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   /**
    * Get notified when the map is ready to be used.
    */
-
-
   @Override
   public void onMapReady( GoogleMap googleMap ){
     mMap = googleMap;

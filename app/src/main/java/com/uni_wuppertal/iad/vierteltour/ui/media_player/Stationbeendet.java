@@ -67,7 +67,7 @@ public class Stationbeendet extends Activity {
         next.putExtra( "zeit", tour.time() );
         next.putExtra( "laenge", tour.length() );
         next.putExtra( "farbe", tour.color() );
-        next.putExtra( "size", "" + tour.stations().size() );
+        next.putExtra( "size", "" + (tour.stations().size()-1) );
         next.putExtra("path", path);
         // Selected Station
         singlepage.INSTANCE.selectedStation(singlepage.INSTANCE.selectedTour().station(singlepage.INSTANCE.selectedStation().number()+1));
@@ -75,7 +75,7 @@ public class Stationbeendet extends Activity {
         next.putExtra("slug", station.slug());
         next.putExtra( "station", station.name() );
         next.putExtra( "desc", station.description() );
-        next.putExtra( "pos", "" + (station.number()) );
+        next.putExtra( "pos", "" + (station.number()-1) );
         // Station media
         next.putExtra( "img", station.imagesToString() );
         next.putExtra( "audio", station.audio());

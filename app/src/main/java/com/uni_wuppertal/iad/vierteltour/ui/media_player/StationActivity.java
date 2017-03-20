@@ -69,7 +69,7 @@ public class StationActivity extends Activity{
   Bundle b;
   RelativeLayout layout;
   ViewPager imagePager;    //Slidebare Gallery
-  InformationPagerAdapter mAdapter;
+  StationAdapter mAdapter;
   LinearLayout pager_indicator;
   RelativeLayout gesperrt;
   boolean sperrvariable=true;
@@ -220,7 +220,7 @@ public class StationActivity extends Activity{
     pfeilhell = (ImageView) findViewById(R.id.pfeilhell);
     imagePager = (ViewPager) findViewById( R.id.ImagePager );
     imagePager.setOffscreenPageLimit(5);
-    mAdapter = new InformationPagerAdapter( this, stationImagePaths, this);
+    mAdapter = new StationAdapter( this, stationImagePaths, this);
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
     imagePager.setAdapter( mAdapter );
     seekbar.setOnSeekBarChangeListener(customSeekBarListener);
