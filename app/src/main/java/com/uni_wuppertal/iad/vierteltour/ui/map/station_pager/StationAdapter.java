@@ -1,18 +1,11 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map.station_pager;
 
-import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.uni_wuppertal.iad.vierteltour.ui.map.Station;
-import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
+import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StationAdapter extends FragmentStatePagerAdapter {
   public ArrayList<StationFragment> fragments;

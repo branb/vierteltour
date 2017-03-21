@@ -112,7 +112,7 @@
                 android:textStyle="bold"
                 />
 
-                <com.uni_wuppertal.iad.vierteltour.ui.map.ClickableViewpager
+                <com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.ClickableViewpager
                     android:id="@+id/pager"
                     android:layout_width="match_parent"
                     android:layout_height="170dp"

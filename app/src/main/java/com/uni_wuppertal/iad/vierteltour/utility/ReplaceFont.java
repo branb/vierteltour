@@ -5,6 +5,10 @@ import android.graphics.Typeface;
 
 import java.lang.reflect.Field;
 
+/**
+ * Replacing Default Font with Bariol Font
+ */
+
 public class ReplaceFont{
   public static void replaceDefaultFont( Context context, String old_Font, String Asset_Font ){
     final Typeface customFontTypeface = Typeface.createFromAsset( context.getAssets(), Asset_Font );

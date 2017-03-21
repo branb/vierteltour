@@ -2,15 +2,12 @@ package com.uni_wuppertal.iad.vierteltour.ui.map.up_slider;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,19 +16,16 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
-import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
-import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
-import com.uni_wuppertal.iad.vierteltour.updater.Updater;
-import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
+import com.uni_wuppertal.iad.vierteltour.utility.xml.Tour;
+import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
+import com.uni_wuppertal.iad.vierteltour.utility.updater.Updater;
+import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 
-import java.io.File;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Connects the ListView inside of the SUPL of the Maps Activity with a List<Tour>

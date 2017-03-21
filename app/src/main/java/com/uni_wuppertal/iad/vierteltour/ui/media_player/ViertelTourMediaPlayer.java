@@ -2,12 +2,11 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
 import android.widget.VideoView;
 
-import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
+import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
+import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 
 import java.io.FileInputStream;
 import java.io.IOException;

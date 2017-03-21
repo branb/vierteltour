@@ -1,18 +1,15 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map.station_pager;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,17 +18,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.uni_wuppertal.iad.vierteltour.ui.map.ClickableViewpager;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
-import com.uni_wuppertal.iad.vierteltour.ui.map.Station;
-import com.uni_wuppertal.iad.vierteltour.ui.map.Tour;
-import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
-import com.uni_wuppertal.iad.vierteltour.ui.media_player.StationActivity;
+import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
+import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.R;
-import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
+import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 
-import java.io.File;
 import java.util.ArrayList;
+
+/**
+ * single fragment for Station ViewPager within mapsActivity
+ */
 
 public class StationFragment extends Fragment{
   private static final String ARG_PAGE_NUMBER = "pageNumber";
@@ -43,7 +40,7 @@ public class StationFragment extends Fragment{
   private View view;
 
 
-
+//creating fragment
   public static StationFragment create( Station station ){
     StationFragment fragment = new StationFragment();
     arguments = new Bundle();
@@ -55,11 +52,12 @@ public class StationFragment extends Fragment{
     return fragment;
   }
 
+  //destorying fragment
   @Override
   public void onDestroyView(){
     super.onDestroyView();
     ImageView i =(ImageView) ownContainer.findViewWithTag("image"+position);
-    i.setImageBitmap(null);
+    i.setImageBitmap(null);   //needs to set null otherwise buffer overflow error
     i=null;
    // fragments.get(ARG_PAGE_NUMBER).image.setImageURI(null);
    // image = null;
@@ -80,8 +78,10 @@ public class StationFragment extends Fragment{
       position = getArguments().getInt( ARG_PAGE_NUMBER );
       image.setTag("image"+position);
       //Change Image Dynamically
+      //Gets path of small image
       String externalPath=OurStorage.get(getContext()).storagePath()+"/";
       String appPath=OurStorage.get(getContext()).lookForTourFile(((MapsActivity)getContext()).tourlist(), singlepage.INSTANCE.selectedTour().image())+"/"+singlepage.INSTANCE.selectedTour().station(position).slug()+"/";
+      //Sets small image into fragment
       String file="i_"+(singlepage.INSTANCE.selectedTour().trkid()<10?"0"+singlepage.INSTANCE.selectedTour().trkid():singlepage.INSTANCE.selectedTour().trkid())+"_"+(position<10?"0"+position:position)+"_01_400.jpg";
 
       SharedPreferences getPrefs = PreferenceManager
@@ -93,6 +93,7 @@ public class StationFragment extends Fragment{
         image.setImageBitmap(mBitmapInsurance);}
 
       title.setText( ztitle.get( position-1 ) );
+      //Sets number layout in the right corner
       if(singlepage.INSTANCE.selectedTour().station(position).latlng()!=null && singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
       {number.setText((position-1) + "");
       LayerDrawable bgDrawable = (LayerDrawable)numberlayout.getBackground();
@@ -104,7 +105,6 @@ public class StationFragment extends Fragment{
         final GradientDrawable shape = (GradientDrawable)   bgDrawable.findDrawableByLayerId(R.id.shape_id);
         shape.setColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color()));}
       else numberlayout.setVisibility(View.GONE);
-
 
       btItem.setOnTouchListener(new View.OnTouchListener() {
         @Override

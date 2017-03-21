@@ -2,21 +2,15 @@ package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
@@ -24,25 +18,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.transition.Visibility;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -72,40 +60,46 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tagmanager.Container;
 import com.google.maps.android.PolyUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import com.thin.downloadmanager.DownloadRequest;
-import com.uni_wuppertal.iad.vierteltour.ui.intro.IntroActivity;
+import com.uni_wuppertal.iad.vierteltour.ui.drawer.intro.IntroActivity;
 
-import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.About;
-import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.Einstellungen;
-import com.uni_wuppertal.iad.vierteltour.ui.media_player.StationActivity;
-import com.uni_wuppertal.iad.vierteltour.ui.media_player.Singletonint;
+import com.uni_wuppertal.iad.vierteltour.ui.map.Marker.MapWindowAdapter;
+import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.ClickableViewpager;
+import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.ShadowTransformer;
+import com.uni_wuppertal.iad.vierteltour.ui.drawer.about.About;
+import com.uni_wuppertal.iad.vierteltour.ui.drawer.einstellungen.Einstellungen;
+import com.uni_wuppertal.iad.vierteltour.ui.station.StationActivity;
+import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 
 import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.StationAdapter;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.TourAdapter;
-import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.DrawerAdapter;
-import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.DrawerItem;
-import com.uni_wuppertal.iad.vierteltour.updater.Updater;
-import com.uni_wuppertal.iad.vierteltour.updater.UpdateListener;
-import com.uni_wuppertal.iad.vierteltour.utility.OurStorage;
+import com.uni_wuppertal.iad.vierteltour.ui.drawer.DrawerAdapter;
+import com.uni_wuppertal.iad.vierteltour.ui.drawer.DrawerItem;
+import com.uni_wuppertal.iad.vierteltour.utility.updater.Updater;
+import com.uni_wuppertal.iad.vierteltour.utility.updater.UpdateListener;
+import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 import com.uni_wuppertal.iad.vierteltour.utility.ReplaceFont;
+import com.uni_wuppertal.iad.vierteltour.utility.tourlist.TourList;
+import com.uni_wuppertal.iad.vierteltour.utility.tourlist.TourListReader;
+import com.uni_wuppertal.iad.vierteltour.utility.waypoints.RouteWaypoint;
+import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
+import com.uni_wuppertal.iad.vierteltour.utility.xml.Tour;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import static android.location.GpsStatus.GPS_EVENT_STARTED;
 import static android.location.GpsStatus.GPS_EVENT_STOPPED;
 
+/**
+ * MapsActivity is the main activity of the application
+ */
 
 public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback, UpdateListener{
 
@@ -852,7 +846,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       }
     });
 
-
+    //Redirection to Google Maps application with the coordinates of the station and own position
     arrowbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
@@ -894,6 +888,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
       }
     });
+
+    //zooms to own location
     tarbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
@@ -910,7 +906,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     }
     });
-
+    
     gpsbtn.setOnTouchListener(new View.OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {

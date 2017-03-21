@@ -15,7 +15,7 @@ import com.uni_wuppertal.iad.vierteltour.utility.ReplaceFont;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 
 //Vorerst nicht benötigt, ist für Splashscreen zuständig, eigentlich in AndroidManifest als Launcher ausgewählt
-
+//Aktuell nicht verwendet
 public class Splash extends Activity{
   ProgressBar pbar;
   VideoView vid;
