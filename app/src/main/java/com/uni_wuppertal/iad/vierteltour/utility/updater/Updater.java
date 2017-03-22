@@ -456,6 +456,7 @@ public class Updater extends ContextWrapper{
     TourListReader tourListReader = new TourListReader(this);
     TourList tourlist = tourListReader.readTourList();
 
+    //Sucht den Pfad der ausgewaehlten Tour
     for( Region region : tourlist.regions() ){
       for( Area area : region.areas() ){
         for( City city : area.cities() ){
@@ -463,14 +464,17 @@ public class Updater extends ContextWrapper{
             if(tour.slug().equals(slug)){
               path = city.home();
             }}}}}
-
+    //updateServerUrl="http://www.vierteltour.uni-wuppertal.de/files/"
+    //Downloadlink wird erstellt
     Uri downloadUri = Uri.parse( updateServerUrl + path + "/" + slug + ".zip" );
-
+    //Zielverzeichnis wird festgelegt (gleicher "path")
     String destination = new File( OurStorage.get( Updater.this ).storagePath() ) + "/" + path + "/" + slug + ".zip";
     Uri destinationUri = Uri.parse( destination );
 
 
     // Setup the download, with nice callback function on different events throughout the download
+    //DownloadRequest mit zusammengesetzter URL
+    //initialisiert und gestartet
     DownloadRequest downloadRequest = new DownloadRequest( downloadUri)
       .setRetryPolicy( new DefaultRetryPolicy() )
       .setDestinationURI( destinationUri ).setPriority( DownloadRequest.Priority.LOW )
@@ -486,10 +490,12 @@ public class Updater extends ContextWrapper{
          /* runOnUiThread(changeMessage);*/
 
           ((MapsActivity)con).adapter.notifyDataSetChanged();
-          // unzip
+          //Entpacke die heruntergeladene Zip Datei
+          //Innerhalb der Methode wird das Paket am Ende geloescht
           unzipFile( request.getDestinationURI().toString() );
 
-
+          //Setze Tour und Einleitung in SharedPreferences,
+          //damit diese freigeschaltet werden
           SharedPreferences getPrefs = PreferenceManager
             .getDefaultSharedPreferences( getBaseContext() );
 
@@ -497,7 +503,7 @@ public class Updater extends ContextWrapper{
             .putBoolean( tourslug, true)
             .putBoolean( "einleitung-"+tourslug, true)
             .apply();
-
+          //Beende Fortschrittsdialog
           progressDialog.dismiss();
 
           checkingForUpdates = false;
@@ -507,7 +513,7 @@ public class Updater extends ContextWrapper{
         @Override
         public void onDownloadFailed( DownloadRequest request, int returnCode, String returnMessage ) {
           Log.d( DEBUG_TAG, errorMessage + returnMessage + " (" + returnCode + ")" );
-
+          //Beende Fortschrittsdialog und gebe Fehlermeldung aus
           progressDialog.dismiss();
           Toast.makeText(con, "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat.", Toast.LENGTH_LONG).show();
 
@@ -516,6 +522,7 @@ public class Updater extends ContextWrapper{
 
         @Override
         public void onProgress( DownloadRequest request, long totalBytes, long downloadedBytes, int progress) {
+          //Aktualisiere Fortschrittsdialog
               progressDialog.setMax((int)totalBytes);
               progressDialog.setProgress((int)downloadedBytes);
        }

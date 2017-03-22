@@ -376,17 +376,24 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
  *
  * @param station Station will be marked as selected
 * */
+//Wird aufgerufen, sobald eine Station ausgewaehlt wird
   public void selectStation(Station station)
-  { singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());   //vorherige Station wird alte Station
+  { //selectedOldStation dient als Zwischenspeicher der abgewaehlten Station
+//selectedStation dient als Zwischenspeicher der ausgewaehlten Station
+//vorherig ausgewaehlte Station wird abgewaehlte Station
+    singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());   //vorherige Station wird alte Station
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
 
-    //löscht alte Station, setzt Größe auf Ursprung zurück
+    //loescht alte Station, setzt Groesse auf Ursprung zurueck
+    //Ausnahme: Einleitungen haben keine Marker
     if(singlepage.INSTANCE.selectedOldStation()!=null && !singlepage.INSTANCE.selectedOldStation().slug().contains("einleitung"))
     { removeStation(singlepage.INSTANCE.selectedOldStation().slug());
       markers.put( singlepage.INSTANCE.selectedOldStation().slug(), createMarker(singlepage.INSTANCE.selectedOldStation(), singlepage.INSTANCE.selectedTour() ));
       Marker m;
       if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")) m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number()-1+""))));
+        //Ausgewaehlte Station wird per Bitmap groesser skaliert
       else m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number()+""))));
+      //Erstellte Bitmap wird der Karte hinzugefuegt
       tourMarker.put(singlepage.INSTANCE.selectedOldStation().slug(), m);
 
     //delete Circle
@@ -621,13 +628,17 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
        * Checks if own coordinates are within the station range (circle)
        * @param pos own position to compare
          */
+      //Funktion wird im onLocationChanged aufgerufen
       public void positionInCircle(LatLng pos)
       {float[] distance = new float[2];
-
+        //uebergebene Position wird mit allen Stationen jeder Tour verglichen
         for( Tour tour : tourlist.city(visibleCity).tours() ){
         for(Station station : tour.stations())
-        {if(station.latlng()!=null){Location.distanceBetween( pos.latitude, pos.longitude,
+        {if(station.latlng()!=null)
+        //errechnet Distanz von Koordinaten der Station und der eigenen Position
+        {Location.distanceBetween( pos.latitude, pos.longitude,
           station.latlng().latitude, station.latlng().longitude, distance);
+          //Die Distanz wird, wie der Radius, in Metern angegeben
           if(distance[0] < radius )
         {//  Initialize SharedPreferences
           SharedPreferences getPrefs = PreferenceManager
@@ -635,10 +646,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
           //  Make a new preferences editor
           SharedPreferences.Editor e = getPrefs.edit();
-
-          //  Edit preference to make it false because we don't want this to run again
+        //Setzt einen Eintrag der Station,
+        //falls eigene Position in der Naehe der Station ist
+          // Damit ist die Station freigeschaltet
           e.putBoolean( station.slug(), true);
           //  Apply changes
+          //Aktualisiere Stationen im ViewPager,
+//damit eine sofortige Freischaltung stattfindet
           e.apply();
           stationAdapter.notifyDataSetChanged();
 
@@ -906,7 +920,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     }
     });
-    
+
     gpsbtn.setOnTouchListener(new View.OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -1343,15 +1357,20 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * @param text to get number
    * @return
      */
+    //Es wird die Tour fuer die entsprechende Farbe
+    //und der Zahl der Station uebergeben
     public Bitmap markertext(Tour tour, String text)
-{
+{//Das vorgegebene Marker Layout wird verwendet
+//Bestehend aus einem Image (Pin) und einer TextView (Zahl)
   View markerlayout = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.marker_layout, null);
+  //Der zugehoerige Pin wird festgelegt
   int id = getResources().getIdentifier( "pin_" + tour.trkid(), "drawable", getPackageName() );
   TextView markertxt = (TextView)markerlayout.findViewById(R.id.markernumber);
   ImageView markerimage = (ImageView) markerlayout.findViewById(R.id.marker);
+  //Text und Bild wird festgelegt
   markerimage.setImageResource(id);
-
   markertxt.setText(text);
+  //Bitmap wird zurueckgegeben
   return createDrawableFromView(this, markerlayout);
 }
 

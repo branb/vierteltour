@@ -31,7 +31,7 @@ public class IntroActivity extends AppIntro{
 
     // Instead of fragments, you can also use our default slide
     // Just set a title, description, background and image. AppIntro will do the rest.
-
+    //TODO: Texts are too long. This will be changed soon
     addSlide( AppIntroFragment.newInstance( "Überschrift", "Die App ViertelTour nimmt Sie mit auf informative Stadtspaziergänge, die von unterschiedlichsten Experten durch eine dichte Ökologie- und Kulturlandschaft im Wuppertaler Innenstadtraum durchgeführt werden.\n" ,R.drawable.i, Color.parseColor( "#fbc55e") ) );
     addSlide( AppIntroFragment.newInstance( "Überschrift", "Laden Sie sich die Touren am besten bevor Sie losgehen im Wlan Netz herunter. Es werden pro Tour etwa 100–200 MB Daten geladen.\n"+"Um die Audio-, Bild, und Video-Daten dann zu den Touren hören und sehen zu können, müssen Sie sich vor Ort befinden!", R.drawable.i, Color.parseColor( "#ec6e5e") ) );
     addSlide( AppIntroFragment.newInstance( "Überschrift", "Wir haben ViertelTour bewusst so konzipiert, dass die Spaziergänge tatsächlich nur erlebt werden können, wenn Sie sich genau dort befinden, wo die entsprechende Expertin oder der entsprechende Experte Sie mit auf den Weg nehmen möchte, um Wuppertal vor Ort zu erfahren.", R.drawable.i, Color.parseColor( "#8cafdc") ) );
@@ -51,7 +51,6 @@ public class IntroActivity extends AppIntro{
     // NOTE: you will probably need to ask VIBRATE permission in Manifest.
     // setVibrate( true );
     setVibrateIntensity( 30 );
-
 
     setSkipText( "Überspringen" );
     setDoneText( "Fertig" );
