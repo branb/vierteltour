@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -38,6 +40,9 @@ public class GalleryMode extends Activity {
   SeekBar seekbarGallery, seekbarGallery_bar;
   TextView gallerytitle, gallerytitletop, durationGallery, durationGallery_bar;
   GalleryPagerAdapter mAdapter2;
+  ImageView dots[];
+  int dotsCount;
+  LinearLayout pager_indicator;
   RelativeLayout relGalleryBot, relGalleryTop;
   Boolean startvideo = true;
   double timeElapsedGallery = 0;
@@ -103,6 +108,7 @@ public class GalleryMode extends Activity {
   durationGallery_bar = (TextView) findViewById( R.id.durationGallery_bar );
   relGalleryBot = (RelativeLayout) findViewById(R.id.relativeBot);
   relGalleryTop = (RelativeLayout) findViewById(R.id.relativeTop);
+  pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
   //Adapter for ViewPager which contains media
   mAdapter2 = new GalleryPagerAdapter(this, res);
   imagePagerGallery.setAdapter( mAdapter2 );
@@ -147,6 +153,7 @@ public class GalleryMode extends Activity {
  */
   public void gallerymode(){
     gallerytitle.setText( station );
+    setUiPageViewController();
 
     if ( getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE) {   //do in Landscape mode
       x_button.setVisibility(View.GONE);                                //Hide Layout except Image/Video
@@ -267,6 +274,34 @@ public class GalleryMode extends Activity {
       }});
    // startVideoplay();
   }
+
+  /**
+   * Manages the dots below the viewpager
+   */
+  private void setUiPageViewController(){
+    if(mAdapter2.getCount()>1) {
+      dotsCount = mAdapter2.getCount();
+      dots = new ImageView[dotsCount];
+
+      for (int i = 0; i < dotsCount; i++) {
+        dots[i] = new ImageView(this);
+        dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+          LinearLayout.LayoutParams.WRAP_CONTENT,
+          LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        params.setMargins(4, 0, 4, 0);
+
+        pager_indicator.addView(dots[i], params);
+      }
+
+      dots[0].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
+
+    }
+  }
+
   /**
    * Stops Audio, Starts Video, Managing all Buttons
    */
@@ -427,6 +462,11 @@ public class GalleryMode extends Activity {
 
       singlepage.INSTANCE.position(position);   //Updating position
 
+      for( int i = 0; i < dotsCount; i++ ){
+        dots[i].setImageDrawable( getResources().getDrawable( R.drawable.nonselecteditem ) );
+      }
+
+      dots[position].setImageDrawable( getResources().getDrawable( R.drawable.selecteditem ) );
 
       isimages=singlepage.INSTANCE.position();
       imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
