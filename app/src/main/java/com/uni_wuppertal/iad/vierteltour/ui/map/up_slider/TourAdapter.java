@@ -95,9 +95,11 @@ public class TourAdapter extends BaseAdapter{
     if(sharedPreferences.getBoolean(tour.slug(), false))
       {downloadbutton.setImageResource(R.drawable.ok);
       downloadtext.setText("geladen");
-      downloadtext.setVisibility(View.VISIBLE);}
+      downloadtext.setVisibility(View.VISIBLE);
+      btnStart.setVisibility(View.VISIBLE);}
     else{downloadbutton.setImageResource(R.drawable.laden);
       downloadtext.setVisibility(View.GONE);
+      btnStart.setVisibility(View.INVISIBLE);
      }
 
     BitmapFactory.Options options = new BitmapFactory.Options();
@@ -127,9 +129,9 @@ public class TourAdapter extends BaseAdapter{
       divider.setVisibility( View.GONE );
 
     }
-    else if( tour.slug().equals( singlepage.INSTANCE.selectedTour().slug() ) ) {
+    else if( tour.slug().equals(singlepage.INSTANCE.selectedTour().slug()) ) {
       txtDescription.setVisibility(View.VISIBLE);
-      btnStart.setVisibility(View.VISIBLE);
+      if(sharedPreferences.getBoolean(tour.slug(), false))btnStart.setVisibility(View.VISIBLE);
       divider.setVisibility(View.VISIBLE);
       convertView.setClickable(true);
       convertView.setOnClickListener(new View.OnClickListener() {

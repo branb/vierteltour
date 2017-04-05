@@ -147,7 +147,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public static RelativeLayout audiobar;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
-
+  static final int BACK_FROM_SETTINGS = 1;  // The request code
   // All the tour stationactivity that is currently available to us
   private TourList tourlist;
 
@@ -209,6 +209,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       stationAdapter.fragments.clear();
     }
   }
+
 
 
   /**
@@ -807,10 +808,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
     if(!tourlist.city(visibleCity).tours().get(position).equals(singlepage.INSTANCE.selectedTour()))
-       { singlepage.INSTANCE.selectedTour(tourlist.city(visibleCity).tours().get(position));
-         selectTour(tourlist.city(visibleCity).tours().get(position));}
-
-
+       { selectTour(tourlist.city(visibleCity).tours().get(position));}
       adapter.notifyDataSetChanged();
         lv.smoothScrollToPosition(position);
       drawRoutes();
@@ -1125,7 +1123,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             Intent i = new Intent(MapsActivity.this, Einstellungen.class);
 
             //i.putExtra("tours", tourlist.tours());     //gib touren weiter
-            startActivity(i);
+            startActivityForResult(i, BACK_FROM_SETTINGS);
 
           } else if( position == 1 ){
 
@@ -1246,7 +1244,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if(info=="showall"){
 
       x_supl.setVisibility( View.VISIBLE );
-      zumstart.setVisibility( View.VISIBLE );
+      SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+      SharedPreferences.Editor e = sharedPreferences.edit();
+
+      if(sharedPreferences.getBoolean(singlepage.INSTANCE.selectedTour().slug(), false))zumstart.setVisibility( View.VISIBLE );
+      else{zumstart.setVisibility(View.INVISIBLE);}
       subtext1.setVisibility( View.VISIBLE );
       subtext2.setVisibility( View.VISIBLE );
       tourenliste.setText( singlepage.INSTANCE.selectedTour().name() );
@@ -1289,6 +1291,19 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       super.onBackPressed();
     }
   }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    // Check which request we're responding to
+    if (requestCode == BACK_FROM_SETTINGS) {
+      System.out.println("Check");
+      // Make sure the request was successful
+    if(resultCode == RESULT_CANCELED)
+    {SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+      SharedPreferences.Editor e = sharedPreferences.edit();
+      if(singlepage.INSTANCE.selectedTour()!=null && sharedPreferences.getBoolean(singlepage.INSTANCE.selectedTour().slug(), false))zumstart.setVisibility( View.VISIBLE );
+      else{zumstart.setVisibility(View.INVISIBLE);}}
+  }}
 
   @Override
   public void onPause(){

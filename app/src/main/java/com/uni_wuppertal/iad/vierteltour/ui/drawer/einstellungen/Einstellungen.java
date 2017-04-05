@@ -72,7 +72,6 @@ public class Einstellungen extends Activity{
     keineTouren = (TextView) findViewById(R.id.keineTouren);
     layoutEinstellungen = (RelativeLayout) findViewById(R.id.listLayout1);
     layoutTouren = (RelativeLayout) findViewById(R.id.listLayout2);
-    tourenLoeschen = (RelativeLayout) findViewById(R.id.tourenloeschen);
     listViewEinstellungen.setAdapter(einstellungen);
     listViewEinstellungen.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
@@ -81,7 +80,6 @@ public class Einstellungen extends Activity{
         if(i==0)
         { layoutEinstellungen.setVisibility(View.GONE);
           layoutTouren.setVisibility(View.VISIBLE);
-          if(tours.size()<2)tourenLoeschen.setVisibility(View.GONE);
           if(tours.isEmpty())keineTouren.setVisibility(View.VISIBLE);}
         //i==1 equals "Nach Aktualisierungen suchen"
         if(i==1) {e.remove("localTourdataVersion").remove("remoteTourdataVersion").apply();
@@ -92,7 +90,7 @@ public class Einstellungen extends Activity{
         {for(int j=1;j<=tourlist.tours().get(k).stations().size();j++)
         {e.putBoolean(tourlist.tours().get(k).station(j).slug() ,true);}}
        e.apply();}
-        //i=3 equals "Touren sperren". Function only for testing
+        //i==3 equals "Touren sperren". Function only for testing
         if(i==3)
         {for(int k=0;k<tourlist.tours().size();k++)
         {for(int j=1;j<=tourlist.tours().get(k).stations().size();j++)
@@ -107,17 +105,15 @@ public class Einstellungen extends Activity{
     listViewTouren.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        //Dialog to confirm the deletion for one tour
-        createTourDialog("Willst du die Tour " + tours.get(position).name() + " wirklich löschen?", position);
+
+        if(einstellungenTourAdapter.getCount()-1==position && einstellungenTourAdapter.getCount()>1)
+        {//Dialog to confirm the deletion for all tours
+          createAllToursDialog("Willst du alle Touren wirklich löschen?");}
+        else
+        {//Dialog to confirm the deletion for one tour
+          createTourDialog("Willst du die Tour " + tours.get(position).name() + " wirklich löschen?", position);}
       }
     });
-    tourenLoeschen.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        //Dialog to confirm the deletion for all tours
-        createAllToursDialog("Willst du alle Touren wirklich löschen?");
-      }});
-
   }
 
   public void initEinstellungenTourAdapter()
@@ -172,11 +168,11 @@ public class Einstellungen extends Activity{
         File test = new File(getExternalFilesDir(null), testpath);
         deleteRecursive(test);
         e.remove(tours.get(position).slug()).apply();
+        if(tours.size()==3)tours.remove(tours.size()-1);
         tours.remove(position);
 
         einstellungenTourAdapter.notifyDataSetChanged();
         MapsActivity.adapter.notifyDataSetChanged();
-        if(tours.size()<2) tourenLoeschen.setVisibility(View.GONE);
         if(tours.isEmpty()) keineTouren.setVisibility(View.VISIBLE);
 
         dialog.dismiss();}});
@@ -238,7 +234,6 @@ public class Einstellungen extends Activity{
 
         einstellungenTourAdapter.notifyDataSetChanged();
         MapsActivity.adapter.notifyDataSetChanged();
-        tourenLoeschen.setVisibility(View.GONE);
         keineTouren.setVisibility(View.VISIBLE);
 
         dialog.dismiss();}});

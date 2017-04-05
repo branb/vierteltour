@@ -435,7 +435,7 @@ public class GalleryMode extends Activity {
       else
       {hideGalleryVideoBar();}
 
-      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")) startVideoplay();
+      //if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")) startVideoplay();
     }
 
     @Override
