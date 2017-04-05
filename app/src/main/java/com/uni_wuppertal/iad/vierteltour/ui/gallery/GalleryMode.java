@@ -232,6 +232,7 @@ public class GalleryMode extends Activity {
    * Used if viewpager contains video
    */
   public void video(){
+   // if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")) player.setVideoview(mAdapter2.videoView(singlepage.INSTANCE.position()));
     seekbarGallery.setOnSeekBarChangeListener( customSeekBarListenerVideo );
     seekbarGallery_bar.setOnSeekBarChangeListener( customSeekBarListenerVideo );
 
@@ -264,7 +265,7 @@ public class GalleryMode extends Activity {
           startActivity(background);
          }*/
       }});
-    //startVideoplay();
+   // startVideoplay();
   }
   /**
    * Stops Audio, Starts Video, Managing all Buttons
@@ -274,6 +275,7 @@ public class GalleryMode extends Activity {
     startvideo = true;
     player.getVideoview().setVisibility(View.VISIBLE);
     try{mAdapter2.hideImage(imagePagerGallery.getCurrentItem());}catch(Exception e){}
+    System.out.println("Start");
     player.getVideoview().start();
     play_buttonGallery.setImageResource( R.drawable.stop_hell );
     play_buttonGallery_bar.setImageResource( R.drawable.stop_hell );
@@ -435,7 +437,7 @@ public class GalleryMode extends Activity {
       else
       {hideGalleryVideoBar();}
 
-      //if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")) startVideoplay();
+      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")) startVideoplay();
     }
 
     @Override

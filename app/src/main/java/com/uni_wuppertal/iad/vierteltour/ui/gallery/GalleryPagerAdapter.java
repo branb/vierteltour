@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.VideoView;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
+import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 
 import java.io.File;
@@ -33,6 +34,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
   private ViertelTourMediaPlayer player;
   private VideoView videoView;
   private ViewGroup ownContainer;
+  private Singletonint singlepage;
 
   public GalleryPagerAdapter(Context mContext, ArrayList<String> stationImagePaths){
     this.mContext = mContext;
@@ -131,6 +133,8 @@ public class GalleryPagerAdapter extends PagerAdapter {
         }
 
       }});
+    if(singlepage.INSTANCE.position()==position && resources.endsWith("mp4"))
+      ((GalleryMode)mContext).startVideoplay();
 
     return itemView;
   }
@@ -156,7 +160,8 @@ public class GalleryPagerAdapter extends PagerAdapter {
   }
 
   public VideoView videoView(int position)
-  {return (VideoView) ownContainer.findViewWithTag("video" + position);}
+  {
+    return (VideoView) ownContainer.findViewWithTag("video" + position);}
 
   public ViewGroup container()
   {return ownContainer;}
