@@ -809,8 +809,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
     if(!tourlist.city(visibleCity).tours().get(position).equals(singlepage.INSTANCE.selectedTour()))
        { selectTour(tourlist.city(visibleCity).tours().get(position));}
-      adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
         lv.smoothScrollToPosition(position);
+
       drawRoutes();
     }
     });

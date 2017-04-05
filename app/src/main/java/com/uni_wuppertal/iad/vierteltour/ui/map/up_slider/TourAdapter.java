@@ -140,6 +140,7 @@ public class TourAdapter extends BaseAdapter{
           if(context instanceof MapsActivity) ((MapsActivity)context).resetTour();
           notifyDataSetChanged();
           view.setClickable(false);
+
         }
       });
     }
