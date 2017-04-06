@@ -23,6 +23,7 @@
     <color name="white">#E6EBE0</color>
     <color name="whitewhite">#FFFFFF</color>
     <color name="transparentblack">#99353535</color>
+    <color name="transparentgrey">#70353535</color>
     <color name="transparent">#00000000</color>
     <color name="transparentred">#DDFF5D59</color>
 </resources>
