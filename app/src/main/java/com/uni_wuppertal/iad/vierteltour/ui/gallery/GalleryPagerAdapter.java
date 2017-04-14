@@ -1,8 +1,10 @@
 package com.uni_wuppertal.iad.vierteltour.ui.gallery;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -16,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.VideoView;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
+import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 
@@ -75,26 +78,33 @@ public class GalleryPagerAdapter extends PagerAdapter {
         MediaStore.Images.Thumbnails.MINI_KIND);
         imageView.setImageBitmap(thumbnail);
         //imageBtn.setVisibility(View.VISIBLE);
-        player.setVideoview(videoView);}
+        }
       else{imageView.setImageResource(R.drawable.i);}
 
 
       videoView.setOnTouchListener(new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-         if(mContext.getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE && player.getVideoview() != null)
+         if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && videoView != null)
           {((GalleryMode)mContext).mediaplayerbars();}
 
           return false;
         }
       });
 
-    /*  videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+      videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
           ((GalleryMode)mContext).stopVideoplay();
+          System.out.println("Video Finished");
+          if(!singlepage.INSTANCE.isAudio()){
+            Intent background = new Intent(((GalleryMode)mContext).getApplicationContext(), Stationbeendet.class);
+            if(((GalleryMode)mContext).size.equals(((GalleryMode)mContext).number)){background.putExtra("vergleich", 1);}
+            else {background.putExtra("vergleich", 0);}
+            background.putExtra("pfad", ((GalleryMode)mContext).path);
+            ((GalleryMode)mContext).startActivity(background); }
         }
-      });*/
+      });
 
     }
     //Layout for Images

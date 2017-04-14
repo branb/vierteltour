@@ -22,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 
@@ -41,7 +42,7 @@ public class GalleryMode extends Activity {
   TextView gallerytitle, gallerytitletop, durationGallery, durationGallery_bar;
   GalleryPagerAdapter mAdapter2;
   ImageView dots[];
-  int dotsCount;
+  int dotsCount, number;
   LinearLayout pager_indicator;
   RelativeLayout relGalleryBot, relGalleryTop;
   Boolean startvideo = true;
@@ -51,7 +52,7 @@ public class GalleryMode extends Activity {
   Bundle gallerybundle;
   Intent galleryIntent;
   ArrayList<String> res;
-  String video, station, path;
+  String video, station, path, size;
 
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
@@ -68,13 +69,13 @@ public class GalleryMode extends Activity {
     Intent intent = new Intent();
 
     if( !video.isEmpty() ){
-      player.getVideoview().pause();
+      mAdapter2.videoView(singlepage.INSTANCE.position()).pause();
       mAdapter2.showImage(imagePagerGallery.getCurrentItem());
       startvideo = false;
       play_buttonGallery.setImageResource( R.drawable.play_hell );
       durationGallery.setText("0:00");
       seekbarGallery.setProgress(0);
-      player.getVideoview().seekTo(0);
+      mAdapter2.videoView(singlepage.INSTANCE.position()).seekTo(0);
       if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
       {setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
     }
@@ -94,6 +95,8 @@ public class GalleryMode extends Activity {
   video = (String) gallerybundle.get("video");
   station = (String) gallerybundle.get("station");
   path = (String) gallerybundle.get("path");
+  size =  (String) gallerybundle.get("size");
+  number = Integer.parseInt((String) gallerybundle.get("number"));
 
   x_button = (ImageButton) findViewById( R.id.x_button );
   x_button_bar = (ImageButton) findViewById( R.id.x_button_bar );
@@ -219,13 +222,13 @@ public class GalleryMode extends Activity {
    * Updating Video seekbar and textview
    */
   public void seekUpdationVideo(){
-    if( player.getVideoview() != null && startvideo ){
-      seekbarGallery.setMax( player.getVideoview().getDuration() );
-      seekbarGallery_bar.setMax( player.getVideoview().getDuration() );
-      seekbarGallery.setProgress( player.getVideoview().getCurrentPosition() );
-      seekbarGallery_bar.setProgress( player.getVideoview().getCurrentPosition() );
+    if( mAdapter2.videoView(singlepage.INSTANCE.position()) != null && startvideo ){
+      seekbarGallery.setMax( mAdapter2.videoView(singlepage.INSTANCE.position()).getDuration() );
+      seekbarGallery_bar.setMax( mAdapter2.videoView(singlepage.INSTANCE.position()).getDuration() );
+      seekbarGallery.setProgress( mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition() );
+      seekbarGallery_bar.setProgress( mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition() );
 
-      timeElapsedGallery = player.getVideoview().getCurrentPosition();
+      timeElapsedGallery = mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition();
 
       durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsedGallery ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ) ) ) );
       durationGallery_bar.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsedGallery ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ) ) ) );
@@ -246,7 +249,7 @@ public class GalleryMode extends Activity {
     play_buttonGallery.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-        if( player.getVideoview().isPlaying() ){
+        if( mAdapter2.videoView(singlepage.INSTANCE.position()).isPlaying() ){
           pauseVideoplay();}
         else {startVideoplay();}
       }
@@ -255,23 +258,33 @@ public class GalleryMode extends Activity {
     play_buttonGallery_bar.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-        if( player.getVideoview().isPlaying() ){
+        if( mAdapter2.videoView(singlepage.INSTANCE.position()).isPlaying() ){
           pauseVideoplay();}
         else {startVideoplay();}}
     });
 
     //After Video is finished, use this method
-    player.getVideoview().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+ /*   player.getVideoview().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
       @Override
       public void onCompletion(MediaPlayer mediaPlayer) {
         stopVideoplay();
-    /*    if(){Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
+        System.out.println("Video Finished");
+        if(!singlepage.INSTANCE.isAudio()){
+          Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
+          if(size.equals(number)){background.putExtra("vergleich", 1);}
+          else {background.putExtra("vergleich", 0);}
+          background.putExtra("pfad", path);
+          startActivity(background); }
+          //duration.setText("0:00");
+         // seekbar.setProgress(0);
+
+        if(){Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
 
           background.putExtra("vergleich", 0);
           background.putExtra("pfad", path);
           startActivity(background);
-         }*/
-      }});
+         }
+      }});*/
    // startVideoplay();
   }
 
@@ -308,10 +321,10 @@ public class GalleryMode extends Activity {
   public void startVideoplay()
   {if(player.isPlaying())player.pause();
     startvideo = true;
-    player.getVideoview().setVisibility(View.VISIBLE);
+    mAdapter2.videoView(singlepage.INSTANCE.position()).setVisibility(View.VISIBLE);
     try{mAdapter2.hideImage(imagePagerGallery.getCurrentItem());}catch(Exception e){}
     System.out.println("Start");
-    player.getVideoview().start();
+    mAdapter2.videoView(singlepage.INSTANCE.position()).start();
     play_buttonGallery.setImageResource( R.drawable.stop_hell );
     play_buttonGallery_bar.setImageResource( R.drawable.stop_hell );
     seekUpdationVideo();}
@@ -321,7 +334,7 @@ public class GalleryMode extends Activity {
    */
   public void pauseVideoplay()
   {startvideo = false;
-    player.getVideoview().pause();
+    mAdapter2.videoView(singlepage.INSTANCE.position()).pause();
     play_buttonGallery.setImageResource( R.drawable.play_hell );
     play_buttonGallery_bar.setImageResource( R.drawable.play_hell );}
 
@@ -330,11 +343,11 @@ public class GalleryMode extends Activity {
    */
   public void stopVideoplay()
   {startvideo = false;
-    player.getVideoview().pause();
+    mAdapter2.videoView(singlepage.INSTANCE.position()).pause();
     play_buttonGallery.setImageResource( R.drawable.play_hell );
     play_buttonGallery_bar.setImageResource(R.drawable.play_hell);
     mAdapter2.showImage(imagePagerGallery.getCurrentItem());
-    player.getVideoview().setVisibility(View.GONE);
+    mAdapter2.videoView(singlepage.INSTANCE.position()).setVisibility(View.GONE);
     durationGallery_bar.setText("0:00");
     seekbarGallery_bar.setProgress(0);
     durationGallery.setText("0:00");
@@ -430,7 +443,7 @@ public class GalleryMode extends Activity {
     @Override
     public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
       if( fromUser ){
-        player.getVideoview().seekTo( progress );
+        mAdapter2.videoView(singlepage.INSTANCE.position()).seekTo( progress );
       }
     }
 
@@ -453,7 +466,7 @@ public class GalleryMode extends Activity {
     //If Page is Selected, stop last videoplay and reset Neighbours
     @Override
     public void onPageSelected( int position ){
-      if(player.getVideoview().isPlaying())
+      if(mAdapter2.videoView(singlepage.INSTANCE.position()).isPlaying())
       {stopVideoplay();
       if(position < mAdapter2.getCount()) mAdapter2.showImage(position);
       if(position > 0) mAdapter2.showImage(position-1);}      //reset the Neighbours image
@@ -472,7 +485,7 @@ public class GalleryMode extends Activity {
       imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
 
       if(res.get(singlepage.INSTANCE.position()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE && res.get(position)!=null)
-      { player.getVideoview().setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position));
+      { mAdapter2.videoView(singlepage.INSTANCE.position()).setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position));
         showGalleryVideoBar();}
       else
       {hideGalleryVideoBar();}

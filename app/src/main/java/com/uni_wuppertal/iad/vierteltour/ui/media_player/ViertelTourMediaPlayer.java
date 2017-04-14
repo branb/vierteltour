@@ -89,12 +89,12 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
   }
 
 
-  public VideoView getVideoview()
-  {return videoview;}
+ // public VideoView getVideoview()
+ // {return videoview;}
 
 
-  public void setVideoview(VideoView video)
-  {videoview=video;}
+ // public void setVideoview(VideoView video)
+ // {videoview=video;}
 
 }
 

@@ -208,7 +208,7 @@ public class StationActivity extends Activity{
     pfeilhell = (ImageView) findViewById(R.id.pfeilhell);
     imagePager = (ViewPager) findViewById( R.id.ImagePager );
     imagePager.setOffscreenPageLimit(5);
-    mAdapter = new StationAdapter( this, stationImagePaths, this);
+    mAdapter = new StationAdapter( this, stationImagePaths);
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
     imagePager.setAdapter( mAdapter );
     seekbar.setOnSeekBarChangeListener(customSeekBarListener);
@@ -318,13 +318,14 @@ public class StationActivity extends Activity{
    */
   public void initAudio(){
     if( !audio.contains(".mp3") || OurStorage.get(getApplicationContext()).pathToFile(audio)==null){
+      singlepage.INSTANCE.isAudio(false);
       play_button.setVisibility(View.GONE);
       seekbar.setVisibility(View.GONE);
       duration.setVisibility(View.GONE);
       return;
     }
     player = ViertelTourMediaPlayer.getInstance( this );
-
+    singlepage.INSTANCE.isAudio(true);
 
 
     //number soll später mit id ersetzt werden, leider wurde id bis jetzt noch nicht gesetzt

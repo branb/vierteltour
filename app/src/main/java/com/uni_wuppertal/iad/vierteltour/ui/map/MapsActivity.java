@@ -398,7 +398,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       tourMarker.put(singlepage.INSTANCE.selectedOldStation().slug(), m);
 
     //delete Circle
-      mapCircle.remove(); }
+      if(mapCircle!=null)mapCircle.remove(); }
 
     //Lösche neue Station und setze vergrößerten Pin
     if(!singlepage.INSTANCE.selectedStation().slug().contains("einleitung"))

@@ -10,6 +10,7 @@ import com.uni_wuppertal.iad.vierteltour.utility.xml.Tour;
 public enum Singletonint {
     INSTANCE;
 
+    private boolean isAudio;
     private int id;     //Zur Zeit nur Nummer der Station, soll später zu ID werden
     private int position;   //Position des GalleryPagers
     private Tour selectedTour;  //Ausgewählte Tour
@@ -48,4 +49,6 @@ public enum Singletonint {
     public int onfragmentclicked() {return onfragmentclicked;}
     public void onfragmentclicked(int onfragmentclicked){this.onfragmentclicked=onfragmentclicked;}
 
+    public boolean isAudio() {return isAudio;}
+    public void isAudio(boolean isAudio) {this.isAudio=isAudio;}
   }

@@ -20,6 +20,7 @@ import com.uni_wuppertal.iad.vierteltour.ui.gallery.GalleryMode;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
+import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,7 +31,6 @@ import java.util.ArrayList;
 public class StationAdapter extends PagerAdapter{
 
   private Context mContext;
-  private StationActivity stationActivity;
   private ArrayList<String> stationImagePaths;
   private ImageView imageView;
   private Intent gallery;
@@ -38,10 +38,9 @@ public class StationAdapter extends PagerAdapter{
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
 
-  public StationAdapter(Context mContext, ArrayList<String> stationImagePaths , StationActivity stationActivity){
+  public StationAdapter(Context mContext, ArrayList<String> stationImagePaths){
     this.mContext = mContext;
     this.stationImagePaths = stationImagePaths;
-    this.stationActivity= stationActivity;
   }
 
   @Override
@@ -124,9 +123,11 @@ public class StationAdapter extends PagerAdapter{
   public void startGallery(int position)
   {gallery = new Intent(mContext, GalleryMode.class);
     gallery.putExtra("resources", stationImagePaths);
-    gallery.putExtra("station", stationActivity.station);
-    gallery.putExtra("video", stationActivity.video);
-    gallery.putExtra("pfad", stationActivity.path);
+    gallery.putExtra("station", ((StationActivity)mContext).station);
+    gallery.putExtra("video", ((StationActivity)mContext).video);
+    gallery.putExtra("pfad", ((StationActivity)mContext).path);
+    gallery.putExtra("size", ((StationActivity)mContext).size);
+    gallery.putExtra("number", ((StationActivity)mContext).number);
     singlepage.INSTANCE.position(position);
-    stationActivity.startActivityForResult(gallery, 1);}
+    ((StationActivity)mContext).startActivityForResult(gallery, 1);}
 }
