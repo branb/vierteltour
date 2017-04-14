@@ -27,15 +27,13 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
   }
 
 
-  private Context context;
-  private VideoView videoview;
+  private Context context;;
   Singletonint singlepage;
   /** The main constructor.
    *
    */
   private ViertelTourMediaPlayer( Context context ){
     this.context = context;
-    videoview = new VideoView(context);
   }
 
 
@@ -74,27 +72,5 @@ public class ViertelTourMediaPlayer extends MediaPlayer{
     }
 
   }
-
-  public boolean loadGalleryVideo( String path){
-
-
-    String inputStream = OurStorage.get( this.context ).pathToFile( path );
-
-    if( inputStream == null ){
-      return false;
-    }
-
-    videoview.setVideoPath( inputStream );
-    return true;
-  }
-
-
- // public VideoView getVideoview()
- // {return videoview;}
-
-
- // public void setVideoview(VideoView video)
- // {videoview=video;}
-
 }
 

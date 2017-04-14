@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
 import com.uni_wuppertal.iad.vierteltour.R;
@@ -33,7 +34,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
   private Context mContext;
   private ArrayList<String> stationImagePaths;
-  private ImageView imageView/*, imageBtn*/;
+  private ImageView imageView;
   private ViertelTourMediaPlayer player;
   private VideoView videoView;
   private ViewGroup ownContainer;
@@ -96,7 +97,6 @@ public class GalleryPagerAdapter extends PagerAdapter {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
           ((GalleryMode)mContext).stopVideoplay();
-          System.out.println("Video Finished");
           if(!singlepage.INSTANCE.isAudio()){
             Intent background = new Intent(((GalleryMode)mContext).getApplicationContext(), Stationbeendet.class);
             if(((GalleryMode)mContext).size.equals(((GalleryMode)mContext).number)){background.putExtra("vergleich", 1);}
@@ -144,7 +144,8 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
       }});
     if(singlepage.INSTANCE.position()==position && resources.endsWith("mp4"))
-      ((GalleryMode)mContext).startVideoplay();
+    {((GalleryMode)mContext).startVideoplay();}
+
 
     return itemView;
   }

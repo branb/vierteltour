@@ -358,7 +358,7 @@ public class StationActivity extends Activity{
         player.seekTo(0);
         startaudio = false;
         setImageResource( true );
-
+        System.out.println(path);
         if(stationActivityRunning){
         Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
         if(size.equals(number)){background.putExtra("vergleich", 1);}
