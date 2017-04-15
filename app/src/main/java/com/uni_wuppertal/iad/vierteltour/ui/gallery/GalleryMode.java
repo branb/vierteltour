@@ -96,7 +96,6 @@ public class GalleryMode extends Activity {
   video = (String) gallerybundle.get("video");
   station = (String) gallerybundle.get("station");
   path = (String) gallerybundle.get("pfad");
-  System.out.println(path);
   size =  (String) gallerybundle.get("size");
   number = Integer.parseInt((String) gallerybundle.get("number"));
 
@@ -225,22 +224,16 @@ public class GalleryMode extends Activity {
    */
   public void seekUpdationVideo(){
     if( mAdapter2.videoView(singlepage.INSTANCE.position()) != null && startvideo ){
-      System.out.println("Anfang");
       seekbarGallery.setMax( mAdapter2.videoView(singlepage.INSTANCE.position()).getDuration() );
       seekbarGallery_bar.setMax( mAdapter2.videoView(singlepage.INSTANCE.position()).getDuration() );
       seekbarGallery.setProgress( mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition() );
       seekbarGallery_bar.setProgress( mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition() );
-      System.out.println("After Progress");
       timeElapsedGallery = mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition();
 
       durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsedGallery ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ) ) ) );
       durationGallery_bar.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsedGallery ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ) ) ) );
-      System.out.println(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsedGallery ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ))));
       seekHandlerGallery.postDelayed( run2, 100 );
-    }
-    else{
-      System.out.println("ENDE");}
-  }
+    }}
 
 
   /**

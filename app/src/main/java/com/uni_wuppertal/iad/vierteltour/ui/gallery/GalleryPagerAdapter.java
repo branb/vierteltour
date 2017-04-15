@@ -112,7 +112,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
       videoView.setVisibility(View.GONE);
      // imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
-      System.out.println(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)));
+      //System.out.println(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)));
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
       {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );}
       else{imageView.setImageResource(R.drawable.i);}}
@@ -158,7 +158,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
   //Images can only be found with GalleryAcivity by using their tags
   public void showImage(int position)
-  {System.out.println(ownContainer.findViewWithTag("image" + position));
+  {//System.out.println(ownContainer.findViewWithTag("image" + position));
 
     ownContainer.findViewWithTag("image" + position).setVisibility(View.VISIBLE);
    // if(stationImagePaths.get(position).endsWith("mp4"))

@@ -379,17 +379,16 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 * */
 //Wird aufgerufen, sobald eine Station ausgewaehlt wird
   public void selectStation(Station station)
-  { //selectedOldStation dient als Zwischenspeicher der abgewaehlten Station
+  {//selectedOldStation dient als Zwischenspeicher der abgewaehlten Station
 //selectedStation dient als Zwischenspeicher der ausgewaehlten Station
 //vorherig ausgewaehlte Station wird abgewaehlte Station
     singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());   //vorherige Station wird alte Station
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
-
     //loescht alte Station, setzt Groesse auf Ursprung zurueck
     //Ausnahme: Einleitungen haben keine Marker
     if(singlepage.INSTANCE.selectedOldStation()!=null && !singlepage.INSTANCE.selectedOldStation().slug().contains("einleitung"))
     { removeStation(singlepage.INSTANCE.selectedOldStation().slug());
-      markers.put( singlepage.INSTANCE.selectedOldStation().slug(), createMarker(singlepage.INSTANCE.selectedOldStation(), singlepage.INSTANCE.selectedTour() ));
+      //markers.put( singlepage.INSTANCE.selectedOldStation().slug(), createMarker(singlepage.INSTANCE.selectedOldStation(), singlepage.INSTANCE.selectedTour() ));
       Marker m;
       if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")) m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number()-1+""))));
         //Ausgewaehlte Station wird per Bitmap groesser skaliert
@@ -407,7 +406,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       mapCircle = mMap.addCircle(circle);
 
       removeStation(singlepage.INSTANCE.selectedStation().slug());
-      markers.put( singlepage.INSTANCE.selectedStation().slug(), createMarker(singlepage.INSTANCE.selectedStation(), singlepage.INSTANCE.selectedTour() ));
+     // markers.put( singlepage.INSTANCE.selectedStation().slug(), createMarker(singlepage.INSTANCE.selectedStation(), singlepage.INSTANCE.selectedTour() ));
       Marker m;
       if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")) m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1)))));
       else m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number())))));
@@ -737,7 +736,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   {
     for( Map.Entry<String, Marker> marker : tourMarker.entrySet() ){
     if(marker.getKey().equals(slug))
-    {marker.getValue().remove();}
+    {
+      System.out.println("Remove Marker "+slug);
+      marker.getValue().remove();}
   }}
 
 

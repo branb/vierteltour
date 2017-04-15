@@ -71,15 +71,18 @@ public class Stationbeendet extends Activity {
         next.putExtra( "zeit", tour.time() );
         next.putExtra( "laenge", tour.length() );
         next.putExtra( "farbe", tour.color() );
+        if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
         next.putExtra( "size", "" + (tour.stations().size()-1) );
+        else next.putExtra( "size", "" + (tour.stations().size()) );
         next.putExtra("path", path);
         // Selected Station
-        singlepage.INSTANCE.selectedStation(singlepage.INSTANCE.selectedTour().station(singlepage.INSTANCE.selectedStation().number()+1));
-        Station station = singlepage.INSTANCE.selectedStation();
+        Station station = singlepage.INSTANCE.selectedTour().station(singlepage.INSTANCE.selectedStation().number()+1);
         next.putExtra("slug", station.slug());
         next.putExtra( "station", station.name() );
         next.putExtra( "desc", station.description() );
+        if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
         next.putExtra( "pos", "" + (station.number()-1) );
+        else next.putExtra("pos", "" + (station.number()));
         // Station media
         next.putExtra( "img", station.imagesToString() );
         next.putExtra( "audio", station.audio());
