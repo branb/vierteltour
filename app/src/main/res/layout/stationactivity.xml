@@ -188,6 +188,7 @@
       android:src="@drawable/google_navi_hell"/>
 
     <TextView
+      android:id="@+id/navtext"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerHorizontal="true"
@@ -197,6 +198,20 @@
       android:textColor="@color/white"
       android:layout_marginLeft="80dp"
       android:layout_marginRight="80dp"
+      android:layout_marginTop="20dp"
+      android:gravity="center"/>
+
+    <TextView
+      android:id="@+id/navtext2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:text="Vergleiche Deinen aktuellen Standpunkt mit dem Stationspunkt auf der Karte im Hintergrund. Über die Aktivierung der Navigation (Pfeilsymbol am rechten Kartenrand) kannst Du dort hin navigieren."
+      android:textSize="17dp"
+      android:layout_below="@+id/navtext"
+      android:textColor="@color/white"
+      android:layout_marginLeft="40dp"
+      android:layout_marginRight="40dp"
       android:layout_marginTop="20dp"
       android:gravity="center"/>
 

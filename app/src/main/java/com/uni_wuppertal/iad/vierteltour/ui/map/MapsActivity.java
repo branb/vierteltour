@@ -388,7 +388,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     //Ausnahme: Einleitungen haben keine Marker
     if(singlepage.INSTANCE.selectedOldStation()!=null && !singlepage.INSTANCE.selectedOldStation().slug().contains("einleitung"))
     { removeStation(singlepage.INSTANCE.selectedOldStation().slug());
-      //markers.put( singlepage.INSTANCE.selectedOldStation().slug(), createMarker(singlepage.INSTANCE.selectedOldStation(), singlepage.INSTANCE.selectedTour() ));
       Marker m;
       if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")) m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number()-1+""))));
         //Ausgewaehlte Station wird per Bitmap groesser skaliert
@@ -406,7 +405,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       mapCircle = mMap.addCircle(circle);
 
       removeStation(singlepage.INSTANCE.selectedStation().slug());
-     // markers.put( singlepage.INSTANCE.selectedStation().slug(), createMarker(singlepage.INSTANCE.selectedStation(), singlepage.INSTANCE.selectedTour() ));
       Marker m;
       if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")) m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1)))));
       else m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number())))));
