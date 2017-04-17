@@ -23,6 +23,7 @@ import static com.google.android.gms.wearable.DataMap.TAG;
 //Aktuell nicht verwendet
 public class Splash extends Activity {
   ProgressBar pbar;
+  Intent myintent;
   VideoView vid;
   int progress = 0;
   Handler h = new Handler();
@@ -37,13 +38,23 @@ public class Splash extends Activity {
     initTypeface();                                                //only for SplashActivity
 
     pbar = (ProgressBar) findViewById(R.id.progressBar);
-   /* vid = (VideoView) findViewById(R.id.videoView);
+    vid = (VideoView) findViewById(R.id.videoView);
     vid.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.animation));
     vid.requestFocus();
-    vid.start();*/
+    vid.start();
 
-    IntentLauncher launcher = new IntentLauncher();
-    launcher.start();
+    //IntentLauncher launcher = new IntentLauncher();
+    myintent = new Intent(this, MapsActivity.class);
+
+    new Handler().postDelayed(new Runnable(){
+      @Override
+      public void run() {
+        startActivity(myintent);
+        finish();
+      }
+    }, 1000);
+
+   // launcher.start();
   }
 
   private void initTypeface() {
@@ -73,7 +84,7 @@ public class Splash extends Activity {
         vid.requestFocus();
         vid.start();
         // Sleeping
-        Thread.sleep(10 * 1000);
+        Thread.sleep(20 * 1000);
       } catch (Exception e) {
         Log.e(TAG, e.getMessage());
       }
