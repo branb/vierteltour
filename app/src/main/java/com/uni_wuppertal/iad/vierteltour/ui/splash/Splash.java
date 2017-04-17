@@ -6,6 +6,9 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -14,68 +17,71 @@ import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.utility.ReplaceFont;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 
+import static com.google.android.gms.wearable.DataMap.TAG;
+
 //Vorerst nicht benötigt, ist für Splashscreen zuständig, eigentlich in AndroidManifest als Launcher ausgewählt
 //Aktuell nicht verwendet
-public class Splash extends Activity{
+public class Splash extends Activity {
   ProgressBar pbar;
   VideoView vid;
   int progress = 0;
   Handler h = new Handler();
 
   @Override
-  protected void onCreate( Bundle savedInstanceState ){
-    super.onCreate( savedInstanceState );
-    setContentView( R.layout.splash );
-    ReplaceFont.replaceDefaultFont( this, "SERIF", "Bariol_Regular.ttf" );   //for MainActivity
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+   // this.requestWindowFeature(Window.FEATURE_NO_TITLE);    // Removes title bar
+    //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);    // Removes notification bar
+    setContentView(R.layout.splash);
+    ReplaceFont.replaceDefaultFont(this, "SERIF", "Bariol_Regular.ttf");   //for MainActivity
     initTypeface();                                                //only for SplashActivity
 
-    pbar = (ProgressBar) findViewById( R.id.progressBar );
-    vid = (VideoView) findViewById( R.id.videoView );
-    vid.setVideoURI( Uri.parse( "android.resource://" + getPackageName() + "/" + R.raw.animation ) );
+    pbar = (ProgressBar) findViewById(R.id.progressBar);
+   /* vid = (VideoView) findViewById(R.id.videoView);
+    vid.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.animation));
     vid.requestFocus();
-    vid.start();
+    vid.start();*/
 
-    Thread t = new Thread( new Runnable(){
-      @Override
-      public void run(){
-        for( int j = 0; j < 5; j++ ){
-          progress += 20;
-          h.post( new Runnable(){
-            @Override
-            public void run(){
-              pbar.setProgress( progress );
-              if( progress == pbar.getMax() ){
-                vid.pause();
-                Intent i = new Intent( getBaseContext(), MapsActivity.class );
-                startActivity( i );
-                finish();
-              }
-            }
-          } );
-          try{
-            Thread.sleep( 3000 );       //3 seconds
-          } catch( InterruptedException e ){
-            e.printStackTrace();
-          }
-        }
-      }
-    } );
-    t.start();
+    IntentLauncher launcher = new IntentLauncher();
+    launcher.start();
   }
 
-  private void initTypeface(){
-    Typeface font = Typeface.createFromAsset( getAssets(), "Bariol_Regular.ttf" );
-    TextView tv = (TextView) findViewById( R.id.textView );
-    tv.setTypeface( font );
-    TextView tv2 = (TextView) findViewById( R.id.textView2 );
-    tv2.setTypeface( font );
-    TextView tv3 = (TextView) findViewById( R.id.textView3 );
-    tv3.setTypeface( font );
+  private void initTypeface() {
+    Typeface font = Typeface.createFromAsset(getAssets(), "Bariol_Regular.ttf");
+    TextView tv = (TextView) findViewById(R.id.textView);
+    tv.setTypeface(font);
+    TextView tv2 = (TextView) findViewById(R.id.textView2);
+    tv2.setTypeface(font);
+    TextView tv3 = (TextView) findViewById(R.id.textView3);
+    tv3.setTypeface(font);
   }
 
-  protected void onDestroy(){
+  protected void onDestroy() {
     super.onDestroy();
   }
 
 
+  private class IntentLauncher extends Thread {
+    @Override
+    /**
+     * Sleep for some time and than start new activity.
+     */
+    public void run() {
+      try {
+        vid = (VideoView) findViewById(R.id.videoView);
+        vid.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.animation));
+        vid.requestFocus();
+        vid.start();
+        // Sleeping
+        Thread.sleep(10 * 1000);
+      } catch (Exception e) {
+        Log.e(TAG, e.getMessage());
+      }
+
+      // Start main activity
+      Intent intent = new Intent(Splash.this, MapsActivity.class);
+      Splash.this.startActivity(intent);
+      Splash.this.finish();
+    }
+  }
 }

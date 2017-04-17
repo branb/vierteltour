@@ -55,15 +55,16 @@
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <category android:name="android.intent.category.default" />
+
+
             </intent-filter>
         </activity>
 
         <activity android:name=".ui.splash.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
+              <category android:name="android.intent.category.LAUNCHER"/>
+              <category android:name="android.intent.category.default" />
             </intent-filter>
 
         </activity>
