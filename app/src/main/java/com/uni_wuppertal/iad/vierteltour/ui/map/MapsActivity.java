@@ -24,6 +24,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -198,6 +199,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
 
+   // mMap.setPadding(113,0,0,0);
   }
 
   @Override
@@ -306,6 +308,19 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   @Override
   public void onMapReady( GoogleMap googleMap ){
     mMap = googleMap;
+
+    DisplayMetrics displayMetrics = new DisplayMetrics();
+    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+    // Calculate ActionBar height
+    int actionBarHeight=0;
+    TypedValue tv = new TypedValue();
+    if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+    {
+      actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+    }
+    //Gesamte Bildschirmgröße - Toolbargröße
+    System.out.println(displayMetrics.heightPixels-actionBar.getHeight() + " " + actionBar.getHeight() + " " + displayMetrics.heightPixels + " " + actionBarHeight);
+    mMap.setPadding(0,0,0,displayMetrics.heightPixels-actionBarHeight*2);
 
     wuppertal = new LatLng( 51.256972, 7.139341 );
     mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( wuppertal, CurrentZoom ) );
