@@ -179,6 +179,7 @@
             android:layout_height="wrap_content"
           android:minHeight="2dip"
           android:maxHeight="2dip"
+          android:thumbOffset="0dp"
           android:thumb="@drawable/thumb"
           android:layout_toRightOf="@+id/play_button"
           android:layout_marginLeft="10dp"
