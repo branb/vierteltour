@@ -32,7 +32,7 @@ public class StationAdapter extends PagerAdapter{
 
   private Context mContext;
   private ArrayList<String> stationImagePaths;
-  private ImageView imageView;
+  private ImageView imageView, background;
   private Intent gallery;
   private boolean fileAvailable=true;
   private ViertelTourMediaPlayer player;
@@ -60,25 +60,30 @@ public class StationAdapter extends PagerAdapter{
       .inflate( R.layout.pageritem, container, false );
 
     imageView = (ImageView) itemView.findViewById( R.id.img_pager_item );
-    ImageView imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button );
+    background = (ImageView) itemView.findViewById( R.id.img_pager_background);
+   // ImageView imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button );
     String resources = stationImagePaths.get(position);     //v für video, i für image
 
 //TODO: stationimagepaths to stationresourcepaths with video and images to show
     if(resources.endsWith("mp4"))
     { imageView.setVisibility(View.VISIBLE);
+
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
       {Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
         MediaStore.Images.Thumbnails.MINI_KIND);
       imageView.setImageBitmap(thumbnail);
-        imageBtn.setVisibility(View.VISIBLE);}
+        background.setVisibility(View.VISIBLE);
+        //imageBtn.setVisibility(View.VISIBLE);
+      }
     else{imageView.setImageResource(R.drawable.i);
       fileAvailable=false;}}
 
     else if (resources.endsWith("jpg")) {
-      imageBtn.setVisibility(View.GONE);
+    //  imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
-      {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );}
+      {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );
+        background.setVisibility(View.VISIBLE);}
       else{imageView.setImageResource(R.drawable.i);
         fileAvailable=false;}
   }
@@ -94,7 +99,7 @@ public class StationAdapter extends PagerAdapter{
         startGallery(position);
       }
     });
-      imageBtn.setOnClickListener(new View.OnClickListener()
+      background.setOnClickListener(new View.OnClickListener()
       {
         @Override
         public void onClick(View v)

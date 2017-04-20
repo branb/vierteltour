@@ -1,28 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-   <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:background="@color/transparent">
+<RelativeLayout
+  android:layout_width="match_parent"
+  android:layout_height="150dp"
+  android:background="@color/transparent"
+  android:id="@+id/transparent_layout"/>
+
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@id/transparent_layout"
+    android:background="@drawable/roundtop"
+    android:id="@+id/arrow_down">
+
+    <ImageView
+      android:id="@+id/arrowdown"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:layout_marginBottom="10dp"
+      android:layout_alignParentTop="true"
+      android:layout_centerHorizontal="true"
+      android:src="@drawable/pfeil_runter"/>
+  </RelativeLayout>
+
+
+  <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    android:layout_below="@+id/arrow_down">
+<RelativeLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/ColorPrimary"
-        android:id="@+id/rellayout">
-
-        <ImageButton
-            android:id="@+id/arrowdown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/pfeil_runter"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-          android:background="@color/transparent"
-            android:paddingTop="15dp"
-          android:paddingRight="15dp"
-          android:paddingLeft="15dp"/>
-
+        android:id="@+id/rellayout"
+        >
 
         <TextView
             android:id="@+id/stationtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/arrowdown"
+            android:layout_alignParentTop="true"
             android:text="Stationenname (x/y)"
             android:textSize="18sp"
             android:textColor="@color/black"
@@ -77,6 +101,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/routeninfo1"
         android:textStyle="italic"
+        android:textColor="@color/black"
         android:layout_below="@+id/routenname"/>
 
 
@@ -85,6 +110,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/routeninfo2"
         android:textStyle="italic"
+        android:textColor="@color/black"
         android:layout_below="@+id/routeninfo1"/>
     </RelativeLayout>
       <View
@@ -112,27 +138,48 @@
             />
 
 
-
+<RelativeLayout
+  android:id="@+id/video_panel"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_below="@+id/media_panel"
+  android:background="@color/black"
+  android:layout_marginTop="15dp"
+  android:layout_marginBottom="15dp"
+  android:layout_marginLeft="30dp"
+  android:layout_marginRight="30dp">
         <android.support.v4.view.ViewPager
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="225dp"
             android:id="@+id/ImagePager"
-            android:layout_below="@+id/seek_bar"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="90dp"
+          />
+  <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/pager_play_button"
+    android:clickable="true"
+    android:src="@drawable/play_hell"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:gravity="center"
+    android:background="@color/transparent"/>
+</RelativeLayout>
 
-           />
+<RelativeLayout
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_below="@+id/stationenbeschreibung"
+  android:id="@+id/media_panel"
+  android:layout_marginTop="15dp"
+  android:background="@color/transparent">
 
         <SeekBar
             android:id="@+id/seek_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/stationenbeschreibung"
-            android:layout_marginTop="30dp"
-            android:layout_toRightOf="@+id/play_button"
+            android:layout_height="3dp"
             android:layout_marginRight="45dp"
+          android:layout_marginLeft="45dp"
+          android:layout_centerHorizontal="true"
             />
 
         <ImageButton
@@ -142,32 +189,33 @@
             android:background="#00000000"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:paddingLeft="15dp"
-            android:paddingTop="10dp"
-          android:paddingBottom="10dp"
-            android:layout_below="@+id/stationenbeschreibung"
-            android:layout_marginTop="20dp" />
+          android:layout_centerVertical="true"
+            android:paddingRight="5dp"
+          android:paddingLeft="15dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0:00"
             android:textColor="#ffffff"
+            android:textSize="13dp"
+          android:layout_marginRight="15dp"
+          android:layout_alignParentRight="true"
             android:id="@+id/duration"
-            android:layout_below="@+id/stationenbeschreibung"
-            android:layout_marginTop="32dp"
-            android:layout_marginRight="20dp"
-            android:layout_alignParentRight="true"
+          android:layout_centerVertical="true"
             />
+
+</RelativeLayout>
+
 
         <LinearLayout
             android:id="@+id/viewPagerCountDots"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="55dp"
             android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/video_panel"
             android:gravity="center"
+          android:layout_marginBottom="25dp"
             android:layout_centerHorizontal="true"/>
 
 
@@ -218,3 +266,5 @@
   </RelativeLayout>
 
     </RelativeLayout>
+  </ScrollView>
+</RelativeLayout>

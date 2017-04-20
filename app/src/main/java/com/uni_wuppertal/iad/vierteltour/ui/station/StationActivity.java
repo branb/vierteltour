@@ -19,6 +19,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.ui.gallery.GalleryMode;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
@@ -51,7 +52,7 @@ public class StationActivity extends Activity{
   String video, audio;
   ArrayList<String> stationImagePaths;
   String station, farbe, autor, tourname, laenge, desc, zeit, size, number, slug, path;
-  ImageView dots[], tourimage;
+  ImageView dots[], tourimage, pager_play_btn, pfeilhell;
   Intent myIntent2;
   Bundle b;
   String colorString;
@@ -59,10 +60,8 @@ public class StationActivity extends Activity{
   ViewPager imagePager;    //Slidebare Gallery
   StationAdapter mAdapter;
   LinearLayout pager_indicator;
-  RelativeLayout gesperrt;
+  RelativeLayout gesperrt, transparentLayout;
   boolean sperrvariable=true;
-  ImageView pfeilhell;
-
 
   //Runnables zuständig für Aktualisierung der fortgeschrittenen Zeit der Player
   Runnable run = new Runnable(){
@@ -193,7 +192,8 @@ public class StationActivity extends Activity{
   }
 
   public void initAll(){//Initialisation
-    ImageButton arrdwn = (ImageButton) findViewById( R.id.arrowdown );
+    RelativeLayout arrdwn = (RelativeLayout) findViewById( R.id.arrow_down );
+
     arrdwn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
@@ -201,9 +201,16 @@ public class StationActivity extends Activity{
       }
     });
     seekbar = (SeekBar) findViewById( R.id.seek_bar );
+    pager_play_btn = (ImageView) findViewById(R.id.pager_play_button);
     play_button = (ImageButton) findViewById( R.id.play_button );
     duration = (TextView) findViewById( R.id.duration );
-
+    transparentLayout = (RelativeLayout) findViewById(R.id.transparent_layout);
+    transparentLayout.setOnClickListener( new View.OnClickListener(){
+      @Override
+      public void onClick( View v ){
+        onBackPressed();
+      }
+    });
     gesperrt = (RelativeLayout) findViewById(R.id.gesperrt);
     pfeilhell = (ImageView) findViewById(R.id.pfeilhell);
     imagePager = (ViewPager) findViewById( R.id.ImagePager );
@@ -376,6 +383,8 @@ public class StationActivity extends Activity{
 
     });
 
+
+
     play_button.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View play ){
@@ -401,7 +410,19 @@ public class StationActivity extends Activity{
     if( stationImagePaths.size() == 0 ){
       return;
     }
-
+    pager_play_btn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent gallery = new Intent(getApplicationContext(), GalleryMode.class);
+        gallery.putExtra("resources", stationImagePaths);
+        gallery.putExtra("station", station);
+        gallery.putExtra("video", video);
+        gallery.putExtra("pfad", path);
+        gallery.putExtra("size", size);
+        gallery.putExtra("number", number);
+        startActivityForResult(gallery, 1);
+      }
+    });
     isimages=0;
     imagePager.setOnPageChangeListener(pagechangelisten);
     setUiPageViewController();
