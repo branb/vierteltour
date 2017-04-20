@@ -179,10 +179,10 @@
             android:layout_height="wrap_content"
           android:minHeight="2dip"
           android:maxHeight="2dip"
+          android:thumb="@drawable/thumb"
           android:layout_toRightOf="@+id/play_button"
-          android:layout_toLeftOf="@+id/duration"
           android:layout_marginLeft="10dp"
-          android:layout_marginRight="10dp"
+          android:layout_marginRight="65dp"
           android:layout_centerHorizontal="true"
           android:layout_centerVertical="true"
             />
