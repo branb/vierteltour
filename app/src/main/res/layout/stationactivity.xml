@@ -35,6 +35,7 @@
     android:orientation="vertical"
     android:fillViewport="true"
     android:layout_below="@+id/arrow_down"
+    android:id="@+id/scroll"
     >
 <RelativeLayout
         android:orientation="vertical" android:layout_width="match_parent"

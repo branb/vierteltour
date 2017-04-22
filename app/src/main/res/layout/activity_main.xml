@@ -255,6 +255,263 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
                 </ListView>
+
+                <RelativeLayout
+                  android:id="@+id/station"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@color/transparent"
+                  android:visibility="gone">
+
+                  <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:fillViewport="true"
+                    android:layout_below="@+id/arrow_down"
+                    android:id="@+id/scroll"
+                    >
+                    <RelativeLayout
+                      android:orientation="vertical" android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/rellayout">
+
+                      <TextView
+                        android:id="@+id/stationtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:text="Stationenname (x/y)"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"/>
+
+                      <View
+                        android:id="@+id/divider1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="1.5dp"
+                        android:background="#20000000"
+                        android:layout_below="@+id/stationtitle"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"/>
+
+                      <RelativeLayout
+                        android:id="@+id/listitem_base"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divider1">
+                        <ImageView
+                          android:id="@+id/routenbild"
+                          android:layout_width="50dp"
+                          android:layout_height="50dp"
+                          android:layout_marginLeft="40dp"
+                          android:layout_marginRight="30dp"
+                          android:layout_centerVertical="true"
+                          />
+
+                        <RelativeLayout
+                          android:id="@+id/listitem_text"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_toRightOf="@+id/routenbild"
+                          android:paddingTop="10dp"
+                          android:paddingBottom="20dp">
+                          <!-- Diese Datei gibt den Aufbau einer Zeile der Liste vor
+                           ImageView (img) ist das Bild links in der Liste, 1. TextView (txt) für Titel der Tour, 2. TextView (subtxt) für Autor und Zeit/Weg -->
+
+                          <TextView
+                            android:id="@+id/routenname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+
+                            />
+                          <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/routeninfo1"
+                            android:textStyle="italic"
+                            android:textColor="@color/black"
+                            android:layout_below="@+id/routenname"/>
+
+
+                          <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/routeninfo2"
+                            android:textStyle="italic"
+                            android:textColor="@color/black"
+                            android:layout_below="@+id/routeninfo1"/>
+                        </RelativeLayout>
+                        <View
+                          android:id="@+id/divider2"
+                          android:layout_width="fill_parent"
+                          android:layout_height="1.5dp"
+                          android:background="#20000000"
+                          android:layout_below="@+id/listitem_text"
+                          android:layout_marginLeft="30dp"
+                          android:layout_marginRight="30dp"/>
+
+                      </RelativeLayout>
+
+                      <TextView
+                        android:id="@+id/stationenbeschreibung"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hier kommt die Stationenbeschreibung hin!"
+                        android:layout_below="@+id/listitem_base"
+                        android:textColor="@color/black"
+                        android:lineSpacingExtra="3dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginTop="10dp"
+                        />
+
+
+                      <RelativeLayout
+                        android:id="@+id/video_panel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/media_panel"
+                        android:background="@color/black"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp">
+                        <android.support.v4.view.ViewPager
+                          android:layout_width="match_parent"
+                          android:layout_height="225dp"
+                          android:id="@+id/ImagePager"
+                          />
+                        <ImageView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:id="@+id/pager_play_button"
+                          android:clickable="true"
+                          android:src="@drawable/play_hell"
+                          android:layout_centerHorizontal="true"
+                          android:layout_centerVertical="true"
+                          android:gravity="center"
+                          android:background="@color/transparent"/>
+                      </RelativeLayout>
+
+                      <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/stationenbeschreibung"
+                        android:id="@+id/media_panel"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/transparent">
+
+                        <SeekBar
+                          android:id="@+id/seek_bar"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:minHeight="2dip"
+                          android:maxHeight="2dip"
+                          android:thumbOffset="0dp"
+                          android:thumb="@drawable/thumb"
+                          android:layout_toRightOf="@+id/play_button"
+                          android:layout_marginLeft="10dp"
+                          android:layout_marginRight="65dp"
+                          android:layout_centerHorizontal="true"
+                          android:layout_centerVertical="true"
+                          />
+
+                        <ImageButton
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:id="@+id/play_button"
+                          android:background="#00000000"
+                          android:layout_alignParentLeft="true"
+                          android:layout_alignParentStart="true"
+                          android:layout_centerVertical="true"
+                          android:paddingLeft="35dp"/>
+
+                        <TextView
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="0:00"
+                          android:textColor="#ffffff"
+                          android:textSize="13dp"
+                          android:layout_marginRight="35dp"
+                          android:layout_alignParentRight="true"
+                          android:id="@+id/duration"
+                          android:layout_centerVertical="true"
+                          />
+
+                      </RelativeLayout>
+
+
+                      <LinearLayout
+                        android:id="@+id/viewPagerCountDots"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/video_panel"
+                        android:gravity="center"
+                        android:layout_marginBottom="25dp"
+                        android:layout_centerHorizontal="true"/>
+
+
+                      <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/stationenbeschreibung"
+                        android:background="@drawable/roundred"
+                        android:layout_alignParentBottom="true"
+                        android:visibility="visible"
+                        android:paddingBottom="40dp"
+                        android:id="@+id/gesperrt">
+
+                        <ImageView
+                          android:id="@+id/pfeilhell"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_centerHorizontal="true"
+                          android:layout_marginTop="40dp"
+                          android:src="@drawable/google_navi_hell"/>
+
+                        <TextView
+                          android:id="@+id/navtext"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_centerHorizontal="true"
+                          android:text="Bitte begib dich in die Nähe der Station, um diese Inhalte einsehen zu können."
+                          android:textSize="17dp"
+                          android:layout_below="@+id/pfeilhell"
+                          android:textColor="@color/white"
+                          android:layout_marginLeft="80dp"
+                          android:layout_marginRight="80dp"
+                          android:layout_marginTop="20dp"
+                          android:gravity="center"/>
+
+                        <TextView
+                          android:id="@+id/navtext2"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_centerHorizontal="true"
+                          android:text="Vergleiche Deinen aktuellen Standpunkt mit dem Stationspunkt auf der Karte im Hintergrund. Über die Aktivierung der Navigation (Pfeilsymbol am rechten Kartenrand) kannst Du dort hin navigieren."
+                          android:textSize="17dp"
+                          android:layout_below="@+id/navtext"
+                          android:textColor="@color/white"
+                          android:layout_marginLeft="40dp"
+                          android:layout_marginRight="40dp"
+                          android:layout_marginTop="20dp"
+                          android:gravity="center"/>
+
+                      </RelativeLayout>
+
+                    </RelativeLayout>
+                  </ScrollView>
+
+
+
+              </RelativeLayout>
             </LinearLayout>
         </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 

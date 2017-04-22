@@ -56,6 +56,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -144,7 +145,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private ShadowTransformer mFragmentShadowTransformer;
   private TextView title, tourenliste, subtext1, subtext2;
   private Marker tmpmarker, curLocation;
-  private RelativeLayout panel, gpsinfo;
+  private RelativeLayout panel, gpsinfo, stationLayout;
   public static RelativeLayout audiobar;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
@@ -258,7 +259,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     subtext2 = (TextView) findViewById( R.id.subinfo2 );
     up = (ImageView) findViewById( R.id.up );
     down = (ImageView) findViewById( R.id.down );
-
+    stationLayout = (RelativeLayout) findViewById(R.id.station);
     gpsinfo = (RelativeLayout) findViewById( R.id.gpsinfo );
 
   }
@@ -469,7 +470,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * Starts Station Activity will all needed Extras
    */
   public void startStationActivity()
-  {Intent tmpIntent = new Intent( getApplicationContext(), StationActivity.class );
+  {/*Intent tmpIntent = new Intent( getApplicationContext(), StationActivity.class );
 
 
     // Tour data
@@ -497,8 +498,20 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
     startActivityForResult( tmpIntent, 1 );
-   // overridePendingTransition( R.anim.fade_in, R.anim.map_out );
+   // overridePendingTransition( R.anim.fade_in, R.anim.map_out );*/
+
+    mPager.setVisibility(View.GONE);
+    stationLayout();
+    supl.setEnabled(true);
+    supl.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+
+
     }
+
+  public void stationLayout()
+  {lv.setVisibility(View.GONE);
+   stationLayout.setVisibility(View.VISIBLE);
+  }
 
   /**
    * All tours except the select will be vanished
@@ -776,9 +789,18 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     Typeface tf = Typeface.createFromAsset(getAssets(), "Bariol_Regular.ttf");
     title.setTypeface(tf);
 
-    mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( wuppertal, CurrentZoom ) );
-    supl.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
+    //Zoom to first station coordinates
+    CameraPosition cameraPosition = new CameraPosition.Builder()
+      .target(new LatLng(singlepage.INSTANCE.selectedTour().station(2).latlng().latitude, singlepage.INSTANCE.selectedTour().station(2).latlng().longitude))
+      .zoom(CurrentZoom)
+      .build();
+    //mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( singlepage.INSTANCE.selectedTour().station(2).latlng(), CurrentZoom ) );
+    mMap.moveCamera( CameraUpdateFactory.newCameraPosition(cameraPosition));
+
     slidingLayout.setVisibility(View.GONE);
+    supl.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
+    supl.setEnabled(false);
+
     xbtn.setVisibility( View.VISIBLE );
     title.setText( singlepage.INSTANCE.selectedTour().name() );
     title.setVisibility( View.VISIBLE );
@@ -789,8 +811,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * After Removing a selected tour, the interface is switching to the viewpager with tour overview
    */
   public void swapToSupl(){
+    supl.setEnabled(true);
     supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );    //Show Slider
     slidingLayout.setVisibility(View.VISIBLE);
+
     xbtn.setVisibility( View.GONE );
     title.setVisibility( View.GONE );
     mPager.setVisibility( View.GONE );

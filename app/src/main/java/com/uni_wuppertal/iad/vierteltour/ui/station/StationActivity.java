@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -59,6 +60,7 @@ public class StationActivity extends Activity{
   RelativeLayout layout;
   ViewPager imagePager;    //Slidebare Gallery
   StationAdapter mAdapter;
+  ScrollView scroll;
   LinearLayout pager_indicator;
   RelativeLayout gesperrt, transparentLayout, videopanel;
   boolean sperrvariable=true;
@@ -175,6 +177,8 @@ public class StationActivity extends Activity{
 
     layout = (RelativeLayout) findViewById( R.id.rellayout );
     layout.setBackgroundColor( Color.parseColor( farbe ) );
+    scroll = (ScrollView) findViewById( R.id.scroll);
+    scroll.setBackgroundColor(Color.parseColor( farbe ));
     title = (TextView) findViewById( R.id.stationtitle );
     title.setText( station + "  (" + (Integer.parseInt(number)) + "/" + (Integer.parseInt(size)) + ")" );
     if(slug.contains("einleitung"))title.setText("Einleitung");
