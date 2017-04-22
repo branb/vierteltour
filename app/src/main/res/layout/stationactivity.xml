@@ -29,18 +29,17 @@
       android:src="@drawable/pfeil_runter"/>
   </RelativeLayout>
 
-
   <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-
-    android:layout_below="@+id/arrow_down">
+    android:fillViewport="true"
+    android:layout_below="@+id/arrow_down"
+    >
 <RelativeLayout
         android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rellayout"
-        >
+        android:layout_height="wrap_content"
+  android:id="@+id/rellayout">
 
         <TextView
             android:id="@+id/stationtitle"
@@ -229,7 +228,9 @@
     android:layout_height="match_parent"
     android:layout_below="@+id/stationenbeschreibung"
     android:background="@drawable/roundred"
+    android:layout_alignParentBottom="true"
     android:visibility="visible"
+    android:paddingBottom="40dp"
     android:id="@+id/gesperrt">
 
     <ImageView

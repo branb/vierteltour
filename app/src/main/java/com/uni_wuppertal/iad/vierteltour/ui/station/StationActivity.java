@@ -60,7 +60,7 @@ public class StationActivity extends Activity{
   ViewPager imagePager;    //Slidebare Gallery
   StationAdapter mAdapter;
   LinearLayout pager_indicator;
-  RelativeLayout gesperrt, transparentLayout;
+  RelativeLayout gesperrt, transparentLayout, videopanel;
   boolean sperrvariable=true;
 
   //Runnables zuständig für Aktualisierung der fortgeschrittenen Zeit der Player
@@ -217,6 +217,7 @@ public class StationActivity extends Activity{
     imagePager.setOffscreenPageLimit(5);
     mAdapter = new StationAdapter( this, stationImagePaths);
     pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
+    videopanel = (RelativeLayout) findViewById(R.id.video_panel);
     imagePager.setAdapter( mAdapter );
     seekbar.setOnSeekBarChangeListener(customSeekBarListener);
     setImageResource(true);
@@ -269,7 +270,11 @@ public class StationActivity extends Activity{
 
     if( (stationImagePaths.size() == 0 && video.isEmpty()) || sperrvariable ){
       imagePager.setVisibility( View.GONE );
-    }else{imagePager.setVisibility( View.VISIBLE );}
+      pager_indicator.setVisibility(View.GONE);
+      videopanel.setVisibility(View.GONE);
+    }else{imagePager.setVisibility( View.VISIBLE );
+      pager_indicator.setVisibility(View.VISIBLE);
+    videopanel.setVisibility(View.VISIBLE);}
 
     if(sperrvariable)
     {gesperrt.setVisibility(View.VISIBLE);
@@ -283,7 +288,9 @@ public class StationActivity extends Activity{
             play_button.setVisibility( View.VISIBLE );
             duration.setVisibility( View.VISIBLE );}
           if(!(stationImagePaths.size() == 0 && video.isEmpty()))
-          {imagePager.setVisibility( View.VISIBLE );}
+          {imagePager.setVisibility( View.VISIBLE );
+          pager_indicator.setVisibility(View.VISIBLE);
+          videopanel.setVisibility(View.VISIBLE);}
         }
       });
     }
