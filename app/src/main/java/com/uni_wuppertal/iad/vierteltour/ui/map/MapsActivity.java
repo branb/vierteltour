@@ -14,10 +14,13 @@ import android.graphics.Typeface;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -37,6 +40,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,12 +73,14 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.intro.IntroActivity;
 
+import com.uni_wuppertal.iad.vierteltour.ui.gallery.GalleryMode;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Marker.MapWindowAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.ClickableViewpager;
 import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.ShadowTransformer;
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.about.About;
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.einstellungen.Einstellungen;
 import com.uni_wuppertal.iad.vierteltour.ui.station.StationActivity;
+import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 
@@ -92,10 +99,13 @@ import com.uni_wuppertal.iad.vierteltour.utility.waypoints.RouteWaypoint;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Tour;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static android.location.GpsStatus.GPS_EVENT_STOPPED;
 
@@ -152,6 +162,34 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   static final int BACK_FROM_SETTINGS = 1;  // The request code
   // All the tour stationactivity that is currently available to us
   private TourList tourlist;
+
+  //Start StationActivity
+  String station, color, author, name, length, desc, time, slug, path;
+  int number, size;
+  static boolean stationActivityRunning=false;
+  SeekBar seekbar;        //Fortschrittsbalken
+  ImageButton play_button;      //diverse Bilderbuttons
+  int isimages=-1;
+  boolean startaudio = true;  //Variable für Status des Play-Buttons
+  Handler seekHandler = new Handler();;
+  TextView duration;  //Textfeld
+  TextView  routenname, prof, info2, description;
+  double timeElapsed = 0;
+  int dotsCount;
+  ImageView dots[], tourimage, pager_play_btn, pfeilhell;
+  Intent myIntent2;
+  Bundle b;
+  String colorString;
+  ArrayList<String> stationImagePaths;
+  RelativeLayout layout;
+  ViewPager imagePager;    //Slidebare Gallery
+  com.uni_wuppertal.iad.vierteltour.ui.station.StationAdapter mAdapter;
+  ScrollView scroll;
+  LinearLayout pager_indicator;
+  RelativeLayout gesperrt, transparentLayout, videopanel;
+  boolean sperrvariable=true, stationEnabled=false;
+  String audio, video;
+  //End StationActivity
 
 
   private GoogleMap mMap;
@@ -466,6 +504,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     width = tmpMarker.getWidth();
     return Bitmap.createScaledBitmap(tmpMarker,(int) (width*1.5),(int) (height*1.5), true);}
 
+
+  //Station Activity
   /**
    * Starts Station Activity will all needed Extras
    */
@@ -501,18 +541,371 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    // overridePendingTransition( R.anim.fade_in, R.anim.map_out );*/
 
     mPager.setVisibility(View.GONE);
-    stationLayout();
+    startStationLayout();
     supl.setEnabled(true);
     supl.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-
+    supl.setScrollableView(scroll);
 
     }
 
-  public void stationLayout()
+  public void startStationLayout()
   {lv.setVisibility(View.GONE);
    stationLayout.setVisibility(View.VISIBLE);
+
+    stationEnabled = true;
+
+    initLayout();
+
+
   }
 
+  public void initLayout()
+  {
+    length = singlepage.INSTANCE.selectedTour().length();
+    desc = singlepage.INSTANCE.selectedTour().description();
+    time = singlepage.INSTANCE.selectedTour().time();
+    author = singlepage.INSTANCE.selectedTour().author();
+    slug = singlepage.INSTANCE.selectedStation().slug();
+    color = singlepage.INSTANCE.selectedTour().color();
+    size = (singlepage.INSTANCE.selectedTour().stations().size()-1);
+    number = (singlepage.INSTANCE.selectedStation().number()-1);
+    name = singlepage.INSTANCE.selectedStation().name();
+    path = OurStorage.get(this).storagePath()+"/"+OurStorage.get(this).lookForTourFile(tourlist(), singlepage.INSTANCE.selectedTour().image());
+    layout = (RelativeLayout) findViewById( R.id.rellayout );
+    layout.setBackgroundColor( Color.parseColor( color ) );
+    scroll = (ScrollView) findViewById( R.id.scroll);
+    scroll.setBackgroundColor(Color.parseColor( color ));
+    title = (TextView) findViewById( R.id.stationtitle );
+    title.setText( singlepage.INSTANCE.selectedStation().name() + "  (" + number + "/" + size + ")" );
+    if(slug.contains("einleitung"))title.setText("Einleitung");
+    routenname = (TextView) findViewById( R.id.routenname );
+    routenname.setText( name );
+    tourimage = (ImageView) findViewById(R.id.routenbild);
+    tourimage.setImageURI( Uri.fromFile(new File(path+singlepage.INSTANCE.selectedTour().image()+".png")));
+    prof = (TextView) findViewById( R.id.routeninfo1 );
+    prof.setText( author );
+    info2 = (TextView) findViewById( R.id.routeninfo2 );
+    info2.setText( time + "/" + length );
+    description = (TextView) findViewById( R.id.stationenbeschreibung );
+    description.setText( desc );
+    singlepage.INSTANCE.position(number);
+
+    seekbar = (SeekBar) findViewById( R.id.seek_bar );
+    pager_play_btn = (ImageView) findViewById(R.id.pager_play_button);
+    play_button = (ImageButton) findViewById( R.id.play_button );
+    duration = (TextView) findViewById( R.id.duration );
+    transparentLayout = (RelativeLayout) findViewById(R.id.transparent_layout);
+    transparentLayout.setOnClickListener( new View.OnClickListener(){
+      @Override
+      public void onClick( View v ){
+        onBackPressed();
+      }
+    });
+    gesperrt = (RelativeLayout) findViewById(R.id.gesperrt);
+    pfeilhell = (ImageView) findViewById(R.id.pfeilhell);
+    imagePager = (ViewPager) findViewById( R.id.ImagePager );
+    imagePager.setOffscreenPageLimit(2);
+    String imagesFromXML = singlepage.INSTANCE.selectedStation().imagesToString();
+    stationImagePaths = new ArrayList<String>();
+    if( !imagesFromXML.isEmpty() ){
+      stationImagePaths = new ArrayList<String>(Arrays.asList(imagesFromXML.split("\\s*,\\s*")));
+    }
+
+    video = singlepage.INSTANCE.selectedStation().videosToString();
+    if(!video.isEmpty()){
+      stationImagePaths.add(0,singlepage.INSTANCE.selectedStation().videosToString());
+    }
+    audio = singlepage.INSTANCE.selectedStation().audio();
+    mAdapter = new com.uni_wuppertal.iad.vierteltour.ui.station.StationAdapter( this, stationImagePaths);
+    pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
+    videopanel = (RelativeLayout) findViewById(R.id.video_panel);
+    imagePager.setAdapter( mAdapter );
+    //seekbar.setOnSeekBarChangeListener(customSeekBarListener);
+   // setImageResource(true);
+  }
+
+
+
+  public void hideStationLayout()
+  {}
+
+  public void endStationLayout()
+  {singlepage.INSTANCE.position(0);
+    stationActivityRunning=false;}
+
+
+  Runnable run = new Runnable(){
+    @Override
+    public void run(){
+      seekUpdationAudio();
+    }
+  };
+  /**
+   * Updating Audio seekbar and textview
+   */
+  public void seekUpdationAudio(){
+    if( player != null && startaudio ){
+
+      seekbar.setProgress( player.getCurrentPosition() );
+      timeElapsed = player.getCurrentPosition();
+
+      duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
+      seekHandler.postDelayed( run, 100 );
+    }
+  }
+
+
+  /**
+   * Filters available layout
+   */
+  public void setVisibility(){
+    if( !audio.contains(".mp3") || sperrvariable || OurStorage.get(this).pathToFile(audio)==null){
+      seekbar.setVisibility( View.GONE );
+      play_button.setVisibility( View.GONE );
+      duration.setVisibility( View.GONE );
+    }
+    else{seekbar.setVisibility( View.VISIBLE );
+      play_button.setVisibility( View.VISIBLE );
+      duration.setVisibility( View.VISIBLE );}
+
+    if( (stationImagePaths.size() == 0 && video.isEmpty()) || sperrvariable ){
+      imagePager.setVisibility( View.GONE );
+      pager_indicator.setVisibility(View.GONE);
+      videopanel.setVisibility(View.GONE);
+    }else{imagePager.setVisibility( View.VISIBLE );
+      pager_indicator.setVisibility(View.VISIBLE);
+      videopanel.setVisibility(View.VISIBLE);}
+
+    if(sperrvariable)
+    {gesperrt.setVisibility(View.VISIBLE);
+      pfeilhell.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          sperrvariable=false;
+          gesperrt.setVisibility(View.GONE);
+          if(audio.contains(".mp3") && OurStorage.get(getApplicationContext()).pathToFile(audio)!=null)
+          {seekbar.setVisibility( View.VISIBLE );
+            play_button.setVisibility( View.VISIBLE );
+            duration.setVisibility( View.VISIBLE );}
+          if(!(stationImagePaths.size() == 0 && video.isEmpty()))
+          {imagePager.setVisibility( View.VISIBLE );
+            pager_indicator.setVisibility(View.VISIBLE);
+            videopanel.setVisibility(View.VISIBLE);}
+        }
+      });
+    }
+    else{gesperrt.setVisibility(View.GONE);}
+  }
+
+  /**
+   * Manages the dots below the viewpager
+   */
+  private void setUiPageViewController(){
+    if(mAdapter.getCount()>1) {
+      dotsCount = mAdapter.getCount();
+      dots = new ImageView[dotsCount];
+
+      for (int i = 0; i < dotsCount; i++) {
+        dots[i] = new ImageView(this);
+        dots[i].setColorFilter(Color.parseColor(colorString));
+        dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+          LinearLayout.LayoutParams.WRAP_CONTENT,
+          LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        params.setMargins(4, 0, 4, 0);
+
+        pager_indicator.addView(dots[i], params);
+      }
+
+      dots[0].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
+
+    }
+  }
+
+  /**
+   * Initialize audio
+   */
+  public void initAudio(){
+    if( !audio.contains(".mp3") || OurStorage.get(getApplicationContext()).pathToFile(audio)==null){
+      singlepage.INSTANCE.isAudio(false);
+      play_button.setVisibility(View.GONE);
+      seekbar.setVisibility(View.GONE);
+      duration.setVisibility(View.GONE);
+      return;
+    }
+    player = ViertelTourMediaPlayer.getInstance( this );
+    singlepage.INSTANCE.isAudio(true);
+
+
+    //number soll später mit id ersetzt werden, leider wurde id bis jetzt noch nicht gesetzt
+    //Wenn die gleiche Station geöffnet wird, soll audio nicht neu geladen werden
+    if(singlepage.INSTANCE.getId() != number)
+    { player.loadAudio( audio );
+      singlepage.INSTANCE.setId(number);}
+
+
+
+    else if(player.isPlaying())
+    {startaudio = true;
+      setImageResource( false );
+      seekUpdationAudio();}
+
+
+
+    //CustomKlasse Seekbar
+
+    seekbar.setMax( player.getDuration() );
+    seekbar.setProgress( player.getCurrentPosition() );
+    timeElapsed = player.getCurrentPosition();
+
+    duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
+
+
+    player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){
+      @Override
+      public void onCompletion( MediaPlayer player ){
+        player.seekTo(0);
+        startaudio = false;
+        setImageResource( true );
+        System.out.println(path);
+        if(stationActivityRunning){
+          Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
+          if(size==number){background.putExtra("vergleich", 1);}
+          else {background.putExtra("vergleich", 0);}
+          background.putExtra("pfad", path);
+          startActivity(background);
+          duration.setText("0:00");
+          seekbar.setProgress(0);}
+        else
+        { RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
+          layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+          MapsActivity.audiobar.setLayoutParams(layoutParams);
+        }
+      }
+
+    });
+
+
+
+    play_button.setOnClickListener( new View.OnClickListener(){
+      @Override
+      public void onClick( View play ){
+
+        switch( play.getId() ){
+          case R.id.play_button:
+            if( !player.isPlaying() ){
+              startaudio = true;
+              player.start();
+              setImageResource( false );
+              seekUpdationAudio();
+            } else {
+              startaudio=false;
+              player.pause();
+              setImageResource( true );
+            }break;}}});
+  }
+
+  /**
+   * Initializes images
+   */
+  public void initImages(){
+    if( stationImagePaths.size() == 0 ){
+      return;
+    }
+    pager_play_btn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent gallery = new Intent(getApplicationContext(), GalleryMode.class);
+        gallery.putExtra("resources", stationImagePaths);
+        gallery.putExtra("station", station);
+        gallery.putExtra("video", video);
+        gallery.putExtra("pfad", path);
+        gallery.putExtra("size", size);
+        gallery.putExtra("number", number);
+        startActivityForResult(gallery, 1);
+      }
+    });
+    isimages=0;
+    imagePager.setOnPageChangeListener(pagechangelisten);
+    setUiPageViewController();
+  }
+
+  //Custom Class Seekbar start
+  public SeekBar.OnSeekBarChangeListener customSeekBarListener = new SeekBar.OnSeekBarChangeListener(){
+    @Override
+    public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
+      if( fromUser ){
+        player.seekTo( progress );
+      }
+    }
+
+    @Override
+    public void onStartTrackingTouch( SeekBar seekBar ){
+    }
+
+    @Override
+    public void onStopTrackingTouch( SeekBar seekBar ){
+    }
+  };
+  //Custom Class Seekbar stop
+
+  //ViewPager.OnPageChangeListener
+  ViewPager.OnPageChangeListener pagechangelisten = new ViewPager.OnPageChangeListener(){
+    @Override
+    public void onPageScrolled( int position, float positionOffset, int positionOffsetPixels ){
+
+    }
+
+    @Override
+    public void onPageSelected( int position ){
+      isimages=position;
+      imagePager.setCurrentItem(position);
+
+      for( int i = 0; i < dotsCount; i++ ){
+        dots[i].setImageDrawable( getResources().getDrawable( R.drawable.nonselecteditem ) );
+      }
+
+      dots[position].setImageDrawable( getResources().getDrawable( R.drawable.selecteditem ) );
+    }
+
+    @Override
+    public void onPageScrollStateChanged( int state ){
+    }
+  };
+  //Viewpager.onPageChangeListener end
+
+  /**
+   * calculates white or black color on seekbar in dependence of tour color
+   * @param play
+   */
+  public void setImageResource(boolean play)
+  {
+    int red = Integer.valueOf( color.substring( 1, 3 ), 16 );
+    int green = Integer.valueOf( color.substring( 3, 5 ), 16 );
+    int blue = Integer.valueOf( color.substring( 5, 7 ), 16 );
+    if ((red*0.299 + green*0.587 + blue*0.114) > 186)
+    {
+      duration.setTextColor(Color.parseColor("#353535"));
+      colorString="#353535";
+      seekbar.getProgressDrawable().setColorFilter(
+        Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
+      seekbar.getThumb().setColorFilter(Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
+      if(play) play_button.setImageResource(R.drawable.play_dunkel);
+      else play_button.setImageResource(R.drawable.stop_dunkel);}
+    else{duration.setTextColor(Color.parseColor("#E6EBE0"));
+      colorString="#E6EBE0";
+      seekbar.getProgressDrawable().setColorFilter(
+        Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
+
+      seekbar.getThumb().setColorFilter(Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
+      if(play)play_button.setImageResource(R.drawable.play_hell);
+      else play_button.setImageResource(R.drawable.stop_hell);}
+  }
+
+  //End StationActivty
   /**
    * All tours except the select will be vanished
    * @param tour Tour will stay on Map
