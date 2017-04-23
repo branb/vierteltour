@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.gallery.GalleryMode;
+import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
@@ -96,7 +97,7 @@ public class StationAdapter extends PagerAdapter{
       @Override
       public void onClick(View v)
       {
-        startGallery(position);
+        startGallery();
       }
     });
       background.setOnClickListener(new View.OnClickListener()
@@ -104,7 +105,7 @@ public class StationAdapter extends PagerAdapter{
         @Override
         public void onClick(View v)
         {
-          startGallery(position);
+          startGallery();
         }
       });}
 
@@ -125,14 +126,6 @@ public class StationAdapter extends PagerAdapter{
   public ImageView getImageView()
   {return imageView;}
 
-  public void startGallery(int position)
-  {gallery = new Intent(mContext, GalleryMode.class);
-    gallery.putExtra("resources", stationImagePaths);
-    gallery.putExtra("station", ((StationActivity)mContext).station);
-    gallery.putExtra("video", ((StationActivity)mContext).video);
-    gallery.putExtra("pfad", ((StationActivity)mContext).path);
-    gallery.putExtra("size", ((StationActivity)mContext).size);
-    gallery.putExtra("number", ((StationActivity)mContext).number);
-    singlepage.INSTANCE.position(position);
-    ((StationActivity)mContext).startActivityForResult(gallery, 1);}
+  public void startGallery()
+  {((MapsActivity)mContext).startGallery();}
 }

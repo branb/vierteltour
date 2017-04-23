@@ -97,16 +97,7 @@ public class StationActivity extends Activity{
       super.onBackPressed();
       //overridePendingTransition( R.anim.map_in, R.anim.fade_out );
 
-      if(player != null)    //If no audio exists, player == null and error will show up
-      {if(player.isPlaying())
-      {RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        MapsActivity.audiobar.setLayoutParams(layoutParams);}
-      else
-      {RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-      MapsActivity.audiobar.setLayoutParams(layoutParams);}
-    }
+
     setResult(RESULT_OK, intent);
     finish();
   }
@@ -385,11 +376,7 @@ public class StationActivity extends Activity{
         startActivity(background);
         duration.setText("0:00");
         seekbar.setProgress(0);}
-        else
-        { RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 0);
-          layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-          MapsActivity.audiobar.setLayoutParams(layoutParams);
-        }
+
       }
 
     });

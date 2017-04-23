@@ -99,7 +99,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
           ((GalleryMode)mContext).stopVideoplay();
           if(!singlepage.INSTANCE.isAudio()){
             Intent background = new Intent(((GalleryMode)mContext).getApplicationContext(), Stationbeendet.class);
-            if(((GalleryMode)mContext).size.equals(((GalleryMode)mContext).number)){background.putExtra("vergleich", 1);}
+            if(((GalleryMode)mContext).size==(((GalleryMode)mContext).number)){background.putExtra("vergleich", 1);}
             else {background.putExtra("vergleich", 0);}
             background.putExtra("pfad", ((GalleryMode)mContext).path);
             ((GalleryMode)mContext).startActivity(background); }

@@ -53,7 +53,8 @@ public class GalleryMode extends Activity {
   Bundle gallerybundle;
   Intent galleryIntent;
   ArrayList<String> res;
-  String video, station, path, size;
+  int size;
+  String video, station, path;
 
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
@@ -96,8 +97,8 @@ public class GalleryMode extends Activity {
   video = (String) gallerybundle.get("video");
   station = (String) gallerybundle.get("station");
   path = (String) gallerybundle.get("pfad");
-  size =  (String) gallerybundle.get("size");
-  number = Integer.parseInt((String) gallerybundle.get("number"));
+  size =  (Integer) gallerybundle.get("size");
+  number = (Integer) gallerybundle.get("number");
 
   x_button = (ImageButton) findViewById( R.id.x_button );
   x_button_bar = (ImageButton) findViewById( R.id.x_button_bar );
