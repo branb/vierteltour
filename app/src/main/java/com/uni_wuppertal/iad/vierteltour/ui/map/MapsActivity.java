@@ -151,6 +151,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Button gpsbtn;
   private ImageView up, down;
   private ListView lv;
+  private int defaultPanelHeight;
   private View listelement;
   private ShadowTransformer mFragmentShadowTransformer;
   private TextView title, tourenliste, subtext1, subtext2;
@@ -185,7 +186,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   com.uni_wuppertal.iad.vierteltour.ui.station.StationAdapter mAdapter;
   ScrollView scroll;
   LinearLayout pager_indicator;
-  RelativeLayout gesperrt, videopanel;
+  RelativeLayout gesperrt, videopanel, panel_top;
   boolean sperrvariable=true, stationEnabled=false;
   String audio, video;
   //End StationActivity
@@ -276,6 +277,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     slidingLayout = (LinearLayout) findViewById(R.id.dragView);
 
     lv = (ListView) findViewById(R.id.list);
+    panel_top = (RelativeLayout) findViewById(R.id.panelhalf1);
     panel = (RelativeLayout) findViewById(R.id.panelhalf);
 
     zumstart = (ImageButton) findViewById(R.id.zumstart);       //SUPL Button bottom right
@@ -541,14 +543,17 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     startStationLayout();
     supl.setEnabled(true);
     supl.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-    supl.setScrollableView(scroll);
+
 
     }
 
   public void startStationLayout()
   {lv.setVisibility(View.GONE);
    stationLayout.setVisibility(View.VISIBLE);
+    supl.setScrollableView(scroll);
     x_supl.setVisibility(View.GONE);
+
+    supl.setPanelHeight(panel_top.getHeight());
 
     stationEnabled = true;
 
@@ -621,8 +626,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   public void endStationLayout()
-  {singlepage.INSTANCE.position(0);
-    stationActivityRunning=false;}
+  {lv.setVisibility(View.VISIBLE);
+    supl.setScrollableView(lv);
+    stationLayout.setVisibility(View.GONE);
+    singlepage.INSTANCE.position(0);
+    stationActivityRunning=false;
+    supl.setPanelHeight(defaultPanelHeight);}
 
 
   Runnable run = new Runnable(){
@@ -1257,6 +1266,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     adapter = new TourAdapter( tourlist.city( visibleCity ).tours(), this);
     lv.setAdapter( adapter );
     initBtns();
+    defaultPanelHeight = supl.getPanelHeight();
   }
 
   /**
@@ -1267,6 +1277,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
     float pagerPadding = (displayMetrics.widthPixels - 150*displayMetrics.density) /2;
     mPager.setPadding((int)pagerPadding, 0,(int) pagerPadding, 0);
+
 
   }
 
