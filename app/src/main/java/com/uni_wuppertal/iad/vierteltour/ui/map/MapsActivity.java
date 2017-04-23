@@ -164,7 +164,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private TourList tourlist;
 
   //Start StationActivity
-  String station, color, author, name, length, desc, time, slug, path;
+  String color, author, name, length, desc, time, slug, path;
   int number, size;
   static boolean stationActivityRunning=false;
   SeekBar seekbar;        //Fortschrittsbalken
@@ -173,7 +173,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   boolean startaudio = true;  //Variable für Status des Play-Buttons
   Handler seekHandler = new Handler();;
   TextView duration;  //Textfeld
-  TextView  routenname, prof, info2, description;
+  TextView  routenname, prof, info2, description, stationtitle;
   double timeElapsed = 0;
   int dotsCount;
   ImageView dots[], tourimage, pager_play_btn, pfeilhell;
@@ -541,10 +541,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     mPager.setVisibility(View.GONE);
     startStationLayout();
-    supl.setEnabled(true);
+    supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     supl.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-
-
     }
 
   public void startStationLayout()
@@ -583,9 +581,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     layout.setBackgroundColor( Color.parseColor( color ) );
     scroll = (ScrollView) findViewById( R.id.scroll);
     scroll.setBackgroundColor(Color.parseColor( color ));
-    title = (TextView) findViewById( R.id.stationtitle );
-    title.setText( singlepage.INSTANCE.selectedStation().name() + "  (" + number + "/" + size + ")" );
-    if(slug.contains("einleitung"))title.setText("Einleitung");
+    stationtitle = (TextView) findViewById( R.id.stationtitle );
+    stationtitle.setText( singlepage.INSTANCE.selectedStation().name() + "  (" + number + "/" + size + ")" );
+    if(slug.contains("einleitung"))stationtitle.setText("Einleitung");
     routenname = (TextView) findViewById( R.id.routenname );
     routenname.setText( name );
     tourimage = (ImageView) findViewById(R.id.routenbild);
@@ -1210,7 +1208,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     slidingLayout.setVisibility(View.GONE);
     supl.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
-    supl.setEnabled(false);
 
     xbtn.setVisibility( View.VISIBLE );
     title.setText( singlepage.INSTANCE.selectedTour().name() );
@@ -1222,7 +1219,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * After Removing a selected tour, the interface is switching to the viewpager with tour overview
    */
   public void swapToSupl(){
-    supl.setEnabled(true);
     supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );    //Show Slider
     supl.setScrollableView(lv);
     slidingLayout.setVisibility(View.VISIBLE);
@@ -1688,6 +1684,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
       @Override
       public void onPanelHidden( View view ){
+        endStationLayout();
       }
     };
   }
@@ -1747,7 +1744,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()==null )      //Wenn SUPL geöffnet, und zurück gedrückt wird, schließe nur SUPL
     {supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );}
     else if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null )
-    {endStationLayout(); supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);supl.setEnabled(false);mPager.setVisibility(View.VISIBLE);}
+    { supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);mPager.setVisibility(View.VISIBLE);}
     else if( mPager.getVisibility() == View.VISIBLE ){
       swapToSupl();
     } else if( getFragmentManager().getBackStackEntryCount() == 0 ){
