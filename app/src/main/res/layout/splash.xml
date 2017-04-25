@@ -24,22 +24,24 @@
         android:progressTint="#ff5d59" />  -->
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="WUPPERTAL"
         android:background="@color/ColorPrimary"
         android:id="@+id/textView"
+        android:gravity="center_horizontal"
         android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:textSize="20dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="VIERTEL"
         android:textStyle="bold"
+        android:gravity="center_horizontal"
         android:textColor="#ff5d59"
         android:background="@color/ColorPrimary"
         android:id="@+id/textView2"
@@ -49,13 +51,14 @@
         android:textSize="30dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#ff5d59"
         android:textStyle="bold"
         android:background="@color/ColorPrimary"
         android:text="TOUR"
+        android:gravity="center_horizontal"
         android:layout_marginBottom="70dp"
         android:id="@+id/textView3"
         android:layout_alignParentBottom="true"

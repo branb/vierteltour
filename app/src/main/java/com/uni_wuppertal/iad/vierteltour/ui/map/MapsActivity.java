@@ -567,7 +567,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     slidingLayout.setVisibility(View.VISIBLE);
     supl.setScrollableView(scroll);
     x_supl.setVisibility(View.GONE);
-
+    panel_top.setClickable(true);
+    panel_top.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        mPager.setVisibility(View.VISIBLE);
+      }
+    });
     Message message = new Message();
     message.what = MapsActivity.TINY_BAR;
     myHandler.sendMessage(message);
@@ -647,6 +654,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     stationLayout.setVisibility(View.GONE);
     singlepage.INSTANCE.position(0);
     stationActivityRunning=false;
+    panel_top.setClickable(false);
     Message message = new Message();
     message.what = MapsActivity.BIG_BAR;
     myHandler.sendMessage(message);
@@ -1237,9 +1245,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * After Removing a selected tour, the interface is switching to the viewpager with tour overview
    */
   public void swapToSupl(){
+    suplInfo( "showall" );
+    slidingLayout.setVisibility(View.VISIBLE);
+
     supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );    //Show Slider
     supl.setScrollableView(lv);
-    slidingLayout.setVisibility(View.VISIBLE);
+
 
     xbtn.setVisibility( View.GONE );
     title.setVisibility( View.GONE );
@@ -1721,8 +1732,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     down.setVisibility( View.GONE );
     tourenliste.setVisibility( View.VISIBLE );
 
-    if(info=="showall"){
-
+    if(info.equals("showall")){
+      panel.setVisibility(View.VISIBLE);
       x_supl.setVisibility( View.VISIBLE );
       SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
       SharedPreferences.Editor e = sharedPreferences.edit();
@@ -1767,7 +1778,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     else if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null )
     { supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);mPager.setVisibility(View.VISIBLE);}
 
-    else if( mPager.getVisibility() == View.VISIBLE ){swapToSupl();}
+    else if( mPager.getVisibility() == View.VISIBLE ){
+
+      swapToSupl();}
     else if(supl != null && supl.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null){}
     else if( getFragmentManager().getBackStackEntryCount() == 0 ){
       super.onBackPressed();
