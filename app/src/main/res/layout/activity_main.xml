@@ -128,7 +128,7 @@
             <LinearLayout
                 android:id="@+id/dragView"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
+                android:layout_height="100dp"
                 android:background="@drawable/round"
                 android:clickable="true"
                 android:focusable="false"

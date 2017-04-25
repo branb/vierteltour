@@ -18,6 +18,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.ViewPager;
@@ -131,7 +132,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                                         "Info",
                                         "About"
   };
-
+  protected static final int TINY_BAR = 0x101, BIG_BAR = 0x102;
   private final double radius=25;
   private ActionBar actionBar;
   private DrawerLayout mDrawerLayout;
@@ -269,7 +270,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   if(singlepage.INSTANCE.onfragmentclicked()!=-1)
   {mPager.setCurrentItem(singlepage.INSTANCE.onfragmentclicked()-1);
         if(singlepage.INSTANCE.selectedStation().number()==singlepage.INSTANCE.onfragmentclicked())
-        {startStationActivity();}}}
+        {startStationActivity();
+         }}}
     });
 
 
@@ -357,7 +359,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
     }
     //Gesamte Bildschirmgröße - Toolbargröße
-    System.out.println(displayMetrics.heightPixels-actionBar.getHeight() + " " + actionBar.getHeight() + " " + displayMetrics.heightPixels + " " + actionBarHeight);
     mMap.setPadding(0,0,0,displayMetrics.heightPixels-actionBarHeight*2);
 
     wuppertal = new LatLng( 51.256972, 7.139341 );
@@ -503,6 +504,21 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     width = tmpMarker.getWidth();
     return Bitmap.createScaledBitmap(tmpMarker,(int) (width*1.5),(int) (height*1.5), true);}
 
+  Handler myHandler = new Handler() {
+    public void handleMessage(Message msg) {
+      switch (msg.what) {
+        case MapsActivity.TINY_BAR:
+          supl.setPanelHeight(panel_top.getHeight());;
+          break;
+
+      case MapsActivity.BIG_BAR:
+        supl.setPanelHeight(defaultPanelHeight);
+      break;}
+      super.handleMessage(msg);
+    }
+  };
+
+
 
   //Station Activity
   /**
@@ -541,18 +557,20 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     mPager.setVisibility(View.GONE);
     startStationLayout();
-    supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+
     supl.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
     }
 
   public void startStationLayout()
   {lv.setVisibility(View.GONE);
    stationLayout.setVisibility(View.VISIBLE);
+    slidingLayout.setVisibility(View.VISIBLE);
     supl.setScrollableView(scroll);
     x_supl.setVisibility(View.GONE);
 
-    supl.setPanelHeight(panel_top.getHeight());
-
+    Message message = new Message();
+    message.what = MapsActivity.TINY_BAR;
+    myHandler.sendMessage(message);
     stationEnabled = true;
 
     initLayout();
@@ -629,7 +647,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     stationLayout.setVisibility(View.GONE);
     singlepage.INSTANCE.position(0);
     stationActivityRunning=false;
-    supl.setPanelHeight(defaultPanelHeight);}
+    Message message = new Message();
+    message.what = MapsActivity.BIG_BAR;
+    myHandler.sendMessage(message);
+    }
 
 
   Runnable run = new Runnable(){
@@ -788,7 +809,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         player.seekTo(0);
         startaudio = false;
         setImageResource( true );
-        System.out.println(path);
         if(stationActivityRunning){
           Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
           if(size==number){background.putExtra("vergleich", 1);}
@@ -1172,7 +1192,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     for( Map.Entry<String, Marker> marker : tourMarker.entrySet() ){
     if(marker.getKey().equals(slug))
     {
-      System.out.println("Remove Marker "+slug);
       marker.getValue().remove();}
   }}
 
@@ -1206,7 +1225,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     //mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( singlepage.INSTANCE.selectedTour().station(2).latlng(), CurrentZoom ) );
     mMap.moveCamera( CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-    slidingLayout.setVisibility(View.GONE);
     supl.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
 
     xbtn.setVisibility( View.VISIBLE );
@@ -1263,6 +1281,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     lv.setAdapter( adapter );
     initBtns();
     defaultPanelHeight = supl.getPanelHeight();
+    DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+    slidingLayout.setLayoutParams(new SlidingUpPanelLayout.LayoutParams(SlidingUpPanelLayout.LayoutParams.MATCH_PARENT, (int) (displayMetrics.heightPixels*0.7)));
   }
 
   /**
@@ -1684,6 +1704,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
       @Override
       public void onPanelHidden( View view ){
+        slidingLayout.setVisibility(View.GONE);
         endStationLayout();
       }
     };
@@ -1745,9 +1766,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     {supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );}
     else if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null )
     { supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);mPager.setVisibility(View.VISIBLE);}
-    else if( mPager.getVisibility() == View.VISIBLE ){
-      swapToSupl();
-    } else if( getFragmentManager().getBackStackEntryCount() == 0 ){
+
+    else if( mPager.getVisibility() == View.VISIBLE ){swapToSupl();}
+    else if(supl != null && supl.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null){}
+    else if( getFragmentManager().getBackStackEntryCount() == 0 ){
       super.onBackPressed();
     }
   }
@@ -1756,7 +1778,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     // Check which request we're responding to
     if (requestCode == BACK_FROM_SETTINGS) {
-      System.out.println("Check");
       // Make sure the request was successful
     if(resultCode == RESULT_CANCELED)
     {SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
