@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.location.GpsStatus;
 import android.location.Location;
@@ -240,6 +242,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
 
    // mMap.setPadding(113,0,0,0);
+
+///    System.out.println(tourlist.city(visibleCity).tours().get(2).station(2).latlng());
+ //   Point markerScreenPosition = mMap.getProjection().toScreenLocation(tourlist.city(visibleCity).tours().get(2).station(2).latlng());
+ //   System.out.println(markerScreenPosition);
+
   }
 
   @Override
@@ -358,10 +365,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     {
       actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
     }
-    //Gesamte Bildschirmgröße - Toolbargröße
-    mMap.setPadding(0,0,0,displayMetrics.heightPixels-actionBarHeight*2);
-
     wuppertal = new LatLng( 51.256972, 7.139341 );
+    //Gesamte Bildschirmgröße - Toolbargröße
+   int pxPager = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
+    mMap.setPadding(0,0,0,pxPager);
+
+
+
     mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( wuppertal, CurrentZoom ) );
 
     checkForUpdates();
@@ -395,6 +405,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           if( singlepage.INSTANCE.selectedTour()!=null && !test){
             resetTour();
           }
+
         }
         //Stationenübersicht
         else if(supl.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
@@ -412,7 +423,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
         }
-      }}
+      }
+
+
+      }
     };
 
     mMap.setOnMapClickListener( listener );
@@ -425,6 +439,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         return true;    // false: OnMarkerClick aktiv und zoomt zum Marker
       }
     } );
+
+
+
   }
 /**
 * Will be used if a station is selected
@@ -1226,14 +1243,19 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     Typeface tf = Typeface.createFromAsset(getAssets(), "Bariol_Regular.ttf");
     title.setTypeface(tf);
 
+
+    //System.out.println(tourlist.city(visibleCity).tours().get(2).station(2).latlng());
+    //Point markerScreenPosition = mMap.getProjection().toScreenLocation(tourlist.city(visibleCity).tours().get(2).station(2).latlng());
+    //System.out.println(markerScreenPosition);
+
     //Zoom to first station coordinates
     CameraPosition cameraPosition = new CameraPosition.Builder()
-      .target(new LatLng(singlepage.INSTANCE.selectedTour().station(2).latlng().latitude, singlepage.INSTANCE.selectedTour().station(2).latlng().longitude))
+      .target(new LatLng(singlepage.INSTANCE.selectedTour().station(2).latlng().latitude , singlepage.INSTANCE.selectedTour().station(2).latlng().longitude))
       .zoom(CurrentZoom)
       .build();
     //mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( singlepage.INSTANCE.selectedTour().station(2).latlng(), CurrentZoom ) );
-    mMap.moveCamera( CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+    mMap.moveCamera( CameraUpdateFactory.newCameraPosition(cameraPosition));
     supl.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
 
     xbtn.setVisibility( View.VISIBLE );
