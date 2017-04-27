@@ -1243,11 +1243,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     Typeface tf = Typeface.createFromAsset(getAssets(), "Bariol_Regular.ttf");
     title.setTypeface(tf);
 
-
-    //System.out.println(tourlist.city(visibleCity).tours().get(2).station(2).latlng());
-    //Point markerScreenPosition = mMap.getProjection().toScreenLocation(tourlist.city(visibleCity).tours().get(2).station(2).latlng());
-    //System.out.println(markerScreenPosition);
-
     //Zoom to first station coordinates
     CameraPosition cameraPosition = new CameraPosition.Builder()
       .target(new LatLng(singlepage.INSTANCE.selectedTour().station(2).latlng().latitude , singlepage.INSTANCE.selectedTour().station(2).latlng().longitude))
