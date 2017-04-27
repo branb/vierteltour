@@ -314,7 +314,7 @@ public class GalleryMode extends Activity {
         pager_indicator.addView(dots[i], params);
       }
 
-      dots[0].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
+      dots[singlepage.INSTANCE.position()].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
 
     }
   }

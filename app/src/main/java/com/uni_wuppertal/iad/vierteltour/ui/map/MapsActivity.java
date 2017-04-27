@@ -160,7 +160,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private RelativeLayout panel, gpsinfo, stationLayout;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
-  static final int BACK_FROM_SETTINGS = 1;  // The request code
+  static final int BACK_FROM_SETTINGS = 1, BACK_FROM_GALLERY = 2;  // The request code
   // All the tour stationactivity that is currently available to us
   private TourList tourlist;
 
@@ -619,7 +619,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     info2.setText( time + "/" + length );
     description = (TextView) findViewById( R.id.stationenbeschreibung );
     description.setText( desc );
-    singlepage.INSTANCE.position(number);
+    singlepage.INSTANCE.position(0);
 
     seekbar = (SeekBar) findViewById( R.id.seek_bar );
     pager_play_btn = (ImageView) findViewById(R.id.pager_play_button);
@@ -857,8 +857,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     gallery.putExtra("pfad", path);
     gallery.putExtra("size", size);
     gallery.putExtra("number", number-1);
-    singlepage.INSTANCE.position(number-1);
-    startActivityForResult(gallery, 1);}
+
+    startActivityForResult(gallery, BACK_FROM_GALLERY);}
   /**
    * Initializes images
    */
@@ -907,6 +907,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     public void onPageSelected( int position ){
       isimages=position;
       imagePager.setCurrentItem(position);
+      singlepage.INSTANCE.position(position);
 
       for( int i = 0; i < dotsCount; i++ ){
         dots[i].setImageDrawable( getResources().getDrawable( R.drawable.nonselecteditem ) );
@@ -1797,7 +1798,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       SharedPreferences.Editor e = sharedPreferences.edit();
       if(singlepage.INSTANCE.selectedTour()!=null && sharedPreferences.getBoolean(singlepage.INSTANCE.selectedTour().slug(), false))zumstart.setVisibility( View.VISIBLE );
       else{zumstart.setVisibility(View.INVISIBLE);}}
-  }}
+  }
+  else if(requestCode == BACK_FROM_GALLERY)
+  {for (int i = 0; i < dotsCount; i++) {
+    if(i==singlepage.INSTANCE.position())
+    dots[i].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
+  else
+      dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));}}
+  }
 
   @Override
   public void onPause(){

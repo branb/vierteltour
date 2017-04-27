@@ -34,7 +34,8 @@ public enum Singletonint {
   }
 
     public int position() {return position;}
-    public void position(int position) {this.position = position;}
+    public void position(int position) {this.position = position;
+      System.out.println(position);}
 
     public Tour selectedTour() {return selectedTour;}
     public void selectedTour(Tour selectedTour) {this.selectedTour = selectedTour;}
