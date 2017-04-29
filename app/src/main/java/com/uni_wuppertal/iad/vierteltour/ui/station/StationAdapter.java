@@ -83,7 +83,7 @@ public class StationAdapter extends PagerAdapter{
     //  imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
-      {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );
+      {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );   //Out of Memory Error
         background.setVisibility(View.VISIBLE);}
       else{imageView.setImageResource(R.drawable.i);
         fileAvailable=false;}

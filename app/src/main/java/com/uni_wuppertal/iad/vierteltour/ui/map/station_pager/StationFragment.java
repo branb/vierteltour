@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -71,6 +72,9 @@ public class StationFragment extends Fragment{
     TextView number = (TextView) rootView.findViewById(R.id.numbertext);
     TextView title = (TextView) rootView.findViewById( R.id.titlefrag );
     ImageView image = (ImageView) rootView.findViewById(R.id.imagefrag);
+
+   // DisplayMetrics displayMetrics = new DisplayMetrics();
+    //getApplicationContext().getDefaultDisplay().getMetrics(displayMetrics);
 
     View numberlayout = rootView.findViewById(R.id.numberlayout);
 

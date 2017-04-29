@@ -25,6 +25,7 @@ public class Stationbeendet extends Activity {
   Singletonint singlepage;
   Intent getIntent;
   Bundle b;
+  int RESULT_NEXT=10;
 
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
@@ -55,6 +56,7 @@ public class Stationbeendet extends Activity {
     station_wiederholen.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
+        setResult(RESULT_OK);
         onBackPressed();
       }
     });
@@ -63,7 +65,9 @@ public class Stationbeendet extends Activity {
     zur_naechsten_station.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-        Intent next = new Intent(getApplicationContext(), StationActivity.class);
+        setResult(RESULT_NEXT);
+        onBackPressed();
+       /* Intent next = new Intent(getApplicationContext(), StationActivity.class);
         next.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Tour tour = singlepage.INSTANCE.selectedTour();
         next.putExtra( "name", tour.name() );
@@ -88,7 +92,7 @@ public class Stationbeendet extends Activity {
         next.putExtra( "audio", station.audio());
         next.putExtra( "video", station.videosToString() );
         MapsActivity.mPager.setCurrentItem(station.number()-1);
-        startActivity(next);
+        startActivity(next);*/
       }
     });
 

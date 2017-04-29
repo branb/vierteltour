@@ -154,7 +154,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Button gpsbtn;
   private ImageView up, down;
   private ListView lv;
-  private int defaultPanelHeight;
+  private int defaultPanelHeight, pxPager;
   private View listelement;
   private ShadowTransformer mFragmentShadowTransformer;
   private TextView title, tourenliste, subtext1, subtext2;
@@ -162,7 +162,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private RelativeLayout panel, gpsinfo, stationLayout;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
-  static final int BACK_FROM_SETTINGS = 1, BACK_FROM_GALLERY = 2;  // The request code
+  static final int BACK_FROM_SETTINGS = 1, BACK_FROM_GALLERY = 2, BACK_FROM_STATION_FINISHED = 3;  // The request code
   // All the tour stationactivity that is currently available to us
   private TourList tourlist;
 
@@ -367,7 +367,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
     wuppertal = new LatLng( 51.256972, 7.139341 );
     //Gesamte Bildschirmgröße - Toolbargröße
-   int pxPager = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
+   //int pxPager = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
     mMap.setPadding(0,0,0,pxPager);
 
 
@@ -623,6 +623,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     layout.setBackgroundColor( Color.parseColor( color ) );
     scroll = (ScrollView) findViewById( R.id.scroll);
     scroll.setBackgroundColor(Color.parseColor( color ));
+    scroll.fullScroll(View.FOCUS_UP);
     stationtitle = (TextView) findViewById( R.id.stationtitle );
     stationtitle.setText( singlepage.INSTANCE.selectedStation().name() + "  (" + number + "/" + size + ")" );
     if(slug.contains("einleitung"))stationtitle.setText("Einleitung");
@@ -839,7 +840,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           if(size==number){background.putExtra("vergleich", 1);}
           else {background.putExtra("vergleich", 0);}
           background.putExtra("pfad", path);
-          startActivity(background);
+          startActivityForResult(background, BACK_FROM_STATION_FINISHED);
           duration.setText("0:00");
           seekbar.setProgress(0);}
       }
@@ -1320,7 +1321,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void initPager(){
     //Get Screen Sizes
     DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-    float pagerPadding = (displayMetrics.widthPixels - 150*displayMetrics.density) /2;
+    float pagerPadding = (displayMetrics.widthPixels - 140*displayMetrics.density) /2;
+    ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mPager.getLayoutParams();
+    pxPager = (int) (displayMetrics.heightPixels*0.27);//AAAAAAAAA
+    lp.height = pxPager;
+    mPager.setLayoutParams(lp);
     mPager.setPadding((int)pagerPadding, 0,(int) pagerPadding, 0);
 
 
@@ -1822,6 +1827,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     dots[i].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
   else
       dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));}}
+
+    else if(requestCode == BACK_FROM_STATION_FINISHED)
+    {int RESULT_NEXT = 10;
+      if(resultCode == RESULT_OK){imagePager.setCurrentItem(0);}//TODO:Stationbeendet stürzt noch ab
+    else if(resultCode == RESULT_NEXT){endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}}
   }
 
   @Override
