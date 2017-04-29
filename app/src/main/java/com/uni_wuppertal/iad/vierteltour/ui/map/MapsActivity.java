@@ -179,7 +179,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   TextView  routenname, prof, info2, description, stationtitle;
   double timeElapsed = 0;
   int dotsCount;
-  RelativeLayout.LayoutParams lp_pager_layout;
   ImageView dots[], tourimage, pager_play_btn, pfeilhell;
   Intent myIntent2;
   Bundle b;
@@ -242,8 +241,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
 
-   // mMap.setPadding(113,0,0,0);
-
 ///    System.out.println(tourlist.city(visibleCity).tours().get(2).station(2).latlng());
  //   Point markerScreenPosition = mMap.getProjection().toScreenLocation(tourlist.city(visibleCity).tours().get(2).station(2).latlng());
  //   System.out.println(markerScreenPosition);
@@ -269,7 +266,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMapAsync(this); //initMap
 
     pager_layout = (RelativeLayout) findViewById(R.id.pager_layout);
-    lp_pager_layout = new RelativeLayout.LayoutParams(pager_layout.getLayoutParams());
+
     mPager = (ClickableViewpager) findViewById(R.id.pager);
     stationAdapter = new StationAdapter(getSupportFragmentManager());
     mPager.setAdapter(stationAdapter);
@@ -314,6 +311,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     duration_supl = (TextView) findViewById(R.id.duration_supl);
     seekbar_supl = (SeekBar) findViewById(R.id.seek_bar_supl);
     play_button_supl = (ImageButton) findViewById(R.id.play_button_supl);
+
   }
 
   /**
@@ -539,7 +537,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       break;
 
         case MapsActivity.SEEK_BAR:
-          supl.setPanelHeight(panel_top.getHeight()+seekbar_layout_supl.getHeight());
+          DisplayMetrics metrics = getResources().getDisplayMetrics();
+          System.out.println(panel_top.getHeight()+" "+seekbar_layout_supl.getHeight()+" "+ (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, metrics));
+          supl.setPanelHeight(panel_top.getHeight()+seekbar_layout_supl.getHeight()+ (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, metrics));
           break;
       }
       super.handleMessage(msg);
@@ -590,7 +590,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
 
   public void startStationLayout()
-  {lv.setVisibility(View.GONE);
+  {//if(seekbar_layout_supl.getVisibility()==View.VISIBLE)suplInfo("h_seekbar");
+    lv.setVisibility(View.GONE);
    stationLayout.setVisibility(View.VISIBLE);
     slidingLayout.setVisibility(View.VISIBLE);
     supl.setScrollableView(scroll);
@@ -599,15 +600,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     panel_top.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if(player.isPlaying()){suplInfo("s_seekbar");
-           }
-        else{supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);}
-        pager_layout.setVisibility(View.VISIBLE);
+        if(player.isPlaying()){suplInfo("s_seekbar");}
+        else{supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}
+
       }
     });
-    Message message = new Message();
+   /*Message message = new Message();
     message.what = MapsActivity.TINY_BAR;
-    myHandler.sendMessage(message);
+    myHandler.sendMessage(message);*/
     stationEnabled = true;
 
     initLayout();
@@ -676,6 +676,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     videopanel = (RelativeLayout) findViewById(R.id.video_panel);
     imagePager.setAdapter( mAdapter );
     seekbar.setOnSeekBarChangeListener(customSeekBarListener);
+    seekbar_supl.setOnSeekBarChangeListener(customSeekBarListener);
     setImageResource(true);
   }
 
@@ -691,9 +692,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     singlepage.INSTANCE.position(0);
     stationActivityRunning=false;
     panel_top.setClickable(false);
-    Message message = new Message();
+    /*Message message = new Message();
     message.what = MapsActivity.BIG_BAR;
-    myHandler.sendMessage(message);
+    myHandler.sendMessage(message);*/
     }
 
 
@@ -710,6 +711,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if( player != null && startaudio ){
 
       seekbar.setProgress( player.getCurrentPosition() );
+      seekbar_supl.setProgress( player.getCurrentPosition());
       timeElapsed = player.getCurrentPosition();
 
       duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
@@ -845,6 +847,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     seekbar_supl.setMax( player.getDuration() );
     seekbar.setProgress( player.getCurrentPosition() );
     seekbar_supl.setProgress( player.getCurrentPosition() );
+    seekbar_supl.getProgressDrawable().setColorFilter(
+      Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
+    seekbar_supl.getThumb().setColorFilter(Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
     timeElapsed = player.getCurrentPosition();
 
     duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
@@ -865,6 +870,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           duration.setText("0:00");
           seekbar.setProgress(0);
         seekbar_supl.setProgress(0);}
+        else{seekbar_supl.setProgress(0); play_button_supl.setImageResource(R.drawable.play_dunkel); duration_supl.setText("0:00");}
       }
 
     });
@@ -882,12 +888,40 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
               player.start();
               setImageResource( false );
               seekUpdationAudio();
+              Message message = new Message();
+              message.what = MapsActivity.SEEK_BAR;
+              myHandler.sendMessage(message);
             } else {
               startaudio=false;
               player.pause();
               setImageResource( true );
+              Message message = new Message();
+              message.what = MapsActivity.BIG_BAR;
+              myHandler.sendMessage(message);
             }break;}}});
+
+
+    play_button_supl.setOnClickListener( new View.OnClickListener(){
+      @Override
+      public void onClick( View play ){
+
+        switch( play.getId() ){
+          case R.id.play_button_supl:
+            if( !player.isPlaying() ){
+              startaudio = true;
+              player.start();
+              play_button_supl.setImageResource(R.drawable.stop_dunkel);
+              seekUpdationAudio();
+            } else {
+              startaudio=false;
+              player.pause();
+              play_button_supl.setImageResource(R.drawable.play_dunkel);
+            }break;}}});
+
   }
+
+
+
 
   public void startGallery()
   {Intent gallery = new Intent(getApplicationContext(), GalleryMode.class);
@@ -1605,6 +1639,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     xbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
+        if(seekbar_layout_supl.getVisibility()==View.VISIBLE)suplInfo("h_seekbar");
+        endStationLayout();
+        Message message = new Message();
+        message.what = MapsActivity.BIG_BAR;
+        myHandler.sendMessage(message);
         swapToSupl();
       }
     });
@@ -1716,7 +1755,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         panel.setVisibility( View.VISIBLE );
         adapter.notifyDataSetChanged();}
         else if(singlepage.INSTANCE.selectedStation()!=null)
-        {if(stationActivityRunning)pager_layout.setVisibility(View.VISIBLE);
+        {//if(stationActivityRunning)pager_layout.setVisibility(View.VISIBLE);
           panel.setVisibility(View.GONE);}
       }
 
@@ -1736,7 +1775,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       if(singlepage.INSTANCE.selectedStation()!=null)
       {if(player.isPlaying())
       {
-        //suplInfo("s_seekbar");
+        suplInfo("s_seekbar");
 
         up.setVisibility(View.VISIBLE);
       down.setVisibility(View.GONE);
@@ -1758,6 +1797,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         suplInfo( "gone" );
         panel.setVisibility( View.GONE );
         if(stationActivityRunning)pager_layout.setVisibility(View.GONE);
+        if(singlepage.INSTANCE.selectedStation()!=null)suplInfo("h_seekbar");
 
       }
 
@@ -1768,8 +1808,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       @Override
       public void onPanelHidden( View view ){
         stationActivityRunning=false;
+
         if(!player.isPlaying()){System.out.println("HIDE");slidingLayout.setVisibility(View.GONE);
         if(stationActivityRunning)endStationLayout();}
+
       }
     };
   }
@@ -1821,21 +1863,28 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     if(info=="s_seekbar")
     {
-      System.out.println("UÜ");
+      System.out.println(seekbar_layout_supl.getHeight());
       seekbar_layout_supl.setVisibility(View.VISIBLE);
-      Message message = new Message();
-      message.what = MapsActivity.SEEK_BAR;
-      myHandler.sendMessage(message);
-      supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-     // RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(pager_layout.getLayoutParams());
-     // lp.addRule(RelativeLayout.ABOVE, .getId());
-      //pager_layout.setLayoutParams(lp);
+      System.out.println(seekbar_layout_supl.getHeight());
+      if(player.isPlaying())play_button_supl.setImageResource(R.drawable.stop_dunkel);
+      else play_button_supl.setImageResource(R.drawable.play_dunkel);
 
+      supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+      RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(pager_layout.getLayoutParams());
+      lp.setMargins(0,0,0, supl.getPanelHeight());
+      lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
+      pager_layout.setLayoutParams(lp);
+      mMap.setPadding(0,0,0,supl.getPanelHeight()+pxPager);
+      pager_layout.setVisibility(View.VISIBLE);
     }
 
     if(info=="h_seekbar")
     {seekbar_layout_supl.setVisibility(View.GONE);
-      //pager_layout.setLayoutParams(lp_pager_layout);
+      RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(pager_layout.getLayoutParams());
+      lp.setMargins(0,0,0,0);
+      lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
+      pager_layout.setLayoutParams(lp);
+      mMap.setPadding(0,0,0,pxPager);
     }
 
   }
