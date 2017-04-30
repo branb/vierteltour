@@ -469,7 +469,37 @@ public class StationActivity extends Activity{
     }
   };
   //Viewpager.onPageChangeListener end
+  //public void startStationActivity()
+ // {
+  /*Intent tmpIntent = new Intent( getApplicationContext(), StationActivity.class );
 
+
+    // Tour data
+    Tour tour = singlepage.INSTANCE.selectedTour();
+    tmpIntent.putExtra( "name", tour.name() );
+    tmpIntent.putExtra( "autor", tour.author() );
+    tmpIntent.putExtra( "zeit", tour.time() );
+    tmpIntent.putExtra( "laenge", tour.length() );
+    tmpIntent.putExtra( "farbe", tour.color() );
+
+    tmpIntent.putExtra("path", OurStorage.get(this).storagePath()+"/"+OurStorage.get(this).lookForTourFile(tourlist(), tour.image()));
+    // Selected Station
+    Station station = singlepage.INSTANCE.selectedStation();
+    tmpIntent.putExtra("slug", station.slug());
+    tmpIntent.putExtra( "station", station.name() );
+    tmpIntent.putExtra( "desc", station.description() );
+    if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")){tmpIntent.putExtra( "pos", "" + (station.number()-1) );
+      tmpIntent.putExtra( "size", "" + (tour.stations().size()-1) );}
+    else {tmpIntent.putExtra( "pos", "" + (station.number()) );
+      tmpIntent.putExtra( "size", "" + tour.stations().size() );}
+    // Station media
+    tmpIntent.putExtra( "img", station.imagesToString() );
+    tmpIntent.putExtra( "audio", station.audio());
+    tmpIntent.putExtra( "video", station.videosToString() );
+
+
+    startActivityForResult( tmpIntent, 1 );
+   // overridePendingTransition( R.anim.fade_in, R.anim.map_out );*/
   /**
    * calculates white or black color on seekbar in dependence of tour color
    * @param play

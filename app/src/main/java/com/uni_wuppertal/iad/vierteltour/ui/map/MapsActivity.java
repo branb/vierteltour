@@ -533,12 +533,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           break;
 
       case MapsActivity.BIG_BAR:
+        System.out.println(defaultPanelHeight);
         supl.setPanelHeight(defaultPanelHeight);
       break;
 
         case MapsActivity.SEEK_BAR:
           DisplayMetrics metrics = getResources().getDisplayMetrics();
-          System.out.println(panel_top.getHeight()+" "+seekbar_layout_supl.getHeight()+" "+ (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, metrics));
           supl.setPanelHeight(panel_top.getHeight()+63+ (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, metrics));
           break;
       }
@@ -553,43 +553,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * Starts Station Activity will all needed Extras
    */
   public void startStationActivity()
-  {/*Intent tmpIntent = new Intent( getApplicationContext(), StationActivity.class );
-
-
-    // Tour data
-    Tour tour = singlepage.INSTANCE.selectedTour();
-    tmpIntent.putExtra( "name", tour.name() );
-    tmpIntent.putExtra( "autor", tour.author() );
-    tmpIntent.putExtra( "zeit", tour.time() );
-    tmpIntent.putExtra( "laenge", tour.length() );
-    tmpIntent.putExtra( "farbe", tour.color() );
-
-    tmpIntent.putExtra("path", OurStorage.get(this).storagePath()+"/"+OurStorage.get(this).lookForTourFile(tourlist(), tour.image()));
-    // Selected Station
-    Station station = singlepage.INSTANCE.selectedStation();
-    tmpIntent.putExtra("slug", station.slug());
-    tmpIntent.putExtra( "station", station.name() );
-    tmpIntent.putExtra( "desc", station.description() );
-    if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")){tmpIntent.putExtra( "pos", "" + (station.number()-1) );
-      tmpIntent.putExtra( "size", "" + (tour.stations().size()-1) );}
-    else {tmpIntent.putExtra( "pos", "" + (station.number()) );
-      tmpIntent.putExtra( "size", "" + tour.stations().size() );}
-    // Station media
-    tmpIntent.putExtra( "img", station.imagesToString() );
-    tmpIntent.putExtra( "audio", station.audio());
-    tmpIntent.putExtra( "video", station.videosToString() );
-
-
-    startActivityForResult( tmpIntent, 1 );
-   // overridePendingTransition( R.anim.fade_in, R.anim.map_out );*/
-
-    pager_layout.setVisibility(View.GONE);
+  { pager_layout.setVisibility(View.GONE);
+    mMap.setPadding(0,0,0,0);
     startStationLayout();
-    supl.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+    supl.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);}
 
-
-
-    }
 
   public void startStationLayout()
   {//if(seekbar_layout_supl.getVisibility()==View.VISIBLE)suplInfo("h_seekbar");
@@ -694,9 +662,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     singlepage.INSTANCE.position(0);
     stationActivityRunning=false;
     panel_top.setClickable(false);
-    Message message = new Message();
-    message.what = MapsActivity.BIG_BAR;
-    myHandler.sendMessage(message);
+
     }
 
 
@@ -1649,14 +1615,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     xbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
+
         if(seekbar_layout_supl.getVisibility()==View.VISIBLE)suplInfo("h_seekbar");
         endStationLayout();
+        swapToSupl();
 
         Message message = new Message();
-        message.what = MapsActivity.BIG_BAR;
-        myHandler.sendMessage(message);
-
-        swapToSupl();
+         message.what = MapsActivity.BIG_BAR;
+         myHandler.sendMessage(message);
+        System.out.println("STOPHIDE");
       }
     });
   }
