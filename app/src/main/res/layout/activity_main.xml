@@ -59,8 +59,8 @@
                 android:layout_marginRight="40dp"
                 android:layout_marginBottom="40dp"
                 android:paddingTop="25dp"
-                android:paddingBottom="25dp"
-                android:layout_above="@+id/pager"
+                android:paddingBottom="30dp"
+                android:layout_above="@+id/pager_layout"
                 android:background="@drawable/roundcorners"
                 android:visibility="gone">
 
@@ -99,9 +99,9 @@
                 android:layout_height="40dp"
                 android:id="@+id/gpsbtn"
                 android:background="@drawable/roundbutton"
-                android:layout_above="@+id/pager"
+                android:layout_above="@+id/pager_layout"
                 android:layout_alignParentLeft="true"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="25dp"
                 android:layout_marginLeft="20dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
@@ -366,6 +366,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/routeninfo1"
+                            android:paddingRight="2dp"
                             android:textStyle="italic"
                             android:textColor="@color/black"
                             android:layout_below="@+id/routenname"/>

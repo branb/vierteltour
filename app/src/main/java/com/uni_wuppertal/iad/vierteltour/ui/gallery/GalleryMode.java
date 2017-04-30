@@ -2,18 +2,21 @@ package com.uni_wuppertal.iad.vierteltour.ui.gallery;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,7 +46,7 @@ public class GalleryMode extends Activity {
   TextView gallerytitle, gallerytitletop, durationGallery, durationGallery_bar;
   GalleryPagerAdapter mAdapter2;
   ImageView dots[];
-  int dotsCount, number;
+  int dotsCount, number, STATION_BEENDET=4;
   LinearLayout pager_indicator;
   RelativeLayout relGalleryBot, relGalleryTop;
   Boolean startvideo = true;
@@ -64,11 +67,21 @@ public class GalleryMode extends Activity {
     gallerymode();
   }
 
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+   if(requestCode == 1)
+    {int RESULT_NEXT=10;
+      if(resultCode == RESULT_OK){imagePagerGallery.setCurrentItem(0);}
+      else if(resultCode == RESULT_NEXT){
+       Intent datas = new Intent(); setResult(STATION_BEENDET, datas); onBackPressed();}}
+  }
+
   /**
    * Function of back button
    */
   public void onBackPressed() {
-    Intent intent = new Intent();
+
 
     if( !video.isEmpty() ){
       mAdapter2.videoView(singlepage.INSTANCE.position()).pause();
@@ -81,7 +94,7 @@ public class GalleryMode extends Activity {
       if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
       {setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);}
     }
-    setResult(RESULT_OK, intent);
+
     finish();
   }
 

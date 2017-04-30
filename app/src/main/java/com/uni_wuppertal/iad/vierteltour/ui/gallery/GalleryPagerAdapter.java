@@ -38,6 +38,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
   private ViertelTourMediaPlayer player;
   private VideoView videoView;
   private ViewGroup ownContainer;
+  private int STATION_BEENDET=1;
   private Singletonint singlepage;
 
   public GalleryPagerAdapter(Context mContext, ArrayList<String> stationImagePaths){
@@ -98,11 +99,11 @@ public class GalleryPagerAdapter extends PagerAdapter {
         public void onCompletion(MediaPlayer mediaPlayer) {
           ((GalleryMode)mContext).stopVideoplay();
           if(!singlepage.INSTANCE.isAudio()){
-            Intent background = new Intent(((GalleryMode)mContext).getApplicationContext(), Stationbeendet.class);
+            Intent background = new Intent((mContext).getApplicationContext(), Stationbeendet.class);
             if(((GalleryMode)mContext).size==(((GalleryMode)mContext).number)){background.putExtra("vergleich", 1);}
             else {background.putExtra("vergleich", 0);}
             background.putExtra("pfad", ((GalleryMode)mContext).path);
-            ((GalleryMode)mContext).startActivity(background); }
+            ((GalleryMode)mContext).startActivityForResult(background, STATION_BEENDET); }
         }
       });
 

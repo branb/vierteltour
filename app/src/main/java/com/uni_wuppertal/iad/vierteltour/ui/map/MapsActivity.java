@@ -162,7 +162,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private RelativeLayout panel, gpsinfo, stationLayout;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
-  static final int BACK_FROM_SETTINGS = 1, BACK_FROM_GALLERY = 2, BACK_FROM_STATION_FINISHED = 3;  // The request code
+  static final int BACK_FROM_SETTINGS = 1, BACK_FROM_GALLERY = 2, BACK_FROM_STATION_FINISHED = 3, STATION_BEENDET_GALLERY=4;  // The request code
   // All the tour stationactivity that is currently available to us
   private TourList tourlist;
 
@@ -539,7 +539,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         case MapsActivity.SEEK_BAR:
           DisplayMetrics metrics = getResources().getDisplayMetrics();
           System.out.println(panel_top.getHeight()+" "+seekbar_layout_supl.getHeight()+" "+ (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, metrics));
-          supl.setPanelHeight(panel_top.getHeight()+seekbar_layout_supl.getHeight()+ (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, metrics));
+          supl.setPanelHeight(panel_top.getHeight()+63+ (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, metrics));
           break;
       }
       super.handleMessage(msg);
@@ -585,29 +585,29 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     pager_layout.setVisibility(View.GONE);
     startStationLayout();
-
     supl.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+
+
+
     }
 
   public void startStationLayout()
   {//if(seekbar_layout_supl.getVisibility()==View.VISIBLE)suplInfo("h_seekbar");
     lv.setVisibility(View.GONE);
-   stationLayout.setVisibility(View.VISIBLE);
     slidingLayout.setVisibility(View.VISIBLE);
+   stationLayout.setVisibility(View.VISIBLE);
+
     supl.setScrollableView(scroll);
     x_supl.setVisibility(View.GONE);
     panel_top.setClickable(true);
     panel_top.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if(player.isPlaying()){suplInfo("s_seekbar");}
+        if(player.isPlaying()){suplInfo("s_seekbar"); panel_top.setClickable(false);}
         else{supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}
 
       }
     });
-   /*Message message = new Message();
-    message.what = MapsActivity.TINY_BAR;
-    myHandler.sendMessage(message);*/
     stationEnabled = true;
 
     initLayout();
@@ -630,7 +630,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     color = singlepage.INSTANCE.selectedTour().color();
     size = (singlepage.INSTANCE.selectedTour().stations().size()-1);
     number = (singlepage.INSTANCE.selectedStation().number()-1);
-    name = singlepage.INSTANCE.selectedStation().name();
+    name = singlepage.INSTANCE.selectedTour().name();
     path = OurStorage.get(this).storagePath()+"/"+OurStorage.get(this).lookForTourFile(tourlist(), singlepage.INSTANCE.selectedTour().image());
     layout = (RelativeLayout) findViewById( R.id.rellayout );
     layout.setBackgroundColor( Color.parseColor( color ) );
@@ -649,7 +649,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     info2 = (TextView) findViewById( R.id.routeninfo2 );
     info2.setText( time + "/" + length );
     description = (TextView) findViewById( R.id.stationenbeschreibung );
-    description.setText( desc );
+    description.setText( singlepage.INSTANCE.selectedStation().description() );
     singlepage.INSTANCE.position(0);
 
     seekbar = (SeekBar) findViewById( R.id.seek_bar );
@@ -687,14 +687,16 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     supl.setScrollableView(lv);
     stationLayout.setVisibility(View.GONE);
     slidingLayout.setVisibility(View.GONE);
-    imagePager.removeAllViews();
-    imagePager.getAdapter().notifyDataSetChanged();
+    if(imagePager!=null)
+    {imagePager.removeAllViews();
+    imagePager.getAdapter().notifyDataSetChanged();}
+
     singlepage.INSTANCE.position(0);
     stationActivityRunning=false;
     panel_top.setClickable(false);
-    /*Message message = new Message();
+    Message message = new Message();
     message.what = MapsActivity.BIG_BAR;
-    myHandler.sendMessage(message);*/
+    myHandler.sendMessage(message);
     }
 
 
@@ -728,6 +730,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     PreferenceManager.getDefaultSharedPreferences(getBaseContext());
     if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false) || slug.startsWith("einleitung"))
     {sperrvariable=false;}
+    else{sperrvariable=true;}
 
     SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
       @Override
@@ -735,6 +738,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false) || slug.startsWith("einleitung"))
         {sperrvariable=false;
           setVisibility();}
+        else{sperrvariable=true;}
       }
     };
     prefs.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
@@ -869,7 +873,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           startActivityForResult(background, BACK_FROM_STATION_FINISHED);
           duration.setText("0:00");
           seekbar.setProgress(0);
-        seekbar_supl.setProgress(0);}
+        seekbar_supl.setProgress(0);
+          Message message = new Message();
+          message.what = MapsActivity.BIG_BAR;
+          myHandler.sendMessage(message);}
         else{seekbar_supl.setProgress(0); play_button_supl.setImageResource(R.drawable.play_dunkel); duration_supl.setText("0:00");}
       }
 
@@ -1333,6 +1340,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if(stationAdapter.getItem(0)!=null)
     {selectStation(singlepage.INSTANCE.selectedTour().station(1));
       mPager.setCurrentItem(0,false);}
+
+    startaudio=false;
+    if(player.isPlaying())player.stop();
     player.reset();
 
     tourMarker.clear();
@@ -1379,7 +1389,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
     float pagerPadding = (displayMetrics.widthPixels - 140*displayMetrics.density) /2;
     ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mPager.getLayoutParams();
-    pxPager = (int) (displayMetrics.heightPixels*0.27);//AAAAAAAAA
+    pxPager = (int) (displayMetrics.heightPixels*0.27);
     lp.height = pxPager;
     mPager.setLayoutParams(lp);
     mPager.setPadding((int)pagerPadding, 0,(int) pagerPadding, 0);
@@ -1641,9 +1651,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onClick( View v ){
         if(seekbar_layout_supl.getVisibility()==View.VISIBLE)suplInfo("h_seekbar");
         endStationLayout();
+
         Message message = new Message();
         message.what = MapsActivity.BIG_BAR;
         myHandler.sendMessage(message);
+
         swapToSupl();
       }
     });
@@ -1761,6 +1773,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
       @Override
       public void onPanelCollapsed( View view ){
+        panel_top.setClickable(false);
         stationActivityRunning=false;
         System.out.println("COLLAPSED");
         //ändere Pfeilrichtung nach oben
@@ -1785,10 +1798,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
         pager_layout.setVisibility(View.VISIBLE);
         //zeige Viewpager
-
-
-
-        //
       }
       }
 
@@ -1796,8 +1805,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onPanelExpanded( View view ){//Ändere Pfeilimage nach unten
         suplInfo( "gone" );
         panel.setVisibility( View.GONE );
-        if(stationActivityRunning)pager_layout.setVisibility(View.GONE);
-        if(singlepage.INSTANCE.selectedStation()!=null)suplInfo("h_seekbar");
+        if(singlepage.INSTANCE.selectedStation()!=null)
+        {stationActivityRunning=true;pager_layout.setVisibility(View.GONE);suplInfo("h_seekbar");}
 
       }
 
@@ -1863,11 +1872,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     if(info=="s_seekbar")
     {
-      System.out.println(seekbar_layout_supl.getHeight());
       seekbar_layout_supl.setVisibility(View.VISIBLE);
-      System.out.println(seekbar_layout_supl.getHeight());
       if(player.isPlaying())play_button_supl.setImageResource(R.drawable.stop_dunkel);
       else play_button_supl.setImageResource(R.drawable.play_dunkel);
+
 
       supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
       RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(pager_layout.getLayoutParams());
@@ -1896,16 +1904,20 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   @Override
   public void onBackPressed(){
     if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()==null )      //Wenn SUPL geöffnet, und zurück gedrückt wird, schließe nur SUPL
-    {supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );}
+    {System.out.println("A");supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );}
     else if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null )    //Wenn Station geöffnet ist, schließe nur Station mit SUPL
-    { if(player.isPlaying()){suplInfo("s_seekbar");}
-      System.out.println("BACK");
-      supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}
+    {System.out.println("B"); if(player.isPlaying()){suplInfo("s_seekbar");}
+    else{System.out.println("C");supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}}
 
-    else if( pager_layout.getVisibility() == View.VISIBLE ){swapToSupl();}        //Gehe von Stationenauswahl zurück zur Tourenauswahl
+    else if( pager_layout.getVisibility() == View.VISIBLE ){System.out.println("D");Message message = new Message();
+      message.what = MapsActivity.BIG_BAR;
+      myHandler.sendMessage(message);
+      if(seekbar_layout_supl.getVisibility()==View.VISIBLE){suplInfo("h_seekbar");}
+      endStationLayout();
+      swapToSupl();}        //Gehe von Stationenauswahl zurück zur Tourenauswahl
 
-    else if(supl != null && supl.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null){}    //Mache nichts wenn er gerade von einem in den anderen Zustand geht
-    else if( getFragmentManager().getBackStackEntryCount() == 0 ){
+    else if(supl != null && supl.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null){System.out.println("F");}    //Mache nichts wenn er gerade von einem in den anderen Zustand geht
+    else if( getFragmentManager().getBackStackEntryCount() == 0 ){System.out.println("G");
       super.onBackPressed();
     }
   }
@@ -1922,11 +1934,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       else{zumstart.setVisibility(View.INVISIBLE);}}
   }
   else if(requestCode == BACK_FROM_GALLERY)
-  {for (int i = 0; i < dotsCount; i++) {
+  {imagePager.setCurrentItem(singlepage.INSTANCE.position());
+    for (int i = 0; i < dotsCount; i++) {
     if(i==singlepage.INSTANCE.position())
     dots[i].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
   else
-      dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));}}
+      dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));}
+  if(resultCode==STATION_BEENDET_GALLERY)
+  {endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}
+  }
 
     else if(requestCode == BACK_FROM_STATION_FINISHED)
     {int RESULT_NEXT = 10;
@@ -2006,9 +2022,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     public Bitmap markertext(Tour tour, String text)
 {//Das vorgegebene Marker Layout wird verwendet
 //Bestehend aus einem Image (Pin) und einer TextView (Zahl)
+
   View markerlayout = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.marker_layout, null);
   //Der zugehoerige Pin wird festgelegt
   int id = getResources().getIdentifier( "pin_" + tour.trkid(), "drawable", getPackageName() );
+  if(!text.isEmpty() && singlepage.INSTANCE.selectedTour().stations().get(Integer.parseInt(text)).description().contains("Hören Sie den folgenden Text während Sie von hier aus zu der nächsten Station gehen.")) {
+    System.out.println("SFAGDHNFdsa");id = getResources().getIdentifier("pin_"+tour.trkid()+"_weg", "drawable", getPackageName());}
   TextView markertxt = (TextView)markerlayout.findViewById(R.id.markernumber);
   ImageView markerimage = (ImageView) markerlayout.findViewById(R.id.marker);
   //Text und Bild wird festgelegt

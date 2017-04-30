@@ -67,32 +67,7 @@ public class Stationbeendet extends Activity {
       public void onClick( View v ){
         setResult(RESULT_NEXT);
         onBackPressed();
-       /* Intent next = new Intent(getApplicationContext(), StationActivity.class);
-        next.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        Tour tour = singlepage.INSTANCE.selectedTour();
-        next.putExtra( "name", tour.name() );
-        next.putExtra( "autor", tour.author() );
-        next.putExtra( "zeit", tour.time() );
-        next.putExtra( "laenge", tour.length() );
-        next.putExtra( "farbe", tour.color() );
-        if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
-        next.putExtra( "size", "" + (tour.stations().size()-1) );
-        else next.putExtra( "size", "" + (tour.stations().size()) );
-        next.putExtra("path", path);
-        // Selected Station
-        Station station = singlepage.INSTANCE.selectedTour().station(singlepage.INSTANCE.selectedStation().number()+1);
-        next.putExtra("slug", station.slug());
-        next.putExtra( "station", station.name() );
-        next.putExtra( "desc", station.description() );
-        if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
-        next.putExtra( "pos", "" + (station.number()-1) );
-        else next.putExtra("pos", "" + (station.number()));
-        // Station media
-        next.putExtra( "img", station.imagesToString() );
-        next.putExtra( "audio", station.audio());
-        next.putExtra( "video", station.videosToString() );
-        MapsActivity.mPager.setCurrentItem(station.number()-1);
-        startActivity(next);*/
+
       }
     });
 
