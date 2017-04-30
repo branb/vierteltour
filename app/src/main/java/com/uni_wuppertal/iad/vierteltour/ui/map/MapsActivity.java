@@ -533,8 +533,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           break;
 
       case MapsActivity.BIG_BAR:
-        System.out.println(defaultPanelHeight);
+        System.out.println("default"+defaultPanelHeight);
         supl.setPanelHeight(defaultPanelHeight);
+        supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );
       break;
 
         case MapsActivity.SEEK_BAR:
@@ -1295,8 +1296,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void swapToSupl(){
     suplInfo( "showall" );
     slidingLayout.setVisibility(View.VISIBLE);
-
-    supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );    //Show Slider
     supl.setScrollableView(lv);
 
 
@@ -1320,6 +1319,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     drawRoutes();
 
     singlepage.INSTANCE.setId(0);
+
   }
 
   /**
@@ -1615,15 +1615,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     xbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-
-        if(seekbar_layout_supl.getVisibility()==View.VISIBLE)suplInfo("h_seekbar");
+        Message message = new Message();
+        message.what = MapsActivity.BIG_BAR;
+        myHandler.sendMessage(message);
+        if(seekbar_layout_supl.getVisibility()==View.VISIBLE){suplInfo("h_seekbar");}
         endStationLayout();
         swapToSupl();
-
-        Message message = new Message();
-         message.what = MapsActivity.BIG_BAR;
-         myHandler.sendMessage(message);
-        System.out.println("STOPHIDE");
       }
     });
   }
@@ -1871,12 +1868,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   @Override
   public void onBackPressed(){
     if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()==null )      //Wenn SUPL geöffnet, und zurück gedrückt wird, schließe nur SUPL
-    {System.out.println("A");supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );}
+    {supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );}
     else if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null )    //Wenn Station geöffnet ist, schließe nur Station mit SUPL
-    {System.out.println("B"); if(player.isPlaying()){suplInfo("s_seekbar");}
-    else{System.out.println("C");supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}}
+    { if(player.isPlaying()){suplInfo("s_seekbar");}
+    else{supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}}
 
-    else if( pager_layout.getVisibility() == View.VISIBLE ){System.out.println("D");Message message = new Message();
+    else if( pager_layout.getVisibility() == View.VISIBLE ){
+      Message message = new Message();
       message.what = MapsActivity.BIG_BAR;
       myHandler.sendMessage(message);
       if(seekbar_layout_supl.getVisibility()==View.VISIBLE){suplInfo("h_seekbar");}
