@@ -96,19 +96,34 @@ public class StationFragment extends Fragment{
         Bitmap mBitmapInsurance = BitmapFactory.decodeFile(externalPath+appPath+file ,options);
         image.setImageBitmap(mBitmapInsurance);}
 
+      boolean isWaypoint=false;
+      for(int i=0;i<singlepage.INSTANCE.countWaypoints().size();i++)
+      {if((position-1) == singlepage.INSTANCE.countWaypoints().get(i)) {isWaypoint=true;}}
+
+      int countnumber=0;
+
+      if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
+      {try{countnumber=0;
+        while(singlepage.INSTANCE.countWaypoints().get(countnumber)<(position-1))countnumber++;}catch (Exception e){}}
+      else
+      { try{countnumber=0;
+        while(singlepage.INSTANCE.countWaypoints().get(countnumber)<(position))countnumber++;}catch (Exception e){}}
+
       title.setText( ztitle.get( position-1 ) );
       //Sets number layout in the right corner
-      if(singlepage.INSTANCE.selectedTour().station(position).latlng()!=null && singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
-      {number.setText((position-1) + "");
+      if(singlepage.INSTANCE.selectedTour().station(position).latlng()!=null && singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung") && !isWaypoint)
+      {number.setText((position-1-countnumber) + "");
       LayerDrawable bgDrawable = (LayerDrawable)numberlayout.getBackground();
       final GradientDrawable shape = (GradientDrawable)   bgDrawable.findDrawableByLayerId(R.id.shape_id);
       shape.setColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color()));}
-      else if(singlepage.INSTANCE.selectedTour().station(position).latlng()!=null)
-      {number.setText((position) + "");
+      else if(singlepage.INSTANCE.selectedTour().station(position).latlng()!=null && !isWaypoint)
+      {
+        number.setText((position-1-countnumber) + "");
         LayerDrawable bgDrawable = (LayerDrawable)numberlayout.getBackground();
         final GradientDrawable shape = (GradientDrawable)   bgDrawable.findDrawableByLayerId(R.id.shape_id);
         shape.setColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color()));}
-      else numberlayout.setVisibility(View.GONE);
+      else {
+        numberlayout.setVisibility(View.GONE);}
 
       btItem.setOnTouchListener(new View.OnTouchListener() {
         @Override

@@ -3,6 +3,8 @@ package com.uni_wuppertal.iad.vierteltour.utility;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Tour;
 
+import java.util.ArrayList;
+
 /**
  * Created by Kevin-Laptop on 09.06.2016.
  * Verwaltet Variablen, welche Applikationsweit genutzt werden
@@ -17,6 +19,7 @@ public enum Singletonint {
     private Station selectedStation;   //Ausgewählte Station
     private Station selectedOldStation; //Zuletzt ausgewählte Station (wird nur im StationFragment geändert)
     private int onfragmentclicked;  //Bei Stationenübersicht kann im Viewpager in die Lücke geklickt werden, was zu einer fehlerhaften Navigation führt.
+    private ArrayList<Integer> countWaypoints = new ArrayList<Integer>();
 
     Singletonint(){
       id=-1;
@@ -51,4 +54,7 @@ public enum Singletonint {
 
     public boolean isAudio() {return isAudio;}
     public void isAudio(boolean isAudio) {this.isAudio=isAudio;}
+
+    public ArrayList<Integer> countWaypoints() {return countWaypoints;}
+
   }

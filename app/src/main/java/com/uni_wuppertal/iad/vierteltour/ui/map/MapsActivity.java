@@ -241,9 +241,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
 
-///    System.out.println(tourlist.city(visibleCity).tours().get(2).station(2).latlng());
- //   Point markerScreenPosition = mMap.getProjection().toScreenLocation(tourlist.city(visibleCity).tours().get(2).station(2).latlng());
- //   System.out.println(markerScreenPosition);
 
   }
 
@@ -481,8 +478,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
       removeStation(singlepage.INSTANCE.selectedStation().slug());
       Marker m;
-      if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")) m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1)))));
-      else m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number())))));
+      int countnumber=0;
+
+      if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
+      {try{while(singlepage.INSTANCE.countWaypoints().get(countnumber)<(station.number()-1))countnumber++;}catch (Exception e){}
+        m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1)))));}
+      else
+      { try{while(singlepage.INSTANCE.countWaypoints().get(countnumber)<(station.number()))countnumber++;}catch (Exception e){}
+        m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number())))));}
       m.showInfoWindow();
       tourMarker.put(singlepage.INSTANCE.selectedStation().slug(), m);}
 
@@ -533,7 +536,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           break;
 
       case MapsActivity.BIG_BAR:
-        System.out.println("default"+defaultPanelHeight);
         supl.setPanelHeight(defaultPanelHeight);
         supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );
       break;
@@ -651,7 +653,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   public void endStationLayout()
   {
-    System.out.println("END");
     lv.setVisibility(View.VISIBLE);
     supl.setScrollableView(lv);
     stationLayout.setVisibility(View.GONE);
@@ -1219,6 +1220,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    */
   private void drawStations(){
     tmpmarker = null;
+    //singlepage.INSTANCE.countWaypoints().clear();
     //Setze Marker
     for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
       //Wenn Tour ausgewählt, zeichne nur Stationen der Tour
@@ -1245,11 +1247,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * @param slug
      */
   private void removeStation(String slug)
-  {
-    for( Map.Entry<String, Marker> marker : tourMarker.entrySet() ){
+  { for( Map.Entry<String, Marker> marker : tourMarker.entrySet() ){
     if(marker.getKey().equals(slug))
-    {
-      marker.getValue().remove();}
+    {marker.getValue().remove();}
   }}
 
 
@@ -1297,7 +1297,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     suplInfo( "showall" );
     slidingLayout.setVisibility(View.VISIBLE);
     supl.setScrollableView(lv);
-
+    singlepage.INSTANCE.countWaypoints().clear();
 
     xbtn.setVisibility( View.GONE );
     title.setVisibility( View.GONE );
@@ -1739,7 +1739,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onPanelCollapsed( View view ){
         panel_top.setClickable(false);
         stationActivityRunning=false;
-        System.out.println("COLLAPSED");
         //ändere Pfeilrichtung nach oben
         if(singlepage.INSTANCE.selectedStation()==null)
         { if( singlepage.INSTANCE.selectedTour()!=null){
@@ -1782,7 +1781,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onPanelHidden( View view ){
         stationActivityRunning=false;
 
-        if(!player.isPlaying()){System.out.println("HIDE");slidingLayout.setVisibility(View.GONE);
+        if(!player.isPlaying()){slidingLayout.setVisibility(View.GONE);
         if(stationActivityRunning)endStationLayout();}
 
       }
@@ -1881,9 +1880,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       endStationLayout();
       swapToSupl();}        //Gehe von Stationenauswahl zurück zur Tourenauswahl
 
-    else if(supl != null && supl.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null){System.out.println("F");}    //Mache nichts wenn er gerade von einem in den anderen Zustand geht
-    else if( getFragmentManager().getBackStackEntryCount() == 0 ){System.out.println("G");
-      super.onBackPressed();
+    else if(supl != null && supl.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null){}    //Mache nichts wenn er gerade von einem in den anderen Zustand geht
+    else if( getFragmentManager().getBackStackEntryCount() == 0 ){super.onBackPressed();
     }
   }
 
@@ -1990,14 +1988,28 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   View markerlayout = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.marker_layout, null);
   //Der zugehoerige Pin wird festgelegt
-  int id = getResources().getIdentifier( "pin_" + tour.trkid(), "drawable", getPackageName() );
-  if(!text.isEmpty() && singlepage.INSTANCE.selectedTour().stations().get(Integer.parseInt(text)).description().contains("Hören Sie den folgenden Text während Sie von hier aus zu der nächsten Station gehen.")) {
-    System.out.println("SFAGDHNFdsa");id = getResources().getIdentifier("pin_"+tour.trkid()+"_weg", "drawable", getPackageName());}
+  int id,numbermarker=0;
   TextView markertxt = (TextView)markerlayout.findViewById(R.id.markernumber);
   ImageView markerimage = (ImageView) markerlayout.findViewById(R.id.marker);
+  if(!text.isEmpty() && singlepage.INSTANCE.selectedTour().stations().get(Integer.parseInt(text)).description().contains("Hören Sie den folgenden Text während Sie von hier aus zu der nächsten Station gehen."))
+  {if(!singlepage.INSTANCE.countWaypoints().contains(Integer.parseInt(text))){singlepage.INSTANCE.countWaypoints().add(Integer.parseInt(text));}
+    id = getResources().getIdentifier("pin_"+tour.trkid()+"_weg", "drawable", getPackageName());
+    int countnumber=0;
+    try{while(singlepage.INSTANCE.countWaypoints().get(countnumber)<Integer.parseInt(text))countnumber++;}catch (Exception e){}
+    markertxt.setText("W"+(countnumber+1)+"");}
+  else {
+    if(!text.isEmpty()){numbermarker=Integer.parseInt(text);
+      int countnumber=0;
+      try{while(singlepage.INSTANCE.countWaypoints().get(countnumber)<Integer.parseInt(text))countnumber++;}catch (Exception e){}
+      markertxt.setText((numbermarker-countnumber)+"");}
+    else {markertxt.setText("");}
+
+    id = getResources().getIdentifier( "pin_" + tour.trkid(), "drawable", getPackageName() );
+  }
+
   //Text und Bild wird festgelegt
   markerimage.setImageResource(id);
-  markertxt.setText(text);
+
   //Bitmap wird zurueckgegeben
   return createDrawableFromView(this, markerlayout);
 }
