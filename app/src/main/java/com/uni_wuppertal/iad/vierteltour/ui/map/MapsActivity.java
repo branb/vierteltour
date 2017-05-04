@@ -72,6 +72,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
+import com.pixplicity.sharp.Sharp;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.intro.IntroActivity;
@@ -287,28 +288,39 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     panel = (RelativeLayout) findViewById(R.id.panelhalf);
 
     zumstart = (ImageButton) findViewById(R.id.zumstart);       //SUPL Button bottom right
+    Sharp.loadResource(getResources(), R.raw.zum_start).into(zumstart);//TODO
 
     x_supl = (ImageButton) findViewById( R.id.x );               //SUPL Button top left
+    Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(x_supl);//TODO
 
     arrowbtn = (ImageButton) findViewById( R.id.arrowbtn );       //Top Twin Button
+    Sharp.loadResource(getResources(), R.raw.google_navi_dunkel).into(arrowbtn);//TODO
 
     gpsbtn = (Button) findViewById( R.id.gpsbtn );           //Red Button left Bottom corner
 
     tarbtn = (ImageButton) findViewById( R.id.tarbtn );           //Bot Twin Button
+    Sharp.loadResource(getResources(), R.raw.standort).into(tarbtn);//TODO
 
     tourenliste = (TextView) findViewById( R.id.tourenliste );
 
     subtext1 = (TextView) findViewById( R.id.subinfo1 );
     subtext2 = (TextView) findViewById( R.id.subinfo2 );
     up = (ImageView) findViewById( R.id.up );
+    Sharp.loadResource(getResources(), R.raw.pfeil_hoch).into(up);//TODO
+
     down = (ImageView) findViewById( R.id.down );
+    Sharp.loadResource(getResources(), R.raw.pfeil_runter).into(down);//TODO
+
     stationLayout = (RelativeLayout) findViewById(R.id.station);
     gpsinfo = (RelativeLayout) findViewById( R.id.gpsinfo );
     seekbar_layout_supl = (RelativeLayout) findViewById(R.id.media_panel_supl);
     duration_supl = (TextView) findViewById(R.id.duration_supl);
     seekbar_supl = (SeekBar) findViewById(R.id.seek_bar_supl);
     play_button_supl = (ImageButton) findViewById(R.id.play_button_supl);
+    Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);
 
+    ImageView gpsarrow = (ImageView) findViewById(R.id.arrowwhite);
+    Sharp.loadResource(getResources(), R.raw.google_navi_hell).into(gpsarrow);//TODO
   }
 
   /**
@@ -845,7 +857,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           Message message = new Message();
           message.what = MapsActivity.BIG_BAR;
           myHandler.sendMessage(message);}
-        else{seekbar_supl.setProgress(0); play_button_supl.setImageResource(R.drawable.play_dunkel); duration_supl.setText("0:00");}
+        else{seekbar_supl.setProgress(0); Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);duration_supl.setText("0:00");}
       }
 
     });
@@ -1425,6 +1437,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       }
     });
 
+
     //zooms to own location
     tarbtn.setOnClickListener( new View.OnClickListener(){
       @Override
@@ -1443,6 +1456,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }
     });
 
+
     gpsbtn.setOnTouchListener(new View.OnTouchListener() {
       @Override
       public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -1456,6 +1470,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         return false;
       }
     });
+
 
   }
 
@@ -1610,6 +1625,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
       }
     });
+    Sharp.loadResource(getResources(), R.raw.menue1).into(homebtn);     //TODO CHANGE
+
     xbtn = (ImageButton) findViewById(R.id.btn_x);      //ActionBar Button: Right
     title = (TextView) findViewById(R.id.toolbar_title);  //ActionBar Title
     xbtn.setOnClickListener( new View.OnClickListener(){
@@ -1623,6 +1640,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         swapToSupl();
       }
     });
+    Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(xbtn);//TODO CHANGE
   }
 
   /**

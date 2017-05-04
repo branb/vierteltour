@@ -28,7 +28,6 @@
             android:layout_alignParentEnd="true"
             android:padding="20dp"
             android:visibility="gone"
-            android:src="@drawable/beenden_dunkel"
             style="@style/Widget.AppCompat.ActionButton"/>
 
     <ImageButton
@@ -36,7 +35,9 @@
          android:layout_width="?attr/actionBarSize"
          android:layout_height="?attr/actionBarSize"
          android:visibility="visible"
-         android:src="@drawable/menu"
+      android:gravity="center"
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
          style="@style/Widget.AppCompat.ActionButton"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
