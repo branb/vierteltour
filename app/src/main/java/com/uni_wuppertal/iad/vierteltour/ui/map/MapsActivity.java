@@ -491,7 +491,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       removeStation(singlepage.INSTANCE.selectedStation().slug());
       Marker m;
       int countnumber=0;
-
       if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
       {try{while(singlepage.INSTANCE.countWaypoints().get(countnumber)<(station.number()-1))countnumber++;}catch (Exception e){}
         m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1)))));}
@@ -579,7 +578,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     lv.setVisibility(View.GONE);
     slidingLayout.setVisibility(View.VISIBLE);
    stationLayout.setVisibility(View.VISIBLE);
-
     supl.setScrollableView(scroll);
     x_supl.setVisibility(View.GONE);
     panel_top.setClickable(true);
