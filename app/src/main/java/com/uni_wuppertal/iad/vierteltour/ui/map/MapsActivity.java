@@ -553,7 +553,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       break;
 
         case MapsActivity.SEEK_BAR:
-          supl.setPanelHeight(panel_top.getHeight()+63+ (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, displayMetrics));
+          supl.setPanelHeight(panel_top.getHeight() + 63 + (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, displayMetrics));
           break;
       }
       super.handleMessage(msg);
@@ -852,9 +852,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           duration.setText("0:00");
           seekbar.setProgress(0);
         seekbar_supl.setProgress(0);
-          Message message = new Message();
+         /* Message message = new Message();
           message.what = MapsActivity.BIG_BAR;
-          myHandler.sendMessage(message);}
+          myHandler.sendMessage(message);*/}
         else{seekbar_supl.setProgress(0); Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);duration_supl.setText("0:00");}
       }
 
@@ -880,9 +880,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
               startaudio=false;
               player.pause();
               setImageResource( true );
-              Message message = new Message();
+             /* Message message = new Message();
               message.what = MapsActivity.BIG_BAR;
-              myHandler.sendMessage(message);
+              myHandler.sendMessage(message);*/
             }break;}}});
 
 
@@ -895,12 +895,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             if( !player.isPlaying() ){
               startaudio = true;
               player.start();
-              play_button_supl.setImageResource(R.drawable.stop_dunkel);
+              Sharp.loadResource(getResources(), R.raw.stop_dunkel).into(play_button_supl);
               seekUpdationAudio();
             } else {
               startaudio=false;
               player.pause();
-              play_button_supl.setImageResource(R.drawable.play_dunkel);
+              Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);
             }break;}}});
 
   }
@@ -997,16 +997,16 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       seekbar.getProgressDrawable().setColorFilter(
         Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
       seekbar.getThumb().setColorFilter(Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
-      if(play) play_button.setImageResource(R.drawable.play_dunkel);
-      else play_button.setImageResource(R.drawable.stop_dunkel);}
+      if(play) Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button);
+      else Sharp.loadResource(getResources(), R.raw.stop_dunkel).into(play_button);}
     else{duration.setTextColor(Color.parseColor("#E6EBE0"));
       colorString="#E6EBE0";
       seekbar.getProgressDrawable().setColorFilter(
         Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
 
       seekbar.getThumb().setColorFilter(Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
-      if(play)play_button.setImageResource(R.drawable.play_hell);
-      else play_button.setImageResource(R.drawable.stop_hell);}
+      if(play)Sharp.loadResource(getResources(), R.raw.play_hell).into(play_button);
+      else Sharp.loadResource(getResources(), R.raw.stop_hell).into(play_button);}
   }
 
   //End StationActivty
@@ -1853,8 +1853,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if(info=="s_seekbar")
     {
       seekbar_layout_supl.setVisibility(View.VISIBLE);
-      if(player.isPlaying())play_button_supl.setImageResource(R.drawable.stop_dunkel);
-      else play_button_supl.setImageResource(R.drawable.play_dunkel);
+      if(player.isPlaying())Sharp.loadResource(getResources(), R.raw.stop_dunkel).into(play_button_supl);
+      else Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);
 
 
       supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);

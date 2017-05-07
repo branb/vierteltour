@@ -32,7 +32,6 @@
     android:layout_height="wrap_content"
     android:id="@+id/img_play_button_gallery"
     android:clickable="true"
-    android:src="@drawable/play_hell"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     android:visibility="gone"

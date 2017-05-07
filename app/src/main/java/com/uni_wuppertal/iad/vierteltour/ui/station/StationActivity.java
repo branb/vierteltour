@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.gallery.GalleryMode;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
@@ -516,14 +517,14 @@ public class StationActivity extends Activity{
       seekbar.getProgressDrawable().setColorFilter(
         Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
       seekbar.getThumb().setColorFilter(Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
-      if(play) play_button.setImageResource(R.drawable.play_dunkel);
-    else play_button.setImageResource(R.drawable.stop_dunkel);}
+      if(play) Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button);
+    else Sharp.loadResource(getResources(), R.raw.stop_dunkel).into(play_button);}
     else{duration.setTextColor(Color.parseColor("#E6EBE0"));
       colorString="#E6EBE0";
       seekbar.getProgressDrawable().setColorFilter(
         Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
 
       seekbar.getThumb().setColorFilter(Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
-      if(play)play_button.setImageResource(R.drawable.play_hell);
-    else play_button.setImageResource(R.drawable.stop_hell);}
+      if(play)Sharp.loadResource(getResources(), R.raw.play_hell).into(play_button);
+    else Sharp.loadResource(getResources(), R.raw.stop_hell).into(play_button);}
 }}

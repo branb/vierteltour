@@ -157,7 +157,6 @@
     android:layout_height="wrap_content"
     android:id="@+id/pager_play_button"
     android:clickable="true"
-    android:src="@drawable/play_hell"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     android:gravity="center"
