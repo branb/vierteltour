@@ -131,10 +131,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private GoogleApiClient googleApiClient;
   private LocationSettingsRequest.Builder builder;
   public int CurrentZoom = 15;
-  int[] drawerIcons = new int[]{R.drawable.einstellungen,
-    R.drawable.hilfe,
-    R.drawable.about
-  };
   String[] drawertitles = new String[]{"Einstellungen",
     "Info",
     "About"
@@ -661,6 +657,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     duration = (TextView) findViewById(R.id.duration);
     gesperrt = (RelativeLayout) findViewById(R.id.gesperrt);
     pfeilhell = (ImageView) findViewById(R.id.pfeilhell);
+    Sharp.loadResource(getResources(), R.raw.google_navi_hell).into(pfeilhell);
     imagePager = (ViewPager) findViewById(R.id.ImagePager);
     imagePager.setOffscreenPageLimit(2);
     String imagesFromXML = singlepage.INSTANCE.selectedStation().imagesToString();
@@ -1743,7 +1740,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     drawerItems = new ArrayList<DrawerItem>();
     mDrawerLayout.setDrawerListener( createDrawerToggle() );
     for( int i = 0; i < drawertitles.length; i++ ){
-      DrawerItem items = new DrawerItem( drawertitles[i], drawerIcons[i] );
+      DrawerItem items = new DrawerItem( drawertitles[i] );
       drawerItems.add( items );
     }
     draweradapter = new DrawerAdapter( this, drawerItems );
@@ -1802,7 +1799,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * Defines drawer actions
    */
   private DrawerLayout.DrawerListener createDrawerToggle(){
-    mDrawerToggle = new ActionBarDrawerToggle( this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close ){
+    mDrawerToggle = new ActionBarDrawerToggle( this, mDrawerLayout, R.drawable.i, R.string.drawer_open, R.string.drawer_close ){
 
       @Override
       public void onDrawerClosed( View view ){
@@ -2099,7 +2096,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   int id,numbermarker=0;
   TextView markertxt = (TextView)markerlayout.findViewById(R.id.markernumber);
   ImageView markerimage = (ImageView) markerlayout.findViewById(R.id.marker);
- /* if(!text.isEmpty() && singlepage.INSTANCE.selectedTour().stations().get(Integer.parseInt(text)).description().contains("Hören Sie den folgenden Text während Sie von hier aus zu der nächsten Station gehen."))
+ //Excluded: Audio to hear between to Stations
+  /* if(!text.isEmpty() && singlepage.INSTANCE.selectedTour().stations().get(Integer.parseInt(text)).description().contains("Hören Sie den folgenden Text während Sie von hier aus zu der nächsten Station gehen."))
   {if(!singlepage.INSTANCE.countWaypoints().contains(Integer.parseInt(text))){singlepage.INSTANCE.countWaypoints().add(Integer.parseInt(text));}
     id = getResources().getIdentifier("pin_"+tour.trkid()+"_weg", "drawable", getPackageName());
     int countnumber=0;

@@ -1,16 +1,16 @@
 package com.uni_wuppertal.iad.vierteltour.ui.drawer;
 
+import android.graphics.drawable.Drawable;
+
 /**
  * One Element of the Drawerlist
  */
 
 public class DrawerItem{
   private String title;
-  private int icon;
 
-  public DrawerItem( String title, int icon ){
+  public DrawerItem(String title){
     this.title = title;
-    this.icon = icon;
   }
 
   public String getTitle(){
@@ -19,14 +19,6 @@ public class DrawerItem{
 
   public void setTitle( String title ){
     this.title = title;
-  }
-
-  public int getIcon(){
-    return icon;
-  }
-
-  public void setIcon( int icon ){
-    this.icon = icon;
   }
 
 }

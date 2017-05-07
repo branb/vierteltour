@@ -237,8 +237,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerHorizontal="true"
-      android:layout_marginTop="40dp"
-      android:src="@drawable/google_navi_hell"/>
+      android:layout_marginTop="40dp" />
 
     <TextView
       android:id="@+id/navtext"

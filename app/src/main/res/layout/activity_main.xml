@@ -518,8 +518,9 @@
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
                           android:layout_centerHorizontal="true"
-                          android:layout_marginTop="40dp"
-                          android:src="@drawable/google_navi_hell"/>
+                          android:layout_below="@+id/navtext2"
+                          android:paddingTop="15dp"
+                          />
 
                         <TextView
                           android:id="@+id/navtext"
@@ -528,7 +529,6 @@
                           android:layout_centerHorizontal="true"
                           android:text="Bitte begib dich in die Nähe der Station, um diese Inhalte einsehen zu können."
                           android:textSize="17dp"
-                          android:layout_below="@+id/pfeilhell"
                           android:textColor="@color/white"
                           android:layout_marginLeft="80dp"
                           android:layout_marginRight="80dp"

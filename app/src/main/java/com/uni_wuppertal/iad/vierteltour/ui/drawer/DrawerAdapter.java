@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pixplicity.sharp.Sharp;
+import com.pixplicity.sharp.SharpDrawable;
 import com.uni_wuppertal.iad.vierteltour.R;
 
 import java.util.List;
@@ -56,7 +58,17 @@ public class DrawerAdapter extends BaseAdapter{
     //Setzt jeweilige Informationen an die richtigen Views
     DrawerItem row_pos = drawerItem.get( position );
 
-    imgIcon.setImageResource( row_pos.getIcon() );
+switch (position)
+    {case 0:
+      Sharp.loadResource(context.getResources(), R.raw.einstellungen).into(imgIcon);
+      break;
+      case 1:
+        Sharp.loadResource(context.getResources(), R.raw.hilfe).into(imgIcon);
+        break;
+      case 2:
+        Sharp.loadResource(context.getResources(), R.raw.about).into(imgIcon);
+    }
+
     txtTitle.setText( row_pos.getTitle() );
 
     return convertView;

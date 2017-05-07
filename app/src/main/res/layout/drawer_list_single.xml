@@ -9,11 +9,13 @@
     <ImageView
         android:id="@+id/menuimg"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="27dp"
         android:layout_alignParentLeft="true"
+      android:layout_centerVertical="true"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        />
+      android:paddingRight="15dp"
+      android:scaleType="fitCenter"
+      />
     <TextView
         android:id="@+id/menutxt"
         android:textColor="@color/black"
@@ -21,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/menuimg"
 
         />
