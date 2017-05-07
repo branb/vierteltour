@@ -33,36 +33,36 @@ android:id="@+id/stationbeendet">
 <ImageButton
   android:id="@+id/zur_naechsten_station"
   android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:src="@drawable/zur_naechsten_station"
+  android:layout_height="25dp"
   android:visibility="gone"
   android:layout_centerHorizontal="true"
   android:layout_above="@+id/station_wiederholen"
   android:background="@color/transparent"
   android:layout_marginBottom="20dp"
+  android:scaleType="fitCenter"
   />
 
 <ImageButton
   android:id="@+id/zur_tourenauswahl"
   android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:src="@drawable/zur_tourenauswahl"
+  android:layout_height="25dp"
   android:visibility="gone"
   android:layout_centerHorizontal="true"
   android:layout_above="@+id/station_wiederholen"
   android:background="@color/transparent"
   android:layout_marginBottom="20dp"
+  android:scaleType="fitCenter"
   />
 
 <ImageButton
   android:id="@+id/station_wiederholen"
   android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:src="@drawable/station_wiederholen"
+  android:layout_height="25dp"
   android:visibility="visible"
   android:layout_centerHorizontal="true"
   android:layout_centerVertical="true"
   android:background="@color/transparent"
+  android:scaleType="fitCenter"
   />
 
 </RelativeLayout>

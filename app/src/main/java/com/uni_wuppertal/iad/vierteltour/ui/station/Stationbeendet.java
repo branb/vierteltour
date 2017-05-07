@@ -36,8 +36,11 @@ public class Stationbeendet extends Activity {
     x = (ImageButton) findViewById( R.id.station_x_button );
     Sharp.loadResource(getResources(), R.raw.beenden_hell).into(x);
     station_wiederholen = (ImageButton) findViewById( R.id.station_wiederholen );
+    Sharp.loadResource(getResources(), R.raw.station_wiederholen).into(station_wiederholen);
     zur_naechsten_station = (ImageButton) findViewById( R.id.zur_naechsten_station );
+    Sharp.loadResource(getResources(), R.raw.zur_naechsten_station).into(zur_naechsten_station);
     zur_tourenauswahl = (ImageButton) findViewById( R.id.zur_tourenauswahl );
+    Sharp.loadResource(getResources(), R.raw.zur_tourenauswahl).into(zur_tourenauswahl);
     beendet_text = (TextView) findViewById(R.id.stationbeendettext);
 
     getIntent = getIntent();

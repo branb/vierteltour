@@ -35,7 +35,7 @@ public class TourAdapter extends BaseAdapter{
 
   private Context context;
   private View view;
-  private ImageView downloadbutton;
+  private ImageView geladen, laden;
   private TextView downloadtext;
   private Singletonint singlepage;
   private ViewGroup ownContainer;
@@ -79,8 +79,12 @@ public class TourAdapter extends BaseAdapter{
 
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
-    downloadbutton = (ImageView) convertView.findViewById( R.id.downloadview);
-    downloadbutton.setTag("ok"+position);
+    geladen = (ImageView) convertView.findViewById( R.id.geladen);
+    geladen.setTag("ok"+position);
+    Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
+    laden = (ImageView) convertView.findViewById( R.id.laden);
+    laden.setTag("laden"+position);
+    Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
     downloadtext = (TextView) convertView.findViewById(R.id.downloadtext);
     downloadtext.setTag("text"+position);
     final TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
@@ -95,11 +99,13 @@ public class TourAdapter extends BaseAdapter{
     convertView.setBackgroundColor( Color.parseColor( tour.color() ) );
 
     if(sharedPreferences.getBoolean(tour.slug(), false))
-      {downloadbutton.setImageResource(R.drawable.ok);
+      {geladen.setVisibility(View.VISIBLE);
+        laden.setVisibility(View.GONE);
       downloadtext.setText("geladen");
       downloadtext.setVisibility(View.VISIBLE);
       btnStart.setVisibility(View.VISIBLE);}
-    else{downloadbutton.setImageResource(R.drawable.laden);
+    else{geladen.setVisibility(View.GONE);
+      laden.setVisibility(View.VISIBLE);
       downloadtext.setVisibility(View.GONE);
       btnStart.setVisibility(View.INVISIBLE);
      }
@@ -109,15 +115,13 @@ public class TourAdapter extends BaseAdapter{
     imgAuthor.setImageBitmap(mBitmapInsurance);
     //imgAuthor.setImageURI( Uri.fromFile(new File(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(), tour.image())+tour.image()+".png")));
 
-      downloadbutton.setOnClickListener(new View.OnClickListener() {
+      laden.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        TextView checkVisibility = (TextView)ownContainer.findViewWithTag("text"+position);
-        if(checkVisibility.getVisibility()==View.GONE)
-        {if(context instanceof MapsActivity){
+        if(context instanceof MapsActivity){
           createDownloadDialog("Willst du die Tour "+ txtTitle.getText() + " herunterladen?\nHinweis: Verwende dein WLAN", tour.slug(), position);
 
-        }}}});
+        }}});
 
     txtTitle.setText( tour.name() );
     txtAuthor.setText( tour.author() );

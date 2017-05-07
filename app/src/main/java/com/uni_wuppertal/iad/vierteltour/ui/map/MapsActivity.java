@@ -13,6 +13,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
@@ -74,6 +76,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 import com.pixplicity.sharp.Sharp;
+import com.pixplicity.sharp.SharpDrawable;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.intro.IntroActivity;
@@ -118,7 +121,7 @@ import static android.location.GpsStatus.GPS_EVENT_STOPPED;
  * MapsActivity is the main activity of the application
  */
 
-public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback, UpdateListener{
+public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback, UpdateListener {
 
   public Location MyLocation;
   public LatLng pos;
@@ -128,16 +131,16 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private GoogleApiClient googleApiClient;
   private LocationSettingsRequest.Builder builder;
   public int CurrentZoom = 15;
-  int[] drawerIcons = new int[]{ R.drawable.einstellungen,
-                                 R.drawable.hilfe,
-                                 R.drawable.about
+  int[] drawerIcons = new int[]{R.drawable.einstellungen,
+    R.drawable.hilfe,
+    R.drawable.about
   };
-  String[] drawertitles = new String[]{ "Einstellungen",
-                                        "Info",
-                                        "About"
+  String[] drawertitles = new String[]{"Einstellungen",
+    "Info",
+    "About"
   };
   protected static final int TINY_BAR = 0x101, BIG_BAR = 0x102, SEEK_BAR = 0x103;
-  private final double radius=25;
+  private final double radius = 25;
   private ActionBar actionBar;
   private DrawerLayout mDrawerLayout;
   private ListView mDrawerList;
@@ -165,21 +168,22 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private RelativeLayout panel, gpsinfo, stationLayout;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
-  static final int BACK_FROM_SETTINGS = 1, BACK_FROM_GALLERY = 2, BACK_FROM_STATION_FINISHED = 3, STATION_BEENDET_GALLERY=4;  // The request code
+  static final int BACK_FROM_SETTINGS = 1, BACK_FROM_GALLERY = 2, BACK_FROM_STATION_FINISHED = 3, STATION_BEENDET_GALLERY = 4;  // The request code
   // All the tour stationactivity that is currently available to us
   private TourList tourlist;
 
   //Start StationActivity
   String color, author, name, length, desc, time, slug, path;
   int number, size;
-  static boolean stationActivityRunning=false;
+  static boolean stationActivityRunning = false;
   SeekBar seekbar, seekbar_supl;        //Fortschrittsbalken
   ImageButton play_button, play_button_supl;      //diverse Bilderbuttons
-  int isimages=-1;
+  int isimages = -1;
   boolean startaudio = true;  //Variable für Status des Play-Buttons
-  Handler seekHandler = new Handler();;
+  Handler seekHandler = new Handler();
+  ;
   TextView duration, duration_supl;  //Textfeld
-  TextView  routenname, prof, info2, description, stationtitle;
+  TextView routenname, prof, info2, description, stationtitle;
   double timeElapsed = 0;
   int dotsCount;
   ImageView dots[], tourimage, pager_play_btn, pfeilhell;
@@ -193,7 +197,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   ScrollView scroll;
   LinearLayout pager_indicator;
   RelativeLayout gesperrt, videopanel, panel_top;
-  boolean sperrvariable=true, stationEnabled=false;
+  boolean sperrvariable = true, stationEnabled = false;
   String audio, video;
   //End StationActivity
 
@@ -201,7 +205,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private GoogleMap mMap;
 
   // Indicates, if we have checked for new updates on tourdata. Needed at the start of the app
-  private boolean checkedForUpdates = false, tourdataAvailable = false, zoomToLocation=false;
+  private boolean checkedForUpdates = false, tourdataAvailable = false, zoomToLocation = false;
 
   // TODO: Save the currently displayed city into shared preferences and load them on startup
   // Slug of the currently displayed city, e.g. the currently available and displayed tours
@@ -223,13 +227,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Circle mapCircle;
 
   @Override
-  protected void onCreate( Bundle savedInstanceState ){
-    super.onCreate( savedInstanceState );
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
     ReplaceFont.replaceDefaultFont(this, "MONOSPACE", "Bariol_Regular.ttf");
 
-    setContentView( R.layout.activity_main );
+    setContentView(R.layout.activity_main);
 
-    player = ViertelTourMediaPlayer.getInstance( this );
+    player = ViertelTourMediaPlayer.getInstance(this);
 
     initLocationServices();
     initAll();
@@ -248,15 +252,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
   @Override
-  public void onDestroy(){
+  public void onDestroy() {
     super.onDestroy();
-    if(googleApiClient!=null) googleApiClient.disconnect();
-    if( stationAdapter.fragments.size() != 0 ){
+    if (googleApiClient != null) googleApiClient.disconnect();
+    if (stationAdapter.fragments.size() != 0) {
       stationAdapter.deleteStrings();
       stationAdapter.fragments.clear();
     }
   }
-
 
 
   /**
@@ -274,11 +277,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     mPager.setOnItemClickListener(new ClickableViewpager.OnItemClickListener() {
       @Override
       public void onItemClick(int position) {
-  if(singlepage.INSTANCE.onfragmentclicked()!=-1)
-  {mPager.setCurrentItem(singlepage.INSTANCE.onfragmentclicked()-1);
-        if(singlepage.INSTANCE.selectedStation().number()==singlepage.INSTANCE.onfragmentclicked())
-        {startStationActivity();
-         }}}
+        if (singlepage.INSTANCE.onfragmentclicked() != -1) {
+          mPager.setCurrentItem(singlepage.INSTANCE.onfragmentclicked() - 1);
+          if (singlepage.INSTANCE.selectedStation().number() == singlepage.INSTANCE.onfragmentclicked()) {
+            startStationActivity();
+          }
+        }
+      }
     });
 
 
@@ -292,29 +297,29 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     zumstart = (ImageButton) findViewById(R.id.zumstart);       //SUPL Button bottom right
     Sharp.loadResource(getResources(), R.raw.zum_start).into(zumstart);
 
-    x_supl = (ImageButton) findViewById( R.id.x );               //SUPL Button top left
+    x_supl = (ImageButton) findViewById(R.id.x);               //SUPL Button top left
     Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(x_supl);
 
-    arrowbtn = (ImageButton) findViewById( R.id.arrowbtn );       //Top Twin Button
+    arrowbtn = (ImageButton) findViewById(R.id.arrowbtn);       //Top Twin Button
     Sharp.loadResource(getResources(), R.raw.google_navi_dunkel).into(arrowbtn);
 
-    gpsbtn = (Button) findViewById( R.id.gpsbtn );           //Red Button left Bottom corner
+    gpsbtn = (Button) findViewById(R.id.gpsbtn);           //Red Button left Bottom corner
 
-    tarbtn = (ImageButton) findViewById( R.id.tarbtn );           //Bot Twin Button
+    tarbtn = (ImageButton) findViewById(R.id.tarbtn);           //Bot Twin Button
     Sharp.loadResource(getResources(), R.raw.standort).into(tarbtn);
 
-    tourenliste = (TextView) findViewById( R.id.tourenliste );
+    tourenliste = (TextView) findViewById(R.id.tourenliste);
 
-    subtext1 = (TextView) findViewById( R.id.subinfo1 );
-    subtext2 = (TextView) findViewById( R.id.subinfo2 );
-    up = (ImageView) findViewById( R.id.up );
+    subtext1 = (TextView) findViewById(R.id.subinfo1);
+    subtext2 = (TextView) findViewById(R.id.subinfo2);
+    up = (ImageView) findViewById(R.id.up);
     Sharp.loadResource(getResources(), R.raw.pfeil_hoch).into(up);
 
-    down = (ImageView) findViewById( R.id.down );
+    down = (ImageView) findViewById(R.id.down);
     Sharp.loadResource(getResources(), R.raw.pfeil_runter).into(down);
 
     stationLayout = (RelativeLayout) findViewById(R.id.station);
-    gpsinfo = (RelativeLayout) findViewById( R.id.gpsinfo );
+    gpsinfo = (RelativeLayout) findViewById(R.id.gpsinfo);
     seekbar_layout_supl = (RelativeLayout) findViewById(R.id.media_panel_supl);
     duration_supl = (TextView) findViewById(R.id.duration_supl);
     seekbar_supl = (SeekBar) findViewById(R.id.seek_bar_supl);
@@ -328,16 +333,16 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   /**
    * shows intro of the application
    */
-  private void showIntro(){
+  private void showIntro() {
     //  Declare a new thread to do a preference check
-    Thread t = new Thread( new Runnable(){
+    Thread t = new Thread(new Runnable() {
       @Override
-      public void run(){
+      public void run() {
         //  If the activity has never started before...
-        if( PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean( "firstStart", true ) ){
+        if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("firstStart", true)) {
           //  Launch app intro
-          Intent i = new Intent( MapsActivity.this, IntroActivity.class );
-          startActivity( i );
+          Intent i = new Intent(MapsActivity.this, IntroActivity.class);
+          startActivity(i);
         }
 
       }
@@ -348,16 +353,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   }
 
 
-
   /**
    * Check for updates
    */
-  private void checkForUpdates(){
-    if( !checkedForUpdates ){
-      Updater.get( getBaseContext() ).updateListener( this );
-      Updater.get( getBaseContext() ).updatesOnTourdata(this);
-    }
-    else if( !Updater.get( getBaseContext() ).checkingForUpdates() ) {
+  private void checkForUpdates() {
+    if (!checkedForUpdates) {
+      Updater.get(getBaseContext()).updateListener(this);
+      Updater.get(getBaseContext()).updatesOnTourdata(this);
+    } else if (!Updater.get(getBaseContext()).checkingForUpdates()) {
       loadTourdata();
     }
 
@@ -368,7 +371,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * Get notified when the map is ready to be used.
    */
   @Override
-  public void onMapReady( GoogleMap googleMap ){
+  public void onMapReady(GoogleMap googleMap) {
     mMap = googleMap;
 
     getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -379,18 +382,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     {
       actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
     }*/
-    wuppertal = new LatLng( 51.256972, 7.139341 );
+    wuppertal = new LatLng(51.256972, 7.139341);
     //Gesamte Bildschirmgröße - Toolbargröße
-   //int pxPager = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
-    mMap.setPadding(0,0,0,pxPager);
+    //int pxPager = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
+    mMap.setPadding(0, 0, 0, pxPager);
 
 
-
-    mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( wuppertal, CurrentZoom ) );
+    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wuppertal, CurrentZoom));
 
     checkForUpdates();
-
-
 
 
     /**
@@ -399,112 +399,126 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
      *
      *
      */
-    final GoogleMap.OnMapClickListener listener = new GoogleMap.OnMapClickListener(){
+    final GoogleMap.OnMapClickListener listener = new GoogleMap.OnMapClickListener() {
       @Override
-      public void onMapClick( LatLng clickCoords ){
-      if(tourdataAvailable)
-      {  if( supl.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED ){
-          boolean test=false;
-          for( Tour tour : tourlist.city(visibleCity).tours() ){
+      public void onMapClick(LatLng clickCoords) {
+        if (tourdataAvailable) {
+          if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            boolean test = false;
+            for (Tour tour : tourlist.city(visibleCity).tours()) {
 
-            if( PolyUtil.isLocationOnPath( clickCoords, tour.route().latLngs(), false, 10) ){
-              test=true;
-              if(singlepage.INSTANCE.selectedTour()!=tour)
-              {selectTour( tour );
-              suplInfo( "showall" );
-              drawRoutes();
-              break;}
+              if (PolyUtil.isLocationOnPath(clickCoords, tour.route().latLngs(), false, 10)) {
+                test = true;
+                if (singlepage.INSTANCE.selectedTour() != tour) {
+                  selectTour(tour);
+                  suplInfo("showall");
+                  drawRoutes();
+                  break;
+                }
+              }
             }
-          }
-          if( singlepage.INSTANCE.selectedTour()!=null && !test){
-            resetTour();
-          }
+            if (singlepage.INSTANCE.selectedTour() != null && !test) {
+              resetTour();
+            }
 
-        }
-        //Stationenübersicht
-        else if(supl.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN)
-        { Boolean onMapClicked=false;       //unselect Stations
-          Tour tour = singlepage.INSTANCE.selectedTour();
-          for( Station station : tour.stations())
-            { if( clickCoords.equals(station.latlng())){
-              onMapClicked=true;
-                mPager.setCurrentItem(station.number()-1, false);
+          }
+          //Stationenübersicht
+          else if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
+            Boolean onMapClicked = false;       //unselect Stations
+            Tour tour = singlepage.INSTANCE.selectedTour();
+            for (Station station : tour.stations()) {
+              if (clickCoords.equals(station.latlng())) {
+                onMapClicked = true;
+                mPager.setCurrentItem(station.number() - 1, false);
                 stationAdapter.notifyDataSetChanged();
+              }
+
             }
-
-      }
-          if(!onMapClicked && tmpmarker!=null) tmpmarker.showInfoWindow();
+            if (!onMapClicked && tmpmarker != null) tmpmarker.showInfoWindow();
 
 
+          }
         }
-      }
 
 
       }
     };
 
-    mMap.setOnMapClickListener( listener );
+    mMap.setOnMapClickListener(listener);
     mMap.setInfoWindowAdapter(new MapWindowAdapter(this));
 
-    mMap.setOnMarkerClickListener( new GoogleMap.OnMarkerClickListener(){
+    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
       @Override
-      public boolean onMarkerClick(Marker marker ){
-        listener.onMapClick( marker.getPosition() );
+      public boolean onMarkerClick(Marker marker) {
+        listener.onMapClick(marker.getPosition());
         return true;    // false: OnMarkerClick aktiv und zoomt zum Marker
       }
-    } );
-
+    });
 
 
   }
-/**
-* Will be used if a station is selected
- *
- * @param station Station will be marked as selected
-* */
+
+  /**
+   * Will be used if a station is selected
+   *
+   * @param station Station will be marked as selected
+   */
 //Wird aufgerufen, sobald eine Station ausgewaehlt wird
-  public void selectStation(Station station)
-  {//selectedOldStation dient als Zwischenspeicher der abgewaehlten Station
+  public void selectStation(Station station) {//selectedOldStation dient als Zwischenspeicher der abgewaehlten Station
 //selectedStation dient als Zwischenspeicher der ausgewaehlten Station
 //vorherig ausgewaehlte Station wird abgewaehlte Station
     singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());   //vorherige Station wird alte Station
     singlepage.INSTANCE.selectedStation(station);       //Setzt neue Station
     //loescht alte Station, setzt Groesse auf Ursprung zurueck
     //Ausnahme: Einleitungen haben keine Marker
-    if(singlepage.INSTANCE.selectedOldStation()!=null && !singlepage.INSTANCE.selectedOldStation().slug().contains("einleitung"))
-    { removeStation(singlepage.INSTANCE.selectedOldStation().slug());
+    if (singlepage.INSTANCE.selectedOldStation() != null && !singlepage.INSTANCE.selectedOldStation().slug().contains("einleitung")) {
+      removeStation(singlepage.INSTANCE.selectedOldStation().slug());
       Marker m;
-      if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")) m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number()-1+""))));
+      if (singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
+        m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() - 1 + ""))));
         //Ausgewaehlte Station wird per Bitmap groesser skaliert
-      else m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number()+""))));
+      else
+        m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() + ""))));
       //Erstellte Bitmap wird der Karte hinzugefuegt
       tourMarker.put(singlepage.INSTANCE.selectedOldStation().slug(), m);
 
-    //delete Circle
-      if(mapCircle!=null)mapCircle.remove(); }
+      //delete Circle
+      if (mapCircle != null) mapCircle.remove();
+    }
 
     //Lösche neue Station und setze vergrößerten Pin
-    if(!singlepage.INSTANCE.selectedStation().slug().contains("einleitung"))
-    {// Setze Kreis auf neue Station
-      circle.center( station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0,1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1,singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8).visible(true);
+    if (!singlepage.INSTANCE.selectedStation().slug().contains("einleitung")) {// Setze Kreis auf neue Station
+      circle.center(station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0, 1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1, singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8).visible(true);
       mapCircle = mMap.addCircle(circle);
 
       removeStation(singlepage.INSTANCE.selectedStation().slug());
       Marker m;
-      int countnumber=0;
-      if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
-      {try{while(singlepage.INSTANCE.countWaypoints().get(countnumber)<(station.number()-1))countnumber++;}catch (Exception e){}
-        m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number()-1)))));}
-      else
-      { try{while(singlepage.INSTANCE.countWaypoints().get(countnumber)<(station.number()))countnumber++;}catch (Exception e){}
-        m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number())))));}
+      int countnumber = 0;
+      if (singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")) {
+        try {
+          while (singlepage.INSTANCE.countWaypoints().get(countnumber) < (station.number() - 1))
+            countnumber++;
+        } catch (Exception e) {
+        }
+        m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number() - 1)))));
+      } else {
+        try {
+          while (singlepage.INSTANCE.countWaypoints().get(countnumber) < (station.number()))
+            countnumber++;
+        } catch (Exception e) {
+        }
+        m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number())))));
+      }
       m.showInfoWindow();
-      tourMarker.put(singlepage.INSTANCE.selectedStation().slug(), m);}
+      tourMarker.put(singlepage.INSTANCE.selectedStation().slug(), m);
+    }
 
-    if(PreferenceManager
-      .getDefaultSharedPreferences( getBaseContext() ).getBoolean(station.slug(), false) || station.slug().startsWith("einleitung"))
-    {gpsbtn.setVisibility(View.GONE);}
-    else {gpsbtn.setVisibility(View.VISIBLE);}
+    if (PreferenceManager
+      .getDefaultSharedPreferences(getBaseContext()).getBoolean(station.slug(), false) || station.slug().startsWith("einleitung")) {
+      gpsbtn.setVisibility(View.GONE);
+    } else {
+      gpsbtn.setVisibility(View.VISIBLE);
+    }
   }
 
 
@@ -514,46 +528,50 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    *
    * @param tour Tour to blend with the background
    */
-  private void fadeTour( Tour tour ){
-    String color = "#30" + tour.color().substring( 1, 7 ); // #xx (Hex) transparency
+  private void fadeTour(Tour tour) {
+    String color = "#30" + tour.color().substring(1, 7); // #xx (Hex) transparency
 
-    polylines.get(tour.slug()).color( Color.parseColor( color ) );
+    polylines.get(tour.slug()).color(Color.parseColor(color));
 
-    for( Station station : tour.stations() ){
-      markers.get( station.slug() ).alpha( 0.3f );
+    for (Station station : tour.stations()) {
+      markers.get(station.slug()).alpha(0.3f);
     }
   }
 
-  public TourList tourlist()
-  {return tourlist;}
+  public TourList tourlist() {
+    return tourlist;
+  }
 
   /**
    * Redraws Marker with a bigger size
-   * @param tour Tour is needed to get the right Marker Color
+   *
+   * @param tour      Tour is needed to get the right Marker Color
    * @param tmpNumber Number is needed to draw the right number into the Marker
    * @return Marker as Bitmap will be returned
-     */
-  public Bitmap scaleMarker (Tour tour, String tmpNumber)
-  {Bitmap tmpMarker = markertext(tour,tmpNumber);
+   */
+  public Bitmap scaleMarker(Tour tour, String tmpNumber) {
+    Bitmap tmpMarker = markertext(tour, tmpNumber);
     double height, width;
     height = tmpMarker.getHeight();
     width = tmpMarker.getWidth();
-    return Bitmap.createScaledBitmap(tmpMarker,(int) (width*1.5),(int) (height*1.5), true);}
+    return Bitmap.createScaledBitmap(tmpMarker, (int) (width * 1.5), (int) (height * 1.5), true);
+  }
 
   Handler myHandler = new Handler() {
     public void handleMessage(Message msg) {
       switch (msg.what) {
         case MapsActivity.TINY_BAR:
-          supl.setPanelHeight(panel_top.getHeight());;
+          supl.setPanelHeight(panel_top.getHeight());
+          ;
           break;
 
-      case MapsActivity.BIG_BAR:
-        supl.setPanelHeight(defaultPanelHeight);
-        supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );
-      break;
+        case MapsActivity.BIG_BAR:
+          supl.setPanelHeight(defaultPanelHeight);
+          supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+          break;
 
         case MapsActivity.SEEK_BAR:
-          supl.setPanelHeight(panel_top.getHeight() + 63 + (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, displayMetrics));
+          supl.setPanelHeight(panel_top.getHeight() + 63 + (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, displayMetrics));
           break;
       }
       super.handleMessage(msg);
@@ -561,31 +579,36 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   };
 
 
-
   //Station Activity
+
   /**
    * Starts Station Activity will all needed Extras
    */
-  public void startStationActivity()
-  { pager_layout.setVisibility(View.GONE);
-    mMap.setPadding(0,0,0,0);
+  public void startStationActivity() {
+    pager_layout.setVisibility(View.GONE);
+    mMap.setPadding(0, 0, 0, 0);
     startStationLayout();
-    supl.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);}
+    supl.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+  }
 
 
-  public void startStationLayout()
-  {//if(seekbar_layout_supl.getVisibility()==View.VISIBLE)suplInfo("h_seekbar");
+  public void startStationLayout() {//if(seekbar_layout_supl.getVisibility()==View.VISIBLE)suplInfo("h_seekbar");
     lv.setVisibility(View.GONE);
     slidingLayout.setVisibility(View.VISIBLE);
-   stationLayout.setVisibility(View.VISIBLE);
+    stationLayout.setVisibility(View.VISIBLE);
     supl.setScrollableView(scroll);
     x_supl.setVisibility(View.GONE);
     panel_top.setClickable(true);
     panel_top.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if(player.isPlaying()){suplInfo("s_seekbar"); panel_top.setClickable(false);}
-        else{supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}
+        if (player.isPlaying()) {
+          suplInfo("s_seekbar");
+          panel_top.setClickable(false);
+        } else {
+          supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+          pager_layout.setVisibility(View.VISIBLE);
+        }
 
       }
     });
@@ -600,123 +623,127 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
   }
 
-  public void initLayout()
-  {
-    stationActivityRunning=true;
+  public void initLayout() {
+    stationActivityRunning = true;
     length = singlepage.INSTANCE.selectedTour().length();
     desc = singlepage.INSTANCE.selectedTour().description();
     time = singlepage.INSTANCE.selectedTour().time();
     author = singlepage.INSTANCE.selectedTour().author();
     slug = singlepage.INSTANCE.selectedStation().slug();
     color = singlepage.INSTANCE.selectedTour().color();
-    size = (singlepage.INSTANCE.selectedTour().stations().size()-1);
-    number = (singlepage.INSTANCE.selectedStation().number()-1);
+    size = (singlepage.INSTANCE.selectedTour().stations().size() - 1);
+    number = (singlepage.INSTANCE.selectedStation().number() - 1);
     name = singlepage.INSTANCE.selectedTour().name();
-    path = OurStorage.get(this).storagePath()+"/"+OurStorage.get(this).lookForTourFile(tourlist(), singlepage.INSTANCE.selectedTour().image());
-    layout = (RelativeLayout) findViewById( R.id.rellayout );
-    layout.setBackgroundColor( Color.parseColor( color ) );
-    scroll = (ScrollView) findViewById( R.id.scroll);
-    scroll.setBackgroundColor(Color.parseColor( color ));
+    path = OurStorage.get(this).storagePath() + "/" + OurStorage.get(this).lookForTourFile(tourlist(), singlepage.INSTANCE.selectedTour().image());
+    layout = (RelativeLayout) findViewById(R.id.rellayout);
+    layout.setBackgroundColor(Color.parseColor(color));
+    scroll = (ScrollView) findViewById(R.id.scroll);
+    scroll.setBackgroundColor(Color.parseColor(color));
     scroll.fullScroll(View.FOCUS_UP);
-    stationtitle = (TextView) findViewById( R.id.stationtitle );
-    stationtitle.setText( singlepage.INSTANCE.selectedStation().name() + "  (" + number + "/" + size + ")" );
-    if(slug.contains("einleitung"))stationtitle.setText("Einleitung");
-    routenname = (TextView) findViewById( R.id.routenname );
-    routenname.setText( name );
+    stationtitle = (TextView) findViewById(R.id.stationtitle);
+    stationtitle.setText(singlepage.INSTANCE.selectedStation().name() + "  (" + number + "/" + size + ")");
+    if (slug.contains("einleitung")) stationtitle.setText("Einleitung");
+    routenname = (TextView) findViewById(R.id.routenname);
+    routenname.setText(name);
     tourimage = (ImageView) findViewById(R.id.routenbild);
-    tourimage.setImageURI( Uri.fromFile(new File(path+singlepage.INSTANCE.selectedTour().image()+".png")));
-    prof = (TextView) findViewById( R.id.routeninfo1 );
-    prof.setText( author );
-    info2 = (TextView) findViewById( R.id.routeninfo2 );
-    info2.setText( time + "/" + length );
-    description = (TextView) findViewById( R.id.stationenbeschreibung );
-    description.setText( singlepage.INSTANCE.selectedStation().description() );
+    tourimage.setImageURI(Uri.fromFile(new File(path + singlepage.INSTANCE.selectedTour().image() + ".png")));
+    prof = (TextView) findViewById(R.id.routeninfo1);
+    prof.setText(author);
+    info2 = (TextView) findViewById(R.id.routeninfo2);
+    info2.setText(time + "/" + length);
+    description = (TextView) findViewById(R.id.stationenbeschreibung);
+    description.setText(singlepage.INSTANCE.selectedStation().description());
     singlepage.INSTANCE.position(0);
 
-    seekbar = (SeekBar) findViewById( R.id.seek_bar );
+    seekbar = (SeekBar) findViewById(R.id.seek_bar);
     pager_play_btn = (ImageView) findViewById(R.id.pager_play_button);
-    play_button = (ImageButton) findViewById( R.id.play_button );
-    duration = (TextView) findViewById( R.id.duration );
+    play_button = (ImageButton) findViewById(R.id.play_button);
+    duration = (TextView) findViewById(R.id.duration);
     gesperrt = (RelativeLayout) findViewById(R.id.gesperrt);
     pfeilhell = (ImageView) findViewById(R.id.pfeilhell);
-    imagePager = (ViewPager) findViewById( R.id.ImagePager );
+    imagePager = (ViewPager) findViewById(R.id.ImagePager);
     imagePager.setOffscreenPageLimit(2);
     String imagesFromXML = singlepage.INSTANCE.selectedStation().imagesToString();
     stationImagePaths = new ArrayList<String>();
-    if( !imagesFromXML.isEmpty() ){
+    if (!imagesFromXML.isEmpty()) {
       stationImagePaths = new ArrayList<String>(Arrays.asList(imagesFromXML.split("\\s*,\\s*")));
     }
 
     video = singlepage.INSTANCE.selectedStation().videosToString();
-    if(!video.isEmpty()){
-      stationImagePaths.add(0,singlepage.INSTANCE.selectedStation().videosToString());
+    if (!video.isEmpty()) {
+      stationImagePaths.add(0, singlepage.INSTANCE.selectedStation().videosToString());
     }
     audio = singlepage.INSTANCE.selectedStation().audio();
-    mAdapter = new com.uni_wuppertal.iad.vierteltour.ui.station.StationAdapter( this, stationImagePaths);
-    pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
+    mAdapter = new com.uni_wuppertal.iad.vierteltour.ui.station.StationAdapter(this, stationImagePaths);
+    pager_indicator = (LinearLayout) findViewById(R.id.viewPagerCountDots);
     videopanel = (RelativeLayout) findViewById(R.id.video_panel);
-    imagePager.setAdapter( mAdapter );
+    imagePager.setAdapter(mAdapter);
     seekbar.setOnSeekBarChangeListener(customSeekBarListener);
     seekbar_supl.setOnSeekBarChangeListener(customSeekBarListener);
     setImageResource(true);
   }
 
-  public void endStationLayout()
-  {
+  public void endStationLayout() {
     lv.setVisibility(View.VISIBLE);
     supl.setScrollableView(lv);
     stationLayout.setVisibility(View.GONE);
     slidingLayout.setVisibility(View.GONE);
-    if(imagePager!=null)
-    {imagePager.removeAllViews();
-    imagePager.getAdapter().notifyDataSetChanged();}
-
-    singlepage.INSTANCE.position(0);
-    stationActivityRunning=false;
-    panel_top.setClickable(false);
-
+    if (imagePager != null) {
+      imagePager.removeAllViews();
+      imagePager.getAdapter().notifyDataSetChanged();
     }
 
+    singlepage.INSTANCE.position(0);
+    stationActivityRunning = false;
+    panel_top.setClickable(false);
 
-  Runnable run = new Runnable(){
+  }
+
+
+  Runnable run = new Runnable() {
     @Override
-    public void run(){
+    public void run() {
       seekUpdationAudio();
     }
   };
+
   /**
    * Updating Audio seekbar and textview
    */
-  public void seekUpdationAudio(){
-    if( player != null && startaudio ){
+  public void seekUpdationAudio() {
+    if (player != null && startaudio) {
 
-      seekbar.setProgress( player.getCurrentPosition() );
-      seekbar_supl.setProgress( player.getCurrentPosition());
+      seekbar.setProgress(player.getCurrentPosition());
+      seekbar_supl.setProgress(player.getCurrentPosition());
       timeElapsed = player.getCurrentPosition();
 
-      duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
-      duration_supl.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
-      seekHandler.postDelayed( run, 100 );
+      duration.setText(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
+      duration_supl.setText(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
+      seekHandler.postDelayed(run, 100);
     }
   }
 
   /**
    * Checks with SharedPreferences, if the station can be shown
    */
-  public void checkGPS()
-  {SharedPreferences prefs =
-    PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-    if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false) || slug.startsWith("einleitung"))
-    {sperrvariable=false;}
-    else{sperrvariable=true;}
+  public void checkGPS() {
+    SharedPreferences prefs =
+      PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+    if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean(slug, false) || slug.startsWith("einleitung")) {
+      sperrvariable = false;
+    } else {
+      sperrvariable = true;
+    }
 
     SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
       @Override
       public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        if(PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).getBoolean(slug, false) || slug.startsWith("einleitung"))
-        {sperrvariable=false;
-          setVisibility();}
-        else{sperrvariable=true;}
+        if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean(slug, false) || slug.startsWith("einleitung")) {
+          sperrvariable = false;
+          setVisibility();
+        } else {
+          sperrvariable = true;
+        }
       }
     };
     prefs.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
@@ -725,50 +752,56 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   /**
    * Filters available layout
    */
-  public void setVisibility(){
-    if( !audio.contains(".mp3") || sperrvariable || OurStorage.get(this).pathToFile(audio)==null){
-      seekbar.setVisibility( View.GONE );
-      play_button.setVisibility( View.GONE );
-      duration.setVisibility( View.GONE );
+  public void setVisibility() {
+    if (!audio.contains(".mp3") || sperrvariable || OurStorage.get(this).pathToFile(audio) == null) {
+      seekbar.setVisibility(View.GONE);
+      play_button.setVisibility(View.GONE);
+      duration.setVisibility(View.GONE);
+    } else {
+      seekbar.setVisibility(View.VISIBLE);
+      play_button.setVisibility(View.VISIBLE);
+      duration.setVisibility(View.VISIBLE);
     }
-    else{seekbar.setVisibility( View.VISIBLE );
-      play_button.setVisibility( View.VISIBLE );
-      duration.setVisibility( View.VISIBLE );}
 
-    if( (stationImagePaths.size() == 0 && video.isEmpty()) || sperrvariable ){
-      imagePager.setVisibility( View.GONE );
+    if ((stationImagePaths.size() == 0 && video.isEmpty()) || sperrvariable) {
+      imagePager.setVisibility(View.GONE);
       pager_indicator.setVisibility(View.GONE);
       videopanel.setVisibility(View.GONE);
-    }else{imagePager.setVisibility( View.VISIBLE );
+    } else {
+      imagePager.setVisibility(View.VISIBLE);
       pager_indicator.setVisibility(View.VISIBLE);
-      videopanel.setVisibility(View.VISIBLE);}
+      videopanel.setVisibility(View.VISIBLE);
+    }
 
-    if(sperrvariable)
-    {gesperrt.setVisibility(View.VISIBLE);
+    if (sperrvariable) {
+      gesperrt.setVisibility(View.VISIBLE);
       pfeilhell.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          sperrvariable=false;
+          sperrvariable = false;
           gesperrt.setVisibility(View.GONE);
-          if(audio.contains(".mp3") && OurStorage.get(getApplicationContext()).pathToFile(audio)!=null)
-          {seekbar.setVisibility( View.VISIBLE );
-            play_button.setVisibility( View.VISIBLE );
-            duration.setVisibility( View.VISIBLE );}
-          if(!(stationImagePaths.size() == 0 && video.isEmpty()))
-          {imagePager.setVisibility( View.VISIBLE );
+          if (audio.contains(".mp3") && OurStorage.get(getApplicationContext()).pathToFile(audio) != null) {
+            seekbar.setVisibility(View.VISIBLE);
+            play_button.setVisibility(View.VISIBLE);
+            duration.setVisibility(View.VISIBLE);
+          }
+          if (!(stationImagePaths.size() == 0 && video.isEmpty())) {
+            imagePager.setVisibility(View.VISIBLE);
             pager_indicator.setVisibility(View.VISIBLE);
-            videopanel.setVisibility(View.VISIBLE);}
+            videopanel.setVisibility(View.VISIBLE);
+          }
         }
       });
+    } else {
+      gesperrt.setVisibility(View.GONE);
     }
-    else{gesperrt.setVisibility(View.GONE);}
   }
 
   /**
    * Manages the dots below the viewpager
    */
-  private void setUiPageViewController(){
-    if(mAdapter.getCount()>1) {
+  private void setUiPageViewController() {
+    if (mAdapter.getCount() > 1) {
       pager_indicator.removeAllViews();
       dotsCount = mAdapter.getCount();
       dots = new ImageView[dotsCount];
@@ -796,133 +829,144 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   /**
    * Initialize audio
    */
-  public void initAudio(){
-    if( !audio.contains(".mp3") || OurStorage.get(getApplicationContext()).pathToFile(audio)==null){
+  public void initAudio() {
+    if (!audio.contains(".mp3") || OurStorage.get(getApplicationContext()).pathToFile(audio) == null) {
       singlepage.INSTANCE.isAudio(false);
       play_button.setVisibility(View.GONE);
       seekbar.setVisibility(View.GONE);
       duration.setVisibility(View.GONE);
       return;
     }
-    player = ViertelTourMediaPlayer.getInstance( this );
+    player = ViertelTourMediaPlayer.getInstance(this);
     singlepage.INSTANCE.isAudio(true);
 
 
     //number soll später mit id ersetzt werden, leider wurde id bis jetzt noch nicht gesetzt
     //Wenn die gleiche Station geöffnet wird, soll audio nicht neu geladen werden
-    if(singlepage.INSTANCE.getId() != number)
-    { player.loadAudio( audio );
-      singlepage.INSTANCE.setId(number);}
-
-
-
-    else if(player.isPlaying())
-    {startaudio = true;
-      setImageResource( false );
-      seekUpdationAudio();}
-
+    if (singlepage.INSTANCE.getId() != number) {
+      player.loadAudio(audio);
+      singlepage.INSTANCE.setId(number);
+    } else if (player.isPlaying()) {
+      startaudio = true;
+      setImageResource(false);
+      seekUpdationAudio();
+    }
 
 
     //CustomKlasse Seekbar
 
-    seekbar.setMax( player.getDuration() );
-    seekbar_supl.setMax( player.getDuration() );
-    seekbar.setProgress( player.getCurrentPosition() );
-    seekbar_supl.setProgress( player.getCurrentPosition() );
+    seekbar.setMax(player.getDuration());
+    seekbar_supl.setMax(player.getDuration());
+    seekbar.setProgress(player.getCurrentPosition());
+    seekbar_supl.setProgress(player.getCurrentPosition());
     seekbar_supl.getProgressDrawable().setColorFilter(
       Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
     seekbar_supl.getThumb().setColorFilter(Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
     timeElapsed = player.getCurrentPosition();
 
-    duration.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
-    duration_supl.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsed ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsed ) ) ) );
+    duration.setText(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
+    duration_supl.setText(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
 
-    player.setOnCompletionListener( new MediaPlayer.OnCompletionListener(){
+    player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
       @Override
-      public void onCompletion( MediaPlayer player ){
+      public void onCompletion(MediaPlayer player) {
         player.seekTo(0);
         startaudio = false;
-        setImageResource( true );
-        if(stationActivityRunning){
+        setImageResource(true);
+        if (stationActivityRunning) {
           Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
-          if(size==number){background.putExtra("vergleich", 1);}
-          else {background.putExtra("vergleich", 0);}
+          if (size == number) {
+            background.putExtra("vergleich", 1);
+          } else {
+            background.putExtra("vergleich", 0);
+          }
           background.putExtra("pfad", path);
           startActivityForResult(background, BACK_FROM_STATION_FINISHED);
           duration.setText("0:00");
           seekbar.setProgress(0);
-        seekbar_supl.setProgress(0);
+          seekbar_supl.setProgress(0);
          /* Message message = new Message();
           message.what = MapsActivity.BIG_BAR;
-          myHandler.sendMessage(message);*/}
-        else{seekbar_supl.setProgress(0); Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);duration_supl.setText("0:00");}
+          myHandler.sendMessage(message);*/
+        } else {
+          seekbar_supl.setProgress(0);
+          Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);
+          duration_supl.setText("0:00");
+        }
       }
 
     });
 
 
-
-    play_button.setOnClickListener( new View.OnClickListener(){
+    play_button.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick( View play ){
+      public void onClick(View play) {
 
-        switch( play.getId() ){
+        switch (play.getId()) {
           case R.id.play_button:
-            if( !player.isPlaying() ){
+            if (!player.isPlaying()) {
               startaudio = true;
               player.start();
-              setImageResource( false );
+              setImageResource(false);
               seekUpdationAudio();
               Message message = new Message();
               message.what = MapsActivity.SEEK_BAR;
               myHandler.sendMessage(message);
             } else {
-              startaudio=false;
+              startaudio = false;
               player.pause();
-              setImageResource( true );
+              setImageResource(true);
              /* Message message = new Message();
               message.what = MapsActivity.BIG_BAR;
               myHandler.sendMessage(message);*/
-            }break;}}});
+            }
+            break;
+        }
+      }
+    });
 
 
-    play_button_supl.setOnClickListener( new View.OnClickListener(){
+    play_button_supl.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick( View play ){
+      public void onClick(View play) {
 
-        switch( play.getId() ){
+        switch (play.getId()) {
           case R.id.play_button_supl:
-            if( !player.isPlaying() ){
+            if (!player.isPlaying()) {
               startaudio = true;
               player.start();
               Sharp.loadResource(getResources(), R.raw.stop_dunkel).into(play_button_supl);
               seekUpdationAudio();
             } else {
-              startaudio=false;
+              startaudio = false;
               player.pause();
               Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);
-            }break;}}});
+            }
+            break;
+        }
+      }
+    });
 
   }
 
 
-
-
-  public void startGallery()
-  {Intent gallery = new Intent(getApplicationContext(), GalleryMode.class);
+  public void startGallery() {
+    Intent gallery = new Intent(getApplicationContext(), GalleryMode.class);
     gallery.putExtra("resources", stationImagePaths);
     gallery.putExtra("station", name);
     gallery.putExtra("video", video);
     gallery.putExtra("pfad", path);
     gallery.putExtra("size", size);
-    gallery.putExtra("number", number-1);
+    gallery.putExtra("number", number - 1);
 
-    startActivityForResult(gallery, BACK_FROM_GALLERY);}
+    startActivityForResult(gallery, BACK_FROM_GALLERY);
+  }
+
   /**
    * Initializes images
    */
-  public void initImages(){
-    if( stationImagePaths.size() == 0 ){
+  public void initImages() {
+    if (stationImagePaths.size() == 0) {
       return;
     }
     pager_play_btn.setOnClickListener(new View.OnClickListener() {
@@ -931,108 +975,118 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         startGallery();
       }
     });
-    isimages=0;
+    isimages = 0;
     imagePager.setOnPageChangeListener(pagechangelisten);
     setUiPageViewController();
   }
 
   //Custom Class Seekbar start
-  public SeekBar.OnSeekBarChangeListener customSeekBarListener = new SeekBar.OnSeekBarChangeListener(){
+  public SeekBar.OnSeekBarChangeListener customSeekBarListener = new SeekBar.OnSeekBarChangeListener() {
     @Override
-    public void onProgressChanged( SeekBar seekBar, int progress, boolean fromUser ){
-      if( fromUser ){
-        player.seekTo( progress );
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+      if (fromUser) {
+        player.seekTo(progress);
       }
     }
 
     @Override
-    public void onStartTrackingTouch( SeekBar seekBar ){
+    public void onStartTrackingTouch(SeekBar seekBar) {
     }
 
     @Override
-    public void onStopTrackingTouch( SeekBar seekBar ){
+    public void onStopTrackingTouch(SeekBar seekBar) {
     }
   };
   //Custom Class Seekbar stop
 
   //ViewPager.OnPageChangeListener
-  ViewPager.OnPageChangeListener pagechangelisten = new ViewPager.OnPageChangeListener(){
+  ViewPager.OnPageChangeListener pagechangelisten = new ViewPager.OnPageChangeListener() {
     @Override
-    public void onPageScrolled( int position, float positionOffset, int positionOffsetPixels ){
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
     }
 
     @Override
-    public void onPageSelected( int position ){
-      isimages=position;
+    public void onPageSelected(int position) {
+      isimages = position;
       imagePager.setCurrentItem(position);
       singlepage.INSTANCE.position(position);
 
-      for( int i = 0; i < dotsCount; i++ ){
-        dots[i].setImageDrawable( getResources().getDrawable( R.drawable.nonselecteditem ) );
+      for (int i = 0; i < dotsCount; i++) {
+        dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));
       }
 
-      dots[position].setImageDrawable( getResources().getDrawable( R.drawable.selecteditem ) );
+      dots[position].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
     }
 
     @Override
-    public void onPageScrollStateChanged( int state ){
+    public void onPageScrollStateChanged(int state) {
     }
   };
   //Viewpager.onPageChangeListener end
 
   /**
    * calculates white or black color on seekbar in dependence of tour color
+   *
    * @param play
    */
-  public void setImageResource(boolean play)
-  {
-    int red = Integer.valueOf( color.substring( 1, 3 ), 16 );
-    int green = Integer.valueOf( color.substring( 3, 5 ), 16 );
-    int blue = Integer.valueOf( color.substring( 5, 7 ), 16 );
-    if ((red*0.299 + green*0.587 + blue*0.114) > 186)
-    {
+  public void setImageResource(boolean play) {
+    int red = Integer.valueOf(color.substring(1, 3), 16);
+    int green = Integer.valueOf(color.substring(3, 5), 16);
+    int blue = Integer.valueOf(color.substring(5, 7), 16);
+    if ((red * 0.299 + green * 0.587 + blue * 0.114) > 186) {
       duration.setTextColor(Color.parseColor("#353535"));
-      colorString="#353535";
+      colorString = "#353535";
       seekbar.getProgressDrawable().setColorFilter(
         Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
       seekbar.getThumb().setColorFilter(Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
-      if(play) Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button);
-      else Sharp.loadResource(getResources(), R.raw.stop_dunkel).into(play_button);}
-    else{duration.setTextColor(Color.parseColor("#E6EBE0"));
-      colorString="#E6EBE0";
+      if (play) Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button);
+      else Sharp.loadResource(getResources(), R.raw.stop_dunkel).into(play_button);
+    } else {
+      duration.setTextColor(Color.parseColor("#E6EBE0"));
+      colorString = "#E6EBE0";
       seekbar.getProgressDrawable().setColorFilter(
         Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
 
       seekbar.getThumb().setColorFilter(Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
-      if(play)Sharp.loadResource(getResources(), R.raw.play_hell).into(play_button);
-      else Sharp.loadResource(getResources(), R.raw.stop_hell).into(play_button);}
+      if (play) Sharp.loadResource(getResources(), R.raw.play_hell).into(play_button);
+      else {
+        Sharp.loadResource(getResources(), R.raw.stop_hell).into(play_button);
+      }
+    }
   }
 
   //End StationActivty
+
   /**
    * All tours except the select will be vanished
+   *
    * @param tour Tour will stay on Map
-     */
-  private void vanishTours( Tour tour ){
+   */
+  private void vanishTours(Tour tour) {
     adapter.notifyDataSetChanged();
 
     //Set Numbers on selected Tour
-    for(Station station : tour.stations())
-    {if(tour.station(1).slug().contains("einleitung"))markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,(station.number()-1)+"")));
-    else markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,(station.number())+"")));}
+    for (Station station : tour.stations()) {
+      if (tour.station(1).slug().contains("einleitung"))
+        markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour, (station.number() - 1) + "")));
+      else
+        markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour, (station.number()) + "")));
+    }
 
     // Unselect all other tours
-    for( Tour t : tourlist.city( visibleCity ).tours() ){
-      if( !t.slug().equals( tour.slug() ) ){
-    String color = "#00" + t.color().substring( 1, 7 ); // #xx (Hex) transparency
+    for (Tour t : tourlist.city(visibleCity).tours()) {
+      if (!t.slug().equals(tour.slug())) {
+        String color = "#00" + t.color().substring(1, 7); // #xx (Hex) transparency
 
-    polylines.get(t.slug()).color( Color.parseColor( color ) );
-    for( Station station : t.stations() ){
-      markers.get( station.slug() ).alpha( 0f );
+        polylines.get(t.slug()).color(Color.parseColor(color));
+        for (Station station : t.stations()) {
+          markers.get(station.slug()).alpha(0f);
 
-    }}
-    else{unfadeTour(t);}
+        }
+      } else {
+        unfadeTour(t);
+      }
     }
     selectStation(tour.station(1));
     drawRoutes();
@@ -1043,11 +1097,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    *
    * @param tour Tour to put into the foreground
    */
-  private void unfadeTour( Tour tour ){
-    polylines.get(tour.slug()).color( Color.parseColor( tour.color() ) );
+  private void unfadeTour(Tour tour) {
+    polylines.get(tour.slug()).color(Color.parseColor(tour.color()));
 
-    for( Station station : tour.stations() ){
-      markers.get(station.slug()).alpha( 1.0f );
+    for (Station station : tour.stations()) {
+      markers.get(station.slug()).alpha(1.0f);
     }
   }
 
@@ -1058,18 +1112,19 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    *
    * @param tour Tour that was selected
    */
-  public void selectTour( Tour tour ){
+  public void selectTour(Tour tour) {
     singlepage.INSTANCE.selectedTour(tour);
     //adapter.notifyDataSetChanged();
-    unfadeTour( tour );
+    unfadeTour(tour);
 
-    for(Station station : tour.stations())
-    {markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour,"")));}
+    for (Station station : tour.stations()) {
+      markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour, "")));
+    }
 
     // Unselect all other tours
-    for( Tour t : tourlist.city( visibleCity ).tours() ){
-      if( !t.slug().equals( tour.slug() ) ){
-        fadeTour( t );
+    for (Tour t : tourlist.city(visibleCity).tours()) {
+      if (!t.slug().equals(tour.slug())) {
+        fadeTour(t);
       }
     }
   }
@@ -1078,24 +1133,24 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   /**
    * Reset all tours, make all markers and polylines visible again
    */
-  public void resetTour(){
+  public void resetTour() {
     singlepage.INSTANCE.selectedTour(null);
-    for( Tour tour : tourlist.city( visibleCity ).tours() ){
-      unfadeTour( tour );
+    for (Tour tour : tourlist.city(visibleCity).tours()) {
+      unfadeTour(tour);
     }
-    suplInfo( "invisible" );
+    suplInfo("invisible");
     drawRoutes();
   }
 
   /**
    * Convert a view to bitmap with markers and numbers
-    */
+   */
 
   public static Bitmap createDrawableFromView(Context context, View view) {
-    ((MapsActivity) context).getWindowManager().getDefaultDisplay().getMetrics(((MapsActivity)context).displayMetrics);
+    ((MapsActivity) context).getWindowManager().getDefaultDisplay().getMetrics(((MapsActivity) context).displayMetrics);
     view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-    view.measure(((MapsActivity)context).displayMetrics.widthPixels, ((MapsActivity)context).displayMetrics.heightPixels);
-    view.layout(0, 0, ((MapsActivity)context).displayMetrics.widthPixels, ((MapsActivity)context).displayMetrics.heightPixels);
+    view.measure(((MapsActivity) context).displayMetrics.widthPixels, ((MapsActivity) context).displayMetrics.heightPixels);
+    view.layout(0, 0, ((MapsActivity) context).displayMetrics.widthPixels, ((MapsActivity) context).displayMetrics.heightPixels);
     view.buildDrawingCache();
     Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
 
@@ -1105,21 +1160,23 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     return bitmap;
   }
 
-/**
- * Preparing Location Services
- */
-  public void initLocationServices(){
-    locationManager = (LocationManager) getSystemService( LOCATION_SERVICE );
+  /**
+   * Preparing Location Services
+   */
+  public void initLocationServices() {
+    locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
     GpsStatus.Listener gpsStatus = new GpsStatus.Listener() {
       @Override
       public void onGpsStatusChanged(int i) {
-        if(i==GPS_EVENT_STOPPED){if(curLocation!=null) curLocation.remove();}
+        if (i == GPS_EVENT_STOPPED) {
+          if (curLocation != null) curLocation.remove();
+        }
       }
     };
     locationManager.addGpsStatusListener(gpsStatus);
 
-    locationListener = new LocationListener(){
+    locationListener = new LocationListener() {
       @Override
       /**
        * Whenever new location informations are retrieved,
@@ -1127,69 +1184,79 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
        * and compare station coordinates with new coordinates
        * @param location location is used to save new location information
        */
-      public void onLocationChanged( Location location ){
+      public void onLocationChanged(Location location) {
         MyLocation = location;
         //erstellt LatLng Variable fuer den Vergleich
-        pos = new LatLng( MyLocation.getLatitude(), MyLocation.getLongitude() );
+        pos = new LatLng(MyLocation.getLatitude(), MyLocation.getLongitude());
 
-        if(zoomToLocation)
+        if (zoomToLocation)
         //Falls Variable durch Zentrierenfunktion auf true gesetzt, zoome zum aktuellen Standort
-        {try{mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( pos, mMap.getCameraPosition().zoom ) );
-        zoomToLocation=false;}
-        catch(Exception e){System.out.println("No Position Found!");}}
+        {
+          try {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, mMap.getCameraPosition().zoom));
+            zoomToLocation = false;
+          } catch (Exception e) {
+            System.out.println("No Position Found!");
+          }
+        }
 
-        if(tourlist!=null)
-        {positionInCircle(pos);}   //Ueberprueft eigenen Standort mit allen Stationskoordinaten
+        if (tourlist != null) {
+          positionInCircle(pos);
+        }   //Ueberprueft eigenen Standort mit allen Stationskoordinaten
 
         //Entferne letzte Position und zeichne neue Location auf Map
-        if(curLocation!=null)curLocation.remove();
+        if (curLocation != null) curLocation.remove();
         drawOwnLocation();
       }
 
       /**
        * Checks if own coordinates are within the station range (circle)
        * @param pos own position to compare
-         */
+       */
       //Funktion wird im onLocationChanged aufgerufen
-      public void positionInCircle(LatLng pos)
-      {float[] distance = new float[2];
+      public void positionInCircle(LatLng pos) {
+        float[] distance = new float[2];
         //uebergebene Position wird mit allen Stationen jeder Tour verglichen
-        for( Tour tour : tourlist.city(visibleCity).tours() ){
-        for(Station station : tour.stations())
-        {if(station.latlng()!=null)
-        //errechnet Distanz von Koordinaten der Station und der eigenen Position
-        {Location.distanceBetween( pos.latitude, pos.longitude,
-          station.latlng().latitude, station.latlng().longitude, distance);
-          //Die Distanz wird, wie der Radius, in Metern angegeben
-          if(distance[0] < radius )
-        {//  Initialize SharedPreferences
-          SharedPreferences getPrefs = PreferenceManager
-            .getDefaultSharedPreferences( getBaseContext() );
+        for (Tour tour : tourlist.city(visibleCity).tours()) {
+          for (Station station : tour.stations()) {
+            if (station.latlng() != null)
+            //errechnet Distanz von Koordinaten der Station und der eigenen Position
+            {
+              Location.distanceBetween(pos.latitude, pos.longitude,
+                station.latlng().latitude, station.latlng().longitude, distance);
+              //Die Distanz wird, wie der Radius, in Metern angegeben
+              if (distance[0] < radius) {//  Initialize SharedPreferences
+                SharedPreferences getPrefs = PreferenceManager
+                  .getDefaultSharedPreferences(getBaseContext());
 
-          //  Make a new preferences editor
-          SharedPreferences.Editor e = getPrefs.edit();
-        //Setzt einen Eintrag der Station,
-        //falls eigene Position in der Naehe der Station ist
-          // Damit ist die Station freigeschaltet
-          e.putBoolean( station.slug(), true);
-          //  Apply changes
-          //Aktualisiere Stationen im ViewPager,
+                //  Make a new preferences editor
+                SharedPreferences.Editor e = getPrefs.edit();
+                //Setzt einen Eintrag der Station,
+                //falls eigene Position in der Naehe der Station ist
+                // Damit ist die Station freigeschaltet
+                e.putBoolean(station.slug(), true);
+                //  Apply changes
+                //Aktualisiere Stationen im ViewPager,
 //damit eine sofortige Freischaltung stattfindet
-          e.apply();
-          stationAdapter.notifyDataSetChanged();
+                e.apply();
+                stationAdapter.notifyDataSetChanged();
 
-        gpsbtn.setVisibility(View.GONE);
-        }}}}}
+                gpsbtn.setVisibility(View.GONE);
+              }
+            }
+          }
+        }
+      }
     };
     initGoogleApiClient();
-    }
+  }
 
   /**
    * (Re-)Draw the routes of the currently visible tours and their station markers
    */
-  private void drawRoutes(){
+  private void drawRoutes() {
     //lösche alles
-  if(mMap!=null)  mMap.clear();
+    if (mMap != null) mMap.clear();
     drawOwnLocation();
     drawPolylines();
     drawStations();
@@ -1198,58 +1265,82 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   /**
    * (Re-)Draw current Location of the User
    */
-  private void drawOwnLocation()
-  {//Eigene Position zeichnen
-    if(pos!=null)
-    {MarkerOptions marker = new MarkerOptions();
+  private void drawOwnLocation() {//Eigene Position zeichnen
+    if (pos != null) {
+      MarkerOptions marker = new MarkerOptions();
       marker.position(pos);
-      marker.icon(BitmapDescriptorFactory.fromBitmap( BitmapFactory.decodeResource( getResources(), getResources().getIdentifier( "current", "drawable", getPackageName() ) )));
-      if(mMap!=null)curLocation = mMap.addMarker(marker);}}
+
+      marker.icon(BitmapDescriptorFactory.fromBitmap(createBitmapFromSharp(this, Sharp.loadResource(getResources(), R.raw.standort_blau).getDrawable(), 2.6)));
+
+      if (mMap != null) curLocation = mMap.addMarker(marker);
+    }
+  }
 
 
   /**
    * (Re-)Draw the Path of the currently visible tours
    */
-  private void drawPolylines()
-  {//nur Pfad der ausgewählten Tour anzeigen
-    if(singlepage.INSTANCE.selectedStation()!=null)
-    {for( Map.Entry<String, PolylineOptions> polyline : polylines.entrySet() )
-      if(singlepage.INSTANCE.selectedTour().slug().equals(polyline.getKey()))
-      mMap.addPolyline( polyline.getValue() );
+  private void drawPolylines() {//nur Pfad der ausgewählten Tour anzeigen
+    if (singlepage.INSTANCE.selectedStation() != null) {
+      for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet())
+        if (singlepage.INSTANCE.selectedTour().slug().equals(polyline.getKey()))
+          mMap.addPolyline(polyline.getValue());
     }
     //sonst Pfad aller Touren anzeigen
-    else{
-    for( Map.Entry<String, PolylineOptions> polyline : polylines.entrySet() ){
+    else {
+      for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet()) {
 
-      mMap.addPolyline( polyline.getValue() );
-    }}}
+        mMap.addPolyline(polyline.getValue());
+      }
+    }
+  }
 
   /**
    * (Re-)Draw the station markers of the currently visible tours
    */
-  private void drawStations(){
+  private void drawStations() {
     tmpmarker = null;
     //singlepage.INSTANCE.countWaypoints().clear();
     //Setze Marker
-    for( Map.Entry<String, MarkerOptions> marker : markers.entrySet() ){
+    for (Map.Entry<String, MarkerOptions> marker : markers.entrySet()) {
       //Wenn Tour ausgewählt, zeichne nur Stationen der Tour
-      if(singlepage.INSTANCE.selectedStation()!=null)
-      {for(Station station : singlepage.INSTANCE.selectedTour().stations())
-        { if(marker.getValue().getPosition()!=null && marker.getKey().equals(singlepage.INSTANCE.selectedStation().slug()) && marker.getKey().equals(station.slug()))
-        { tmpmarker = mMap.addMarker(marker.getValue());
-          tourMarker.put(station.slug(), tmpmarker);}
-          else if(marker.getValue().getPosition()!=null && marker.getKey().equals(station.slug()))
-        {Marker m = mMap.addMarker(marker.getValue());
-        tourMarker.put(station.slug(), m);}}}
+      if (singlepage.INSTANCE.selectedStation() != null) {
+        for (Station station : singlepage.INSTANCE.selectedTour().stations()) {
+          if (marker.getValue().getPosition() != null && marker.getKey().equals(singlepage.INSTANCE.selectedStation().slug()) && marker.getKey().equals(station.slug())) {
+            tmpmarker = mMap.addMarker(marker.getValue());
+            tourMarker.put(station.slug(), tmpmarker);
+          } else if (marker.getValue().getPosition() != null && marker.getKey().equals(station.slug())) {
+            Marker m = mMap.addMarker(marker.getValue());
+            tourMarker.put(station.slug(), m);
+          }
+        }
+      }
 
-    //Sonst zeichne alle Marker
-    else if(marker.getValue().getPosition()!=null)
-    {mMap.addMarker( marker.getValue() );}}
+      //Sonst zeichne alle Marker
+      else if (marker.getValue().getPosition() != null) {
+        mMap.addMarker(marker.getValue());
+      }
+    }
 
     //Wenn ein Kreis gesetzt wurde, zeichne ihn
-    if(circle.getCenter()!=null)
-    {mapCircle = mMap.addCircle(circle);}
+    if (circle.getCenter() != null) {
+      mapCircle = mMap.addCircle(circle);
+    }
   }
+
+  public Bitmap createBitmapFromSharp(Context context, SharpDrawable d, double scale)
+  {Bitmap bitmap = null;
+
+    if (d.getIntrinsicWidth() <= 0 || d.getIntrinsicHeight() <= 0) {
+      bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+    } else {
+      bitmap = Bitmap.createBitmap((int) (d.getIntrinsicWidth() / scale), (int) (d.getIntrinsicHeight() / scale), Bitmap.Config.ARGB_8888);
+    }
+
+    Canvas canvas = new Canvas(bitmap);
+    d.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+    d.draw(canvas);
+    return bitmap;}
 
   /**
    * Remove one marker of a station
@@ -2008,21 +2099,21 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   int id,numbermarker=0;
   TextView markertxt = (TextView)markerlayout.findViewById(R.id.markernumber);
   ImageView markerimage = (ImageView) markerlayout.findViewById(R.id.marker);
-  if(!text.isEmpty() && singlepage.INSTANCE.selectedTour().stations().get(Integer.parseInt(text)).description().contains("Hören Sie den folgenden Text während Sie von hier aus zu der nächsten Station gehen."))
+ /* if(!text.isEmpty() && singlepage.INSTANCE.selectedTour().stations().get(Integer.parseInt(text)).description().contains("Hören Sie den folgenden Text während Sie von hier aus zu der nächsten Station gehen."))
   {if(!singlepage.INSTANCE.countWaypoints().contains(Integer.parseInt(text))){singlepage.INSTANCE.countWaypoints().add(Integer.parseInt(text));}
     id = getResources().getIdentifier("pin_"+tour.trkid()+"_weg", "drawable", getPackageName());
     int countnumber=0;
     try{while(singlepage.INSTANCE.countWaypoints().get(countnumber)<Integer.parseInt(text))countnumber++;}catch (Exception e){}
     markertxt.setText("W"+(countnumber+1)+"");}
-  else {
-    if(!text.isEmpty()){numbermarker=Integer.parseInt(text);
-      int countnumber=0;
-      try{while(singlepage.INSTANCE.countWaypoints().get(countnumber)<Integer.parseInt(text))countnumber++;}catch (Exception e){}
-      markertxt.setText((numbermarker-countnumber)+"");}
+  else {*/
+  if(!text.isEmpty()){numbermarker=Integer.parseInt(text);
+    //  int countnumber=0;
+  //    try{while(singlepage.INSTANCE.countWaypoints().get(countnumber)<Integer.parseInt(text))countnumber++;}catch (Exception e){}
+      markertxt.setText((numbermarker/*-countnumber*/)+"");}
     else {markertxt.setText("");}
 
     id = getResources().getIdentifier( "pin_" + tour.trkid(), "drawable", getPackageName() );
-  }
+
 
   //Text und Bild wird festgelegt
   markerimage.setImageResource(id);

@@ -27,18 +27,31 @@
     android:visibility="gone"
     android:paddingRight="3dp"
     android:paddingBottom="11dp"
-    android:layout_toLeftOf="@+id/downloadview"/>
+    android:layout_toLeftOf="@+id/geladen"/>
 
   <ImageView
-    android:id="@+id/downloadview"
-    android:layout_width="wrap_content"
+    android:id="@+id/geladen"
+    android:layout_width="30dp"
     android:layout_height="wrap_content"
     android:layout_alignParentRight="true"
     android:layout_alignParentBottom="true"
     android:paddingRight="15dp"
-    android:paddingBottom="15dp"
-    android:src="@drawable/laden"
+    android:scaleType="fitCenter"
+    android:paddingBottom="11dp"
     />
+
+    <ImageView
+      android:id="@+id/laden"
+      android:layout_width="85dp"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentBottom="true"
+      android:scaleType="fitCenter"
+      android:paddingRight="15dp"
+      android:paddingBottom="5dp"
+      android:paddingLeft="10dp"
+      android:paddingTop="5dp"
+      />
 
   <RelativeLayout
     android:id="@+id/listelement_text"

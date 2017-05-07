@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.einstellungen.Einstellungen;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Tour;
@@ -58,7 +59,7 @@ public class EinstellungenTourAdapter extends BaseAdapter {
 
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById(R.id.img);
-    ImageView delete = (ImageView) convertView.findViewById(R.id.downloadview);
+    ImageView delete = (ImageView) convertView.findViewById(R.id.geladen);
     TextView geloescht = (TextView) convertView.findViewById(R.id.downloadtext);
     TextView txtTitle = (TextView) convertView.findViewById(R.id.txt);
     TextView txtAuthor = (TextView) convertView.findViewById(R.id.subtxt1);
@@ -96,7 +97,7 @@ public class EinstellungenTourAdapter extends BaseAdapter {
       txtTimeLength.setVisibility(View.VISIBLE);
 
 
-      delete.setImageResource(R.drawable.x);
+      Sharp.loadResource(context.getResources(), R.raw.x).into(delete);
 
       BitmapFactory.Options options = new BitmapFactory.Options();
       Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath() + "/" + OurStorage.get(context).lookForTourFile(((Einstellungen) context).tourlist(), tour.image()) + tour.image() + ".png", options);
