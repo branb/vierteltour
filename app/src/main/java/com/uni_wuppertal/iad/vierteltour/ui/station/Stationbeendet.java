@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
@@ -33,6 +34,7 @@ public class Stationbeendet extends Activity {
 
     //Initialize buttons on layout
     x = (ImageButton) findViewById( R.id.station_x_button );
+    Sharp.loadResource(getResources(), R.raw.beenden_hell).into(x);
     station_wiederholen = (ImageButton) findViewById( R.id.station_wiederholen );
     zur_naechsten_station = (ImageButton) findViewById( R.id.zur_naechsten_station );
     zur_tourenauswahl = (ImageButton) findViewById( R.id.zur_tourenauswahl );

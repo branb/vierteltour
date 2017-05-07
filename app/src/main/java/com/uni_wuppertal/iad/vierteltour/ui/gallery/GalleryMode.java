@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
@@ -87,7 +88,7 @@ public class GalleryMode extends Activity {
       mAdapter2.videoView(singlepage.INSTANCE.position()).pause();
       mAdapter2.showImage(imagePagerGallery.getCurrentItem());
       startvideo = false;
-      play_buttonGallery.setImageResource( R.drawable.play_hell );
+      Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery);
       durationGallery.setText("0:00");
       seekbarGallery.setProgress(0);
       mAdapter2.videoView(singlepage.INSTANCE.position()).seekTo(0);
@@ -114,10 +115,14 @@ public class GalleryMode extends Activity {
   number = (Integer) gallerybundle.get("number");
 
   x_button = (ImageButton) findViewById( R.id.x_button );
+  Sharp.loadResource(getResources(), R.raw.beenden_hell).into(x_button);
   x_button_bar = (ImageButton) findViewById( R.id.x_button_bar );
+
   seekbarGallery = (SeekBar) findViewById( R.id.seek_barGallery );
   seekbarGallery_bar = (SeekBar) findViewById( R.id.seek_barGallery_bar );
   play_buttonGallery = (ImageButton) findViewById( R.id.play_buttonGallery );
+  Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery);
+
   play_buttonGallery_bar = (ImageButton) findViewById( R.id.play_buttonGallery_bar );
   imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
   gallerytitle = (TextView) findViewById( R.id.titleGallery );
@@ -342,8 +347,8 @@ public class GalleryMode extends Activity {
     try{mAdapter2.hideImage(imagePagerGallery.getCurrentItem());}catch(Exception e){}
 
     mAdapter2.videoView(singlepage.INSTANCE.position()).start();
-    play_buttonGallery.setImageResource( R.drawable.stop_hell );
-    play_buttonGallery_bar.setImageResource( R.drawable.stop_hell );
+    Sharp.loadResource(getResources(), R.raw.stop_hell).into(play_buttonGallery);
+    Sharp.loadResource(getResources(), R.raw.stop_hell).into(play_buttonGallery_bar);
     seekUpdationVideo();}
 
   /**
@@ -352,8 +357,8 @@ public class GalleryMode extends Activity {
   public void pauseVideoplay()
   {startvideo = false;
     mAdapter2.videoView(singlepage.INSTANCE.position()).pause();
-    play_buttonGallery.setImageResource( R.drawable.play_hell );
-    play_buttonGallery_bar.setImageResource( R.drawable.play_hell );}
+    Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery);
+    Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery_bar);}
 
   /**
    * Stops video and sets to 0
@@ -361,8 +366,8 @@ public class GalleryMode extends Activity {
   public void stopVideoplay()
   {startvideo = false;
     mAdapter2.videoView(singlepage.INSTANCE.position()).pause();
-    play_buttonGallery.setImageResource( R.drawable.play_hell );
-    play_buttonGallery_bar.setImageResource(R.drawable.play_hell);
+    Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery);
+    Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery_bar);
     mAdapter2.showImage(imagePagerGallery.getCurrentItem());
     mAdapter2.videoView(singlepage.INSTANCE.position()).setVisibility(View.GONE);
     durationGallery_bar.setText("0:00");
