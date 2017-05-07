@@ -27,6 +27,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -155,6 +156,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Button gpsbtn;
   private ImageView up, down;
   private ListView lv;
+  private DisplayMetrics displayMetrics = new DisplayMetrics();
   private int defaultPanelHeight, pxPager;
   private View listelement;
   private ShadowTransformer mFragmentShadowTransformer;
@@ -288,28 +290,28 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     panel = (RelativeLayout) findViewById(R.id.panelhalf);
 
     zumstart = (ImageButton) findViewById(R.id.zumstart);       //SUPL Button bottom right
-    Sharp.loadResource(getResources(), R.raw.zum_start).into(zumstart);//TODO
+    Sharp.loadResource(getResources(), R.raw.zum_start).into(zumstart);
 
     x_supl = (ImageButton) findViewById( R.id.x );               //SUPL Button top left
-    Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(x_supl);//TODO
+    Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(x_supl);
 
     arrowbtn = (ImageButton) findViewById( R.id.arrowbtn );       //Top Twin Button
-    Sharp.loadResource(getResources(), R.raw.google_navi_dunkel).into(arrowbtn);//TODO
+    Sharp.loadResource(getResources(), R.raw.google_navi_dunkel).into(arrowbtn);
 
     gpsbtn = (Button) findViewById( R.id.gpsbtn );           //Red Button left Bottom corner
 
     tarbtn = (ImageButton) findViewById( R.id.tarbtn );           //Bot Twin Button
-    Sharp.loadResource(getResources(), R.raw.standort).into(tarbtn);//TODO
+    Sharp.loadResource(getResources(), R.raw.standort).into(tarbtn);
 
     tourenliste = (TextView) findViewById( R.id.tourenliste );
 
     subtext1 = (TextView) findViewById( R.id.subinfo1 );
     subtext2 = (TextView) findViewById( R.id.subinfo2 );
     up = (ImageView) findViewById( R.id.up );
-    Sharp.loadResource(getResources(), R.raw.pfeil_hoch).into(up);//TODO
+    Sharp.loadResource(getResources(), R.raw.pfeil_hoch).into(up);
 
     down = (ImageView) findViewById( R.id.down );
-    Sharp.loadResource(getResources(), R.raw.pfeil_runter).into(down);//TODO
+    Sharp.loadResource(getResources(), R.raw.pfeil_runter).into(down);
 
     stationLayout = (RelativeLayout) findViewById(R.id.station);
     gpsinfo = (RelativeLayout) findViewById( R.id.gpsinfo );
@@ -320,7 +322,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);
 
     ImageView gpsarrow = (ImageView) findViewById(R.id.arrowwhite);
-    Sharp.loadResource(getResources(), R.raw.google_navi_hell).into(gpsarrow);//TODO
+    Sharp.loadResource(getResources(), R.raw.google_navi_hell).into(gpsarrow);
   }
 
   /**
@@ -369,15 +371,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void onMapReady( GoogleMap googleMap ){
     mMap = googleMap;
 
-    DisplayMetrics displayMetrics = new DisplayMetrics();
     getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
     // Calculate ActionBar height
-    int actionBarHeight=0;
+  /*  int actionBarHeight=0;
     TypedValue tv = new TypedValue();
     if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
     {
       actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
-    }
+    }*/
     wuppertal = new LatLng( 51.256972, 7.139341 );
     //Gesamte Bildschirmgröße - Toolbargröße
    //int pxPager = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
@@ -552,8 +553,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       break;
 
         case MapsActivity.SEEK_BAR:
-          DisplayMetrics metrics = getResources().getDisplayMetrics();
-          supl.setPanelHeight(panel_top.getHeight()+63+ (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, metrics));
+          supl.setPanelHeight(panel_top.getHeight()+63+ (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, displayMetrics));
           break;
       }
       super.handleMessage(msg);
@@ -1092,11 +1092,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     */
 
   public static Bitmap createDrawableFromView(Context context, View view) {
-    DisplayMetrics displayMetrics = new DisplayMetrics();
-    ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+    ((MapsActivity) context).getWindowManager().getDefaultDisplay().getMetrics(((MapsActivity)context).displayMetrics);
     view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-    view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
-    view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+    view.measure(((MapsActivity)context).displayMetrics.widthPixels, ((MapsActivity)context).displayMetrics.heightPixels);
+    view.layout(0, 0, ((MapsActivity)context).displayMetrics.widthPixels, ((MapsActivity)context).displayMetrics.heightPixels);
     view.buildDrawingCache();
     Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
 
@@ -1298,6 +1297,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     title.setText( singlepage.INSTANCE.selectedTour().name() );
     title.setVisibility( View.VISIBLE );
     pager_layout.setVisibility( View.VISIBLE );
+    System.out.println(pager_layout.getVisibility() + "  " + mPager.getVisibility()+ "  " + xbtn.getVisibility()+ "  " + mPager.getCurrentItem() + " " + mPager.getAdapter().getCount());
   }
 
   /**
@@ -1353,7 +1353,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     lv.setAdapter( adapter );
     initBtns();
     defaultPanelHeight = supl.getPanelHeight();
-    DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
     slidingLayout.setLayoutParams(new SlidingUpPanelLayout.LayoutParams(SlidingUpPanelLayout.LayoutParams.MATCH_PARENT, (int) (displayMetrics.heightPixels*0.7)));
   }
 
@@ -1367,6 +1366,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mPager.getLayoutParams();
     pxPager = (int) (displayMetrics.heightPixels*0.27);
     lp.height = pxPager;
+    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAA" +displayMetrics + "  " + pagerPadding + "  " + pxPager);
     mPager.setLayoutParams(lp);
     mPager.setPadding((int)pagerPadding, 0,(int) pagerPadding, 0);
 
@@ -1623,7 +1623,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
       }
     });
-    Sharp.loadResource(getResources(), R.raw.menue1).into(homebtn);     //TODO CHANGE
+    homebtn.setLayoutParams(new RelativeLayout.LayoutParams(150,150));
+    Sharp.loadResource(getResources(), R.raw.menu).into(homebtn);     //TODO CHANGE
 
     xbtn = (ImageButton) findViewById(R.id.btn_x);      //ActionBar Button: Right
     title = (TextView) findViewById(R.id.toolbar_title);  //ActionBar Title

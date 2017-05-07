@@ -1,21 +1,76 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="825px" height="825px" viewBox="0 0 825 825" enable-background="new 0 0 825 825" xml:space="preserve">
-<g id="Ebene_5_2_">
-	<g id="Forma_1_9_">
-		<g>
-			<path fill="#353535" d="M449.069,406.794h-7.35c-1.207-19.27-16.746-34.809-36.016-36.016v-7.348c0-1.324-1.086-2.406-2.41-2.406
-				s-2.41,1.082-2.41,2.406v7.348c-19.271,1.207-34.812,16.746-36.016,36.016h-7.35c-1.323,0-2.408,1.086-2.408,2.41
-				s1.085,2.41,2.408,2.41h7.35c1.203,19.27,16.742,34.812,36.016,36.016v7.354c0,1.322,1.085,2.404,2.409,2.404
-				c1.325,0,2.407-1.081,2.407-2.404v-7.354c19.271-1.203,34.812-16.742,36.02-36.016h7.35c1.322,0,2.404-1.086,2.404-2.41
-				S450.394,406.794,449.069,406.794z M429.796,411.615h7.105c-1.203,16.742-14.574,29.996-31.195,31.199v-7.109
-				c0-1.324-1.086-2.406-2.41-2.406s-2.41,1.082-2.41,2.406v7.109c-16.622-1.203-29.992-14.574-31.194-31.199h7.104
-				c1.324,0,2.409-1.082,2.409-2.406s-1.085-2.41-2.409-2.41h-7.109c1.206-16.625,14.577-29.99,31.199-31.197v7.107
-				c0,1.324,1.085,2.406,2.409,2.406c1.325,0,2.407-1.082,2.407-2.406v-7.107c16.625,1.201,29.996,14.572,31.199,31.193h-7.105
-				c-1.328,0-2.41,1.086-2.41,2.41S428.472,411.615,429.796,411.615z"/>
-		</g>
-	</g>
-</g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="25.496307mm"
+   height="25.496307mm"
+   viewBox="0 0 25.496307 25.496307"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="tar.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="896.75342"
+     inkscape:cy="413.8963"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(131.43268,-232.84708)">
+    <g
+       id="Ebene_5_2_"
+       transform="matrix(0.26458333,0,0,0.26458333,-225.3886,137.32615)">
+      <g
+         id="Forma_1_9_">
+        <g
+           id="g12">
+          <path
+             id="path10"
+             d="m 449.069,406.794 h -7.35 c -1.207,-19.27 -16.746,-34.809 -36.016,-36.016 v -7.348 c 0,-1.324 -1.086,-2.406 -2.41,-2.406 -1.324,0 -2.41,1.082 -2.41,2.406 v 7.348 c -19.271,1.207 -34.812,16.746 -36.016,36.016 h -7.35 c -1.323,0 -2.408,1.086 -2.408,2.41 0,1.324 1.085,2.41 2.408,2.41 h 7.35 c 1.203,19.27 16.742,34.812 36.016,36.016 v 7.354 c 0,1.322 1.085,2.404 2.409,2.404 1.325,0 2.407,-1.081 2.407,-2.404 v -7.354 c 19.271,-1.203 34.812,-16.742 36.02,-36.016 h 7.35 c 1.322,0 2.404,-1.086 2.404,-2.41 0,-1.324 -1.079,-2.41 -2.404,-2.41 z m -19.273,4.821 h 7.105 c -1.203,16.742 -14.574,29.996 -31.195,31.199 v -7.109 c 0,-1.324 -1.086,-2.406 -2.41,-2.406 -1.324,0 -2.41,1.082 -2.41,2.406 v 7.109 c -16.622,-1.203 -29.992,-14.574 -31.194,-31.199 h 7.104 c 1.324,0 2.409,-1.082 2.409,-2.406 0,-1.324 -1.085,-2.41 -2.409,-2.41 h -7.109 c 1.206,-16.625 14.577,-29.99 31.199,-31.197 v 7.107 c 0,1.324 1.085,2.406 2.409,2.406 1.325,0 2.407,-1.082 2.407,-2.406 v -7.107 c 16.625,1.201 29.996,14.572 31.199,31.193 h -7.105 c -1.328,0 -2.41,1.086 -2.41,2.41 0,1.324 1.086,2.41 2.41,2.41 z"
+             inkscape:connector-curvature="0"
+             style="fill:#353535" />
+        </g>
+      </g>
+    </g>
+  </g>
 </svg>

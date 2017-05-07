@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Tour;
@@ -87,6 +88,7 @@ public class TourAdapter extends BaseAdapter{
     TextView txtTimeLength = (TextView) convertView.findViewById( R.id.subtxt2 );
     TextView txtDescription = (TextView) convertView.findViewById( R.id.addinfo );
     ImageButton btnStart = (ImageButton) convertView.findViewById( R.id.zumstartlist );
+    Sharp.loadResource(context.getResources(), R.raw.zum_start).into(btnStart);
     View divider = convertView.findViewById( R.id.divider );
 
     final Tour tour = tours.get( position );

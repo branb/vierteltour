@@ -1,14 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="825px" height="825px" viewBox="0 0 825 825" enable-background="new 0 0 825 825" xml:space="preserve">
-<g opacity="0.6">
-	<path fill="#353535" d="M447.597,398.139l-1.99,0.691l-31.717,11.498c-1.549,0.561-3.377-0.539-4.077-2.475
-		c-0.701-1.933-0.008-3.959,1.542-4.521l31.714-11.497l1.992-0.692c1.55-0.562,3.382,0.549,4.083,2.482
-		C449.845,395.56,449.146,397.576,447.597,398.139z"/>
-	<path fill="#353535" d="M377.814,398.037l2.592,0.783l31.716,11.497c1.549,0.562,3.377-0.538,4.078-2.474
-		c0.701-1.934,0.007-3.959-1.542-4.521l-31.714-11.498l-2.593-0.783c-1.551-0.562-3.383,0.549-4.083,2.482
-		C375.566,395.458,376.265,397.474,377.814,398.037z"/>
-</g>
-</svg>
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Ebene_1"
+   x="0px"
+   y="0px"
+   width="73.421776"
+   height="19.579262"
+   viewBox="0 0 73.421776 19.579262"
+   enable-background="new 0 0 825 825"
+   xml:space="preserve"
+   sodipodi:docname="pfeil_runter.svg"
+   inkscape:version="0.92.1 r15371"><metadata
+     id="metadata181"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+     id="defs179" /><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview177"
+     showgrid="false"
+     inkscape:zoom="0.28606061"
+     inkscape:cx="36.50519"
+     inkscape:cy="-2.0256459"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Ebene_1" /><g
+     id="g174"
+     style="opacity:0.6"
+     transform="translate(-375.99481,-390.89509)"><path
+       d="m 447.597,398.139 -1.99,0.691 -31.717,11.498 c -1.549,0.561 -3.377,-0.539 -4.077,-2.475 -0.701,-1.933 -0.008,-3.959 1.542,-4.521 l 31.714,-11.497 1.992,-0.692 c 1.55,-0.562 3.382,0.549 4.083,2.482 0.701,1.935 0.002,3.951 -1.547,4.514 z"
+       id="path170"
+       inkscape:connector-curvature="0"
+       style="fill:#353535" /><path
+       d="m 377.814,398.037 2.592,0.783 31.716,11.497 c 1.549,0.562 3.377,-0.538 4.078,-2.474 0.701,-1.934 0.007,-3.959 -1.542,-4.521 l -31.714,-11.498 -2.593,-0.783 c -1.551,-0.562 -3.383,0.549 -4.083,2.482 -0.702,1.935 -0.003,3.951 1.546,4.514 z"
+       id="path172"
+       inkscape:connector-curvature="0"
+       style="fill:#353535" /></g></svg>
