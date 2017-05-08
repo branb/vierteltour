@@ -22,10 +22,13 @@
         <ImageButton
             android:id="@+id/leftarrow"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/pfeil_links"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:background="@color/transparent"
+          android:scaleType="fitCenter"
             android:layout_centerVertical="true"/>
 
     <ListView

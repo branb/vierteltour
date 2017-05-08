@@ -1787,6 +1787,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     });
 
     leftbtn = (ImageButton) findViewById(R.id.leftarrow);
+    Sharp.loadResource(getResources(), R.raw.pfeil_links).into(leftbtn);
     leftbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
@@ -2110,11 +2111,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       markertxt.setText((numbermarker/*-countnumber*/)+"");}
     else {markertxt.setText("");}
 
-    id = getResources().getIdentifier( "pin_" + tour.trkid(), "drawable", getPackageName() );
+   // id = getResources().getIdentifier( "pin_" + tour.trkid(), "drawable", getPackageName() );
+  //BitmapDescriptorFactory.fromBitmap(createBitmapFromSharp(this, Sharp.loadResource(getResources(), R.raw.standort_blau).getDrawable(), 2.6))
+  //Sharp.loadFile("test").getDrawable();
 
 
   //Text und Bild wird festgelegt
-  markerimage.setImageResource(id);
+  markerimage.setImageDrawable(Sharp.loadResource(getResources(), R.raw.einstellungen).getDrawable());
+  path = OurStorage.get(this).storagePath() + "/" + OurStorage.get(this).lookForTourFile(tourlist(), tour.image())+"pin.svg";
+  markerimage.setImageDrawable(Sharp.loadFile(new File(path)).getDrawable());
 
   //Bitmap wird zurueckgegeben
   return createDrawableFromView(this, markerlayout);

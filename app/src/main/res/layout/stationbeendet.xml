@@ -27,6 +27,7 @@ android:id="@+id/stationbeendet">
   android:text="Sie haben diese Station\nbeendet!"
   android:layout_centerHorizontal="true"
   android:gravity="center"
+  android:textSize="18sp"
   android:layout_above="@+id/station_wiederholen"
   android:layout_marginBottom="70dp"/>
 
