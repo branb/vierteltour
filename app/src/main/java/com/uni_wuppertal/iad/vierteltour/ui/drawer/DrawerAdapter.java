@@ -67,6 +67,9 @@ switch (position)
         break;
       case 2:
         Sharp.loadResource(context.getResources(), R.raw.about).into(imgIcon);
+        break;
+      case 3:
+        Sharp.loadResource(context.getResources(), R.raw.update).into(imgIcon);
     }
 
     txtTitle.setText( row_pos.getTitle() );

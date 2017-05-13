@@ -6,44 +6,47 @@
   android:layout_centerVertical="true"
   android:layout_centerHorizontal="true">
 
+  <ImageButton
+    android:id="@+id/btn_x_dialog"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentRight="true"
+    android:paddingRight="5dp"
+    android:background="@color/transparent"
+    android:paddingTop="5dp"
+    />
+
+  <TextView
+    android:id="@+id/title_dialog"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textStyle="bold"
+    android:layout_centerHorizontal="true"
+    android:gravity="center"
+    android:layout_below="@+id/btn_x_dialog"
+    android:text="a"/>
+
     <TextView
-      android:id="@+id/main_text"
+      android:id="@+id/text_dialog"
+      android:layout_below="@+id/title_dialog"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_alignParentTop="true"
       android:text="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
       android:layout_centerHorizontal="true"
       android:gravity="center"
-      android:paddingBottom="20dp"
-      android:paddingTop="10dp"
       android:paddingLeft="10dp"
       android:paddingRight="10dp"/>
 
-  <LinearLayout
-    android:id="@+id/dialog_buttons"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
+  <ImageButton
+    android:layout_below="@+id/text_dialog"
+    android:id="@+id/button_dialog"
+    android:background="@color/transparent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
-    android:layout_below="@+id/main_text"
-    android:weightSum="2">
-    <Button
-      android:layout_width="0dp"
-      android:layout_weight="1"
-      android:layout_height="wrap_content"
-      android:id="@+id/left_btn"
-      android:text="Okay"
-      android:background="@drawable/border_layout_left"
-      />
-
-    <Button
-      android:layout_width="0dp"
-      android:layout_weight="1"
-      android:layout_height="wrap_content"
-      android:id="@+id/right_btn"
-      android:text="Abbrechen"
-      android:background="@drawable/border_layout_right" />
-    </LinearLayout>
+    android:gravity="center"
+    />
 
 
 </RelativeLayout>

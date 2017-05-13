@@ -1,6 +1,7 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -9,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
@@ -113,7 +115,7 @@ import static android.location.GpsStatus.GPS_EVENT_STOPPED;
  * MapsActivity is the main activity of the application
  */
 
-public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback, UpdateListener {
+public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback{
 
   public Location MyLocation;
   public LatLng pos;
@@ -125,7 +127,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public int CurrentZoom = 15;
   String[] drawertitles = new String[]{"Einstellungen",
     "Info",
-    "About"
+    "About",
+    "Updates suchen"
   };
   protected static final int TINY_BAR = 0x101, BIG_BAR = 0x102, SEEK_BAR = 0x103;
   private final double radius = 25;
@@ -193,7 +196,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private GoogleMap mMap;
 
   // Indicates, if we have checked for new updates on tourdata. Needed at the start of the app
-  private boolean checkedForUpdates = false, tourdataAvailable = false, zoomToLocation = false;
+  private boolean tourdataAvailable = false, zoomToLocation = false;
 
   // TODO: Save the currently displayed city into shared preferences and load them on startup
   // Slug of the currently displayed city, e.g. the currently available and displayed tours
@@ -225,6 +228,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     initLocationServices();
     initAll();
+
     showIntro();
 
     initPager();
@@ -232,6 +236,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     moveDrawerToTop();
     initActionBar();
     initDrawer();
+
 
     mFragmentShadowTransformer = new ShadowTransformer(mPager, fragmentAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
@@ -342,20 +347,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
   /**
-   * Check for updates
-   */
-  private void checkForUpdates() {
-    if (!checkedForUpdates) {
-      Updater.get(getBaseContext()).updateListener(this);
-      Updater.get(getBaseContext()).updatesOnTourdata(this);
-    } else if (!Updater.get(getBaseContext()).checkingForUpdates()) {
-      loadTourdata();
-    }
-
-  }
-
-
-  /**
    * Get notified when the map is ready to be used.
    */
   @Override
@@ -375,11 +366,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     //int pxPager = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
     mMap.setPadding(0, 0, 0, pxPager);
 
-
     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wuppertal, CurrentZoom));
-
-    checkForUpdates();
-
+    loadTourdata();
 
     /**
      * When the user clicks anywhere on the map, check which tour or station he clicked onto and mark it as
@@ -1764,8 +1752,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           else if(position == 2)
           {Intent i = new Intent(MapsActivity.this, About.class);
             startActivity(i);}
-
-
+        else if(position == 3)
+          {Updater.get(getBaseContext()).updatesOnTourdata();
+            if(singlepage.INSTANCE.versionUpdate())
+          {createDialog("Die Touren wurden aktualisiert.");
+            singlepage.INSTANCE.versionUpdate(false);}
+          else{createDialog("Die Touren sind bereits aktuell.");}}
         //  ftx.commit();
       }
 
@@ -2121,25 +2113,30 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     tourdataAvailable=true;
   }
 
-  @Override
-  public void newTourdataAvailable(Context context){
-    Updater.get( getBaseContext() ).downloadTourlist(context);
+  public void createDialog( String text)
+  {
+    // declare the dialog as a member field of your activity
+    final Dialog dialog = new Dialog(this);
+    dialog.setContentView(R.layout.alert_dialog);
+    TextView txt = (TextView) dialog.findViewById(R.id.text_dialog);
+    txt.setText(text);
+    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    dialog.show();
+
+    ImageButton declineButton = (ImageButton) dialog.findViewById(R.id.btn_x_dialog);
+    Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(declineButton);
+    // if decline button is clicked, close the custom dialog
+    declineButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Close dialog
+        dialog.dismiss();}});
+    ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
+    Sharp.loadResource(getResources(), R.raw.laden).into(okayButton);
+    // if decline button is clicked, close the custom dialog
+    okayButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {dialog.dismiss();}});
+
   }
-
-  @Override
-  public void noNewTourdataAvailable(){
-    checkedForUpdates = true;
-    loadTourdata();}
-
-  @Override
-  public void tourlistDownloaded(Context context){
-    Updater.get( getBaseContext() ).downloadTourdata(context);
-  }
-
-  @Override
-  public void tourdataDownloaded(){
-    checkedForUpdates = true;
-    loadTourdata();
-  }
-
 }

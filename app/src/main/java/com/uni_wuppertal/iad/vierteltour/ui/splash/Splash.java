@@ -1,38 +1,47 @@
 package com.uni_wuppertal.iad.vierteltour.ui.splash;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.utility.ReplaceFont;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
+import com.uni_wuppertal.iad.vierteltour.utility.updater.UpdateListener;
+import com.uni_wuppertal.iad.vierteltour.utility.updater.Updater;
 
 import static com.google.android.gms.wearable.DataMap.TAG;
 
 //Vorerst nicht benötigt, ist für Splashscreen zuständig, eigentlich in AndroidManifest als Launcher ausgewählt
 //Aktuell nicht verwendet
-public class Splash extends Activity {
+public class Splash extends Activity implements UpdateListener {
   ProgressBar pbar;
   Intent myintent;
   VideoView vid;
-  int progress = 0;
-  Handler h = new Handler();
+  Boolean stop=false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-   // this.requestWindowFeature(Window.FEATURE_NO_TITLE);    // Removes title bar
-    //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);    // Removes notification bar
     setContentView(R.layout.splash);
     ReplaceFont.replaceDefaultFont(this, "SERIF", "Bariol_Regular.ttf");   //for MainActivity
     initTypeface();                                                //only for SplashActivity
@@ -43,17 +52,20 @@ public class Splash extends Activity {
     vid.requestFocus();
     vid.start();
 
+
+    checkForUpdates();
     //IntentLauncher launcher = new IntentLauncher();
     myintent = new Intent(this, MapsActivity.class);
 
     new Handler().postDelayed(new Runnable(){
       @Override
       public void run() {
-        startActivity(myintent);
-        finish();
+        if(!stop)
+        {startActivity(myintent);
+        finish();}
       }
     }, 1000);
-
+    //checkForUpdates();
    // launcher.start();
   }
 
@@ -71,28 +83,68 @@ public class Splash extends Activity {
     super.onDestroy();
   }
 
+  /**
+   * Check if localVersion in SharedPreferences exists to check if tourlist was downloaded
+   */
 
-  private class IntentLauncher extends Thread {
-    @Override
-    /**
-     * Sleep for some time and than start new activity.
-     */
-    public void run() {
-      try {
-        vid = (VideoView) findViewById(R.id.videoView);
-        vid.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.animation));
-        vid.requestFocus();
-        vid.start();
-        // Sleeping
-        Thread.sleep(20 * 1000);
-      } catch (Exception e) {
-        Log.e(TAG, e.getMessage());
-      }
-
-      // Start main activity
-      Intent intent = new Intent(Splash.this, MapsActivity.class);
-      Splash.this.startActivity(intent);
-      Splash.this.finish();
+  /**
+   * Check for Updates
+   * If no internetconnection or no new Updates move to mainActivity
+   */
+  public void checkForUpdates()
+  {//No Internet with first start
+    if(!PreferenceManager.getDefaultSharedPreferences( getBaseContext() ).contains( "localTourdataVersion" ) && !Updater.get(getBaseContext()).isNetworkAvailable())
+    {
+      stop=true;
+      createDialog( "Es kann keine Verbindung zum Server hergestellt werden. Bitte prüfen Sie ihre Netzwerkeinstellungen und starten Sie die Applikation neu.");
     }
+    Updater.get(getBaseContext()).updateListener(this);
+    Updater.get(getBaseContext()).updatesOnTourdata();}
+
+  @Override
+  public void newTourdataAvailable(){
+    Updater.get( getBaseContext() ).downloadTourlist();
+  }
+
+  @Override
+  public void noNewTourdataAvailable(){}
+
+  @Override
+  public void tourlistDownloaded(){
+    Updater.get( getBaseContext() ).downloadTourdata();
+  }
+
+  @Override
+  public void tourdataDownloaded(){
+
+  }
+
+  public void createDialog(String text)
+  {
+    // declare the dialog as a member field of your activity
+    final Dialog dialog = new Dialog(this);
+    dialog.setContentView(R.layout.alert_dialog);
+    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    dialog.show();
+
+    TextView txt = (TextView) dialog.findViewById(R.id.text_dialog);
+    txt.setText(text);
+    ImageButton declineButton = (ImageButton) dialog.findViewById(R.id.btn_x_dialog);
+    Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(declineButton);
+    // if decline button is clicked, close the custom dialog
+    declineButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Close dialog
+        dialog.dismiss();
+      finish();}});
+    ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
+    Sharp.loadResource(getResources(), R.raw.laden).into(okayButton);
+    // if decline button is clicked, close the custom dialog
+    okayButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {dialog.dismiss();
+        finish();}});
+
   }
 }

@@ -1,28 +1,39 @@
 package com.uni_wuppertal.iad.vierteltour.utility.updater;
 
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import com.pixplicity.sharp.Sharp;
 import com.thin.downloadmanager.DefaultRetryPolicy;
 import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListenerV1;
 import com.thin.downloadmanager.ThinDownloadManager;
 
+import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
+import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Region;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Area;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.City;
@@ -85,7 +96,7 @@ public class Updater extends ContextWrapper{
   // Properties
   private String updateServerUrl;
   private ProgressDialog progressDialog;
-
+  private Singletonint singlepage;
   private ThinDownloadManager downloadManager;
 
   private int manifestDownloadId;
@@ -113,14 +124,13 @@ public class Updater extends ContextWrapper{
     }
   }
 
-
-
   /**
    * Check if we have any new updates on our tour data
    *
    * @return true if there is either new data or data has changed, false else
    */
-  public boolean updatesOnTourdata(Context context){
+  public boolean updatesOnTourdata(){
+
     // If the phone has no connection to the internet, tell this to the user.
     if( !isNetworkAvailable() ){
       // TODO: Replace Toasts (all of them, not just this one) with proper UI elements (modals etc.)
@@ -131,11 +141,10 @@ public class Updater extends ContextWrapper{
       catch (Exception e){Log.d( DEBUG_TAG, "No Tourdata found!" );}
       return false;
     }
-
     Log.d( DEBUG_TAG, "Checking for updates..." );
     checkingForUpdates = true;
-
-    new DownloadTourdataVersionTask().execute( updateServerUrl );
+    try{new DownloadTourdataVersionTask().execute( updateServerUrl ).get();}
+    catch(Exception e){return false;}
 
     // Assumption: If the version on server differs from our version, the tour data is new
     // There is no reason whatsoever for the data on the server side to be OLDER than this one.
@@ -148,12 +157,8 @@ public class Updater extends ContextWrapper{
     // If we've never stored a tour data version, use the remote one as the local version
     if( !getPrefs.contains( "localTourdataVersion" ) ) {
       e.putString( "localTourdataVersion", getPrefs.getString( "remoteTourdataVersion", "" ) ).apply();
-      updateListener.newTourdataAvailable(context);
-      return true;
-    }
-
-    if( !getPrefs.getString( "localTourdataVersion", "" ).equals( getPrefs.getString( "remoteTourdataVersion", "" ) )  ){
-      updateListener.newTourdataAvailable(context);
+      updateListener.newTourdataAvailable();
+      singlepage.INSTANCE.versionUpdate(true);
       return true;
     }
 
@@ -169,11 +174,40 @@ public class Updater extends ContextWrapper{
   // an InputStream. Finally, the InputStream is converted into a string, which is
   // displayed in the UI by the AsyncTask's onPostExecute method.
   private class DownloadTourdataVersionTask extends AsyncTask<String, Void, String>{
+
+
     @Override
     protected String doInBackground( String... urls ) {
       // urls comes from the execute() call: urls[0] is the url.
       try {
-        return downloadJSON( urls[0] );
+        String result = downloadJSON( urls[0] );
+        Log.d( DEBUG_TAG, "Let's see if and what we have retrieved!"  );
+
+        Log.d( DEBUG_TAG, "Result in JSON-Format:" );
+        Log.d( DEBUG_TAG, result );
+
+        Map<String, String> gsonResult = new Gson().fromJson(result, new TypeToken<Map<String, String>>() {}.getType());
+
+        Log.d( DEBUG_TAG, "Result parsed by GSON" );
+        for( Map.Entry<String, String> entry : gsonResult.entrySet() ){
+          Log.d( DEBUG_TAG, entry.getKey() + ": " + entry.getValue() );
+
+          // Save remote tour data version
+          if( entry.getKey().equals( "tourDataVersion" ) ){
+            PreferenceManager.getDefaultSharedPreferences( getBaseContext() )
+              .edit()
+              .putString( "remoteTourdataVersion", entry.getValue() )
+              .apply();
+          }
+        }
+
+        SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences( getBaseContext() );
+        if( !getPrefs.getString( "localTourdataVersion", "" ).equals( getPrefs.getString( "remoteTourdataVersion", "" ) )  ){
+          singlepage.INSTANCE.versionUpdate(true);
+          updateListener.newTourdataAvailable();
+        }
+        checkingForUpdates = false;
+        return result;
       } catch (IOException e) {
         return "Unable to retrieve web page. URL may be invalid.";
       }
@@ -182,27 +216,7 @@ public class Updater extends ContextWrapper{
     // onPostExecute displays the results of the AsyncTask.
     @Override
     protected void onPostExecute( String result ) {
-      Log.d( DEBUG_TAG, "Let's see if and what we have retrieved!"  );
 
-      Log.d( DEBUG_TAG, "Result in JSON-Format:" );
-      Log.d( DEBUG_TAG, result );
-
-      Map<String, String> gsonResult = new Gson().fromJson(result, new TypeToken<Map<String, String>>() {}.getType());
-
-      Log.d( DEBUG_TAG, "Result parsed by GSON" );
-      for( Map.Entry<String, String> entry : gsonResult.entrySet() ){
-        Log.d( DEBUG_TAG, entry.getKey() + ": " + entry.getValue() );
-
-        // Save remote tour data version
-        if( entry.getKey().equals( "tourDataVersion" ) ){
-          PreferenceManager.getDefaultSharedPreferences( getBaseContext() )
-                           .edit()
-                           .putString( "remoteTourdataVersion", entry.getValue() )
-                           .apply();
-        }
-      }
-
-      checkingForUpdates = false;
     }
 
 
@@ -269,7 +283,7 @@ public class Updater extends ContextWrapper{
    *
    * @return true if the download was successful, false else
    */
-  public boolean downloadTourlist(Context context){
+  public boolean downloadTourlist(){
     // If the phone has no connection to the internet, tell this to the user.
     if( !isNetworkAvailable() ){
      // Toast.makeText( getApplicationContext(), "Can't download tourlist: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
@@ -279,7 +293,6 @@ public class Updater extends ContextWrapper{
     checkingForUpdates = true;
 
     final UpdateListener listener = updateListener;
-    final Context con = context;
 
     Log.d( DEBUG_TAG, "Starting download of tourlist..." );
 
@@ -288,7 +301,6 @@ public class Updater extends ContextWrapper{
 
     Uri downloadUri = Uri.parse( url );
     Uri destinationUri = Uri.parse( destination );
-
     // Setup the download, with nice callback function on different events throughout the download
     DownloadRequest downloadRequest = new DownloadRequest( downloadUri)
       .setRetryPolicy( new DefaultRetryPolicy() )
@@ -305,28 +317,28 @@ public class Updater extends ContextWrapper{
         public void onDownloadComplete( DownloadRequest request ) {
           Log.d( DEBUG_TAG, successMessage  + request.getDestinationURI().toString() );
 
-          progressDialog.dismiss();
+  //        progressDialog.dismiss();
           checkingForUpdates = false;
-          listener.tourlistDownloaded(con);
+          listener.tourlistDownloaded();
         }
 
         @Override
         public void onDownloadFailed( DownloadRequest request, int returnCode, String returnMessage ) {
           Log.d( DEBUG_TAG, errorMessage + returnMessage + " (" + returnCode + ")" );
 
-          progressDialog.dismiss();
-          Toast.makeText(con, "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat.", Toast.LENGTH_LONG).show();
+   //       progressDialog.dismiss();
+         // Toast.makeText(con, "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat.", Toast.LENGTH_LONG).show();
 
           checkingForUpdates = false;
         }
 
         @Override
         public void onProgress( DownloadRequest request, long totalBytes, long downloadedBytes, int progress) {
-          progressDialog.setMax((int)totalBytes);
-          progressDialog.setProgress((int)downloadedBytes);
+   //       progressDialog.setMax((int)totalBytes);
+   //       progressDialog.setProgress((int)downloadedBytes);
         }
       });
-    createProgressDialog(con, "Lade Tourliste herunter...");
+   // createProgressDialog(con, "Lade Tourliste herunter...");
 
     // Start the download
     this.tourlistDownloadId = downloadManager.add( downloadRequest );
@@ -338,7 +350,7 @@ public class Updater extends ContextWrapper{
    *
    * @return true if the download was successful, false else
    */
-  public boolean downloadTourdata(Context context){
+  public boolean downloadTourdata(){
     // If the phone has no connection to the internet, tell this to the user.
     if( !isNetworkAvailable() ){
    //   Toast.makeText( getApplicationContext(), "Can't download file: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
@@ -348,7 +360,6 @@ public class Updater extends ContextWrapper{
     checkingForUpdates = true;
 
     final UpdateListener listener = updateListener;
-    final Context con = context;
     Log.d( DEBUG_TAG, "Starting file download..." );
 
     ArrayList<String> citiesPath = new ArrayList<>();
@@ -381,9 +392,9 @@ public class Updater extends ContextWrapper{
 
         String successMessage = "Download completed!";
         String errorMessage = "Download FAILED!\n" + "Message:\n";
-        String progressMessage = "Download in progress! (";
+    //    String progressMessage = "Download in progress! (";
    //     String toastText = "Tourdaten werden heruntergeladen - bitte einen Moment Geduld";
-        Boolean updateProgress = true;
+    //    Boolean updateProgress = true;
 
         @Override
         public void onDownloadComplete( DownloadRequest request ) {
@@ -401,7 +412,7 @@ public class Updater extends ContextWrapper{
           getPrefs.edit()
                   .putString( "localTourdataVersion", getPrefs.getString( "remoteTourdataVersion", "" ) )
                   .apply();
-          progressDialog.dismiss();
+         // progressDialog.dismiss();
 
           checkingForUpdates = false;
           listener.tourdataDownloaded();
@@ -411,19 +422,19 @@ public class Updater extends ContextWrapper{
         public void onDownloadFailed( DownloadRequest request, int returnCode, String returnMessage ) {
           Log.d( DEBUG_TAG, errorMessage + returnMessage + " (" + returnCode + ")" );
 
-          progressDialog.dismiss();
-          Toast.makeText(con, "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat.", Toast.LENGTH_LONG).show();
+        //  progressDialog.dismiss();
+         // Toast.makeText(con, "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat.", Toast.LENGTH_LONG).show();
 
           checkingForUpdates = false;
         }
 
         @Override
         public void onProgress( DownloadRequest request, long totalBytes, long downloadedBytes, int progress) {
-          progressDialog.setMax((int)totalBytes);
-          progressDialog.setProgress((int)downloadedBytes);
+         // progressDialog.setMax((int)totalBytes);
+        //  progressDialog.setProgress((int)downloadedBytes);
         }
       });
-    createProgressDialog(con, "Lade Tourinformationen runter...");
+   // createProgressDialog(con, "Lade Tourinformationen runter...");
     // Start the download
 
     // Display the message to the user for as long as the download lasts
@@ -607,5 +618,7 @@ public class Updater extends ContextWrapper{
       progressDialog.setMessage("Entpacke Daten...");
     }
   };
+
+
 
 }

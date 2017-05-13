@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public enum Singletonint {
     INSTANCE;
 
-    private boolean isAudio;
+    private boolean isAudio, versionUpdate=false;
     private int id;     //Zur Zeit nur Nummer der Station, soll später zu ID werden
     private int position;   //Position des GalleryPagers
     private Tour selectedTour;  //Ausgewählte Tour
@@ -51,6 +51,9 @@ public enum Singletonint {
 
     public int onfragmentclicked() {return onfragmentclicked;}
     public void onfragmentclicked(int onfragmentclicked){this.onfragmentclicked=onfragmentclicked;}
+
+   public boolean versionUpdate(){return versionUpdate;}
+   public void versionUpdate(boolean versionUpdate){this.versionUpdate = versionUpdate;}
 
     public boolean isAudio() {return isAudio;}
     public void isAudio(boolean isAudio) {this.isAudio=isAudio;}

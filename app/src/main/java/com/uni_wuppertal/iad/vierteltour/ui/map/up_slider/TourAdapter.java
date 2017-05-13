@@ -164,13 +164,14 @@ public class TourAdapter extends BaseAdapter{
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     dialog.show();
     // set values for custom dialog components - text, image and button
-    TextView text = (TextView) dialog.findViewById(R.id.main_text);
+    TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
     text.setText(txt);
 
     final String tourslug = slug;
     final int pos = position;
 
-    Button okayButton = (Button) dialog.findViewById(R.id.left_btn);
+    ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
+    Sharp.loadResource(context.getResources(), R.raw.beenden_dunkel).into(okayButton);
     // if decline button is clicked, close the custom dialog
     okayButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -179,7 +180,8 @@ public class TourAdapter extends BaseAdapter{
         if(context instanceof MapsActivity)  Updater.get(((MapsActivity)context).getBaseContext()).downloadTourMedia(tourslug, context);
         dialog.dismiss();}});
 
-    Button declineButton = (Button) dialog.findViewById(R.id.right_btn);
+    ImageButton declineButton = (ImageButton) dialog.findViewById(R.id.btn_x_dialog);
+    Sharp.loadResource(context.getResources(), R.raw.beenden_dunkel).into(declineButton);
     // if decline button is clicked, close the custom dialog
     declineButton.setOnClickListener(new View.OnClickListener() {
       @Override

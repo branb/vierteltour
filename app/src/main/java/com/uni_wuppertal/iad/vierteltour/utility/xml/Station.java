@@ -51,7 +51,8 @@ public class Station extends TourListData {
 
 
   public String description(){
-    return description;
+    if(description!=null)return description;
+    else return "";
   }
 
 

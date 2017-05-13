@@ -8,11 +8,11 @@ import android.content.Context;
  */
 public interface UpdateListener{
 
-  void newTourdataAvailable(Context context);
+  void newTourdataAvailable();
 
   void noNewTourdataAvailable();
 
-  void tourlistDownloaded(Context context);
+  void tourlistDownloaded();
 
   void tourdataDownloaded();
 }

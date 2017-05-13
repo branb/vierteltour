@@ -11,10 +11,12 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Area;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.City;
@@ -83,7 +85,7 @@ public class Einstellungen extends Activity{
           if(tours.isEmpty())keineTouren.setVisibility(View.VISIBLE);}
         //i==1 equals "Nach Aktualisierungen suchen"
         if(i==1) {e.remove("localTourdataVersion").remove("remoteTourdataVersion").apply();
-          Updater.get( getBaseContext() ).updatesOnTourdata(Einstellungen.this);
+          Updater.get( getBaseContext() ).updatesOnTourdata();
         }
         //i==2 equals "Touren freischalten". Function only for testing
         if(i==2){for(int k=0;k<tourlist.tours().size();k++)
@@ -141,7 +143,7 @@ public class Einstellungen extends Activity{
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     dialog.show();
     // set values for custom dialog components - text, image and button
-    TextView text = (TextView) dialog.findViewById(R.id.main_text);
+    TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
     text.setText(txt);
 
     //get whole path of the tour that has to be deleted
@@ -160,7 +162,8 @@ public class Einstellungen extends Activity{
 
     final String testpath = path ;
 
-    Button okayButton = (Button) dialog.findViewById(R.id.left_btn);
+    ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
+    Sharp.loadResource(getResources(), R.raw.laden).into(okayButton);
     // if decline button is clicked, close the custom dialog
     okayButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -177,7 +180,8 @@ public class Einstellungen extends Activity{
 
         dialog.dismiss();}});
 
-    Button declineButton = (Button) dialog.findViewById(R.id.right_btn);
+    ImageButton declineButton = (ImageButton) dialog.findViewById(R.id.btn_x_dialog);
+    Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(declineButton);
     // if decline button is clicked, close the custom dialog
     declineButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -204,7 +208,7 @@ public class Einstellungen extends Activity{
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     dialog.show();
     // set values for custom dialog components - text, image and button
-    TextView text = (TextView) dialog.findViewById(R.id.main_text);
+    TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
     text.setText(txt);
 
     String path="";
@@ -221,7 +225,7 @@ public class Einstellungen extends Activity{
 
     final String testpath = path ;
 
-    Button okayButton = (Button) dialog.findViewById(R.id.left_btn);
+    ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
     // if decline button is clicked, close the custom dialog
     okayButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -238,7 +242,7 @@ public class Einstellungen extends Activity{
 
         dialog.dismiss();}});
 
-    Button declineButton = (Button) dialog.findViewById(R.id.right_btn);
+    ImageButton declineButton = (ImageButton) dialog.findViewById(R.id.btn_x_dialog);
     // if decline button is clicked, close the custom dialog
     declineButton.setOnClickListener(new View.OnClickListener() {
       @Override
