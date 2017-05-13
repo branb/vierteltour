@@ -7,10 +7,10 @@ import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
 
 import java.util.ArrayList;
 
-public class StationAdapter extends FragmentStatePagerAdapter {
+public class FragmentAdapter extends FragmentStatePagerAdapter {
   public ArrayList<StationFragment> fragments;
 
-  public StationAdapter( FragmentManager fm ){
+  public FragmentAdapter(FragmentManager fm ){
     super( fm );
     fragments = new ArrayList<>();
   }

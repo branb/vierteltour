@@ -428,16 +428,6 @@
                           android:layout_height="225dp"
                           android:id="@+id/ImagePager"
                           />
-                        <ImageView
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/pager_play_button"
-                          android:clickable="true"
-                          android:scaleType="fitCenter"
-                          android:layout_centerHorizontal="true"
-                          android:layout_centerVertical="true"
-                          android:gravity="center"
-                          android:background="@color/transparent"/>
                       </RelativeLayout>
 
                       <RelativeLayout

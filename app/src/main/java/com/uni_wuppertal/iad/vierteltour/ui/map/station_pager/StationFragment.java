@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -38,7 +39,7 @@ public class StationFragment extends Fragment{
   private ViewGroup ownContainer;
   private Singletonint singlepage;
   private int position;
-  private View view;
+  private View numberlayout, view;
 
 
 //creating fragment
@@ -71,12 +72,18 @@ public class StationFragment extends Fragment{
 
     TextView number = (TextView) rootView.findViewById(R.id.numbertext);
     TextView title = (TextView) rootView.findViewById( R.id.titlefrag );
+    //Image Sizes of Fragment
     ImageView image = (ImageView) rootView.findViewById(R.id.imagefrag);
+    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.302),(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().heightPixels*0.149));
+    lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+    lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+    lp.topMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.025);
+    lp.leftMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.025);
+    lp.rightMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.025);
+    //lp.addRule(RelativeLayout.);
+    image.setLayoutParams(lp);
 
-   // DisplayMetrics displayMetrics = new DisplayMetrics();
-    //getApplicationContext().getDefaultDisplay().getMetrics(displayMetrics);
-
-    View numberlayout = rootView.findViewById(R.id.numberlayout);
+    numberlayout = rootView.findViewById(R.id.numberlayout);
 
     if( arguments != null ){
       position = getArguments().getInt( ARG_PAGE_NUMBER );
@@ -141,6 +148,8 @@ public class StationFragment extends Fragment{
 
     return rootView;
   }
+
+  public View getNumberlayout() {return numberlayout;}
 
   public void deleteStrings(){
     ztitle.clear();

@@ -1,20 +1,14 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
@@ -29,7 +23,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -87,12 +80,11 @@ import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.ClickableViewpager
 import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.ShadowTransformer;
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.about.About;
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.einstellungen.Einstellungen;
-import com.uni_wuppertal.iad.vierteltour.ui.station.StationActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 
-import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.StationAdapter;
+import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.FragmentAdapter;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.TourAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.DrawerAdapter;
@@ -145,7 +137,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private RelativeLayout mDrawer, pager_layout;
   private LinearLayout slidingLayout;
   public static ClickableViewpager mPager;
-  private StationAdapter stationAdapter;
+  private FragmentAdapter fragmentAdapter;
   private DrawerAdapter draweradapter;
   public static TourAdapter adapter;
   private List<View> tourlistview;
@@ -241,7 +233,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     initActionBar();
     initDrawer();
 
-    mFragmentShadowTransformer = new ShadowTransformer(mPager, stationAdapter, this);
+    mFragmentShadowTransformer = new ShadowTransformer(mPager, fragmentAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
 
 
@@ -251,9 +243,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void onDestroy() {
     super.onDestroy();
     if (googleApiClient != null) googleApiClient.disconnect();
-    if (stationAdapter.fragments.size() != 0) {
-      stationAdapter.deleteStrings();
-      stationAdapter.fragments.clear();
+    if (fragmentAdapter.fragments.size() != 0) {
+      fragmentAdapter.deleteStrings();
+      fragmentAdapter.fragments.clear();
     }
   }
 
@@ -267,8 +259,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     pager_layout = (RelativeLayout) findViewById(R.id.pager_layout);
 
     mPager = (ClickableViewpager) findViewById(R.id.pager);
-    stationAdapter = new StationAdapter(getSupportFragmentManager());
-    mPager.setAdapter(stationAdapter);
+    fragmentAdapter = new FragmentAdapter(getSupportFragmentManager());
+    mPager.setAdapter(fragmentAdapter);
 
     mPager.setOnItemClickListener(new ClickableViewpager.OnItemClickListener() {
       @Override
@@ -426,7 +418,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
               if (clickCoords.equals(station.latlng())) {
                 onMapClicked = true;
                 mPager.setCurrentItem(station.number() - 1, false);
-                stationAdapter.notifyDataSetChanged();
+                fragmentAdapter.notifyDataSetChanged();
               }
 
             }
@@ -966,12 +958,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if (stationImagePaths.size() == 0) {
       return;
     }
-    pager_play_btn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        startGallery();
-      }
-    });
     isimages = 0;
     imagePager.setOnPageChangeListener(pagechangelisten);
     setUiPageViewController();
@@ -1236,7 +1222,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                 //Aktualisiere Stationen im ViewPager,
 //damit eine sofortige Freischaltung stattfindet
                 e.apply();
-                stationAdapter.notifyDataSetChanged();
+                fragmentAdapter.notifyDataSetChanged();
 
                 gpsbtn.setVisibility(View.GONE);
               }
@@ -1356,16 +1342,16 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void swapToViewPager(View v){
 
 
-    if( stationAdapter.fragments.size() != 0 ){
-      stationAdapter.deleteStrings();
-      stationAdapter.fragments.clear();
-      stationAdapter.notifyDataSetChanged();
+    if( fragmentAdapter.fragments.size() != 0 ){
+      fragmentAdapter.deleteStrings();
+      fragmentAdapter.fragments.clear();
+      fragmentAdapter.notifyDataSetChanged();
     }
     // Create a page for every station
     for( Station station : singlepage.INSTANCE.selectedTour().stations() ){
-      stationAdapter.addFragment( station  );
+      fragmentAdapter.addFragment( station  );
     }
-    stationAdapter.notifyDataSetChanged();
+    fragmentAdapter.notifyDataSetChanged();
     vanishTours(singlepage.INSTANCE.selectedTour());
 
     Typeface tf = Typeface.createFromAsset(getAssets(), "Bariol_Regular.ttf");
@@ -1385,7 +1371,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     title.setText( singlepage.INSTANCE.selectedTour().name() );
     title.setVisibility( View.VISIBLE );
     pager_layout.setVisibility( View.VISIBLE );
-    System.out.println(pager_layout.getVisibility() + "  " + mPager.getVisibility()+ "  " + xbtn.getVisibility()+ "  " + mPager.getCurrentItem() + " " + mPager.getAdapter().getCount());
   }
 
   /**
@@ -1400,7 +1385,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     xbtn.setVisibility( View.GONE );
     title.setVisibility( View.GONE );
     pager_layout.setVisibility( View.GONE );
-    if(stationAdapter.getItem(0)!=null)
+    if(fragmentAdapter.getItem(0)!=null)
     {selectStation(singlepage.INSTANCE.selectedTour().station(1));
       mPager.setCurrentItem(0,false);}
 
@@ -1450,13 +1435,13 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void initPager(){
     //Get Screen Sizes
     DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-    float pagerPadding = (displayMetrics.widthPixels - 140*displayMetrics.density) /2;
+    float pagerPadding = (float)(displayMetrics.widthPixels*0.312);
     ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) mPager.getLayoutParams();
-    pxPager = (int) (displayMetrics.heightPixels*0.27);
+    pxPager = (int) (displayMetrics.heightPixels*0.3);
     lp.height = pxPager;
-    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAA" +displayMetrics + "  " + pagerPadding + "  " + pxPager);
     mPager.setLayoutParams(lp);
     mPager.setPadding((int)pagerPadding, 0,(int) pagerPadding, 0);
+    System.out.println(displayMetrics.widthPixels + " SIDE: " + displayMetrics.widthPixels*0.312 + "padd");
 
 
   }

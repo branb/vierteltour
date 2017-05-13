@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.gallery.GalleryMode;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
@@ -34,7 +35,6 @@ public class StationAdapter extends PagerAdapter{
   private Context mContext;
   private ArrayList<String> stationImagePaths;
   private ImageView imageView, background;
-  private Intent gallery;
   private boolean fileAvailable=true;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
@@ -62,7 +62,8 @@ public class StationAdapter extends PagerAdapter{
 
     imageView = (ImageView) itemView.findViewById( R.id.img_pager_item );
     background = (ImageView) itemView.findViewById( R.id.img_pager_background);
-   // ImageView imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button );
+    ImageView imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button );
+    Sharp.loadResource(mContext.getResources(), R.raw.play_hell).into(imageBtn);
     String resources = stationImagePaths.get(position);     //v für video, i für image
 
 //TODO: stationimagepaths to stationresourcepaths with video and images to show
@@ -74,17 +75,18 @@ public class StationAdapter extends PagerAdapter{
         MediaStore.Images.Thumbnails.MINI_KIND);
       imageView.setImageBitmap(thumbnail);
         background.setVisibility(View.VISIBLE);
-        //imageBtn.setVisibility(View.VISIBLE);
+        imageBtn.setVisibility(View.VISIBLE);
       }
     else{imageView.setImageResource(R.drawable.i);
       fileAvailable=false;}}
 
     else if (resources.endsWith("jpg")) {
-    //  imageBtn.setVisibility(View.GONE);
+      imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
       {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );   //Out of Memory Error
-        background.setVisibility(View.VISIBLE);}
+        background.setVisibility(View.GONE);
+      }
       else{imageView.setImageResource(R.drawable.i);
         fileAvailable=false;}
   }
