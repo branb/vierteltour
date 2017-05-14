@@ -17,8 +17,10 @@ import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StatFs;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.ViewPager;
@@ -345,7 +347,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     t.start();
   }
 
-
   /**
    * Get notified when the map is ready to be used.
    */
@@ -368,6 +369,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wuppertal, CurrentZoom));
     loadTourdata();
+
+    //System.out.println("Megs :"+ megabytesAvailable(Environment.getExternalStorageDirectory()));
 
     /**
      * When the user clicks anywhere on the map, check which tour or station he clicked onto and mark it as

@@ -123,7 +123,7 @@ public class Einstellungen extends Activity{
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
     e = sharedPreferences.edit();
     for(int i=tours.size()-1;i>=0;i--)
-    {if(!sharedPreferences.getBoolean(tours.get(i).slug(), false))    //Check sharedpreferences to compare tour slug. if it contains tourslug, the tour is stored in files directory
+    {if(!sharedPreferences.getBoolean(tours.get(i).slug(), false) && !sharedPreferences.getBoolean(tours.get(i).slug()+"-zip", false))    //Check sharedpreferences to compare tour slug. if it contains tourslug, the tour is stored in files directory
     {tours.remove(i);}}
     einstellungenTourAdapter = new EinstellungenTourAdapter(tours, this);
    }
@@ -170,7 +170,7 @@ public class Einstellungen extends Activity{
       public void onClick(View v) {
         File test = new File(getExternalFilesDir(null), testpath);
         deleteRecursive(test);
-        e.remove(tours.get(position).slug()).apply();
+        e.remove(tours.get(position).slug()).remove(tours.get(position).slug()+"-zip").apply();
         if(tours.size()==3)tours.remove(tours.size()-1);
         tours.remove(position);
 
@@ -233,7 +233,7 @@ public class Einstellungen extends Activity{
         File test = new File(getExternalFilesDir(null), testpath);
         deleteRecursive(test);
         for(int i=tours.size()-1;i>=0;i--)
-        {e.remove(tours.get(i).slug()).apply();
+        {e.remove(tours.get(i).slug()).remove(tours.get(i).slug()+"-zip").apply();
           tours.remove(i);}
 
         einstellungenTourAdapter.notifyDataSetChanged();
@@ -264,7 +264,7 @@ public class Einstellungen extends Activity{
        deleteRecursive(child);
       }
     }
-    if(!fileOrDirectory.toString().endsWith(".png") && !fileOrDirectory.toString().endsWith(".xml") && !fileOrDirectory.toString().endsWith(".gpx") )
+    if(!fileOrDirectory.toString().endsWith(".png") && !fileOrDirectory.toString().endsWith(".xml") && !fileOrDirectory.toString().endsWith(".gpx") && !fileOrDirectory.toString().endsWith(".svg") )
     {fileOrDirectory.delete();}
   }
 

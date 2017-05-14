@@ -13,8 +13,10 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StatFs;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +46,7 @@ import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.progress.ProgressMonitor;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -451,18 +454,10 @@ public class Updater extends ContextWrapper{
    * @return true if the download was successful, false else
    */
   public boolean downloadTourMedia(String slug, Context context){
-    // If the phone has no connection to the internet, tell this to the user.
-    if( !isNetworkAvailable() ){
-      Toast.makeText( getApplicationContext(), "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat.", Toast.LENGTH_LONG ).show();
-      return false;
-    }
-
     final Context con = context;
     checkingForUpdates = true;
 
     final String tourslug = slug;
-    Log.d( DEBUG_TAG, "Starting file download..." );
-
     String path="";
     TourListReader tourListReader = new TourListReader(this);
     TourList tourlist = tourListReader.readTourList();
@@ -481,7 +476,22 @@ public class Updater extends ContextWrapper{
     //Zielverzeichnis wird festgelegt (gleicher "path")
     String destination = new File( OurStorage.get( Updater.this ).storagePath() ) + "/" + path + "/" + slug + ".zip";
     Uri destinationUri = Uri.parse( destination );
+    System.out.println(destinationUri.toString());
 
+    SharedPreferences getPrefs = PreferenceManager
+      .getDefaultSharedPreferences( getBaseContext() );
+    if(getPrefs.getBoolean(slug+"-zip", false))
+    {unzipTour(destinationUri.toString() ,tourslug, con);
+      ((MapsActivity)con).adapter.notifyDataSetChanged();}
+
+    else{
+    // If the phone has no connection to the internet, tell this to the user.
+    if( !isNetworkAvailable() ){
+      Toast.makeText( getApplicationContext(), "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat.", Toast.LENGTH_LONG ).show();
+      return false;
+    }
+
+    Log.d( DEBUG_TAG, "Starting file download..." );
 
     // Setup the download, with nice callback function on different events throughout the download
     //DownloadRequest mit zusammengesetzter URL
@@ -489,31 +499,26 @@ public class Updater extends ContextWrapper{
     DownloadRequest downloadRequest = new DownloadRequest( downloadUri)
       .setRetryPolicy( new DefaultRetryPolicy() )
       .setDestinationURI( destinationUri ).setPriority( DownloadRequest.Priority.LOW )
-      .setStatusListener( new DownloadStatusListenerV1() {
-
+    .setStatusListener( new DownloadStatusListenerV1() {
+        boolean checkSize=true;
         String successMessage = "Download completed!";
         String errorMessage = "Download FAILED!\n" + "Message:\n";
 
         @Override
         public void onDownloadComplete( DownloadRequest request ) {
           Log.d( DEBUG_TAG, successMessage  + request.getDestinationURI().toString() );
-
+          SharedPreferences getPrefs = PreferenceManager
+            .getDefaultSharedPreferences( getBaseContext() );
          /* runOnUiThread(changeMessage);*/
 
           ((MapsActivity)con).adapter.notifyDataSetChanged();
-          //Entpacke die heruntergeladene Zip Datei
-          //Innerhalb der Methode wird das Paket am Ende geloescht
-          unzipFile( request.getDestinationURI().toString() );
-
-          //Setze Tour und Einleitung in SharedPreferences,
-          //damit diese freigeschaltet werden
-          SharedPreferences getPrefs = PreferenceManager
-            .getDefaultSharedPreferences( getBaseContext() );
 
           getPrefs.edit()
-            .putBoolean( tourslug, true)
-            .putBoolean( "einleitung-"+tourslug, true)
+            .putBoolean( tourslug+ "-zip", true)
             .apply();
+          //Entpacke die heruntergeladene Zip Datei
+          //Innerhalb der Methode wird das Paket am Ende geloescht
+          unzipTour(request.getDestinationURI().toString(), tourslug, con);
           //Beende Fortschrittsdialog
           progressDialog.dismiss();
 
@@ -524,16 +529,22 @@ public class Updater extends ContextWrapper{
         @Override
         public void onDownloadFailed( DownloadRequest request, int returnCode, String returnMessage ) {
           Log.d( DEBUG_TAG, errorMessage + returnMessage + " (" + returnCode + ")" );
+          System.out.println(errorMessage + returnMessage + " (" + returnCode + ")");
           //Beende Fortschrittsdialog und gebe Fehlermeldung aus
           progressDialog.dismiss();
-          Toast.makeText(con, "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat.", Toast.LENGTH_LONG).show();
-
+          if(returnCode==1004)Toast.makeText(con, "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat.", Toast.LENGTH_LONG).show();
+          else if(returnCode==1008)Toast.makeText(con, "Nicht genügend Speicherplatz auf dem Gerät vorhanden.", Toast.LENGTH_LONG).show();
           checkingForUpdates = false;
         }
 
         @Override
         public void onProgress( DownloadRequest request, long totalBytes, long downloadedBytes, int progress) {
           //Aktualisiere Fortschrittsdialog
+              if(checkSize && totalBytes>bytesAvailable(Environment.getExternalStorageDirectory())){
+                checkSize=false;
+                request.cancel();
+              }
+              else if(checkSize){checkSize=false;}
               progressDialog.setMax((int)totalBytes);
               progressDialog.setProgress((int)downloadedBytes);
        }
@@ -543,18 +554,31 @@ public class Updater extends ContextWrapper{
     // Start the download
 
     // Display the message to the user for as long as the download lasts
-   // Toast.makeText( getApplicationContext(), "Beginne die Tourdaten herunterzuladen...", Toast.LENGTH_LONG ).show();
+    // Toast.makeText( getApplicationContext(), "Beginne die Tourdaten herunterzuladen...", Toast.LENGTH_LONG ).show();
 
     this.manifestDownloadId = downloadManager.add( downloadRequest );
 
-    return true;
-  }
+
+  }return true;}
 
   public boolean checkingForUpdates(){
     return checkingForUpdates;
   }
 
 
+
+  private void unzipTour(String path, String tourslug, Context context)
+  {if(unzipFile( path )){
+    SharedPreferences getPrefs = PreferenceManager
+      .getDefaultSharedPreferences( getBaseContext() );
+    //Setze Tour und Einleitung in SharedPreferences,
+    //damit diese freigeschaltet werden
+    getPrefs.edit()
+      .remove(tourslug+"-zip")
+      .putBoolean( tourslug, true)
+      .putBoolean( "einleitung-"+tourslug, true)
+      .apply();}
+  else{Toast.makeText(context, "Nicht genügend Speicher, um die Tour zu entpacken.", Toast.LENGTH_LONG).show();}}
 
   /**
    * Unzip a .zip compressed file into the same destination where the .zip file is in.
@@ -567,7 +591,7 @@ public class Updater extends ContextWrapper{
    *
    * @param zipPath - The destination of our ZIP-File
    */
-  private void unzipFile( String zipPath ){
+  private boolean unzipFile( String zipPath ){
     try {
       // Determine output folder
       File zipFile = new File( zipPath );
@@ -583,11 +607,22 @@ public class Updater extends ContextWrapper{
       // Remove .zip after unzipping
       zipFile.delete();
 
+      return true;
     } catch( ZipException e ){
       e.printStackTrace();
+      return false;
     }
   }
 
+  public static long bytesAvailable(File f) {
+    StatFs stat = new StatFs(f.getPath());
+    long bytesAvailable = 0;
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2)
+      bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
+    else
+      bytesAvailable = (long) stat.getBlockSize() * (long) stat.getAvailableBlocks();
+    return bytesAvailable;
+  }
 
   /**
    * Set a listener from e.g. an activity so we can inform the activity about finished updates
