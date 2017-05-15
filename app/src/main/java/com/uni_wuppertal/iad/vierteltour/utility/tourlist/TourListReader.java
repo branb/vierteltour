@@ -28,7 +28,7 @@ public class TourListReader{
    * device (usually, external storage).
    *
    */
-  private final static String toursHome = "tours";
+  private final static String toursHome = ".tours";
 
   private Context context;
 

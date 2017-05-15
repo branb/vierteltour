@@ -62,7 +62,7 @@ import java.util.Map;
 
 public class Updater extends ContextWrapper{
   private static Updater ourInstance;
-
+  static int idsd=0;
   /**
    * Singleton-method
    *
@@ -133,7 +133,7 @@ public class Updater extends ContextWrapper{
    * @return true if there is either new data or data has changed, false else
    */
   public boolean updatesOnTourdata(){
-
+    System.out.println("ASSSSSSSSSSSSSSSSSSSSSS");
     // If the phone has no connection to the internet, tell this to the user.
     if( !isNetworkAvailable() ){
       // TODO: Replace Toasts (all of them, not just this one) with proper UI elements (modals etc.)
@@ -152,7 +152,7 @@ public class Updater extends ContextWrapper{
     // Assumption: If the version on server differs from our version, the tour data is new
     // There is no reason whatsoever for the data on the server side to be OLDER than this one.
     // Initialize SharedPreferences
-    SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences( getBaseContext() );
+  /*  SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences( getBaseContext() );
 
     //  Make a new preferences editor
     SharedPreferences.Editor e = getPrefs.edit();
@@ -163,7 +163,7 @@ public class Updater extends ContextWrapper{
       updateListener.newTourdataAvailable();
       singlepage.INSTANCE.versionUpdate(true);
       return true;
-    }
+    }*/
 
     updateListener.noNewTourdataAvailable();
     return false;
@@ -292,7 +292,6 @@ public class Updater extends ContextWrapper{
      // Toast.makeText( getApplicationContext(), "Can't download tourlist: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
       return false;
     }
-
     checkingForUpdates = true;
 
     final UpdateListener listener = updateListener;
@@ -355,11 +354,11 @@ public class Updater extends ContextWrapper{
    */
   public boolean downloadTourdata(){
     // If the phone has no connection to the internet, tell this to the user.
+
     if( !isNetworkAvailable() ){
    //   Toast.makeText( getApplicationContext(), "Can't download file: No internet connection found. Please enable a connection to the internet.", Toast.LENGTH_LONG ).show();
       return false;
     }
-
     checkingForUpdates = true;
 
     final UpdateListener listener = updateListener;
@@ -593,10 +592,14 @@ public class Updater extends ContextWrapper{
    */
   private boolean unzipFile( String zipPath ){
     try {
+      idsd++;
+      System.out.println("ZIPPP" + idsd+ "  "+zipPath);
       // Determine output folder
+
       File zipFile = new File( zipPath );
       File outputFolder = new File( zipFile.getParentFile().getAbsolutePath() );
-
+      System.out.println(zipFile.getParentFile().getAbsolutePath());
+      System.out.println(outputFolder.getAbsolutePath());
       Log.d( DEBUG_TAG, "Output folder:");
       Log.d( DEBUG_TAG, outputFolder.getAbsolutePath() );
 
