@@ -13,6 +13,7 @@ public enum Singletonint {
     INSTANCE;
 
     private boolean isAudio, versionUpdate=false;
+    private int videotime;    //Videozeitpunkt einspeichern.
     private int id;     //Zur Zeit nur Nummer der Station, soll später zu ID werden
     private int position;   //Position des GalleryPagers
     private Tour selectedTour;  //Ausgewählte Tour
@@ -27,6 +28,7 @@ public enum Singletonint {
       selectedStation=null;
       selectedOldStation=null;
       onfragmentclicked=-1;
+      videotime=0;
     }
 
     public int getId(){
@@ -57,6 +59,9 @@ public enum Singletonint {
 
     public boolean isAudio() {return isAudio;}
     public void isAudio(boolean isAudio) {this.isAudio=isAudio;}
+
+    public int videotime(){return videotime;}
+    public void videotime(int videotime){this.videotime=videotime;}
 
     public ArrayList<Integer> countWaypoints() {return countWaypoints;}
 

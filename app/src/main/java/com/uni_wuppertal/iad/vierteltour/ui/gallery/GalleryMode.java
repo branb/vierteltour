@@ -249,6 +249,7 @@ public class GalleryMode extends Activity {
       seekbarGallery_bar.setProgress( mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition() );
       timeElapsedGallery = mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition();
 
+      singlepage.INSTANCE.videotime(seekbarGallery.getProgress());
       durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsedGallery ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ) ) ) );
       durationGallery_bar.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsedGallery ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ) ) ) );
       seekHandlerGallery.postDelayed( run2, 100 );
@@ -512,7 +513,11 @@ public class GalleryMode extends Activity {
       else
       {hideGalleryVideoBar();}
 
-      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")) startVideoplay();
+      mAdapter2.videoView(singlepage.INSTANCE.position()).seekTo(singlepage.INSTANCE.videotime());
+      durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) singlepage.INSTANCE.videotime() ), TimeUnit.MILLISECONDS.toSeconds( (long) singlepage.INSTANCE.videotime() ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) singlepage.INSTANCE.videotime() ) ) ) );
+      durationGallery_bar.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) singlepage.INSTANCE.videotime() ), TimeUnit.MILLISECONDS.toSeconds( (long) singlepage.INSTANCE.videotime() ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) singlepage.INSTANCE.videotime() ) ) ) );
+      seekbarGallery.setProgress(singlepage.INSTANCE.videotime());
+      seekbarGallery_bar.setProgress(singlepage.INSTANCE.videotime());
     }
 
     @Override
