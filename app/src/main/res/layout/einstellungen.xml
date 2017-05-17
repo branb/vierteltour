@@ -4,20 +4,6 @@
     android:layout_height="match_parent"
   android:background="@color/ColorPrimary">
 
-
-  <RelativeLayout
-    android:id="@+id/listLayout1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:visibility="visible"
-    android:background="@color/ColorPrimary">
-
-    <ListView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:id="@+id/listEinstellungen" />
-  </RelativeLayout>
-
 <RelativeLayout
   android:layout_width="match_parent"
   android:layout_height="match_parent"

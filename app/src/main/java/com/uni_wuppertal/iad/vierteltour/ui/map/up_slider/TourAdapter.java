@@ -171,7 +171,7 @@ public class TourAdapter extends BaseAdapter{
     final int pos = position;
 
     ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
-    Sharp.loadResource(context.getResources(), R.raw.beenden_dunkel).into(okayButton);
+    Sharp.loadResource(context.getResources(), R.raw.laden).into(okayButton);
     // if decline button is clicked, close the custom dialog
     okayButton.setOnClickListener(new View.OnClickListener() {
       @Override

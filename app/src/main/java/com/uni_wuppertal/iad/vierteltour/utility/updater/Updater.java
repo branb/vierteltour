@@ -133,7 +133,6 @@ public class Updater extends ContextWrapper{
    * @return true if there is either new data or data has changed, false else
    */
   public boolean updatesOnTourdata(){
-    System.out.println("ASSSSSSSSSSSSSSSSSSSSSS");
     // If the phone has no connection to the internet, tell this to the user.
     if( !isNetworkAvailable() ){
       // TODO: Replace Toasts (all of them, not just this one) with proper UI elements (modals etc.)
@@ -475,7 +474,6 @@ public class Updater extends ContextWrapper{
     //Zielverzeichnis wird festgelegt (gleicher "path")
     String destination = new File( OurStorage.get( Updater.this ).storagePath() ) + "/" + path + "/" + slug + ".zip";
     Uri destinationUri = Uri.parse( destination );
-    System.out.println(destinationUri.toString());
 
     SharedPreferences getPrefs = PreferenceManager
       .getDefaultSharedPreferences( getBaseContext() );
@@ -528,7 +526,6 @@ public class Updater extends ContextWrapper{
         @Override
         public void onDownloadFailed( DownloadRequest request, int returnCode, String returnMessage ) {
           Log.d( DEBUG_TAG, errorMessage + returnMessage + " (" + returnCode + ")" );
-          System.out.println(errorMessage + returnMessage + " (" + returnCode + ")");
           //Beende Fortschrittsdialog und gebe Fehlermeldung aus
           progressDialog.dismiss();
           if(returnCode==1004)Toast.makeText(con, "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat.", Toast.LENGTH_LONG).show();
@@ -593,13 +590,11 @@ public class Updater extends ContextWrapper{
   private boolean unzipFile( String zipPath ){
     try {
       idsd++;
-      System.out.println("ZIPPP" + idsd+ "  "+zipPath);
       // Determine output folder
 
       File zipFile = new File( zipPath );
       File outputFolder = new File( zipFile.getParentFile().getAbsolutePath() );
-      System.out.println(zipFile.getParentFile().getAbsolutePath());
-      System.out.println(outputFolder.getAbsolutePath());
+
       Log.d( DEBUG_TAG, "Output folder:");
       Log.d( DEBUG_TAG, outputFolder.getAbsolutePath() );
 

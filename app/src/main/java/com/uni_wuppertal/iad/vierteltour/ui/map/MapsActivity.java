@@ -130,7 +130,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   String[] drawertitles = new String[]{"Einstellungen",
     "Info",
     "About",
-    "Updates suchen"
+    "Updates suchen",
+    "Touren freischlaten",
+    "Touren sperren"
   };
   protected static final int TINY_BAR = 0x101, BIG_BAR = 0x102, SEEK_BAR = 0x103;
   private final double radius = 25;
@@ -1761,6 +1763,24 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           {createDialog("Die Touren wurden aktualisiert.");
             singlepage.INSTANCE.versionUpdate(false);}
           else{createDialog("Die Touren sind bereits aktuell.");}}
+        //TMP INSERT START
+          //i==4 equals "Touren freischalten". Function only for testing
+        else if(position == 4){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            SharedPreferences.Editor e = sharedPreferences.edit();
+            for(int k=0;k<tourlist.tours().size();k++)
+        {for(int j=1;j<=tourlist.tours().get(k).stations().size();j++)
+        {e.putBoolean(tourlist.tours().get(k).station(j).slug() ,true);}}
+          e.apply();}
+        //i==5 equals "Touren sperren". Function only for testing
+        else if(position == 5)
+        {SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+          SharedPreferences.Editor e = sharedPreferences.edit();
+          for(int k=0;k<tourlist.tours().size();k++)
+        {for(int j=1;j<=tourlist.tours().get(k).stations().size();j++)
+        {e.remove(tourlist.tours().get(k).station(j).slug());}}
+          e.apply(); }
+        //TMP INSERT END
         //  ftx.commit();
       }
 

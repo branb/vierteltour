@@ -37,12 +37,10 @@ import java.util.List;
 
 public class Einstellungen extends Activity{
 
-  private ListView listViewTouren, listViewEinstellungen;
-  private RelativeLayout layoutEinstellungen, layoutTouren, tourenLoeschen;
+  private ListView listViewTouren;
   private TextView keineTouren;
+  private RelativeLayout layoutTouren;
   private TourList tourlist = new TourListReader( this ).readTourList();
-  private String[] items = new String[] {"Touren löschen", "Nach Aktualisierungen suchen", "Touren freischalten", "Touren sperren"};
-  private EinstellungenAdapter einstellungen;   //Adapter for the listview
   private SharedPreferences sharedPreferences;
   private SharedPreferences.Editor e;
   private List<Tour> tours;
@@ -54,11 +52,7 @@ public class Einstellungen extends Activity{
    */
   @Override
   public void onBackPressed()
-  {if(layoutTouren.getVisibility()==View.VISIBLE)
-  {layoutEinstellungen.setVisibility(View.VISIBLE);
-    layoutTouren.setVisibility(View.GONE);
-    keineTouren.setVisibility(View.GONE);}
-  else super.onBackPressed();}
+  {super.onBackPressed();}
 
 
 
@@ -69,37 +63,9 @@ public class Einstellungen extends Activity{
     //initialisation
     super.onCreate( savedInstanceState );
     setContentView( R.layout.einstellungen );
-    einstellungen = new EinstellungenAdapter(this, items);
-    listViewEinstellungen = (ListView) findViewById(R.id.listEinstellungen);
     keineTouren = (TextView) findViewById(R.id.keineTouren);
-    layoutEinstellungen = (RelativeLayout) findViewById(R.id.listLayout1);
     layoutTouren = (RelativeLayout) findViewById(R.id.listLayout2);
-    listViewEinstellungen.setAdapter(einstellungen);
-    listViewEinstellungen.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        //i==0 equals "Touren löschen"
-        if(i==0)
-        { layoutEinstellungen.setVisibility(View.GONE);
-          layoutTouren.setVisibility(View.VISIBLE);
-          if(tours.isEmpty())keineTouren.setVisibility(View.VISIBLE);}
-        //i==1 equals "Nach Aktualisierungen suchen"
-        if(i==1) {e.remove("localTourdataVersion").remove("remoteTourdataVersion").apply();
-          Updater.get( getBaseContext() ).updatesOnTourdata();
-        }
-        //i==2 equals "Touren freischalten". Function only for testing
-        if(i==2){for(int k=0;k<tourlist.tours().size();k++)
-        {for(int j=1;j<=tourlist.tours().get(k).stations().size();j++)
-        {e.putBoolean(tourlist.tours().get(k).station(j).slug() ,true);}}
-       e.apply();}
-        //i==3 equals "Touren sperren". Function only for testing
-        if(i==3)
-        {for(int k=0;k<tourlist.tours().size();k++)
-        {for(int j=1;j<=tourlist.tours().get(k).stations().size();j++)
-        {e.remove(tourlist.tours().get(k).station(j).slug());}}
-          e.apply(); }
-      }
-    });
+
     //Touren listview to select a tour to delete
     initEinstellungenTourAdapter();
     listViewTouren = (ListView) findViewById(R.id.listTouren);
@@ -126,6 +92,9 @@ public class Einstellungen extends Activity{
     {if(!sharedPreferences.getBoolean(tours.get(i).slug(), false) && !sharedPreferences.getBoolean(tours.get(i).slug()+"-zip", false))    //Check sharedpreferences to compare tour slug. if it contains tourslug, the tour is stored in files directory
     {tours.remove(i);}}
     einstellungenTourAdapter = new EinstellungenTourAdapter(tours, this);
+
+    layoutTouren.setVisibility(View.VISIBLE);
+    if(tours.isEmpty())keineTouren.setVisibility(View.VISIBLE);
    }
 
   /**
