@@ -21,7 +21,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
  */
 public class Stationbeendet extends Activity {
 
-  ImageButton x, station_wiederholen, zur_naechsten_station, zur_tourenauswahl;
+  ImageButton x, /*station_wiederholen,*/ zur_naechsten_station, zur_tourenauswahl;
   TextView beendet_text;
   Singletonint singlepage;
   Intent getIntent;
@@ -35,8 +35,8 @@ public class Stationbeendet extends Activity {
     //Initialize buttons on layout
     x = (ImageButton) findViewById( R.id.station_x_button );
     Sharp.loadResource(getResources(), R.raw.beenden_hell).into(x);
-    station_wiederholen = (ImageButton) findViewById( R.id.station_wiederholen );
-    Sharp.loadResource(getResources(), R.raw.station_wiederholen).into(station_wiederholen);
+    /*station_wiederholen = (ImageButton) findViewById( R.id.station_wiederholen );
+    Sharp.loadResource(getResources(), R.raw.station_wiederholen).into(station_wiederholen);*/
     zur_naechsten_station = (ImageButton) findViewById( R.id.zur_naechsten_station );
     Sharp.loadResource(getResources(), R.raw.zur_naechsten_station).into(zur_naechsten_station);
     zur_tourenauswahl = (ImageButton) findViewById( R.id.zur_tourenauswahl );
@@ -58,13 +58,13 @@ public class Stationbeendet extends Activity {
       }
     });
 
-    station_wiederholen.setOnClickListener( new View.OnClickListener(){
+   /* station_wiederholen.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
         setResult(RESULT_OK);
         onBackPressed();
       }
-    });
+    });*/
 
     //Set Intent to next StationActivity with all needed informations
     zur_naechsten_station.setOnClickListener( new View.OnClickListener(){

@@ -152,6 +152,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private LatLng wuppertal;
   private ImageButton xbtn, zumstart, homebtn, leftbtn, x_supl, arrowbtn, tarbtn;
   private Button gpsbtn;
+  private int slidingLayoutHeight;
   private ImageView up, down;
   private ListView lv;
   private DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -366,13 +367,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     }*/
     wuppertal = new LatLng(51.256972, 7.139341);
     //Gesamte Bildschirmgröße - Toolbargröße
-    //int pxPager = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 170, getResources().getDisplayMetrics());
-    mMap.setPadding(0, 0, 0, pxPager);
+    slidingLayoutHeight = slidingLayout.getLayoutParams().height+20;
+    mMap.setPadding(0, 0, 0, slidingLayoutHeight);
 
     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wuppertal, CurrentZoom));
     loadTourdata();
-
-    //System.out.println("Megs :"+ megabytesAvailable(Environment.getExternalStorageDirectory()));
 
     /**
      * When the user clicks anywhere on the map, check which tour or station he clicked onto and mark it as
@@ -385,6 +384,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void onMapClick(LatLng clickCoords) {
         if (tourdataAvailable) {
           if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+
             boolean test = false;
             for (Tour tour : tourlist.city(visibleCity).tours()) {
 
@@ -1335,7 +1335,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * After Selecting a tour, the interface is switching to the viewpager with station overview
      */
   public void swapToViewPager(View v){
-
+    mMap.setPadding(0, 0, 0, pxPager);
 
     if( fragmentAdapter.fragments.size() != 0 ){
       fragmentAdapter.deleteStrings();
@@ -1372,6 +1372,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * After Removing a selected tour, the interface is switching to the viewpager with tour overview
    */
   public void swapToSupl(){
+    mMap.setPadding(0,0,0,slidingLayoutHeight);
     suplInfo( "showall" );
     slidingLayout.setVisibility(View.VISIBLE);
     supl.setScrollableView(lv);
