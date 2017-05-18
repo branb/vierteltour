@@ -119,7 +119,6 @@ public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPa
   //sets neighbour and target fragment colors and sizes
   @Override
   public void onPageSelected(int position) {
-
     mAdapter.getItem(position).getView().findViewById(R.id.clicklayout).setBackgroundColor(context.getResources().getColor(R.color.whitewhite));
    // mAdapter.getItem(position).getView().setPadding(mAdapter.getItem(position).getView().getPaddingTop(),mAdapter.getItem(position).getView().getPaddingRight(),mAdapter.getItem(position).getView().getPaddingLeft(),mAdapter.getItem(position).getView().getPaddingBottom()+30 );
     mAdapter.getItem(position).getView().setScaleX(1.25f);

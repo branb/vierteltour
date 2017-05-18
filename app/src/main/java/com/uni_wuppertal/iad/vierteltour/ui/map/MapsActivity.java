@@ -456,10 +456,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       removeStation(singlepage.INSTANCE.selectedOldStation().slug());
       Marker m;
       if (singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
-        m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() - 1 + ""))));
+        m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() - 1 + "", false))));
         //Ausgewaehlte Station wird per Bitmap groesser skaliert
       else
-        m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() + ""))));
+        m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() + "", false))));
       //Erstellte Bitmap wird der Karte hinzugefuegt
       tourMarker.put(singlepage.INSTANCE.selectedOldStation().slug(), m);
 
@@ -481,14 +481,14 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             countnumber++;
         } catch (Exception e) {
         }
-        m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number() - 1)))));
+        m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (station.number() - 1), true))));
       } else {
         try {
           while (singlepage.INSTANCE.countWaypoints().get(countnumber) < (station.number()))
             countnumber++;
         } catch (Exception e) {
         }
-        m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(scaleMarker(singlepage.INSTANCE.selectedTour(), "" + (station.number())))));
+        m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (station.number()), true))));
       }
       m.showInfoWindow();
       tourMarker.put(singlepage.INSTANCE.selectedStation().slug(), m);
@@ -530,13 +530,15 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    * @param tmpNumber Number is needed to draw the right number into the Marker
    * @return Marker as Bitmap will be returned
    */
-  public Bitmap scaleMarker(Tour tour, String tmpNumber) {
+/*  public Bitmap scaleMarker(Tour tour, String tmpNumber) {
+    path = OurStorage.get(this).storagePath() + "/" + OurStorage.get(this).lookForTourFile(tourlist(), tour.image())+"pin.svg";
+    markerimage.setImageDrawable(Sharp.loadFile(new File(path)).getDrawable());
     Bitmap tmpMarker = markertext(tour, tmpNumber);
     double height, width;
     height = tmpMarker.getHeight();
     width = tmpMarker.getWidth();
     return Bitmap.createScaledBitmap(tmpMarker, (int) (width * 1.5), (int) (height * 1.5), true);
-  }
+  }*/
 
   Handler myHandler = new Handler() {
     public void handleMessage(Message msg) {
@@ -1045,9 +1047,9 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     //Set Numbers on selected Tour
     for (Station station : tour.stations()) {
       if (tour.station(1).slug().contains("einleitung"))
-        markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour, (station.number() - 1) + "")));
+        markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour, (station.number() - 1) + "", false)));
       else
-        markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour, (station.number()) + "")));
+        markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour, (station.number()) + "", false)));
     }
 
     // Unselect all other tours
@@ -1094,7 +1096,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     unfadeTour(tour);
 
     for (Station station : tour.stations()) {
-      markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour, "")));
+      markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour, "", false)));
     }
 
     // Unselect all other tours
@@ -1922,7 +1924,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         tourenliste.setText( "Tourenliste" );
       }
     }
-   if(info=="invisible")
+   if(info.equals("invisible"))
      {x_supl.setVisibility( View.INVISIBLE );
         zumstart.setVisibility( View.INVISIBLE );
         subtext1.setVisibility( View.INVISIBLE );
@@ -1930,7 +1932,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         tourenliste.setVisibility( View.VISIBLE );
         tourenliste.setText( "Tourenliste" );}
 
-    if(info=="gone")
+    if(info.equals("gone"))
     {tourenliste.setVisibility( View.GONE );
       x_supl.setVisibility( View.GONE );
       zumstart.setVisibility( View.GONE );
@@ -1939,7 +1941,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       up.setVisibility( View.GONE );
       down.setVisibility( View.VISIBLE );}
 
-    if(info=="s_seekbar")
+    if(info.equals("s_seekbar"))
     {
       seekbar_layout_supl.setVisibility(View.VISIBLE);
       if(player.isPlaying())Sharp.loadResource(getResources(), R.raw.stop_dunkel).into(play_button_supl);
@@ -1955,7 +1957,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       pager_layout.setVisibility(View.VISIBLE);
     }
 
-    if(info=="h_seekbar")
+    if(info.equals("h_seekbar"))
     {seekbar_layout_supl.setVisibility(View.GONE);
       RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(pager_layout.getLayoutParams());
       lp.setMargins(0,0,0,0);
@@ -2076,7 +2078,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     try{marker.position( station.latlng() );}
     catch (Exception e){}
-    marker.icon( BitmapDescriptorFactory.fromBitmap( markertext(tour,"") ) );
+    marker.icon( BitmapDescriptorFactory.fromBitmap( markertext(tour,"", false) ) );
 
   return marker;}
 
@@ -2088,7 +2090,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
      */
     //Es wird die Tour fuer die entsprechende Farbe
     //und der Zahl der Station uebergeben
-    public Bitmap markertext(Tour tour, String text)
+    public Bitmap markertext(Tour tour, String text, boolean bigger)
 {//Das vorgegebene Marker Layout wird verwendet
 //Bestehend aus einem Image (Pin) und einer TextView (Zahl)
 
@@ -2097,7 +2099,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   int id,numbermarker=0;
   TextView markertxt = (TextView)markerlayout.findViewById(R.id.markernumber);
   ImageView markerimage = (ImageView) markerlayout.findViewById(R.id.marker);
- //Excluded: Audio to hear between to Stations
+ //Excluded: Audio to hear between two Stations
   /* if(!text.isEmpty() && singlepage.INSTANCE.selectedTour().stations().get(Integer.parseInt(text)).description().contains("Hören Sie den folgenden Text während Sie von hier aus zu der nächsten Station gehen."))
   {if(!singlepage.INSTANCE.countWaypoints().contains(Integer.parseInt(text))){singlepage.INSTANCE.countWaypoints().add(Integer.parseInt(text));}
     id = getResources().getIdentifier("pin_"+tour.trkid()+"_weg", "drawable", getPackageName());
@@ -2117,8 +2119,11 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
 
   //Text und Bild wird festgelegt
-  markerimage.setImageDrawable(Sharp.loadResource(getResources(), R.raw.einstellungen).getDrawable());
   path = OurStorage.get(this).storagePath() + "/" + OurStorage.get(this).lookForTourFile(tourlist(), tour.image())+"pin.svg";
+  if(bigger) {
+     markerimage.setLayoutParams(new RelativeLayout.LayoutParams((int)(markerimage.getLayoutParams().width*1.3), (int)(markerimage.getLayoutParams().height*1.3)));
+    markertxt.setTextSize(18);
+  }
   markerimage.setImageDrawable(Sharp.loadFile(new File(path)).getDrawable());
 
   //Bitmap wird zurueckgegeben
