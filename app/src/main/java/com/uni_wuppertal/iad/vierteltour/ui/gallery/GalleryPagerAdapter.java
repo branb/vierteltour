@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -14,15 +13,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
+
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
-import com.uni_wuppertal.iad.vierteltour.utility.ZoomableImageView;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 
 import java.io.File;
@@ -36,7 +35,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
   private Context mContext;
   private ArrayList<String> stationImagePaths;
-  private ZoomableImageView imageView;
+  private SubsamplingScaleImageView imageView;
   private ViertelTourMediaPlayer player;
   private VideoView videoView;
   private ViewGroup ownContainer;
@@ -64,7 +63,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
     View itemView = LayoutInflater.from( mContext )
       .inflate( R.layout.gallerypageritem, container, false );
 
-    imageView = (ZoomableImageView) itemView.findViewById( R.id.img_pager_item_gallery );
+    imageView = (SubsamplingScaleImageView) itemView.findViewById( R.id.img_pager_item_gallery );
     imageView.setTag("image" + position);
     //imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button_gallery );
     //imageBtn.setTag("button" + position);
@@ -80,10 +79,10 @@ public class GalleryPagerAdapter extends PagerAdapter {
       {videoView.setVideoPath(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)));
         Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
         MediaStore.Images.Thumbnails.MINI_KIND);
-        imageView.setImageBitmap(thumbnail);
+        imageView.setImage(ImageSource.bitmap(thumbnail));
         //imageBtn.setVisibility(View.VISIBLE);
         }
-      else{imageView.setImageResource(R.drawable.i);}
+      else{imageView.setImage(ImageSource.resource(R.drawable.i));}
 
 
       videoView.setOnTouchListener(new View.OnTouchListener() {
@@ -116,10 +115,10 @@ public class GalleryPagerAdapter extends PagerAdapter {
      // imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
-      {  imageView.setImageBitmap(BitmapFactory.decodeFile( OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)) ) );
-        //imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );
+      {  //imageView.setImageBitmap(BitmapFactory.decodeFile( OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)) ) );
+        imageView.setImage(ImageSource.uri( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) ));
       }
-      else{imageView.setImageResource(R.drawable.i);}}
+      else{imageView.setImage(ImageSource.resource(R.drawable.i));}}
 
     container.addView( itemView );
     ownContainer = container;
@@ -181,7 +180,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
   public ViewGroup container()
   {return ownContainer;}
 
-  public ImageView getImageView()
+  public SubsamplingScaleImageView getImageView()
   {return imageView;}
 
 }
