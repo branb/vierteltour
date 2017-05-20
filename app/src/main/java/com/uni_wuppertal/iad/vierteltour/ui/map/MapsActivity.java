@@ -157,7 +157,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private ImageView up, down;
   private ExpandableListView lv;
   private DisplayMetrics displayMetrics = new DisplayMetrics();
-  private int defaultPanelHeight, pxPager;
+  private int defaultPanelHeight, pxPager, lastExpandedPosition = -1;;
   private View listelement;
   private ShadowTransformer mFragmentShadowTransformer;
   private TextView title, tourenliste, subtext1, subtext2;
@@ -1405,15 +1405,20 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
    */
   public void initSupl(){
     supl.setPanelSlideListener(onSlideListener());
-    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
       @Override
-      public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-    if(!tourlist.city(visibleCity).tours().get(position).equals(singlepage.INSTANCE.selectedTour()))
-       { selectTour(tourlist.city(visibleCity).tours().get(position));}
+      public void onGroupExpand(int groupPosition) {
+        if (lastExpandedPosition != -1
+          && groupPosition != lastExpandedPosition) {
+          lv.collapseGroup(lastExpandedPosition);
+        }
+        lastExpandedPosition = groupPosition;
+
+        selectTour(tourlist.city(visibleCity).tours().get(groupPosition));
         adapter.notifyDataSetChanged();
 
-      drawRoutes();
-    }
+        drawRoutes();
+      }
     });
 
     adapter = new TourAdapter( tourlist.city( visibleCity ).tours(), this);

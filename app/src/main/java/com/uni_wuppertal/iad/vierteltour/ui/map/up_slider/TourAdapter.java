@@ -108,8 +108,8 @@ public class TourAdapter extends BaseExpandableListAdapter {
 
     convertView.setBackgroundColor( Color.parseColor( tours.get(groupposition).color() ) );
 
-    view = convertView;
-    ownContainer=parent;
+    if(sharedPreferences.getBoolean(singlepage.INSTANCE.selectedTour().slug(), false))btnStart.setVisibility(View.VISIBLE);
+    else btnStart.setVisibility(View.INVISIBLE);
 
     return convertView;
   }
@@ -149,16 +149,6 @@ public class TourAdapter extends BaseExpandableListAdapter {
       laden.setVisibility(View.VISIBLE);
       downloadtext.setVisibility(View.GONE);
     }
-
-    if(sharedPreferences.getBoolean(tour.slug(), false))
-    {geladen.setVisibility(View.VISIBLE);
-      laden.setVisibility(View.GONE);
-      downloadtext.setText("geladen");
-      downloadtext.setVisibility(View.VISIBLE);}
-    else{geladen.setVisibility(View.GONE);
-      laden.setVisibility(View.VISIBLE);
-      downloadtext.setVisibility(View.GONE);
-    }
     BitmapFactory.Options options = new BitmapFactory.Options();
     Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png" ,options);
     imgAuthor.setImageBitmap(mBitmapInsurance);
@@ -174,8 +164,6 @@ public class TourAdapter extends BaseExpandableListAdapter {
           createDownloadDialog("Willst du die Tour "+ tours.get(position).name() + " herunterladen?\nHinweis: Verwende dein WLAN", tour.slug(), position);
 
         }}});
-    view = convertView;
-    ownContainer=parent;
 
     return convertView;
   }
