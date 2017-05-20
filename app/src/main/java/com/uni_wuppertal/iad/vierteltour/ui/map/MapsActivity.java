@@ -937,7 +937,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   public void startGallery() {
     Intent gallery = new Intent(getApplicationContext(), GalleryMode.class);
     gallery.putExtra("resources", stationImagePaths);
-    gallery.putExtra("station", name);
+    gallery.putExtra("station", singlepage.INSTANCE.selectedStation().name());
     gallery.putExtra("video", video);
     gallery.putExtra("pfad", path);
     gallery.putExtra("size", size);
