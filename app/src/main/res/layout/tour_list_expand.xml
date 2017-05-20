@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/listelement_below"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_below="@+id/listelement_base">
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/addinfo"
+    android:lineSpacingExtra="3dp"
+    android:textSize="15sp"
+    android:layout_marginLeft="70dp"
+    android:textColor="@color/black"
+    android:paddingRight="20dp"
+    android:layout_marginTop="10dp"/>
+  <ImageButton
+    android:layout_width="115dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/zumstartlist"
+    android:layout_below="@+id/addinfo"
+    android:layout_alignParentRight="true"
+    android:scaleType="fitCenter"
+    android:paddingRight="20dp"
+    android:paddingBottom="15dp"
+    android:paddingLeft="15dp"
+    android:paddingTop="15dp"
+    android:background="@color/transparent"
+    android:onClick="swapToViewPager"/>
+</RelativeLayout>

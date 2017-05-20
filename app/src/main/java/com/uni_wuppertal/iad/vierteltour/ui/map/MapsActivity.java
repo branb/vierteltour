@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -154,7 +155,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
   private Button gpsbtn;
   private int slidingLayoutHeight;
   private ImageView up, down;
-  private ListView lv;
+  private ExpandableListView lv;
   private DisplayMetrics displayMetrics = new DisplayMetrics();
   private int defaultPanelHeight, pxPager;
   private View listelement;
@@ -288,7 +289,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     supl = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
     slidingLayout = (LinearLayout) findViewById(R.id.dragView);
 
-    lv = (ListView) findViewById(R.id.list);
+    lv = (ExpandableListView) findViewById(R.id.list);
     panel_top = (RelativeLayout) findViewById(R.id.panelhalf1);
     panel = (RelativeLayout) findViewById(R.id.panelhalf);
 
@@ -1410,7 +1411,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     if(!tourlist.city(visibleCity).tours().get(position).equals(singlepage.INSTANCE.selectedTour()))
        { selectTour(tourlist.city(visibleCity).tours().get(position));}
         adapter.notifyDataSetChanged();
-        lv.smoothScrollToPosition(position);
 
       drawRoutes();
     }

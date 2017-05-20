@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/listelement"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
-  <RelativeLayout
+
+  <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/listelement_base"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -85,48 +81,5 @@
         android:id="@+id/subtxt2"
         android:textStyle="italic"
         android:layout_below="@+id/subtxt1"/>
-</RelativeLayout>
-</RelativeLayout>
-
-<RelativeLayout
-  android:id="@+id/listelement_below"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:layout_below="@+id/listelement_base">
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="fill_parent"
-        android:layout_height="1.5dp"
-        android:background="#20000000"
-        android:visibility="gone"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addinfo"
-        android:lineSpacingExtra="3dp"
-        android:visibility="gone"
-        android:textSize="15sp"
-        android:layout_marginLeft="70dp"
-        android:layout_below="@+id/divider"
-        android:textColor="@color/black"
-        android:paddingRight="20dp"
-        android:layout_marginTop="10dp"/>
-    <ImageButton
-        android:layout_width="115dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/zumstartlist"
-        android:layout_below="@+id/addinfo"
-        android:layout_alignParentRight="true"
-        android:scaleType="fitCenter"
-        android:paddingRight="20dp"
-        android:paddingBottom="15dp"
-        android:paddingLeft="15dp"
-        android:paddingTop="15dp"
-        android:visibility="gone"
-        android:background="@color/transparent"
-        android:onClick="swapToViewPager"/>
 </RelativeLayout>
 </RelativeLayout>

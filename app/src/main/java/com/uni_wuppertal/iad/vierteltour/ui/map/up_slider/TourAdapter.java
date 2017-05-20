@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,7 +32,7 @@ import java.util.List;
 /**
  * Connects the ListView inside of the SUPL of the Maps Activity with a List<Tour>
  */
-public class TourAdapter extends BaseAdapter{
+public class TourAdapter extends BaseExpandableListAdapter {
 
   private Context context;
   private View view;
@@ -43,6 +44,45 @@ public class TourAdapter extends BaseAdapter{
   private SharedPreferences sharedPreferences;
   private SharedPreferences.Editor e;
 
+  @Override
+  public Object getChild(int groupPosition, int childPosititon) {
+    return tours.get(groupPosition).stations()
+      .get(childPosititon);
+  }
+
+  @Override
+  public boolean hasStableIds() {
+    return false;
+  }
+
+  @Override
+  public boolean isChildSelectable(int groupPosition, int childPosition) {
+    return true;
+  }
+
+  @Override
+  public int getChildrenCount(int groupPosition) {
+    return 1;
+  }
+
+  @Override
+  public Object getGroup(int groupPosition) {
+    return tours.get(groupPosition);
+  }
+
+  @Override
+  public long getChildId(int groupPosition, int childPosition) {
+    return childPosition;
+  }
+  @Override
+  public int getGroupCount() {
+    return tours.size();
+  }
+
+  @Override
+  public long getGroupId(int groupPosition) {
+    return groupPosition;
+  }
 
   public TourAdapter( List<Tour> tours, Context context){
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -51,26 +91,32 @@ public class TourAdapter extends BaseAdapter{
     this.context = context;
   }
 
-  @Override
-  public int getCount(){
-    return tours.size();
-  }
-
-  @Override
-  public Object getItem( int position ){
-    return tours.get( position );
-  }
-
-  @Override
-  public long getItemId( int position ){
-    return tours.indexOf( getItem( position ) );
-  }
-
   /**
    * This is being called every time the connected ListView is refreshing itself
    */
   @Override
-  public View getView( final int position, View convertView, ViewGroup parent ){
+  public View getChildView(int groupposition, final int position, boolean isLastChild, View convertView, ViewGroup parent ){
+    if( convertView == null && context instanceof MapsActivity){
+      LayoutInflater mInflater = (LayoutInflater) (context).getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
+      convertView = mInflater.inflate( R.layout.tour_list_expand, null );
+    }
+    // Define the visible elements of a single item inside of our ListView
+    ImageButton btnStart = (ImageButton) convertView.findViewById( R.id.zumstartlist );
+    Sharp.loadResource(context.getResources(), R.raw.zum_start).into(btnStart);
+    TextView txtDescription = (TextView) convertView.findViewById( R.id.addinfo );
+    txtDescription.setText( tours.get(groupposition).description() );
+
+    convertView.setBackgroundColor( Color.parseColor( tours.get(groupposition).color() ) );
+
+    view = convertView;
+    ownContainer=parent;
+
+    return convertView;
+  }
+
+  @Override
+  public View getGroupView(final int position, boolean isExpanded,
+                           View convertView, ViewGroup parent) {
     if( convertView == null && context instanceof MapsActivity){
       LayoutInflater mInflater = (LayoutInflater) (context).getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
       convertView = mInflater.inflate( R.layout.touren_list_single, null );
@@ -80,76 +126,54 @@ public class TourAdapter extends BaseAdapter{
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
     geladen = (ImageView) convertView.findViewById( R.id.geladen);
-    //geladen.setTag("ok"+position);
-    //Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
+    geladen.setTag("ok"+position);
+    Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
     laden = (ImageView) convertView.findViewById( R.id.laden);
-   // laden.setTag("laden"+position);
-  //  Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
+    laden.setTag("laden"+position);
+    Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
     downloadtext = (TextView) convertView.findViewById(R.id.downloadtext);
-   // downloadtext.setTag("text"+position);
+    downloadtext.setTag("text"+position);
     final TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
     TextView txtAuthor = (TextView) convertView.findViewById( R.id.subtxt1 );
     TextView txtTimeLength = (TextView) convertView.findViewById( R.id.subtxt2 );
-    TextView txtDescription = (TextView) convertView.findViewById( R.id.addinfo );
-    ImageButton btnStart = (ImageButton) convertView.findViewById( R.id.zumstartlist );
- //   Sharp.loadResource(context.getResources(), R.raw.zum_start).into(btnStart);
-    View divider = convertView.findViewById( R.id.divider );
 
     final Tour tour = tours.get( position );
     convertView.setBackgroundColor( Color.parseColor( tour.color() ) );
 
     if(sharedPreferences.getBoolean(tour.slug(), false))
-      {geladen.setVisibility(View.VISIBLE);
-        laden.setVisibility(View.GONE);
+    {geladen.setVisibility(View.VISIBLE);
+      laden.setVisibility(View.GONE);
       downloadtext.setText("geladen");
-      downloadtext.setVisibility(View.VISIBLE);
-      btnStart.setVisibility(View.VISIBLE);}
+      downloadtext.setVisibility(View.VISIBLE);}
     else{geladen.setVisibility(View.GONE);
       laden.setVisibility(View.VISIBLE);
       downloadtext.setVisibility(View.GONE);
-      btnStart.setVisibility(View.INVISIBLE);
-     }
+    }
 
+    if(sharedPreferences.getBoolean(tour.slug(), false))
+    {geladen.setVisibility(View.VISIBLE);
+      laden.setVisibility(View.GONE);
+      downloadtext.setText("geladen");
+      downloadtext.setVisibility(View.VISIBLE);}
+    else{geladen.setVisibility(View.GONE);
+      laden.setVisibility(View.VISIBLE);
+      downloadtext.setVisibility(View.GONE);
+    }
     BitmapFactory.Options options = new BitmapFactory.Options();
     Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png" ,options);
     imgAuthor.setImageBitmap(mBitmapInsurance);
-    //imgAuthor.setImageURI( Uri.fromFile(new File(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(), tour.image())+tour.image()+".png")));
-
-      laden.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if(context instanceof MapsActivity){
-          createDownloadDialog("Willst du die Tour "+ txtTitle.getText() + " herunterladen?\nHinweis: Verwende dein WLAN", tour.slug(), position);
-
-        }}});
 
     txtTitle.setText( tour.name() );
     txtAuthor.setText( tour.author() );
     txtTimeLength.setText( tour.time() + "/" + tour.length() );
-    txtDescription.setText( tour.description() );
-    convertView.setClickable(false);
 
-    if(singlepage.INSTANCE.selectedTour()==null || !tour.slug().equals(singlepage.INSTANCE.selectedTour().slug())) {
-      txtDescription.setVisibility( View.GONE );
-      btnStart.setVisibility( View.GONE );
-      divider.setVisibility( View.GONE );
+    laden.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        if(context instanceof MapsActivity){
+          createDownloadDialog("Willst du die Tour "+ tours.get(position).name() + " herunterladen?\nHinweis: Verwende dein WLAN", tour.slug(), position);
 
-    }
-    else if( tour.slug().equals(singlepage.INSTANCE.selectedTour().slug()) ) {
-      txtDescription.setVisibility(View.VISIBLE);
-      if(sharedPreferences.getBoolean(tour.slug(), false))btnStart.setVisibility(View.VISIBLE);
-      divider.setVisibility(View.VISIBLE);
-      convertView.setClickable(true);
-      convertView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          if(context instanceof MapsActivity) ((MapsActivity)context).resetTour();
-          notifyDataSetChanged();
-          view.setClickable(false);
-
-        }
-      });
-    }
+        }}});
     view = convertView;
     ownContainer=parent;
 
@@ -191,6 +215,88 @@ public class TourAdapter extends BaseAdapter{
       }});
   }
 
+/* if( convertView == null && context instanceof MapsActivity){
+      LayoutInflater mInflater = (LayoutInflater) (context).getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
+      convertView = mInflater.inflate( R.layout.touren_list_single, null );
+    }
 
+
+    // Define the visible elements of a single item inside of our ListView
+    ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
+    geladen = (ImageView) convertView.findViewById( R.id.geladen);
+    //geladen.setTag("ok"+position);
+    Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
+    laden = (ImageView) convertView.findViewById( R.id.laden);
+    // laden.setTag("laden"+position);
+    Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
+    downloadtext = (TextView) convertView.findViewById(R.id.downloadtext);
+    // downloadtext.setTag("text"+position);
+    final TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
+    TextView txtAuthor = (TextView) convertView.findViewById( R.id.subtxt1 );
+    TextView txtTimeLength = (TextView) convertView.findViewById( R.id.subtxt2 );
+    TextView txtDescription = (TextView) convertView.findViewById( R.id.addinfo );
+    ImageButton btnStart = (ImageButton) convertView.findViewById( R.id.zumstartlist );
+    Sharp.loadResource(context.getResources(), R.raw.zum_start).into(btnStart);
+    View divider = convertView.findViewById( R.id.divider );
+
+    final Tour tour = tours.get( position );
+    convertView.setBackgroundColor( Color.parseColor( tour.color() ) );
+
+    if(sharedPreferences.getBoolean(tour.slug(), false))
+    {geladen.setVisibility(View.VISIBLE);
+      laden.setVisibility(View.GONE);
+      downloadtext.setText("geladen");
+      downloadtext.setVisibility(View.VISIBLE);
+      btnStart.setVisibility(View.VISIBLE);}
+    else{geladen.setVisibility(View.GONE);
+      laden.setVisibility(View.VISIBLE);
+      downloadtext.setVisibility(View.GONE);
+      btnStart.setVisibility(View.INVISIBLE);
+    }
+
+    BitmapFactory.Options options = new BitmapFactory.Options();
+    Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png" ,options);
+    imgAuthor.setImageBitmap(mBitmapInsurance);
+    //imgAuthor.setImageURI( Uri.fromFile(new File(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(), tour.image())+tour.image()+".png")));
+
+    laden.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        if(context instanceof MapsActivity){
+          createDownloadDialog("Willst du die Tour "+ txtTitle.getText() + " herunterladen?\nHinweis: Verwende dein WLAN", tour.slug(), position);
+
+        }}});
+
+    txtTitle.setText( tour.name() );
+    txtAuthor.setText( tour.author() );
+    txtTimeLength.setText( tour.time() + "/" + tour.length() );
+    txtDescription.setText( tour.description() );
+    convertView.setClickable(false);
+
+    if(singlepage.INSTANCE.selectedTour()==null || !tour.slug().equals(singlepage.INSTANCE.selectedTour().slug())) {
+      txtDescription.setVisibility( View.GONE );
+      btnStart.setVisibility( View.GONE );
+      divider.setVisibility( View.GONE );
+
+    }
+    else if( tour.slug().equals(singlepage.INSTANCE.selectedTour().slug()) ) {
+      txtDescription.setVisibility(View.VISIBLE);
+      if(sharedPreferences.getBoolean(tour.slug(), false))btnStart.setVisibility(View.VISIBLE);
+      divider.setVisibility(View.VISIBLE);
+      convertView.setClickable(true);
+      convertView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          if(context instanceof MapsActivity) ((MapsActivity)context).resetTour();
+          notifyDataSetChanged();
+          view.setClickable(false);
+
+        }
+      });
+    }
+    view = convertView;
+    ownContainer=parent;
+
+    return convertView;*/
 
 }
