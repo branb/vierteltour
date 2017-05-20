@@ -54,6 +54,7 @@ public class Stationbeendet extends Activity {
     x.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
+        setResult(RESULT_OK);
         onBackPressed();
       }
     });

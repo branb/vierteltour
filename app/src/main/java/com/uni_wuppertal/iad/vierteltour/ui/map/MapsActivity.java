@@ -1178,7 +1178,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
           }
         }
 
-        if (tourlist != null) {
+        if (tourlist != null && singlepage.INSTANCE.selectedTour()!=null) {
           positionInCircle(pos);
         }   //Ueberprueft eigenen Standort mit allen Stationskoordinaten
 
@@ -1195,12 +1195,10 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
       public void positionInCircle(LatLng pos) {
         float[] distance = new float[2];
         //uebergebene Position wird mit allen Stationen jeder Tour verglichen
-        for (Tour tour : tourlist.city(visibleCity).tours()) {
-          for (Station station : tour.stations()) {
+          for (Station station : singlepage.INSTANCE.selectedTour().stations()) {
             if (station.latlng() != null)
             //errechnet Distanz von Koordinaten der Station und der eigenen Position
-            {
-              Location.distanceBetween(pos.latitude, pos.longitude,
+            {Location.distanceBetween(pos.latitude, pos.longitude,
                 station.latlng().latitude, station.latlng().longitude, distance);
               //Die Distanz wird, wie der Radius, in Metern angegeben
               if (distance[0] < radius) {//  Initialize SharedPreferences
@@ -1215,7 +1213,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
                 e.putBoolean(station.slug(), true);
                 //  Apply changes
                 //Aktualisiere Stationen im ViewPager,
-//damit eine sofortige Freischaltung stattfindet
+                //damit eine sofortige Freischaltung stattfindet
                 e.apply();
                 fragmentAdapter.notifyDataSetChanged();
 
@@ -1224,7 +1222,6 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             }
           }
         }
-      }
     };
     initGoogleApiClient();
   }

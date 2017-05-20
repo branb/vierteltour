@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -21,6 +22,7 @@ import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
+import com.uni_wuppertal.iad.vierteltour.utility.ZoomableImageView;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 
 import java.io.File;
@@ -34,7 +36,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
   private Context mContext;
   private ArrayList<String> stationImagePaths;
-  private ImageView imageView;
+  private ZoomableImageView imageView;
   private ViertelTourMediaPlayer player;
   private VideoView videoView;
   private ViewGroup ownContainer;
@@ -62,7 +64,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
     View itemView = LayoutInflater.from( mContext )
       .inflate( R.layout.gallerypageritem, container, false );
 
-    imageView = (ImageView) itemView.findViewById( R.id.img_pager_item_gallery );
+    imageView = (ZoomableImageView) itemView.findViewById( R.id.img_pager_item_gallery );
     imageView.setTag("image" + position);
     //imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button_gallery );
     //imageBtn.setTag("button" + position);
@@ -113,9 +115,10 @@ public class GalleryPagerAdapter extends PagerAdapter {
       videoView.setVisibility(View.GONE);
      // imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
-      //System.out.println(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)));
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
-      {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );}
+      {  imageView.setImageBitmap(BitmapFactory.decodeFile( OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)) ) );
+        //imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );
+      }
       else{imageView.setImageResource(R.drawable.i);}}
 
     container.addView( itemView );
