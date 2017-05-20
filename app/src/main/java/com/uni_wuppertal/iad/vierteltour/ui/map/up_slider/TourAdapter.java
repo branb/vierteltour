@@ -80,19 +80,19 @@ public class TourAdapter extends BaseAdapter{
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
     geladen = (ImageView) convertView.findViewById( R.id.geladen);
-    geladen.setTag("ok"+position);
-    Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
+    //geladen.setTag("ok"+position);
+    //Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
     laden = (ImageView) convertView.findViewById( R.id.laden);
-    laden.setTag("laden"+position);
-    Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
+   // laden.setTag("laden"+position);
+  //  Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
     downloadtext = (TextView) convertView.findViewById(R.id.downloadtext);
-    downloadtext.setTag("text"+position);
+   // downloadtext.setTag("text"+position);
     final TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
     TextView txtAuthor = (TextView) convertView.findViewById( R.id.subtxt1 );
     TextView txtTimeLength = (TextView) convertView.findViewById( R.id.subtxt2 );
     TextView txtDescription = (TextView) convertView.findViewById( R.id.addinfo );
     ImageButton btnStart = (ImageButton) convertView.findViewById( R.id.zumstartlist );
-    Sharp.loadResource(context.getResources(), R.raw.zum_start).into(btnStart);
+ //   Sharp.loadResource(context.getResources(), R.raw.zum_start).into(btnStart);
     View divider = convertView.findViewById( R.id.divider );
 
     final Tour tour = tours.get( position );

@@ -579,6 +579,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     lv.setVisibility(View.GONE);
     slidingLayout.setVisibility(View.VISIBLE);
     stationLayout.setVisibility(View.VISIBLE);
+
     supl.setScrollableView(scroll);
     x_supl.setVisibility(View.GONE);
     panel_top.setClickable(true);
