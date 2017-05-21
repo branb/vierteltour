@@ -4,7 +4,11 @@
     android:layout_height="wrap_content"
   android:background="@drawable/round_layout"
   android:layout_centerVertical="true"
-  android:layout_centerHorizontal="true">
+  android:layout_centerHorizontal="true"
+  android:layout_marginRight="20dp"
+  android:layout_marginLeft="20dp"
+  android:paddingTop="5dp"
+  android:paddingBottom="25dp">
 
   <ImageButton
     android:id="@+id/btn_x_dialog"
@@ -14,7 +18,7 @@
     android:layout_alignParentRight="true"
     android:paddingRight="5dp"
     android:background="@color/transparent"
-    android:paddingTop="5dp"
+    android:paddingTop="10dp"
     />
 
   <TextView
@@ -25,6 +29,7 @@
     android:layout_centerHorizontal="true"
     android:gravity="center"
     android:layout_below="@+id/btn_x_dialog"
+    android:layout_marginTop="10dp"
     android:text="a"/>
 
     <TextView
@@ -32,11 +37,11 @@
       android:layout_below="@+id/title_dialog"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      android:text="A"
       android:layout_centerHorizontal="true"
       android:gravity="center"
-      android:paddingLeft="10dp"
-      android:paddingRight="10dp"/>
+      android:padding="10dp"
+      />
 
   <ImageButton
     android:layout_below="@+id/text_dialog"
