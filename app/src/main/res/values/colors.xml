@@ -27,4 +27,5 @@
     <color name="transparent">#00000000</color>
     <color name="transparentred">#DDFF5D59</color>
     <color name="loading">#FF5D59</color>
+    <color name="transparentstation">#80D46557</color>
 </resources>
