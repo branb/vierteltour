@@ -165,14 +165,14 @@ public class TourAdapter extends BaseExpandableListAdapter {
       @Override
       public void onClick(View view) {
         if(context instanceof MapsActivity){
-          createDownloadDialog("Wollen Sie die Tour »"+ tours.get(position).name() + "« herunterladen? Hinweis: Verwenden Sie Ihr WLAN", tour.slug(), position);
+          createDownloadDialog("Wollen Sie die Tour »"+ tours.get(position).name() + "« herunterladen? Hinweis: Verwenden Sie Ihr WLAN", tour, position);
 
         }}});
 
     return convertView;
   }
 
-  public void createDownloadDialog(String txt, String slug, int position)
+  public void createDownloadDialog(String txt, Tour tour, int position)
   {// Create custom dialog object
     final Dialog dialog = new Dialog(context);
     // Include dialog.xml file
@@ -189,7 +189,7 @@ public class TourAdapter extends BaseExpandableListAdapter {
     TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
     text.setText(txt);
 
-    final String tourslug = slug;
+    final Tour selectedTour = tour;
 
     ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
     Sharp.loadResource(context.getResources(), R.raw.laden).into(okayButton);
@@ -198,7 +198,7 @@ public class TourAdapter extends BaseExpandableListAdapter {
       @Override
       public void onClick(View v) {
 
-        if(context instanceof MapsActivity)  Updater.get(((MapsActivity)context).getBaseContext()).downloadTourMedia(tourslug, context);
+        if(context instanceof MapsActivity)  Updater.get(((MapsActivity)context).getBaseContext()).downloadTourMedia(selectedTour, context);
         dialog.dismiss();}});
 
     ImageButton declineButton = (ImageButton) dialog.findViewById(R.id.btn_x_dialog);

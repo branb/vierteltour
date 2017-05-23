@@ -98,7 +98,7 @@ public class Updater extends ContextWrapper{
 
   // Properties
   private String updateServerUrl;
-  private ProgressDialog progressDialog;
+  private CustomProgressDialog progressDialog;
   private Singletonint singlepage;
   private ThinDownloadManager downloadManager;
 
@@ -451,11 +451,11 @@ public class Updater extends ContextWrapper{
    *
    * @return true if the download was successful, false else
    */
-  public boolean downloadTourMedia(String slug, Context context){
+  public boolean downloadTourMedia(Tour tour, Context context){
     final Context con = context;
     checkingForUpdates = true;
 
-    final String tourslug = slug;
+    final String tourslug = tour.slug();
     String path="";
     TourListReader tourListReader = new TourListReader(this);
     TourList tourlist = tourListReader.readTourList();
@@ -464,20 +464,20 @@ public class Updater extends ContextWrapper{
     for( Region region : tourlist.regions() ){
       for( Area area : region.areas() ){
         for( City city : area.cities() ){
-          for(Tour tour : city.tours()){
-            if(tour.slug().equals(slug)){
+          for(Tour tours : city.tours()){
+            if(tours.slug().equals(tour.slug())){
               path = city.home();
             }}}}}
     //updateServerUrl="http://www.vierteltour.uni-wuppertal.de/files/"
     //Downloadlink wird erstellt
-    Uri downloadUri = Uri.parse( updateServerUrl + path + "/" + slug + ".zip" );
+    Uri downloadUri = Uri.parse( updateServerUrl + path + "/" + tour.slug() + ".zip" );
     //Zielverzeichnis wird festgelegt (gleicher "path")
-    String destination = new File( OurStorage.get( Updater.this ).storagePath() ) + "/" + path + "/" + slug + ".zip";
+    String destination = new File( OurStorage.get( Updater.this ).storagePath() ) + "/" + path + "/" + tour.slug() + ".zip";
     Uri destinationUri = Uri.parse( destination );
 
     SharedPreferences getPrefs = PreferenceManager
       .getDefaultSharedPreferences( getBaseContext() );
-    if(getPrefs.getBoolean(slug+"-zip", false))
+    if(getPrefs.getBoolean(tour.slug()+"-zip", false))
     {unzipTour(destinationUri.toString() ,tourslug, con);
       ((MapsActivity)con).adapter.notifyDataSetChanged();}
 
@@ -489,6 +489,7 @@ public class Updater extends ContextWrapper{
     }
 
     Log.d( DEBUG_TAG, "Starting file download..." );
+
 
     // Setup the download, with nice callback function on different events throughout the download
     //DownloadRequest mit zusammengesetzter URL
@@ -506,7 +507,6 @@ public class Updater extends ContextWrapper{
           Log.d( DEBUG_TAG, successMessage  + request.getDestinationURI().toString() );
           SharedPreferences getPrefs = PreferenceManager
             .getDefaultSharedPreferences( getBaseContext() );
-         /* runOnUiThread(changeMessage);*/
 
           ((MapsActivity)con).adapter.notifyDataSetChanged();
 
@@ -542,10 +542,13 @@ public class Updater extends ContextWrapper{
               }
               else if(checkSize){checkSize=false;}
               progressDialog.setMax((int)totalBytes);
-              progressDialog.setProgress((int)downloadedBytes);
+              progressDialog.getProgressBar().setProgress((int)(downloadedBytes));
+
        }
       });
-    createProgressDialog(context, "Lade Tour herunter...");
+      createProgressDialog(context, tour.name()+"... 0%");
+     // ShowCustomProgressBarAsyncTask progressdialog = new ShowCustomProgressBarAsyncTask();
+     // progressdialog.execute();
 
     // Start the download
 
@@ -555,13 +558,38 @@ public class Updater extends ContextWrapper{
     this.manifestDownloadId = downloadManager.add( downloadRequest );
 
 
-  }return true;}
-
-  public boolean checkingForUpdates(){
-    return checkingForUpdates;
   }
+    return true;}
 
+ /* public class ShowCustomProgressBarAsyncTask extends AsyncTask<Void, Integer, Void> {
 
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+    }
+
+    @Override
+    protected void onPostExecute(Void result) {
+      progressDialog.setTextTitle("Entpacken der Tour");
+    }
+
+    @Override
+    protected Void doInBackground(Void... params) {
+      System.out.println(progressDialog.getMax() + "   " + progressDialog.getProgress());
+      while(progressDialog.getMax()!=progressDialog.getProgress())
+      {System.out.println(progressDialog.getMax() + "   " + progressDialog.getProgress());
+        publishProgress(progressDialog.getProgress());
+        //progressDialog.setText(singlepage.INSTANCE.selectedTour().name()+"... "+(progressDialog.getProgress()*100/progressDialog.getMax())+"%");
+      }
+      return null;
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+      progressDialog.setProgress(values[0]);
+      progressDialog.setSecondaryProgress(values[0] + 5);
+    }
+  }*/
 
   private void unzipTour(String path, String tourslug, Context context)
   {if(unzipFile( path )){
@@ -632,26 +660,23 @@ public class Updater extends ContextWrapper{
   }
 
 
-  public void createProgressDialog(Context context, String text)
+  public void createProgressDialog(final Context context, String text)
   {
     // declare the dialog as a member field of your activity
-    progressDialog = new ProgressDialog(context);
-    progressDialog.setMessage(text);
-    progressDialog.setTitle(null);
-    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-    progressDialog.setCancelable(false);
+    progressDialog = new CustomProgressDialog(context, downloadManager);
     progressDialog.show();
-    }
+    progressDialog.setText(text);
+    progressDialog.setTextTitle("Laden der Tour");
+    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 
-  //TODO: Progressdialog doesnt change Text while Unzipping
-  private Runnable changeMessage = new Runnable() {
-    @Override
-    public void run() {
-      progressDialog.setProgress(progressDialog.getMax());
-      progressDialog.setMessage("Entpacke Daten...");
-    }
-  };
+    progressDialog.getBtnx().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        progressDialog.onBackPressed();
+      }
+    });
 
+    }
 
 
 }
