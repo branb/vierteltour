@@ -6,25 +6,69 @@
     android:layout_height="match_parent">
 
   <TextView
-    android:id="@+id/about"
+    android:id="@+id/title_viertel"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="About"
-    android:textStyle="bold"
-    android:gravity="center"
-    android:textSize="25dp"
-    android:textColor="@color/black"
-    android:layout_centerHorizontal="true"/>
+    android:layout_alignParentTop="true"
+    android:paddingTop="20dp"
+    android:paddingLeft="25dp"
+    android:paddingRight="15dp"
+    android:textSize="20dp"
+    android:textColor="@color/black" />
+
 <TextView
-  android:id="@+id/abouttext"
+  android:id="@+id/text_viertel"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
-  android:layout_below="@+id/about"
-  android:paddingTop="10dp"
-  android:paddingLeft="5dp"
-  android:paddingRight="5dp"
-  android:textSize="18dp"
+  android:layout_below="@+id/title_viertel"
+  android:paddingLeft="25dp"
+  android:paddingRight="15dp"
+  android:textSize="16dp"
   android:textColor="@color/black" />
+
+  <TextView
+    android:id="@+id/title_mitwirkende"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/text_viertel"
+    android:paddingTop="20dp"
+    android:paddingLeft="25dp"
+    android:paddingRight="15dp"
+    android:textSize="20dp"
+    android:textColor="@color/black" />
+
+  <TextView
+    android:id="@+id/text_mitwirkende"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/title_mitwirkende"
+    android:paddingLeft="25dp"
+    android:paddingRight="15dp"
+    android:textSize="16dp"
+    android:textColor="@color/black" />
+
+  <TextView
+    android:id="@+id/title_danksagung"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/text_mitwirkende"
+    android:paddingTop="20dp"
+    android:paddingLeft="25dp"
+    android:paddingRight="15dp"
+    android:textSize="20dp"
+    android:textColor="@color/black" />
+
+  <TextView
+    android:id="@+id/text_danksagung"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/title_danksagung"
+    android:paddingLeft="25dp"
+    android:paddingRight="15dp"
+    android:textSize="16dp"
+    android:textColor="@color/black"
+    android:paddingBottom="40dp"/>
+
 
 
 </RelativeLayout>
