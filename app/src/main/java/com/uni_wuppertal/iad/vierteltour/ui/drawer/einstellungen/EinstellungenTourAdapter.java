@@ -33,9 +33,7 @@ public class EinstellungenTourAdapter extends BaseAdapter {
 
 
   public EinstellungenTourAdapter(List<Tour> tours, Context context){
-    Tour deleteTours = new Tour();
     this.tours=tours;
-    if(this.tours.size()>1)this.tours.add(deleteTours);
     this.context = context;
     }
 
@@ -55,7 +53,6 @@ public class EinstellungenTourAdapter extends BaseAdapter {
   public View getView(final int position, View convertView, ViewGroup parent ){
     if(convertView==null)
     {convertView = LayoutInflater.from(context).inflate( R.layout.touren_list_single, null );}
-    System.out.println("Pos" + position + "size" + tours.size());
 
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById(R.id.img);
@@ -64,28 +61,6 @@ public class EinstellungenTourAdapter extends BaseAdapter {
     TextView txtTitle = (TextView) convertView.findViewById(R.id.txt);
     TextView txtAuthor = (TextView) convertView.findViewById(R.id.subtxt1);
     TextView txtTimeLength = (TextView) convertView.findViewById(R.id.subtxt2);
-
-
-    if(tours.size()-1==position && tours.size()>1)
-    {System.out.println("b");
-
-      delete.setVisibility(View.GONE);
-      imgAuthor.setVisibility(View.INVISIBLE);
-      geloescht.setVisibility(View.INVISIBLE);
-      txtAuthor.setVisibility(View.INVISIBLE);
-      txtTimeLength.setVisibility(View.INVISIBLE);
-
-      txtTitle.setText("Alle Touren löschen");
-      RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)txtTitle.getLayoutParams();
-      params.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-      params.addRule(RelativeLayout.CENTER_VERTICAL);
-      txtTitle.setLayoutParams(params); //causes layout update
-      txtTitle.setGravity(Gravity.CENTER);
-      convertView.setBackgroundColor(context.getResources().getColor(R.color.grey));
-    }
-
-    else if((tours.size()>1 && tours.size()-1!=position)||(tours.size()<=1))
-    {System.out.println("a");
 
       Tour tour = tours.get(position);
       convertView.setBackgroundColor(Color.parseColor(tour.color()));
@@ -115,7 +90,6 @@ public class EinstellungenTourAdapter extends BaseAdapter {
 
       txtAuthor.setText(tour.author());
       txtTimeLength.setText(tour.time() + "/" + tour.length());
-    }
 
     return convertView;
   }

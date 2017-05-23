@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -20,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.pixplicity.sharp.Sharp;
+import com.pixplicity.sharp.SharpDrawable;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
@@ -39,7 +42,7 @@ public class StationFragment extends Fragment{
   private ViewGroup ownContainer;
   private Singletonint singlepage;
   private int position;
-  private View numberlayout, view;
+  private View numberlayout;
 
 
 //creating fragment
@@ -74,13 +77,16 @@ public class StationFragment extends Fragment{
     TextView title = (TextView) rootView.findViewById( R.id.titlefrag );
     //Image Sizes of Fragment
     ImageView image = (ImageView) rootView.findViewById(R.id.imagefrag);
+    ImageView icon = (ImageView) rootView.findViewById(R.id.nav_icon);
+    RelativeLayout image_layout = (RelativeLayout) rootView.findViewById(R.id.transparentstation);
+    Sharp.loadResource(getResources(), R.raw.google_navi_hell).into(icon);
     RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.302),(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().heightPixels*0.149));
     lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
     lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
     lp.topMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.025);
     lp.leftMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.025);
     lp.rightMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.025);
-    //lp.addRule(RelativeLayout.);
+    image_layout.setLayoutParams(lp);
     image.setLayoutParams(lp);
 
     numberlayout = rootView.findViewById(R.id.numberlayout);
@@ -98,10 +104,12 @@ public class StationFragment extends Fragment{
       SharedPreferences getPrefs = PreferenceManager
         .getDefaultSharedPreferences( ((MapsActivity) getContext()).getBaseContext() );
 
-      if(OurStorage.get(getContext()).pathToFile(appPath+file)!=null && (getPrefs.getBoolean(singlepage.INSTANCE.selectedTour().station(position).slug(), false) || singlepage.INSTANCE.selectedTour().station(position).slug().startsWith("einleitung")))
-      {BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap mBitmapInsurance = BitmapFactory.decodeFile(externalPath+appPath+file ,options);
-        image.setImageBitmap(mBitmapInsurance);}
+      if(OurStorage.get(getContext()).pathToFile(appPath+file)!=null)
+      {image.setImageBitmap(BitmapFactory.decodeFile(externalPath+appPath+file));}
+
+      if(OurStorage.get(getContext()).pathToFile(appPath+file)==null || (!getPrefs.getBoolean(singlepage.INSTANCE.selectedTour().station(position).slug(), false) && !singlepage.INSTANCE.selectedTour().station(position).slug().startsWith("einleitung")))
+      {icon.setVisibility(View.VISIBLE);
+       image_layout.setVisibility(View.VISIBLE);}
 
       boolean isWaypoint=false;
       for(int i=0;i<singlepage.INSTANCE.countWaypoints().size();i++)
@@ -142,8 +150,6 @@ public class StationFragment extends Fragment{
     } else {
       btItem.setVisibility( View.GONE );
     }
-
-    view = rootView;
     ownContainer=container;
 
     return rootView;

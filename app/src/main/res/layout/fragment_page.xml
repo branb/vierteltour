@@ -23,24 +23,42 @@
       android:background="@color/grey"
       android:layout_marginTop="20dp"
      >
+      <RelativeLayout
+        android:id="@+id/image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true">
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:id="@+id/imagefrag"
-          android:layout_alignParentTop="true"
-            android:gravity="center_horizontal"
-            android:layout_centerHorizontal="true"
-          android:background="@color/black"
-            android:src="@drawable/i"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:id="@+id/imagefrag"
           />
+        <RelativeLayout
+          android:visibility="gone"
+          android:id="@+id/transparentstation"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="@color/transparentred"/>
+      <ImageView
+        android:id="@+id/nav_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        />
 
+      </RelativeLayout>
         <TextView
             android:id="@+id/titlefrag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TITLE"
             android:textColor="@color/black"
-            android:layout_below="@+id/imagefrag"
+            android:layout_below="@+id/image_layout"
             android:paddingLeft="20dp"
             android:paddingRight="10dp"
             />

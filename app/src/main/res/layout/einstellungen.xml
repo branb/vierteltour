@@ -8,6 +8,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:visibility="gone"
+  android:layout_above="@+id/deleteAll"
   android:id="@+id/listLayout2">
   <ListView
     android:id="@+id/listTouren"
@@ -15,6 +16,24 @@
     android:layout_height="wrap_content">
   </ListView>
 </RelativeLayout>
+
+  <RelativeLayout
+    android:id="@+id/deleteAll"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:layout_alignParentBottom="true"
+    android:background="@color/ColorPrimary">
+    <ImageButton
+      android:id="@+id/delete"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:scaleType="fitCenter"
+      android:paddingBottom="17dp"
+      android:paddingTop="17dp"
+      android:background="@color/transparent"
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"/>
+  </RelativeLayout>
 
   <TextView
     android:id="@+id/keineTouren"

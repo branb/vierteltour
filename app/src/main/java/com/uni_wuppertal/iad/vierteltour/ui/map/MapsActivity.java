@@ -27,6 +27,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -118,7 +119,7 @@ import static android.location.GpsStatus.GPS_EVENT_STOPPED;
  * MapsActivity is the main activity of the application
  */
 
-public class MapsActivity extends ActionBarActivity implements OnMapReadyCallback{
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback{
 
   public Location MyLocation;
   public LatLng pos;
@@ -1695,8 +1696,8 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         }
       }
     });
-    homebtn.setLayoutParams(new RelativeLayout.LayoutParams(150,150));
-    Sharp.loadResource(getResources(), R.raw.menu).into(homebtn);     //TODO CHANGE
+    //homebtn.setLayoutParams(new RelativeLayout.LayoutParams(150,150));
+    Sharp.loadResource(getResources(), R.raw.menu).into(homebtn);
 
     xbtn = (ImageButton) findViewById(R.id.btn_x);      //ActionBar Button: Right
     title = (TextView) findViewById(R.id.toolbar_title);  //ActionBar Title
@@ -1711,7 +1712,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
         swapToSupl();
       }
     });
-    Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(xbtn);//TODO CHANGE
+    Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(xbtn);
   }
 
   /**

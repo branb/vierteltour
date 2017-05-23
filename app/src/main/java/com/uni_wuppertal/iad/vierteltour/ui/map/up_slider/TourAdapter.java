@@ -111,7 +111,7 @@ public class TourAdapter extends BaseExpandableListAdapter {
 
     convertView.setBackgroundColor( Color.parseColor( tours.get(groupposition).color() ) );
 
-    if(sharedPreferences.getBoolean(singlepage.INSTANCE.selectedTour().slug(), false))btnStart.setVisibility(View.VISIBLE);
+    if(singlepage.INSTANCE.selectedTour()!=null && sharedPreferences.getBoolean(singlepage.INSTANCE.selectedTour().slug(), false))btnStart.setVisibility(View.VISIBLE);
     else btnStart.setVisibility(View.INVISIBLE);
 
     return convertView;
@@ -165,7 +165,7 @@ public class TourAdapter extends BaseExpandableListAdapter {
       @Override
       public void onClick(View view) {
         if(context instanceof MapsActivity){
-          createDownloadDialog("Willst du die Tour >>"+ tours.get(position).name() + "<< herunterladen? Hinweis: Verwende dein WLAN", tour.slug(), position);
+          createDownloadDialog("Wollen Sie die Tour >>"+ tours.get(position).name() + "<< herunterladen? Hinweis: Verwenden Sie Ihr WLAN", tour.slug(), position);
 
         }}});
 
@@ -190,7 +190,6 @@ public class TourAdapter extends BaseExpandableListAdapter {
     text.setText(txt);
 
     final String tourslug = slug;
-    final int pos = position;
 
     ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
     Sharp.loadResource(context.getResources(), R.raw.laden).into(okayButton);
