@@ -79,7 +79,7 @@ public class Einstellungen extends AppCompatActivity {
     delete.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        createAllToursDialog("Willst du alle Touren löschen?");
+        createAllToursDialog("Wollen Sie alle Touren löschen?");
       }
     });
     deleteAll = (RelativeLayout) findViewById(R.id.deleteAll);
@@ -92,7 +92,7 @@ public class Einstellungen extends AppCompatActivity {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         //Dialog to confirm the deletion for one tour
-          createTourDialog("Willst du die Tour " + tours.get(position).name() + " löschen?", position);}});
+          createTourDialog("Wollen Sie die Tour »" + tours.get(position).name() + "« löschen?", position);}});
   }
 
   public void initEinstellungenTourAdapter()
@@ -164,7 +164,7 @@ public class Einstellungen extends AppCompatActivity {
     text.setText(txt);
 
     TextView title = (TextView) dialog.findViewById(R.id.title_dialog);
-    title.setVisibility(View.INVISIBLE);
+    title.setText("Löschen der Tour");
     //get whole path of the tour that has to be deleted
     String path="";
     TourListReader tourListReader = new TourListReader(this);
@@ -228,7 +228,7 @@ public class Einstellungen extends AppCompatActivity {
     TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
     text.setText(txt);
     TextView title = (TextView) dialog.findViewById(R.id.title_dialog);
-    title.setVisibility(View.INVISIBLE);
+    title.setText("Löschen der Touren");
 
     String path="";
     TourListReader tourListReader = new TourListReader(this);

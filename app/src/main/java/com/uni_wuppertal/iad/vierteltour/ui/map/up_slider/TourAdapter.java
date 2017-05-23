@@ -165,7 +165,7 @@ public class TourAdapter extends BaseExpandableListAdapter {
       @Override
       public void onClick(View view) {
         if(context instanceof MapsActivity){
-          createDownloadDialog("Wollen Sie die Tour >>"+ tours.get(position).name() + "<< herunterladen? Hinweis: Verwenden Sie Ihr WLAN", tour.slug(), position);
+          createDownloadDialog("Wollen Sie die Tour »"+ tours.get(position).name() + "« herunterladen? Hinweis: Verwenden Sie Ihr WLAN", tour.slug(), position);
 
         }}});
 

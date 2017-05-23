@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +58,6 @@ public class EinstellungenTourAdapter extends BaseAdapter {
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById(R.id.img);
     ImageView delete = (ImageView) convertView.findViewById(R.id.geladen);
-    TextView geloescht = (TextView) convertView.findViewById(R.id.downloadtext);
     TextView txtTitle = (TextView) convertView.findViewById(R.id.txt);
     TextView txtAuthor = (TextView) convertView.findViewById(R.id.subtxt1);
     TextView txtTimeLength = (TextView) convertView.findViewById(R.id.subtxt2);
@@ -67,20 +67,23 @@ public class EinstellungenTourAdapter extends BaseAdapter {
 
       delete.setVisibility(View.VISIBLE);
       imgAuthor.setVisibility(View.VISIBLE);
-      geloescht.setVisibility(View.VISIBLE);
       txtAuthor.setVisibility(View.VISIBLE);
       txtTimeLength.setVisibility(View.VISIBLE);
 
 
-      Sharp.loadResource(context.getResources(), R.raw.x).into(delete);
+      Sharp.loadResource(context.getResources(), R.raw.loeschen).into(delete);
+    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 65, context.getResources().getDisplayMetrics()), ViewGroup.LayoutParams.WRAP_CONTENT);
+    lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+    lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+    lp.setMargins(0,0,(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, context.getResources().getDisplayMetrics()),0);
+    delete.setLayoutParams(lp);
+
+    delete.setPadding(0,0,0,(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, context.getResources().getDisplayMetrics()));
+
 
       BitmapFactory.Options options = new BitmapFactory.Options();
       Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath() + "/" + OurStorage.get(context).lookForTourFile(((Einstellungen) context).tourlist(), tour.image()) + tour.image() + ".png", options);
       imgAuthor.setImageBitmap(mBitmapInsurance);
-
-      geloescht.setText("löschen");
-      geloescht.setVisibility(View.VISIBLE);
-
 
       txtTitle.setText(tour.name());
       RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)txtTitle.getLayoutParams();
