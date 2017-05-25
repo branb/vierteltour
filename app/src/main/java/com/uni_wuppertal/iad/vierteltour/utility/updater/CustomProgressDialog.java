@@ -3,12 +3,18 @@ package com.uni_wuppertal.iad.vierteltour.utility.updater;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pixplicity.sharp.Sharp;
@@ -24,10 +30,12 @@ public class CustomProgressDialog extends ProgressDialog {
   private ProgressBar progressBar;
   private ImageButton btnx;
   private ThinDownloadManager downloadManager;
+  private Context context;
 
 
   public CustomProgressDialog(Context context, ThinDownloadManager dm) {
     super(context);
+    this.context = context;
     downloadManager = dm;
     }
 
@@ -41,6 +49,17 @@ public class CustomProgressDialog extends ProgressDialog {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.custom_progress_dialog);
+    getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+    RelativeLayout dialogWindow = (RelativeLayout) findViewById(R.id.dialog);
+    ViewGroup.LayoutParams lp = dialogWindow.getLayoutParams();
+    lp.width=(int) (displayMetrics.widthPixels*0.85);
+    dialogWindow.setLayoutParams(lp);
+   // System.out.println(displayMetrics.widthPixels + "   " + dialogWindow.getHeight());
+   // getWindow().setLayout((int) (displayMetrics.widthPixels*0.85), (int) (displayMetrics.heightPixels*0.85));
+  //  getWindow().setGravity(RelativeLayout.CENTER_HORIZONTAL);
+
 
     title = (TextView) findViewById(R.id.progress_dialog_title);
     text = (TextView) findViewById(R.id.progress_dialog_text);
@@ -51,7 +70,8 @@ public class CustomProgressDialog extends ProgressDialog {
   }
 
   public void setProgress(int progress)
-  {progressBar.setProgress(progress);}
+  {progressBar.setProgress(progress);
+  }
 
   public int getProgress()
   {return progressBar.getProgress();}

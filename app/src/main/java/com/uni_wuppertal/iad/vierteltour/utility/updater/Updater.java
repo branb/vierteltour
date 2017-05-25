@@ -455,6 +455,7 @@ public class Updater extends ContextWrapper{
     final Context con = context;
     checkingForUpdates = true;
 
+    final Tour selectedTour = tour;
     final String tourslug = tour.slug();
     String path="";
     TourListReader tourListReader = new TourListReader(this);
@@ -505,6 +506,8 @@ public class Updater extends ContextWrapper{
         @Override
         public void onDownloadComplete( DownloadRequest request ) {
           Log.d( DEBUG_TAG, successMessage  + request.getDestinationURI().toString() );
+          progressDialog.setText(selectedTour.name()+"... 100%");
+          progressDialog.setTextTitle("Entpacken der Tour");
           SharedPreferences getPrefs = PreferenceManager
             .getDefaultSharedPreferences( getBaseContext() );
 
@@ -541,9 +544,9 @@ public class Updater extends ContextWrapper{
                 request.cancel();
               }
               else if(checkSize){checkSize=false;}
-              progressDialog.setMax((int)totalBytes);
+              progressDialog.getProgressBar().setMax((int)totalBytes);
               progressDialog.getProgressBar().setProgress((int)(downloadedBytes));
-
+              progressDialog.setText(selectedTour.name()+"... "+(downloadedBytes*100/totalBytes)+"%");
        }
       });
       createProgressDialog(context, tour.name()+"... 0%");

@@ -83,7 +83,6 @@ public class Einstellungen extends AppCompatActivity {
       }
     });
     deleteAll = (RelativeLayout) findViewById(R.id.deleteAll);
-
     //Touren listview to select a tour to delete
     initEinstellungenTourAdapter();
     listViewTouren = (ListView) findViewById(R.id.listTouren);
@@ -105,7 +104,9 @@ public class Einstellungen extends AppCompatActivity {
     einstellungenTourAdapter = new EinstellungenTourAdapter(tours, this);
 
     layoutTouren.setVisibility(View.VISIBLE);
-    if(tours.isEmpty())keineTouren.setVisibility(View.VISIBLE);
+    if(tours.isEmpty())
+    {keineTouren.setVisibility(View.VISIBLE);
+    deleteAll.setVisibility(View.GONE);}
    }
 
   public TourList tourlist()
@@ -195,7 +196,9 @@ public class Einstellungen extends AppCompatActivity {
 
         einstellungenTourAdapter.notifyDataSetChanged();
         MapsActivity.adapter.notifyDataSetChanged();
-        if(tours.isEmpty()) keineTouren.setVisibility(View.VISIBLE);
+        if(tours.isEmpty())
+        {keineTouren.setVisibility(View.VISIBLE);
+        deleteAll.setVisibility(View.GONE);}
 
         dialog.dismiss();}});
 
@@ -259,7 +262,7 @@ public class Einstellungen extends AppCompatActivity {
         einstellungenTourAdapter.notifyDataSetChanged();
         MapsActivity.adapter.notifyDataSetChanged();
         keineTouren.setVisibility(View.VISIBLE);
-
+        deleteAll.setVisibility(View.GONE);
         dialog.dismiss();}});
 
     ImageButton declineButton = (ImageButton) dialog.findViewById(R.id.btn_x_dialog);

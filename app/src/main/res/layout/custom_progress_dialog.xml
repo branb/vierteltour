@@ -3,7 +3,7 @@
 android:id="@+id/dialog"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
-android:background="@drawable/round_layout"
+  android:background="@drawable/round_layout"
 android:layout_centerVertical="true"
 android:layout_centerHorizontal="true"
 android:paddingTop="5dp"
@@ -30,6 +30,7 @@ android:paddingBottom="25dp">
   android:gravity="center"
   android:layout_below="@+id/progress_dialog_btnx"
   android:layout_marginTop="10dp"
+  android:layout_marginBottom="10dp"
   android:text="a"/>
 
 <TextView
@@ -53,7 +54,10 @@ android:paddingBottom="25dp">
   android:background="@color/ColorPrimary"
   android:layout_height="wrap_content"
   android:id="@+id/progressBar"
-  style="@style/CustomProgressBar" />
+  android:layout_marginLeft="50dp"
+  android:layout_marginRight="50dp"
+  style="@style/CustomProgressBar"
+  android:layout_marginBottom="20dp"/>
 
 
 </RelativeLayout>
