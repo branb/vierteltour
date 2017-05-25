@@ -49,24 +49,17 @@ public class CustomProgressDialog extends ProgressDialog {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.custom_progress_dialog);
-    getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
     DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-    RelativeLayout dialogWindow = (RelativeLayout) findViewById(R.id.dialog);
-    ViewGroup.LayoutParams lp = dialogWindow.getLayoutParams();
-    lp.width=(int) (displayMetrics.widthPixels*0.85);
-    dialogWindow.setLayoutParams(lp);
-   // System.out.println(displayMetrics.widthPixels + "   " + dialogWindow.getHeight());
-   // getWindow().setLayout((int) (displayMetrics.widthPixels*0.85), (int) (displayMetrics.heightPixels*0.85));
-  //  getWindow().setGravity(RelativeLayout.CENTER_HORIZONTAL);
-
+    setCanceledOnTouchOutside(false);
+    
+    getWindow().setLayout((int) (displayMetrics.widthPixels*0.85), FrameLayout.LayoutParams.WRAP_CONTENT);
+    getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
     title = (TextView) findViewById(R.id.progress_dialog_title);
     text = (TextView) findViewById(R.id.progress_dialog_text);
     progressBar = (ProgressBar) findViewById(R.id.progressBar);
     btnx = (ImageButton) findViewById(R.id.progress_dialog_btnx);
     Sharp.loadResource(getContext().getResources(), R.raw.beenden_dunkel).into(btnx);
-
   }
 
   public void setProgress(int progress)

@@ -1767,9 +1767,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         else if(position == 3)
           {Updater.get(getBaseContext()).updatesOnTourdata();
             if(singlepage.INSTANCE.versionUpdate())
-          {createDialog("Die Touren wurden aktualisiert.");
+          {createDialog("Nach Updates Suchen", "Die Touren wurden aktualisiert.");
             singlepage.INSTANCE.versionUpdate(false);}
-          else{createDialog("Die Touren sind bereits aktuell.");}}
+          else{createDialog("Nach Updates Suchen", "Die Touren sind bereits aktuell.");}}
         //TMP INSERT START
           //i==4 equals "Touren freischalten". Function only for testing
         else if(position == 4){
@@ -2146,13 +2146,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     tourdataAvailable=true;
   }
 
-  public void createDialog( String text)
+  public void createDialog(String title, String text)
   {
     // declare the dialog as a member field of your activity
     final Dialog dialog = new Dialog(this);
     dialog.setContentView(R.layout.alert_dialog);
     TextView txt = (TextView) dialog.findViewById(R.id.text_dialog);
     txt.setText(text);
+    TextView titleDialog = (TextView) dialog.findViewById(R.id.title_dialog);
+    titleDialog.setText(title);
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     dialog.show();
 
@@ -2165,7 +2167,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Close dialog
         dialog.dismiss();}});
     ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
-    Sharp.loadResource(getResources(), R.raw.laden).into(okayButton);
+    Sharp.loadResource(getResources(), R.raw.schliessen).into(okayButton);
     // if decline button is clicked, close the custom dialog
     okayButton.setOnClickListener(new View.OnClickListener() {
       @Override

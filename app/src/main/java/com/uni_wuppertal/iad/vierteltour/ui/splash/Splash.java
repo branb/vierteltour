@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.google.android.gms.vision.text.Text;
 import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.utility.ReplaceFont;
@@ -127,8 +128,14 @@ public class Splash extends Activity implements UpdateListener {
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     dialog.show();
 
+    TextView title = (TextView) dialog.findViewById(R.id.title_dialog);
+    title.setText("Verbindungsprobleme");
+    title.setTypeface(Typeface.SERIF);
+    //title.setTextColor(Color.BLACK);
     TextView txt = (TextView) dialog.findViewById(R.id.text_dialog);
     txt.setText(text);
+    txt.setTypeface(Typeface.SERIF);
+    //txt.setTextColor(Color.BLACK);
     ImageButton declineButton = (ImageButton) dialog.findViewById(R.id.btn_x_dialog);
     Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(declineButton);
     // if decline button is clicked, close the custom dialog
@@ -139,7 +146,7 @@ public class Splash extends Activity implements UpdateListener {
         dialog.dismiss();
       finish();}});
     ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
-    Sharp.loadResource(getResources(), R.raw.laden).into(okayButton);
+    Sharp.loadResource(getResources(), R.raw.schliessen).into(okayButton);
     // if decline button is clicked, close the custom dialog
     okayButton.setOnClickListener(new View.OnClickListener() {
       @Override
