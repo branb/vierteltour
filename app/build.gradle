@@ -48,7 +48,4 @@ dependencies {
     exclude group: 'stax', module: 'stax-api'
     exclude group: 'stax', module: 'stax'
   }
-  compile('com.github.paolorotolo:appintro:4.0.0') {
-    exclude module: 'appcompat-v7'
-  }
 }

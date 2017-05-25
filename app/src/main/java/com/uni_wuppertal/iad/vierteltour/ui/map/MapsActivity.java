@@ -79,7 +79,6 @@ import com.pixplicity.sharp.SharpDrawable;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.intro.IntroActivity;
-
 import com.uni_wuppertal.iad.vierteltour.ui.gallery.GalleryMode;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Marker.MapWindowAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.ClickableViewpager;
@@ -236,8 +235,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     initLocationServices();
     initAll();
 
-    showIntro();
-
     initPager();
 
     moveDrawerToTop();
@@ -331,7 +328,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   }
 
   /**
-   * shows intro of the application
+   * shows Intro of the application
    */
   private void showIntro() {
     //  Declare a new thread to do a preference check
@@ -438,7 +435,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       }
     });
 
-
+    showIntro();
   }
 
   /**

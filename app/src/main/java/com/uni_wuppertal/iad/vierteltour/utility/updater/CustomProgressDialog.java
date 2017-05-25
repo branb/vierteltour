@@ -51,7 +51,7 @@ public class CustomProgressDialog extends ProgressDialog {
     setContentView(R.layout.custom_progress_dialog);
     DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
     setCanceledOnTouchOutside(false);
-    
+
     getWindow().setLayout((int) (displayMetrics.widthPixels*0.85), FrameLayout.LayoutParams.WRAP_CONTENT);
     getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 

@@ -45,7 +45,8 @@
 
         <activity android:name=".ui.drawer.intro.IntroActivity"
             android:label="@string/app_intro"
-          android:screenOrientation="portrait"/>
+          android:screenOrientation="portrait"
+          android:theme="@style/Theme.D1NoTitleDim"/>
 
         <activity
             android:name=".ui.map.MapsActivity"
