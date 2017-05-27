@@ -120,8 +120,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
       }
       else{imageView.setImage(ImageSource.resource(R.drawable.i));}}
 
-    container.addView( itemView );
-    ownContainer = container;
+
 
    /* imageBtn.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -149,6 +148,8 @@ public class GalleryPagerAdapter extends PagerAdapter {
     if(singlepage.INSTANCE.position()==position && resources.endsWith("mp4"))
     {((GalleryMode)mContext).startVideoplay();}
 
+    container.addView( itemView );
+    ownContainer = container;
 
     return itemView;
   }

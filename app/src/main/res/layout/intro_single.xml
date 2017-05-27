@@ -2,7 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/intro_page"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:paddingLeft="35dp"
+  android:paddingRight="35dp"
+  android:paddingTop="30dp">
 
   <TextView
     android:id="@+id/topic"
@@ -10,6 +13,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textStyle="italic"
+    android:textSize="18sp"
     android:textColor="@color/white"
     />
 
@@ -19,6 +23,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@+id/topic"
+    android:textSize="18sp"
     android:textColor="@color/white"
     android:textStyle="bold"/>
 
@@ -34,6 +39,8 @@
   <TextView
     android:id="@+id/description"
     android:textColor="@color/white"
+    android:textSize="16sp"
+    android:lineSpacingExtra="2sp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@+id/divider"/>
@@ -42,14 +49,8 @@
     android:id="@+id/intro_image"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/description"
+    android:layout_alignParentBottom="true"
+    android:adjustViewBounds="true"
     />
-
-  <ImageButton
-    android:id="@+id/skip"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/intro_image"
-    android:background="@color/transparent"/>
 
 </RelativeLayout>

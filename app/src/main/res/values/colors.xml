@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="route1">#FF0000</color>
-    <color name="route1g">#1FFF0000</color>
-    <color name="route2">#00FF00</color>
-    <color name="route2g">#1F00FF00</color>
-
     <color name="ColorPrimary">#E6EBE0</color>
     <color name="ColorPrimaryDark">#E64A19</color>
     <color name="oelberg">#FF5D59</color>

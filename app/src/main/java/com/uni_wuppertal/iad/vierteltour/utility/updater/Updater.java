@@ -400,7 +400,6 @@ public class Updater extends ContextWrapper{
         @Override
         public void onDownloadComplete( DownloadRequest request ) {
           Log.d( DEBUG_TAG, successMessage  + request.getDestinationURI().toString() );
-
           // unzip
           unzipFile( request.getDestinationURI().toString() );
           //statusToast.setText( "Die Tourdaten wurden vollständig heruntergeladen." );

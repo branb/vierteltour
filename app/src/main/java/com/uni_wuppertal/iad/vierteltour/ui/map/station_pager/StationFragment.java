@@ -65,7 +65,7 @@ public class StationFragment extends Fragment{
     i.setImageBitmap(null);   //needs to set null otherwise buffer overflow error
     i=null;
    // fragments.get(ARG_PAGE_NUMBER).image.setImageURI(null);
-   // image = null;
+    // image = null;
   }
 
   @Override
