@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
@@ -64,7 +65,13 @@ public class IntroActivity extends Activity {
     //pager_indicator
   }
 
-ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
+    PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putBoolean("firstStart",false).apply();
+  }
+
+  ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
   @Override
   public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

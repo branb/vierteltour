@@ -98,7 +98,7 @@
 
               </RelativeLayout>
 
-              <Button
+              <RelativeLayout
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:id="@+id/gpsbtn"
@@ -109,12 +109,16 @@
                 android:layout_marginLeft="20dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:visibility="gone"
-                android:text="!"
-                android:textSize="30dp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                />
+                android:visibility="gone">
+                <ImageButton
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:id="@+id/ausrufezeichen"
+                  android:layout_centerHorizontal="true"
+                  android:layout_centerVertical="true"
+                  android:background="@color/transparent"
+                  android:gravity="center"/>
+              </RelativeLayout>
                 <RelativeLayout
                   android:id="@+id/pager_layout"
                   android:layout_width="match_parent"

@@ -142,7 +142,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   private ListView mDrawerList;
   private ActionBarDrawerToggle mDrawerToggle;
   private SlidingUpPanelLayout supl;
-  private RelativeLayout mDrawer, pager_layout;
+  private RelativeLayout mDrawer, pager_layout, gpsbtn_layout;
   private LinearLayout slidingLayout;
   public static ClickableViewpager mPager;
   private FragmentAdapter fragmentAdapter;
@@ -152,7 +152,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   private List<DrawerItem> drawerItems;
   private LatLng wuppertal;
   private ImageButton xbtn, zumstart, homebtn, leftbtn, x_supl, arrowbtn, tarbtn;
-  private Button gpsbtn;
+  private ImageButton gpsbtn;
   private int slidingLayoutHeight;
   private ImageView up, down;
   private ExpandableListView lv;
@@ -300,7 +300,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     arrowbtn = (ImageButton) findViewById(R.id.arrowbtn);       //Top Twin Button
     Sharp.loadResource(getResources(), R.raw.google_navi_dunkel).into(arrowbtn);
 
-    gpsbtn = (Button) findViewById(R.id.gpsbtn);           //Red Button left Bottom corner
+    gpsbtn_layout = (RelativeLayout) findViewById(R.id.gpsbtn);
+    gpsbtn = (ImageButton) findViewById(R.id.ausrufezeichen);           //Red Button left Bottom corner
+    Sharp.loadResource(getResources(), R.raw.ausrufezeichen).into(gpsbtn);
 
     tarbtn = (ImageButton) findViewById(R.id.tarbtn);           //Bot Twin Button
     Sharp.loadResource(getResources(), R.raw.standort).into(tarbtn);
@@ -495,9 +497,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     if (PreferenceManager
       .getDefaultSharedPreferences(getBaseContext()).getBoolean(station.slug(), false) || station.slug().startsWith("einleitung")) {
-      gpsbtn.setVisibility(View.GONE);
+      gpsbtn_layout.setVisibility(View.GONE);
     } else {
-      gpsbtn.setVisibility(View.VISIBLE);
+      gpsbtn_layout.setVisibility(View.VISIBLE);
     }
   }
 
@@ -1217,7 +1219,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 e.apply();
                 fragmentAdapter.notifyDataSetChanged();
 
-                gpsbtn.setVisibility(View.GONE);
+                gpsbtn_layout.setVisibility(View.GONE);
               }
             }
           }

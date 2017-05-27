@@ -79,7 +79,7 @@ public class StationFragment extends Fragment{
     ImageView image = (ImageView) rootView.findViewById(R.id.imagefrag);
     ImageView icon = (ImageView) rootView.findViewById(R.id.nav_icon);
     RelativeLayout image_layout = (RelativeLayout) rootView.findViewById(R.id.transparentstation);
-    Sharp.loadResource(getResources(), R.raw.google_navi_hell).into(icon);
+    Sharp.loadResource(getResources(), R.raw.ausrufezeichen).into(icon);
     RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.302),(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().heightPixels*0.149));
     lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
     lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
