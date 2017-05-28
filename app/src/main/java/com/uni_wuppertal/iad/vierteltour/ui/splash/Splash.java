@@ -63,7 +63,9 @@ public class Splash extends Activity implements UpdateListener {
       public void run() {
         if(!stop)
         {startActivity(myintent);
-        finish();}
+          overridePendingTransition(0, 0);
+        finish();
+          overridePendingTransition(0, 0);}
       }
     }, 1000);
     //checkForUpdates();

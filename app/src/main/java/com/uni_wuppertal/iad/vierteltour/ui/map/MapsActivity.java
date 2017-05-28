@@ -342,6 +342,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           //  Launch app intro
           Intent i = new Intent(MapsActivity.this, IntroActivity.class);
           startActivity(i);
+          overridePendingTransition(0, 0);
         }
 
       }
@@ -868,6 +869,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           }
           background.putExtra("pfad", path);
           startActivityForResult(background, BACK_FROM_STATION_FINISHED);
+          overridePendingTransition(0, 0);
           duration.setText("0:00");
           seekbar.setProgress(0);
           seekbar_supl.setProgress(0);
@@ -946,6 +948,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     gallery.putExtra("number", number - 1);
 
     startActivityForResult(gallery, BACK_FROM_GALLERY);
+    overridePendingTransition(0, 0);
   }
 
   /**
@@ -1484,6 +1487,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS );
           intent.setClassName( "com.google.android.apps.maps", "com.google.android.maps.MapsActivity" );
           startActivity( intent );
+          overridePendingTransition(0, 0);
         }
         else if(MyLocation != null && singlepage.INSTANCE.selectedTour()!=null)
         { zoomToLocation=true;
@@ -1494,7 +1498,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( navigationUrl ) );
           intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS );
           intent.setClassName( "com.google.android.apps.maps", "com.google.android.maps.MapsActivity" );
-          startActivity( intent );}
+          startActivity( intent );
+          overridePendingTransition(0, 0);}
         else if (MyLocation == null){
           Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT )
                .show();
@@ -1743,6 +1748,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             //i.putExtra("tours", tourlist.tours());     //gib touren weiter
             startActivityForResult(i, BACK_FROM_SETTINGS);
+            overridePendingTransition(0, 0);
 
           } else if( position == 1 ){
 
@@ -1763,7 +1769,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           }
           else if(position == 2)
           {Intent i = new Intent(MapsActivity.this, About.class);
-            startActivity(i);}
+            startActivity(i);
+            overridePendingTransition(0, 0);}
         else if(position == 3)
           {Updater.get(getBaseContext()).updatesOnTourdata();
             if(singlepage.INSTANCE.versionUpdate())

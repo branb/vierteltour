@@ -69,6 +69,7 @@ public class IntroActivity extends Activity {
   public void onBackPressed() {
     super.onBackPressed();
     PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putBoolean("firstStart",false).apply();
+    overridePendingTransition(0, 0);
   }
 
   ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {

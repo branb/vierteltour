@@ -115,4 +115,10 @@ public class About extends AppCompatActivity {
     title.setTypeface(Typeface.MONOSPACE);
 
   }
+
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
+    overridePendingTransition(0, 0);
+  }
 }

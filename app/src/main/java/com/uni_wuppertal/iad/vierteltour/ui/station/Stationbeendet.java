@@ -56,6 +56,7 @@ public class Stationbeendet extends Activity {
       public void onClick( View v ){
         setResult(RESULT_OK);
         onBackPressed();
+        overridePendingTransition(0, 0);
       }
     });
 
@@ -87,6 +88,7 @@ public class Stationbeendet extends Activity {
         singlepage.INSTANCE.selectedOldStation(null);
         back.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(back);
+        overridePendingTransition(0, 0);
       }
     });
   }}

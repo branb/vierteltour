@@ -97,6 +97,7 @@ public class GalleryMode extends Activity {
     }
 
     finish();
+    overridePendingTransition(0, 0);
   }
 
   /**
