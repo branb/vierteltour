@@ -128,11 +128,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   private GoogleApiClient googleApiClient;
   private LocationSettingsRequest.Builder builder;
   public int CurrentZoom = 15;
-  String[] drawertitles = new String[]{"Einstellungen",
-    "Info",
+  String[] drawertitles = new String[]{"Touren löschen",
+    "Einführung",
     "About",
     "Updates suchen",
-    "Touren freischlaten",
+    "Touren freischalten",
     "Touren sperren"
   };
   protected static final int TINY_BAR = 0x101, BIG_BAR = 0x102, SEEK_BAR = 0x103;
@@ -2156,15 +2156,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     titleDialog.setText(title);
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     dialog.show();
-
-    ImageButton declineButton = (ImageButton) dialog.findViewById(R.id.btn_x_dialog);
-    Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(declineButton);
-    // if decline button is clicked, close the custom dialog
-    declineButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        // Close dialog
-        dialog.dismiss();}});
+    
     ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
     Sharp.loadResource(getResources(), R.raw.schliessen).into(okayButton);
     // if decline button is clicked, close the custom dialog

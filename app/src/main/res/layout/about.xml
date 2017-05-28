@@ -10,7 +10,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
-    android:paddingTop="20dp"
+    android:paddingTop="45dp"
     android:paddingLeft="25dp"
     android:paddingRight="15dp"
     android:textSize="20dp"

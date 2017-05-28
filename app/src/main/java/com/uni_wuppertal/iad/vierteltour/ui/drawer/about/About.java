@@ -61,8 +61,8 @@ public class About extends AppCompatActivity {
       + "Die App ViertelTour entstand im Sommersemester 2015 im Projektseminar Design Interaktiver Medien unter der Leitung von Prof. Kristian Wolf. Fertiggestellt wurde sie im Wintersemester 2016/2017."+"<br />" +"<br />"
       +"<b>"+"Idee und Grundkonzept"+"</b>"+"<br />" +"Kristian Wolf, Laura Poplow, Nikolaus Zunner"+"<br />"+"<br />"+"<b>"+"Konzeption und Screen Design"+"</b>"+"<br />"+"Muriel Balzer, Tamara Dreke, Franziska Györfi, Ana Ivić"+"<br />"+"<br />"
       +"<b>"+"Bild und Ton"+"</b>"+"<br />"+"Studierende des Seminars Licht/Ton, Design Ausdiovisueller Medien unter der Leitung von AOR Till Müller"+"<br />"+"<br />"+"<b>"+"Aufbereitung der Daten"+"</b>"+"<br />"+"Benjamin Pfingsten, Svenja Krautwurst, Jessica Schmitz"
-      +"<br />"+"<br />"+"<b>" + "Android Programmierung" + "</b>" +"<br />" +"Softwaretechnik-Praktikum"+"<br />"+"Miodrag Radovanovic, Jannis Güldenpfennig, Michel Verheijen, Thomas Vogt, Branislav Bardak, Kevin Kollek"+"<br />"+"<br />"
-      +"Bachelor-Thesis, Betreuung Dr. Werner Hofschuster"+"<br />" + "Kevin Kollek"+"<br />"+"<br />"
+      +"<br />"+"<br />"+"<b>" + "Android Programmierung" + "</b>" +"<br />" +"<u>"+"Softwaretechnik-Praktikum"+"</u>"+"<br />"+"Miodrag Radovanovic, Jannis Güldenpfennig, Michel Verheijen, Thomas Vogt, Branislav Bardak, Kevin Kollek"+"<br />"+"<br />"+"<u>"
+      +"Bachelor-Thesis, Betreuung Dr. Werner Hofschuster"+"</u>"+"<br />" + "Kevin Kollek"+"<br />"+"<br />"
       +"<b>"+"iOS Programmierung"+"</b>"+"<br />"+"Noah Lotz-Hommann"+"<br />"+"<br />"+"<b>"+"Projektkoordination"+"</b>"+"<br />"+"Dr. Christoph Rodatz"+"<br />"+"<br />"));
 
 

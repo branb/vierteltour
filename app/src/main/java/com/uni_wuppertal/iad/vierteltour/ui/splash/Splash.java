@@ -136,15 +136,6 @@ public class Splash extends Activity implements UpdateListener {
     txt.setText(text);
     txt.setTypeface(Typeface.SERIF);
     //txt.setTextColor(Color.BLACK);
-    ImageButton declineButton = (ImageButton) dialog.findViewById(R.id.btn_x_dialog);
-    Sharp.loadResource(getResources(), R.raw.beenden_dunkel).into(declineButton);
-    // if decline button is clicked, close the custom dialog
-    declineButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        // Close dialog
-        dialog.dismiss();
-      finish();}});
     ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
     Sharp.loadResource(getResources(), R.raw.schliessen).into(okayButton);
     // if decline button is clicked, close the custom dialog
