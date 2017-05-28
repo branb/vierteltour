@@ -1570,6 +1570,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       }
     });
     googleApiClient.connect();
+    zoomToLocation=true;
   }}
 
 
@@ -2156,7 +2157,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     titleDialog.setText(title);
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     dialog.show();
-    
+
     ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
     Sharp.loadResource(getResources(), R.raw.schliessen).into(okayButton);
     // if decline button is clicked, close the custom dialog
