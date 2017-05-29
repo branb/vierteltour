@@ -473,6 +473,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     if (!singlepage.INSTANCE.selectedStation().slug().contains("einleitung")) {// Setze Kreis auf neue Station
       circle.center(station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0, 1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1, singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8).visible(true);
       mapCircle = mMap.addCircle(circle);
+      mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(station.latlng(), mMap.getCameraPosition().zoom));
 
       removeStation(singlepage.INSTANCE.selectedStation().slug());
       Marker m;
@@ -488,8 +489,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         try {
           while (singlepage.INSTANCE.countWaypoints().get(countnumber) < (station.number()))
             countnumber++;
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
         m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (station.number()), true))));
       }
       m.showInfoWindow();
@@ -1357,7 +1357,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Zoom to first station coordinates
     CameraPosition cameraPosition = new CameraPosition.Builder()
       .target(new LatLng(singlepage.INSTANCE.selectedTour().station(2).latlng().latitude , singlepage.INSTANCE.selectedTour().station(2).latlng().longitude))
-      .zoom(CurrentZoom)
+      .zoom(mMap.getCameraPosition().zoom)
       .build();
     //mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( singlepage.INSTANCE.selectedTour().station(2).latlng(), CurrentZoom ) );
 

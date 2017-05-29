@@ -130,6 +130,9 @@ public class GalleryPagerAdapter extends PagerAdapter {
       }
     });*/
 
+    container.addView( itemView );
+    ownContainer = container;
+    
     imageView.setOnClickListener(new View.OnClickListener()
     {
       @Override
@@ -149,8 +152,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
     if(singlepage.INSTANCE.position()==position && resources.endsWith("mp4"))
     {((GalleryMode)mContext).startVideoplay();}
 
-    container.addView( itemView );
-    ownContainer = container;
+
 
     return itemView;
   }
