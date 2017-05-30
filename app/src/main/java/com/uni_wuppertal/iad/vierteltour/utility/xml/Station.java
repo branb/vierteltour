@@ -27,10 +27,7 @@ public class Station extends TourListData {
   private String description;
 
   @ElementList( required = false )
-  private List<String> images;
-
-  @ElementList
-  private List<String> videos;
+  private List<Resource> resources;
 
   @Attribute
   private String audio;
@@ -55,16 +52,9 @@ public class Station extends TourListData {
     else return "";
   }
 
-
-  public List<String> images(){
-    return images;
+  public List<Resource> images(){
+    return resources;
   }
-
-
-  public List<String> videos(){
-    return videos;
-  }
-
 
   public String audio(){
     return home() + audio;
@@ -85,50 +75,17 @@ public class Station extends TourListData {
     return new LatLng( Double.parseDouble( tok.nextToken() ), Double.parseDouble( tok.nextToken() ) );
   }
 
+  public List<Resource> resources(){
+    if( resources == null )
+      resources = new Vector<>();
 
-
-  // TODO: REFACTORING: Temporary function, can be removed after refactoring the whole XmlParsing thing
-  public String imagesToString(){
-    if( images == null )
-      images = new Vector<>();
-
-    return listToString( images );
-  }
-
-
-
-  // TODO: REFACTORING: Temporary function, can be removed after refactoring the whole XmlParsing thing
-  public String videosToString(){
-    if( videos == null )
-      videos = new Vector<>();
-
-    return listToString( videos );
-  }
-
-
-
-  // TODO: REFACTORING: Temporary function, can be removed after refactoring the whole XmlParsing thing
-  /**
-   * Converts a List<String> to a comma seperated String,
-   *
-   * @param list
-   * @return
-   */
-  private String listToString( List<String> list ){
-    String s = "";
-
-    for( String l : list ){
-      s += home() + l + ",";
-    }
-
-      return s.replaceAll( ",$", "" );
-
+    return resources;
   }
 
 
 
   @Override
   public String toString(){
-    return id + "\n" + name() + "\n" + number + "\n" + description + "\n" + imagesToString() + "\n" + videosToString() + "\n" + audio + "\n" + coordinates + "\n";
+    return id + "\n" + name() + "\n" + number + "\n" + description + "\n" + audio + "\n" + coordinates + "\n";
   }
 }
