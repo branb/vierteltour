@@ -45,6 +45,7 @@
     <item name="android:progressDrawable">@drawable/custom_progress_bar_horizontal</item>
     <item name="android:minHeight">5dip</item>
     <item name="android:maxHeight">10dip</item>
+    <item name="android:typeface">monospace</item>
   </style>
 
 </resources>

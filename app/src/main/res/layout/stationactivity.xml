@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
   android:id="@+id/rellayout">
 
-        <TextView
+        <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
             android:id="@+id/stationtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
       <!-- Diese Datei gibt den Aufbau einer Zeile der Liste vor
        ImageView (img) ist das Bild links in der Liste, 1. TextView (txt) für Titel der Tour, 2. TextView (subtxt) für Autor und Zeit/Weg -->
 
-      <TextView
+      <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
         android:id="@+id/routenname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
         android:textSize="20sp"
 
         />
-      <TextView
+      <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/routeninfo1"
@@ -104,7 +104,7 @@
         android:layout_below="@+id/routenname"/>
 
 
-      <TextView
+      <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/routeninfo2"
@@ -123,7 +123,7 @@
 
   </RelativeLayout>
 
-        <TextView
+        <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
             android:id="@+id/stationenbeschreibung"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -196,7 +196,7 @@
           android:layout_centerVertical="true"
           android:paddingLeft="35dp"/>
 
-        <TextView
+        <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0:00"
@@ -239,7 +239,7 @@
       android:layout_centerHorizontal="true"
       android:layout_marginTop="40dp" />
 
-    <TextView
+    <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
       android:id="@+id/navtext"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -253,7 +253,7 @@
       android:layout_marginTop="20dp"
       android:gravity="center"/>
 
-    <TextView
+    <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
       android:id="@+id/navtext2"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

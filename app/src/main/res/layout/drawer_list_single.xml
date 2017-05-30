@@ -16,7 +16,7 @@
       android:paddingRight="15dp"
       android:scaleType="fitCenter"
       />
-    <TextView
+    <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
         android:id="@+id/menutxt"
         android:textColor="@color/black"
         android:textSize="18dp"

@@ -25,7 +25,7 @@ import android.widget.VideoView;
 import com.google.android.gms.vision.text.Text;
 import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
-import com.uni_wuppertal.iad.vierteltour.utility.ReplaceFont;
+import com.uni_wuppertal.iad.vierteltour.utility.font.ReplaceFont;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.updater.UpdateListener;
 import com.uni_wuppertal.iad.vierteltour.utility.updater.Updater;
@@ -44,7 +44,6 @@ public class Splash extends Activity implements UpdateListener {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.splash);
-    ReplaceFont.replaceDefaultFont(this, "SERIF", "Bariol_Regular.ttf");   //for MainActivity
     initTypeface();                                                //only for SplashActivity
 
     pbar = (ProgressBar) findViewById(R.id.progressBar);

@@ -5,7 +5,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <TextView
+  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:id="@+id/title_viertel"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
     android:textSize="20dp"
     android:textColor="@color/black" />
 
-<TextView
+<com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
   android:id="@+id/text_viertel"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
   android:textSize="16dp"
   android:textColor="@color/black" />
 
-  <TextView
+  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:id="@+id/title_mitwirkende"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
     android:textSize="20dp"
     android:textColor="@color/black" />
 
-  <TextView
+  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:id="@+id/text_mitwirkende"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
     android:textSize="16dp"
     android:textColor="@color/black" />
 
-  <TextView
+  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:id="@+id/title_danksagung"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
     android:textSize="20dp"
     android:textColor="@color/black" />
 
-  <TextView
+  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:id="@+id/text_danksagung"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

@@ -94,10 +94,11 @@ import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.up_slider.TourAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.DrawerAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.DrawerItem;
+import com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView;
 import com.uni_wuppertal.iad.vierteltour.utility.updater.Updater;
 import com.uni_wuppertal.iad.vierteltour.utility.updater.UpdateListener;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
-import com.uni_wuppertal.iad.vierteltour.utility.ReplaceFont;
+import com.uni_wuppertal.iad.vierteltour.utility.font.ReplaceFont;
 import com.uni_wuppertal.iad.vierteltour.utility.tourlist.TourList;
 import com.uni_wuppertal.iad.vierteltour.utility.tourlist.TourListReader;
 import com.uni_wuppertal.iad.vierteltour.utility.waypoints.RouteWaypoint;
@@ -160,7 +161,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   private int defaultPanelHeight, pxPager, lastExpandedPosition = -1;;
   private View listelement;
   private ShadowTransformer mFragmentShadowTransformer;
-  private TextView title, tourenliste, subtext1, subtext2;
+  private TextView title, tourenliste;
+  private CustomFontTextView prof, info2, subtext1, subtext2;
   private Marker tmpmarker, curLocation;
   private RelativeLayout panel, gpsinfo, stationLayout;
   private ViertelTourMediaPlayer player;
@@ -180,7 +182,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   Handler seekHandler = new Handler();
   ;
   TextView duration, duration_supl;  //Textfeld
-  TextView routenname, prof, info2, description, stationtitle;
+  TextView routenname, description, stationtitle;
   double timeElapsed = 0;
   int dotsCount;
   ImageView dots[], tourimage, pager_play_btn, pfeilhell;
@@ -309,8 +311,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     tourenliste = (TextView) findViewById(R.id.tourenliste);
 
-    subtext1 = (TextView) findViewById(R.id.subinfo1);
-    subtext2 = (TextView) findViewById(R.id.subinfo2);
+    subtext1 = (CustomFontTextView) findViewById(R.id.subinfo1);
+    subtext2 = (CustomFontTextView) findViewById(R.id.subinfo2);
     up = (ImageView) findViewById(R.id.up);
     Sharp.loadResource(getResources(), R.raw.pfeil_hoch).into(up);
 
@@ -633,9 +635,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     routenname.setText(name);
     tourimage = (ImageView) findViewById(R.id.routenbild);
     tourimage.setImageURI(Uri.fromFile(new File(path + singlepage.INSTANCE.selectedTour().image() + ".png")));
-    prof = (TextView) findViewById(R.id.routeninfo1);
+    prof = (CustomFontTextView) findViewById(R.id.routeninfo1);
     prof.setText(author);
-    info2 = (TextView) findViewById(R.id.routeninfo2);
+    info2 = (CustomFontTextView) findViewById(R.id.routeninfo2);
     info2.setText(time + "/" + length);
     description = (TextView) findViewById(R.id.stationenbeschreibung);
     description.setText(singlepage.INSTANCE.selectedStation().description());

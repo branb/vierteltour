@@ -19,7 +19,7 @@ android:id="@+id/stationbeendet">
     android:background="@color/transparent"
     />
 
-<TextView
+<com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
   android:id="@+id/stationbeendettext"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"

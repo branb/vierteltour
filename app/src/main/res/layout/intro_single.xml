@@ -7,7 +7,7 @@
   android:paddingRight="35dp"
   android:paddingTop="30dp">
 
-  <TextView
+  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:id="@+id/topic"
     android:layout_alignParentTop="true"
     android:layout_width="wrap_content"
@@ -17,7 +17,7 @@
     android:textColor="@color/white"
     />
 
-  <TextView
+  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:id="@+id/welcome"
     android:text="test"
     android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"/>
 
-  <TextView
+  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:id="@+id/description"
     android:textColor="@color/white"
     android:textSize="16sp"

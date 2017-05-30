@@ -52,7 +52,7 @@
         />
 
       </RelativeLayout>
-        <TextView
+        <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
             android:id="@+id/titlefrag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             android:paddingLeft="20dp"
             android:paddingRight="10dp"
             />
-        <TextView
+        <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
             android:id="@+id/subtitlefrag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
         android:layout_marginTop="15dp"
         >
 
-        <TextView
+        <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
           android:id="@+id/numbertext"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"

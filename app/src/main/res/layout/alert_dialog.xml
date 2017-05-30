@@ -20,7 +20,7 @@
     android:padding="5dp"
     />
 
-  <TextView
+  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:id="@+id/title_dialog"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
     android:layout_marginTop="10dp"
     android:text="a"/>
 
-    <TextView
+    <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
       android:id="@+id/text_dialog"
       android:layout_below="@+id/title_dialog"
       android:layout_width="wrap_content"

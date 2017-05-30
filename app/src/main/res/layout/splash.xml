@@ -23,7 +23,7 @@
         android:progress="0"
         android:progressTint="#ff5d59" />  -->
 
-    <TextView
+    <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="WUPPERTAL"
@@ -35,7 +35,7 @@
         android:layout_centerHorizontal="true"
         android:textSize="20dp" />
 
-  <TextView
+  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceLarge"
@@ -50,7 +50,7 @@
     android:layout_alignParentBottom="true"
     android:textSize="30dp" />
 
-    <TextView
+    <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"

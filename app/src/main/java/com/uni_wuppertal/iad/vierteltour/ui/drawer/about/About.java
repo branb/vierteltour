@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.google.android.gms.vision.text.Text;
 import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView;
 
 /**
  * Created by Kevin-Laptop on 17.01.2017.
@@ -26,7 +27,7 @@ import com.uni_wuppertal.iad.vierteltour.R;
 
 public class About extends AppCompatActivity {
   private ActionBar actionBar;
-  private TextView title;
+  private CustomFontTextView title;
   private ImageButton xbtn;
   @Override
   protected void onCreate(
@@ -35,10 +36,10 @@ public class About extends AppCompatActivity {
     super.onCreate( savedInstanceState );
     setContentView( R.layout.about );
     initActionbar();
-    TextView titleViertelTour = (TextView) findViewById(R.id.title_viertel);
+    CustomFontTextView titleViertelTour = (CustomFontTextView) findViewById(R.id.title_viertel);
     titleViertelTour.setText("Was ist ViertelTour?");
 
-    TextView textViertelTour = (TextView) findViewById(R.id.text_viertel);
+    CustomFontTextView textViertelTour = (CustomFontTextView) findViewById(R.id.text_viertel);
 
     textViertelTour.setText(Html.fromHtml( "<br />"
       + "Die App "+ "<b>" + "ViertelTour" + "</b>" + " nimmt Sie mit auf informative Stadtspaziergänge durch die dichte Ökologie- und Kulturlandschaft der Wuppertaler Innenstadt. Begleitet werden Sie dabei von unterschiedlichsten Expertinnen und Experten."
@@ -52,10 +53,10 @@ public class About extends AppCompatActivity {
       + "Wir wünschen viel Spaß und hoffentlich neue Einsichten und Erfahrungen in einer hochinteressanten Stadt."+ "<br />" + "<br />" + "Projektgruppe Design Interaktiver Medien, Bergische Universität Wuppertal, Prof. Kristian Wolf"+ "<br />" + "<br />"
     ));
 
-    TextView titleMitwirkende = (TextView) findViewById(R.id.title_mitwirkende);
+    CustomFontTextView titleMitwirkende = (CustomFontTextView) findViewById(R.id.title_mitwirkende);
     titleMitwirkende.setText("Wer hat mitgewirkt?");
 
-    TextView textMitwirkende = (TextView) findViewById(R.id.text_mitwirkende);
+    CustomFontTextView textMitwirkende = (CustomFontTextView) findViewById(R.id.text_mitwirkende);
 
     textMitwirkende.setText(Html.fromHtml( "<br />"
       + "Die App ViertelTour entstand im Sommersemester 2015 im Projektseminar Design Interaktiver Medien unter der Leitung von Prof. Kristian Wolf. Fertiggestellt wurde sie im Wintersemester 2016/2017."+"<br />" +"<br />"
@@ -66,10 +67,10 @@ public class About extends AppCompatActivity {
       +"<b>"+"iOS Programmierung"+"</b>"+"<br />"+"Noah Lotz-Hommann"+"<br />"+"<br />"+"<b>"+"Projektkoordination"+"</b>"+"<br />"+"Dr. Christoph Rodatz"+"<br />"+"<br />"));
 
 
-    TextView titleDanksagung = (TextView) findViewById(R.id.title_danksagung);
+    CustomFontTextView titleDanksagung = (CustomFontTextView) findViewById(R.id.title_danksagung);
     titleDanksagung.setText("Danksagung");
 
-    TextView textDanksagung = (TextView) findViewById(R.id.text_danksagung);
+    CustomFontTextView textDanksagung = (CustomFontTextView) findViewById(R.id.text_danksagung);
     textDanksagung.setText(Html.fromHtml( "<br />" + "Wir danken " + "<b>" + "allen Expertinnen und Experten" + "</b>" + ", die mit ihrem hier preisgegebenen Wissen dazu beitragen, die Stadt Wupertal in vielen, erst auf den zweiten Blick erkennbaren Facetten erfahrbar zu machen."
       +"<br />"+"<br />"+ "Vielen Dank an die "+"<b>" + "Jackstädtstiftung" + "</b>" + ", die das Projekt finanziell unterstützt hat."
     ));
@@ -100,7 +101,7 @@ public class About extends AppCompatActivity {
 
 
     xbtn = (ImageButton) findViewById(R.id.btn_x);      //ActionBar Button: Right
-    title = (TextView) findViewById(R.id.toolbar_title);  //ActionBar Title
+    title = (CustomFontTextView) findViewById(R.id.toolbar_title);  //ActionBar Title
     title.setText("About");
     xbtn.setOnClickListener( new View.OnClickListener(){
       @Override

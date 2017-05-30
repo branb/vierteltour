@@ -20,7 +20,7 @@ android:paddingBottom="25dp">
   android:padding="5dp"
   />
 
-<TextView
+<com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
   android:id="@+id/progress_dialog_title"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
@@ -33,7 +33,7 @@ android:paddingBottom="25dp">
   android:layout_marginBottom="20dp"
   android:text="a"/>
 
-<TextView
+<com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
   android:id="@+id/progress_dialog_text"
   android:layout_below="@+id/progress_dialog_title"
   android:layout_width="wrap_content"

@@ -5,7 +5,7 @@
   android:layout_height="wrap_content"
   android:layout_below="@+id/listelement_base">
 
-  <TextView
+  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/addinfo"

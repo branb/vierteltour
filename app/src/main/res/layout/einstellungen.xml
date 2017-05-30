@@ -35,7 +35,7 @@
       android:layout_centerVertical="true"/>
   </RelativeLayout>
 
-  <TextView
+  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:id="@+id/keineTouren"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

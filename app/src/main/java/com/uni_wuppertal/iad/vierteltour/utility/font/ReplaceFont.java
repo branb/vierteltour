@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour.utility;
+package com.uni_wuppertal.iad.vierteltour.utility.font;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -13,7 +13,9 @@ public class ReplaceFont{
   public static void replaceDefaultFont( Context context, String old_Font, String Asset_Font ){
     final Typeface customFontTypeface = Typeface.createFromAsset( context.getAssets(), Asset_Font );
     replaceFont( old_Font, customFontTypeface );
+
   }
+
 
   public static void replaceFont( String old_Font, Typeface customFontTypeface ){
     try{
