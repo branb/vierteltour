@@ -644,7 +644,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     singlepage.INSTANCE.position(0);
 
     seekbar = (SeekBar) findViewById(R.id.seek_bar);
-    pager_play_btn = (ImageView) findViewById(R.id.pager_play_button);
     play_button = (ImageButton) findViewById(R.id.play_button);
     duration = (TextView) findViewById(R.id.duration);
     gesperrt = (RelativeLayout) findViewById(R.id.gesperrt);
@@ -704,10 +703,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
       seekbar.setProgress(player.getCurrentPosition());
       seekbar_supl.setProgress(player.getCurrentPosition());
-      timeElapsed = player.getCurrentPosition();
+      timeElapsed = player.getDuration()-player.getCurrentPosition();
 
-      duration.setText(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
-      duration_supl.setText(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
+      duration.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
+      duration_supl.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
       seekHandler.postDelayed(run, 100);
     }
   }
@@ -851,10 +850,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     seekbar_supl.getProgressDrawable().setColorFilter(
       Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
     seekbar_supl.getThumb().setColorFilter(Color.parseColor("#353535"), android.graphics.PorterDuff.Mode.SRC_IN);
-    timeElapsed = player.getCurrentPosition();
+    timeElapsed = player.getDuration()-player.getCurrentPosition();
 
-    duration.setText(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
-    duration_supl.setText(String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
+    duration.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
+    duration_supl.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsed) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsed))));
 
     player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
       @Override
@@ -872,7 +871,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           background.putExtra("pfad", path);
           startActivityForResult(background, BACK_FROM_STATION_FINISHED);
           overridePendingTransition(0, 0);
-          duration.setText("0:00");
+
+          duration.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) player.getDuration()), TimeUnit.MILLISECONDS.toSeconds((long) player.getDuration()) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) player.getDuration()))));
+
           seekbar.setProgress(0);
           seekbar_supl.setProgress(0);
          /* Message message = new Message();
@@ -881,7 +882,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
           seekbar_supl.setProgress(0);
           Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);
-          duration_supl.setText("0:00");
+          duration_supl.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) player.getDuration()), TimeUnit.MILLISECONDS.toSeconds((long) player.getDuration()) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) player.getDuration()))));
+
         }
       }
 
