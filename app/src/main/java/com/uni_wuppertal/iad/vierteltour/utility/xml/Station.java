@@ -8,6 +8,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -27,7 +28,7 @@ public class Station extends TourListData {
   private String description;
 
   @ElementList( required = false )
-  private List<Resource> resources;
+  private ArrayList<Resource> resources;
 
   @Attribute
   private String audio;
@@ -52,10 +53,6 @@ public class Station extends TourListData {
     else return "";
   }
 
-  public List<Resource> images(){
-    return resources;
-  }
-
   public String audio(){
     return home() + audio;
   }
@@ -75,9 +72,9 @@ public class Station extends TourListData {
     return new LatLng( Double.parseDouble( tok.nextToken() ), Double.parseDouble( tok.nextToken() ) );
   }
 
-  public List<Resource> resources(){
+  public ArrayList<Resource> resources(){
     if( resources == null )
-      resources = new Vector<>();
+      resources = new ArrayList<Resource>();
 
     return resources;
   }
@@ -88,4 +85,6 @@ public class Station extends TourListData {
   public String toString(){
     return id + "\n" + name() + "\n" + number + "\n" + description + "\n" + audio + "\n" + coordinates + "\n";
   }
+
+
 }

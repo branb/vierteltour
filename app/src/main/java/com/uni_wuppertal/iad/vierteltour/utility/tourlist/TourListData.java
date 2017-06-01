@@ -4,10 +4,10 @@ import org.simpleframework.xml.Attribute;
 
 public class TourListData{
 
-  @Attribute
+  @Attribute( required = false )
   private String name = "";
 
-  @Attribute
+  @Attribute ( required = false )
   private String slug = "";
 
   private String home;

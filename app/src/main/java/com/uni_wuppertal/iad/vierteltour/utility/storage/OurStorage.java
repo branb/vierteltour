@@ -132,7 +132,6 @@ public class OurStorage extends ContextWrapper{
    */
   protected boolean isFileAccessible( String path ){
     File file = new File( externalFilesDir, path );
-
     if( !isExternalStorageMounted() ){
       Log.e( "OurStorage", "External Storage not available!" );
       return false;

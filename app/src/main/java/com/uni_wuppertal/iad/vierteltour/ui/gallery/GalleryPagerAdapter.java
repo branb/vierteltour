@@ -23,6 +23,7 @@ import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
+import com.uni_wuppertal.iad.vierteltour.utility.xml.Resource;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 public class GalleryPagerAdapter extends PagerAdapter {
 
   private Context mContext;
-  private ArrayList<String> stationImagePaths;
+  private ArrayList<Resource> stationImagePaths;
   private SubsamplingScaleImageView imageView;
   private ViertelTourMediaPlayer player;
   private VideoView videoView;
@@ -42,7 +43,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
   private int STATION_BEENDET=1;
   private Singletonint singlepage;
 
-  public GalleryPagerAdapter(Context mContext, ArrayList<String> stationImagePaths){
+  public GalleryPagerAdapter(Context mContext, ArrayList<Resource> stationImagePaths){
     this.mContext = mContext;
     this.stationImagePaths = stationImagePaths;
     player = ViertelTourMediaPlayer.getInstance( mContext );
@@ -69,16 +70,16 @@ public class GalleryPagerAdapter extends PagerAdapter {
     //imageBtn.setTag("button" + position);
     videoView = (VideoView) itemView.findViewById( R.id.vid_pager_item_gallery );
     videoView.setTag("video" + position);
-    final String resources = stationImagePaths.get(position);     //v für video, i für image
+    final Resource resources = stationImagePaths.get(position);     //v für video, i für image
 
     //Layout for Videos
-    if(resources.endsWith("mp4"))
+    if(resources.getSource().endsWith("mp4"))
     { videoView.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
-      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
-      {videoView.setVideoPath(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)));
-        Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
-        MediaStore.Images.Thumbnails.MINI_KIND);
+      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource())!=null)
+      {videoView.setVideoPath(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()));
+        Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()),
+        MediaStore.Images.Thumbnails.FULL_SCREEN_KIND);
         imageView.setImage(ImageSource.bitmap(thumbnail));
         //imageBtn.setVisibility(View.VISIBLE);
         }
@@ -111,13 +112,13 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
     }
     //Layout for Images
-    else if (resources.endsWith("jpg")) {
+    else if (resources.getSource().endsWith("jpg")) {
       videoView.setVisibility(View.GONE);
      // imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
-      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
+      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource())!=null)
       {  //imageView.setImageBitmap(BitmapFactory.decodeFile( OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)) ) );
-        imageView.setImage(ImageSource.uri( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) ));
+        imageView.setImage(ImageSource.uri( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()))) ));
       }
       else{imageView.setImage(ImageSource.resource(R.drawable.i));}}
 
@@ -132,24 +133,24 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
     container.addView( itemView );
     ownContainer = container;
-    
+
     imageView.setOnClickListener(new View.OnClickListener()
     {
       @Override
       public void onClick(View v)
       {
-        if(resources.endsWith("mp4")){
+        if(resources.getSource().endsWith("mp4")){
           if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
           {((GalleryMode)mContext).mediaplayerbars();}
         else{((GalleryMode)mContext).startVideoplay();}
 
-        } else if (resources.endsWith("jpg")) {
+        } else if (resources.getSource().endsWith("jpg")) {
           if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
           {((GalleryMode)mContext).imageBar();}
         }
 
       }});
-    if(singlepage.INSTANCE.position()==position && resources.endsWith("mp4"))
+    if(singlepage.INSTANCE.position()==position && resources.getSource().endsWith("mp4"))
     {((GalleryMode)mContext).startVideoplay();}
 
 

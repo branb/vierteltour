@@ -25,7 +25,6 @@ public class CustomFontTextView extends TextView {
   private void applyCustomFont(Context context, AttributeSet attrs) {
     int textStyle = attrs.getAttributeIntValue(ANDROID_SCHEMA, "textStyle", Typeface.NORMAL);
 
-    System.out.println(textStyle);
     Typeface customFont = selectTypeface(context, textStyle);
     setTypeface(customFont);
   }

@@ -102,6 +102,7 @@ import com.uni_wuppertal.iad.vierteltour.utility.font.ReplaceFont;
 import com.uni_wuppertal.iad.vierteltour.utility.tourlist.TourList;
 import com.uni_wuppertal.iad.vierteltour.utility.tourlist.TourListReader;
 import com.uni_wuppertal.iad.vierteltour.utility.waypoints.RouteWaypoint;
+import com.uni_wuppertal.iad.vierteltour.utility.xml.Resource;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Tour;
 
@@ -189,7 +190,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   Intent myIntent2;
   Bundle b;
   String colorString;
-  ArrayList<String> stationImagePaths;
+  ArrayList<Resource> stationImagePaths;
   RelativeLayout layout, seekbar_layout_supl;
   ViewPager imagePager;    //Slidebare Gallery
   com.uni_wuppertal.iad.vierteltour.ui.station.StationAdapter mAdapter;
@@ -197,7 +198,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   LinearLayout pager_indicator;
   RelativeLayout gesperrt, videopanel, panel_top;
   boolean sperrvariable = true, stationEnabled = false;
-  String audio, video;
+  String audio;
   //End StationActivity
 
 
@@ -651,19 +652,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Sharp.loadResource(getResources(), R.raw.google_navi_hell).into(pfeilhell);
     imagePager = (ViewPager) findViewById(R.id.ImagePager);
     imagePager.setOffscreenPageLimit(2);
-    String imagesFromXML = singlepage.INSTANCE.selectedStation().imagesToString();
-    stationImagePaths = new ArrayList<String>();
-    if (!imagesFromXML.isEmpty()) {
-      stationImagePaths = new ArrayList<String>(Arrays.asList(imagesFromXML.split("\\s*,\\s*")));
-    }
 
-    video = singlepage.INSTANCE.selectedStation().videosToString();
-    if (!video.isEmpty()) {
-      stationImagePaths.add(0, singlepage.INSTANCE.selectedStation().videosToString());
-    }
+    stationImagePaths = singlepage.INSTANCE.selectedStation().resources();
+
+
+
     audio = singlepage.INSTANCE.selectedStation().audio();
     mAdapter = new com.uni_wuppertal.iad.vierteltour.ui.station.StationAdapter(this, stationImagePaths);
     pager_indicator = (LinearLayout) findViewById(R.id.viewPagerCountDots);
+    pager_indicator.removeAllViews();
     videopanel = (RelativeLayout) findViewById(R.id.video_panel);
     imagePager.setAdapter(mAdapter);
     seekbar.setOnSeekBarChangeListener(customSeekBarListener);
@@ -751,7 +748,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       duration.setVisibility(View.VISIBLE);
     }
 
-    if ((stationImagePaths.size() == 0 && video.isEmpty()) || sperrvariable) {
+    if(stationImagePaths.size()<1)pager_indicator.setVisibility(View.GONE);
+
+    if (stationImagePaths.size() == 0 || sperrvariable) {
       imagePager.setVisibility(View.GONE);
       pager_indicator.setVisibility(View.GONE);
       videopanel.setVisibility(View.GONE);
@@ -773,10 +772,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             play_button.setVisibility(View.VISIBLE);
             duration.setVisibility(View.VISIBLE);
           }
-          if (!(stationImagePaths.size() == 0 && video.isEmpty())) {
+          if (stationImagePaths.size() > 0 ) {
             imagePager.setVisibility(View.VISIBLE);
-            pager_indicator.setVisibility(View.VISIBLE);
             videopanel.setVisibility(View.VISIBLE);
+            if(stationImagePaths.size()>1)pager_indicator.setVisibility(View.VISIBLE);
           }
         }
       });
@@ -944,9 +943,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   public void startGallery() {
     Intent gallery = new Intent(getApplicationContext(), GalleryMode.class);
-    gallery.putExtra("resources", stationImagePaths);
+
+    gallery.putParcelableArrayListExtra("resources", stationImagePaths);
+    for(int i=0;i<stationImagePaths.size();i++)
+    stationImagePaths.get(i).setSource(stationImagePaths.get(i).source());
     gallery.putExtra("station", singlepage.INSTANCE.selectedStation().name());
-    gallery.putExtra("video", video);
     gallery.putExtra("pfad", path);
     gallery.putExtra("size", size);
     gallery.putExtra("number", number - 1);
@@ -1447,7 +1448,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     lp.height = pxPager;
     mPager.setLayoutParams(lp);
     mPager.setPadding((int)pagerPadding, 0,(int) pagerPadding, 0);
-    System.out.println(displayMetrics.widthPixels + " SIDE: " + displayMetrics.widthPixels*0.312 + "padd");
 
 
   }

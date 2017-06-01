@@ -3,6 +3,7 @@ package com.uni_wuppertal.iad.vierteltour.utility.tourlist;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Area;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.City;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Region;
+import com.uni_wuppertal.iad.vierteltour.utility.xml.Resource;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Tour;
 
@@ -75,6 +76,9 @@ public class TourList{
 
               for( Station station : tour.stations() ){
                 station.home( tour.home() );
+
+                for(Resource resource : station.resources())
+                {resource.home(station.home());}
               }
             }
           }

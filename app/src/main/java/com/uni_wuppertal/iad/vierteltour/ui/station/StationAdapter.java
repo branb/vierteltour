@@ -22,10 +22,12 @@ import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
+import com.uni_wuppertal.iad.vierteltour.utility.xml.Resource;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Adapter for ViewPager in StationActivity
@@ -33,13 +35,13 @@ import java.util.ArrayList;
 public class StationAdapter extends PagerAdapter{
 
   private Context mContext;
-  private ArrayList<String> stationImagePaths;
+  private ArrayList<Resource> stationImagePaths;
   private ImageView imageView, background;
   private boolean fileAvailable=true;
   private ViertelTourMediaPlayer player;
   private Singletonint singlepage;
 
-  public StationAdapter(Context mContext, ArrayList<String> stationImagePaths){
+  public StationAdapter(Context mContext, ArrayList<Resource> stationImagePaths){
     this.mContext = mContext;
     this.stationImagePaths = stationImagePaths;
   }
@@ -64,15 +66,16 @@ public class StationAdapter extends PagerAdapter{
     background = (ImageView) itemView.findViewById( R.id.img_pager_background);
     ImageView imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button );
     Sharp.loadResource(mContext.getResources(), R.raw.play_hell).into(imageBtn);
-    String resources = stationImagePaths.get(position);     //v für video, i für image
+    Resource resources = stationImagePaths.get(position);     //v für video, i für image
 
 //TODO: stationimagepaths to stationresourcepaths with video and images to show
-    if(resources.endsWith("mp4"))
+    if(resources.source().endsWith("mp4"))
     { imageView.setVisibility(View.VISIBLE);
 
-      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
-      {Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)),
-        MediaStore.Images.Thumbnails.MINI_KIND);
+      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).source())!=null)
+      {
+        Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).source()),
+        MediaStore.Images.Thumbnails.FULL_SCREEN_KIND);
       imageView.setImageBitmap(thumbnail);
         background.setVisibility(View.VISIBLE);
         imageBtn.setVisibility(View.VISIBLE);
@@ -80,11 +83,11 @@ public class StationAdapter extends PagerAdapter{
     else{imageView.setImageResource(R.drawable.i);
       fileAvailable=false;}}
 
-    else if (resources.endsWith("jpg")) {
+    else if (resources.source().endsWith("jpg")) {
       imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
-      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position))!=null)
-      {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)))) );   //Out of Memory Error
+      if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).source())!=null)
+      {imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).source()))) );   //Out of Memory Error
         background.setVisibility(View.GONE);
       }
       else{imageView.setImageResource(R.drawable.i);

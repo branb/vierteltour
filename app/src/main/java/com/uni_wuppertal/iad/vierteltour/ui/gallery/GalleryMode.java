@@ -30,6 +30,7 @@ import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
 import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
+import com.uni_wuppertal.iad.vierteltour.utility.xml.Resource;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +40,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class GalleryMode extends Activity {
+  boolean containsVideo=false;
   ViewPager imagePagerGallery;
   ViertelTourMediaPlayer player;
   Singletonint singlepage;
@@ -56,9 +58,9 @@ public class GalleryMode extends Activity {
   int isimages=-1;
   Bundle gallerybundle;
   Intent galleryIntent;
-  ArrayList<String> res;
+  ArrayList<Resource> res;
   int size;
-  String video, station, path;
+  String station, path;
 
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
@@ -84,7 +86,7 @@ public class GalleryMode extends Activity {
   public void onBackPressed() {
 
 
-    if( !video.isEmpty() ){
+    if( res.get(singlepage.INSTANCE.position()).getSource().contains(".mp4") ){
       mAdapter2.videoView(singlepage.INSTANCE.position()).pause();
       mAdapter2.showImage(imagePagerGallery.getCurrentItem());
       startvideo = false;
@@ -105,11 +107,18 @@ public class GalleryMode extends Activity {
    */
     public void initAll()
 {
-  res = new ArrayList<String>();
+  res = new ArrayList<Resource>();
   galleryIntent = getIntent();
   gallerybundle = galleryIntent.getExtras();
-  res = (ArrayList<String>) gallerybundle.get("resources");
-  video = (String) gallerybundle.get("video");
+  res = gallerybundle.getParcelableArrayList("resources");
+
+  for(int i=0;i<res.size();i++)
+    System.out.println(res.get(i).getSource());
+
+  for(int i=0;i<res.size();i++)
+  {if(res.get(i).getSource().contains(".mp4"))
+  {containsVideo=true;}}
+
   station = (String) gallerybundle.get("station");
   path = (String) gallerybundle.get("pfad");
   size =  (Integer) gallerybundle.get("size");
@@ -126,6 +135,7 @@ public class GalleryMode extends Activity {
 
   play_buttonGallery_bar = (ImageButton) findViewById( R.id.play_buttonGallery_bar );
   imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
+  imagePagerGallery.setOffscreenPageLimit(3);
   gallerytitle = (TextView) findViewById( R.id.titleGallery );
   gallerytitletop = (TextView) findViewById(R.id.titleGalleryTop_bar);
   durationGallery = (TextView) findViewById( R.id.durationGallery );
@@ -137,7 +147,6 @@ public class GalleryMode extends Activity {
   mAdapter2 = new GalleryPagerAdapter(this, res);
   imagePagerGallery.setAdapter( mAdapter2 );
   imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
-  imagePagerGallery.setOffscreenPageLimit(2);
   player = ViertelTourMediaPlayer.getInstance( this );
   images();
 }
@@ -165,7 +174,7 @@ public class GalleryMode extends Activity {
       relGalleryTop.setVisibility(View.GONE);
       x_button.setVisibility(View.VISIBLE);
       gallerytitle.setVisibility(View.VISIBLE);
-      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4"))showGalleryVideoBar();
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))showGalleryVideoBar();
 
       ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
       params.height = calculateDP(300);
@@ -176,13 +185,13 @@ public class GalleryMode extends Activity {
   * Layout Setup
  */
   public void gallerymode(){
-    gallerytitle.setText( station );
+    setTitleText(0);
     setUiPageViewController();
 
     if ( getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE) {   //do in Landscape mode
       x_button.setVisibility(View.GONE);                                //Hide Layout except Image/Video
       gallerytitle.setVisibility(View.GONE);
-      gallerytitletop.setText(station);
+
       hideGalleryVideoBar();
       ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();      //Resize Viewpager of Image/Video
       params.height = ViewPager.LayoutParams.MATCH_PARENT;
@@ -192,14 +201,14 @@ public class GalleryMode extends Activity {
       relGalleryTop.setVisibility(View.GONE);
       x_button.setVisibility(View.VISIBLE);
       gallerytitle.setVisibility(View.VISIBLE);
-      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")){showGalleryVideoBar();}
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4")){showGalleryVideoBar();}
 
       ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();//Resize Viewpager of Image/Video
       params.height = calculateDP(300);
       imagePagerGallery.setLayoutParams(params);
     }
 
-    if(res.get(singlepage.INSTANCE.position()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
+    if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
     {showGalleryVideoBar();}
     else
     {hideGalleryVideoBar();}
@@ -218,7 +227,7 @@ public class GalleryMode extends Activity {
       }
     });
 
-    if(!video.isEmpty())video();
+    if(res.get(singlepage.INSTANCE.position()).getSource().contains(".mp4"))video();
 
     //White Color for Seekbar and Thumb
     seekbarGallery.getProgressDrawable().setColorFilter(
@@ -261,10 +270,6 @@ public class GalleryMode extends Activity {
    * Used if viewpager contains video
    */
   public void video(){
-   // if(res.get(singlepage.INSTANCE.position()).endsWith("mp4")) player.setVideoview(mAdapter2.videoView(singlepage.INSTANCE.position()));
-
-
-
     seekbarGallery.setOnSeekBarChangeListener( customSeekBarListenerVideo );
     seekbarGallery_bar.setOnSeekBarChangeListener( customSeekBarListenerVideo );
 
@@ -455,7 +460,7 @@ public class GalleryMode extends Activity {
     return (int) (fpixels + 0.5f);}
 
   public void images(){
-    if( res.size() > 1 || !video.isEmpty() ){
+    if( res.size() > 1 ){
       isimages=0;
       imagePagerGallery.setOnPageChangeListener(pagechangelisten2);
     }
@@ -508,7 +513,7 @@ public class GalleryMode extends Activity {
       isimages=singlepage.INSTANCE.position();
       imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
 
-      if(res.get(singlepage.INSTANCE.position()).endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE && res.get(position)!=null)
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE && res.get(position)!=null)
       { mAdapter2.videoView(singlepage.INSTANCE.position()).setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position));
         showGalleryVideoBar();}
       else
@@ -517,6 +522,7 @@ public class GalleryMode extends Activity {
 
       setVideoTime(singlepage.INSTANCE.videotime());
 
+      setTitleText(position);
     }
 
     @Override
@@ -531,5 +537,13 @@ public class GalleryMode extends Activity {
     durationGallery_bar.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) time ), TimeUnit.MILLISECONDS.toSeconds( (long) time ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) time ) ) ) );
     seekbarGallery.setProgress(time);
     seekbarGallery_bar.setProgress(time);}
+
+  public void setTitleText(int position)
+  {if(!res.get(position).title().isEmpty())
+  {gallerytitle.setText( res.get(position).title() );
+    gallerytitletop.setText(res.get(position).title());}
+  else
+  {gallerytitle.setText( station );
+    gallerytitletop.setText(station);}}
 
 }
