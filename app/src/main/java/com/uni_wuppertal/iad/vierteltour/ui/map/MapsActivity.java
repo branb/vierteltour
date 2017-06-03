@@ -393,6 +393,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
 
             boolean test = false;
+            int i=0;
             for (Tour tour : tourlist.city(visibleCity).tours()) {
 
               if (PolyUtil.isLocationOnPath(clickCoords, tour.route().latLngs(), false, 10)) {
@@ -400,10 +401,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (singlepage.INSTANCE.selectedTour() != tour) {
                   selectTour(tour);
                   suplInfo("showall");
+                  lv.expandGroup(i);
+                  lv.smoothScrollToPosition(i);
                   drawRoutes();
                   break;
                 }
               }
+              i++;
             }
             if (singlepage.INSTANCE.selectedTour() != null && !test) {
               resetTour();
@@ -1105,9 +1109,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   public void selectTour(Tour tour) {
     singlepage.INSTANCE.selectedTour(tour);
     //adapter.notifyDataSetChanged();
-
     unfadeTour(tour);
-
+    System.out.println("SELECT TOUR");
     for (Station station : tour.stations()) {
       markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour, "", false)));
     }

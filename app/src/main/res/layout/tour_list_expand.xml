@@ -38,6 +38,4 @@
     android:visibility="invisible"
     android:background="@color/transparent"
     android:onClick="swapToViewPager"/>
-
- 
 </RelativeLayout>
