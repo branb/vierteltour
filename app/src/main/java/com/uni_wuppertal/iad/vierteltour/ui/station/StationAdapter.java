@@ -2,7 +2,6 @@ package com.uni_wuppertal.iad.vierteltour.ui.station;
 
 import android.content.Context;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -17,17 +16,14 @@ import android.widget.RelativeLayout;
 
 import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
-import com.uni_wuppertal.iad.vierteltour.ui.gallery.GalleryMode;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
-import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
+import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Resource;
-import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Adapter for ViewPager in StationActivity

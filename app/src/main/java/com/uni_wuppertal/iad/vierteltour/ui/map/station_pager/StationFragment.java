@@ -1,18 +1,14 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map.station_pager;
 
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,10 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pixplicity.sharp.Sharp;
-import com.pixplicity.sharp.SharpDrawable;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
-import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
+import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 

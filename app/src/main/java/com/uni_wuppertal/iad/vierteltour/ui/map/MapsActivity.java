@@ -3,6 +3,7 @@ package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -11,24 +12,19 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.StatFs;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -40,7 +36,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -88,7 +83,7 @@ import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.ShadowTransformer;
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.about.About;
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.einstellungen.Einstellungen;
 import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
-import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
+import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 
 import com.uni_wuppertal.iad.vierteltour.ui.map.station_pager.FragmentAdapter;
@@ -98,7 +93,6 @@ import com.uni_wuppertal.iad.vierteltour.ui.drawer.DrawerAdapter;
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.DrawerItem;
 import com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView;
 import com.uni_wuppertal.iad.vierteltour.utility.updater.Updater;
-import com.uni_wuppertal.iad.vierteltour.utility.updater.UpdateListener;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 import com.uni_wuppertal.iad.vierteltour.utility.font.ReplaceFont;
 import com.uni_wuppertal.iad.vierteltour.utility.tourlist.TourList;
@@ -110,12 +104,12 @@ import com.uni_wuppertal.iad.vierteltour.utility.xml.Tour;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.location.GpsStatus.GPS_EVENT_STOPPED;
 
 /**
@@ -154,6 +148,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   public static TourAdapter adapter;
   private List<View> tourlistview;
   private List<DrawerItem> drawerItems;
+  private boolean reset=false;
   private LatLng wuppertal;
   private ImageButton xbtn, zumstart, homebtn, leftbtn, x_supl, arrowbtn, tarbtn;
   private ImageButton gpsbtn;
@@ -1783,10 +1778,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             startActivity(i);
             overridePendingTransition(0, 0);}
         else if(position == 3)
-          {Updater.get(getBaseContext()).updatesOnTourdata();
+          {
+            Updater.get(getBaseContext()).updatesOnTourdata();
             if(singlepage.INSTANCE.versionUpdate())
-          {createDialog("Nach Updates Suchen", "Die Touren wurden aktualisiert.");
-            singlepage.INSTANCE.versionUpdate(false);}
+          { reset=true;
+            createDialog("Nach Updates Suchen", "Die Touren wurden aktualisiert.");
+            singlepage.INSTANCE.versionUpdate(false);
+          }
           else{createDialog("Nach Updates Suchen", "Die Touren sind bereits aktuell.");}}
         //TMP INSERT START
           //i==4 equals "Touren freischalten". Function only for testing
@@ -2012,8 +2010,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       swapToSupl();}        //Gehe von Stationenauswahl zurück zur Tourenauswahl
 
     else if(supl != null && supl.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null){}    //Mache nichts wenn er gerade von einem in den anderen Zustand geht
-    else if( getFragmentManager().getBackStackEntryCount() == 0 ){super.onBackPressed();
-    }
+    else if( getFragmentManager().getBackStackEntryCount() == 0 ){super.onBackPressed();}
   }
 
   @Override
@@ -2173,8 +2170,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     txt.setText(text);
     TextView titleDialog = (TextView) dialog.findViewById(R.id.title_dialog);
     titleDialog.setText(title);
+    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+      @Override
+      public void onDismiss(DialogInterface dialogInterface) {
+        System.out.println("DISMISS");
+        if(reset){resetMainActivity();System.out.println("DISMISS2");}
+      }
+    });
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     dialog.show();
+
 
     ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
     Sharp.loadResource(getResources(), R.raw.schliessen).into(okayButton);
@@ -2184,4 +2189,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       public void onClick(View v) {dialog.dismiss();}});
 
   }
+
+  public void resetMainActivity()
+  {Intent back = new Intent(getApplicationContext(), MapsActivity.class);
+    singlepage.INSTANCE.resetAll();
+    back.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+    startActivity(back);
+    overridePendingTransition(0, 0);}
 }

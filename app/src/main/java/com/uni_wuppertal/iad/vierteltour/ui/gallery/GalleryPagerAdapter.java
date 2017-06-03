@@ -21,7 +21,7 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
-import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
+import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Resource;
 

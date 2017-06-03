@@ -1,41 +1,32 @@
 package com.uni_wuppertal.iad.vierteltour.utility.updater;
 
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.os.StatFs;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import com.pixplicity.sharp.Sharp;
 import com.thin.downloadmanager.DefaultRetryPolicy;
 import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListenerV1;
 import com.thin.downloadmanager.ThinDownloadManager;
 
-import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
-import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
+import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Region;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Area;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.City;
@@ -46,7 +37,6 @@ import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.progress.ProgressMonitor;
 
 import java.io.BufferedReader;
 import java.io.File;

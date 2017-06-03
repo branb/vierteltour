@@ -1,4 +1,4 @@
-package com.uni_wuppertal.iad.vierteltour.utility;
+package com.uni_wuppertal.iad.vierteltour.utility.storage;
 
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Tour;
@@ -65,4 +65,15 @@ public enum Singletonint {
 
     public ArrayList<Integer> countWaypoints() {return countWaypoints;}
 
+    public void resetAll(){
+      versionUpdate = false;
+      id=-1;
+      selectedTour=null;
+      selectedStation=null;
+      selectedOldStation=null;
+      onfragmentclicked=-1;
+      videotime=0;
+      isAudio=false;
+      position=0;
+    }
   }

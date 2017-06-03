@@ -2,10 +2,7 @@ package com.uni_wuppertal.iad.vierteltour.ui.splash;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -13,24 +10,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.google.android.gms.vision.text.Text;
 import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
-import com.uni_wuppertal.iad.vierteltour.utility.font.ReplaceFont;
+import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.updater.UpdateListener;
 import com.uni_wuppertal.iad.vierteltour.utility.updater.Updater;
-
-import static com.google.android.gms.wearable.DataMap.TAG;
 
 //Vorerst nicht benötigt, ist für Splashscreen zuständig, eigentlich in AndroidManifest als Launcher ausgewählt
 //Aktuell nicht verwendet
@@ -39,6 +30,7 @@ public class Splash extends Activity implements UpdateListener {
   Intent myintent;
   VideoView vid;
   Boolean stop=false;
+  Singletonint singlepage;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +110,7 @@ public class Splash extends Activity implements UpdateListener {
 
   @Override
   public void tourdataDownloaded(){
-
+    singlepage.INSTANCE.versionUpdate(false);
   }
 
   public void createDialog(String text)

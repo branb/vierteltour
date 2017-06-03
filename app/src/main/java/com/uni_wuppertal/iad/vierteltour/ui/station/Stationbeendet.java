@@ -10,9 +10,7 @@ import android.widget.TextView;
 import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
-import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
-import com.uni_wuppertal.iad.vierteltour.utility.xml.Tour;
-import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
+import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 

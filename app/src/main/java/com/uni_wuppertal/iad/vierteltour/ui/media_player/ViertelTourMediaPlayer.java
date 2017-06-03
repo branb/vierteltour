@@ -3,10 +3,9 @@ package com.uni_wuppertal.iad.vierteltour.ui.media_player;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.util.Log;
-import android.widget.VideoView;
 
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
-import com.uni_wuppertal.iad.vierteltour.utility.Singletonint;
+import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 
 import java.io.FileInputStream;
 import java.io.IOException;
