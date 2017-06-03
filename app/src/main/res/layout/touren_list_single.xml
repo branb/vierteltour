@@ -4,6 +4,15 @@
     android:id="@+id/listelement_base"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
+
+  <View
+    android:id="@+id/maindivider"
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+    android:layout_gravity="bottom"
+    android:background="@android:color/darker_gray"
+    android:layout_alignParentTop="true" />
+
   <ImageView
     android:id="@+id/img"
     android:layout_width="50dp"

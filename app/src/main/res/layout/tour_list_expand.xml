@@ -5,6 +5,15 @@
   android:layout_height="wrap_content"
   android:layout_below="@+id/listelement_base">
 
+  <View
+    android:id="@+id/divider"
+    android:layout_width="fill_parent"
+    android:layout_height="1.5dp"
+    android:background="#20000000"
+    android:layout_alignParentTop="true"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"/>
+
   <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -29,4 +38,6 @@
     android:visibility="invisible"
     android:background="@color/transparent"
     android:onClick="swapToViewPager"/>
+
+ 
 </RelativeLayout>

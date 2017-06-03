@@ -11,6 +11,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
@@ -1103,6 +1105,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   public void selectTour(Tour tour) {
     singlepage.INSTANCE.selectedTour(tour);
     //adapter.notifyDataSetChanged();
+
     unfadeTour(tour);
 
     for (Station station : tour.stations()) {
@@ -1413,6 +1416,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    */
   public void initSupl(){
     supl.setPanelSlideListener(onSlideListener());
+
     lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
       @Override
       public void onGroupExpand(int groupPosition) {
