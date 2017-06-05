@@ -963,16 +963,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   public void startGallery() {
     Intent gallery = new Intent(getApplicationContext(), GalleryMode.class);
 
-    ArrayList<Resource> tmpList = new ArrayList<Resource>();
     for(int i=0;i<stationImagePaths.size();i++)
-    tmpList.add(i, stationImagePaths.get(i));
+    stationImagePaths.get(i).setSource(stationImagePaths.get(i).source());
 
-    for(int i=0;i<tmpList.size();i++)
-    {
-      System.out.println(tmpList.get(i).getSource());
-      tmpList.get(i).setSource(stationImagePaths.get(i).source());
-      System.out.println(tmpList.get(i).getSource());}
-    gallery.putParcelableArrayListExtra("resources", tmpList);
+    gallery.putParcelableArrayListExtra("resources", stationImagePaths);
 
     gallery.putExtra("station", singlepage.INSTANCE.selectedStation().name());
     gallery.putExtra("pfad", path);
