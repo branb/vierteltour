@@ -66,6 +66,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
     imageView = (SubsamplingScaleImageView) itemView.findViewById( R.id.img_pager_item_gallery );
     imageView.setTag("image" + position);
+    imageView.setParallelLoadingEnabled(true);
     //imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button_gallery );
     //imageBtn.setTag("button" + position);
     videoView = (VideoView) itemView.findViewById( R.id.vid_pager_item_gallery );
@@ -188,4 +189,9 @@ public class GalleryPagerAdapter extends PagerAdapter {
   public SubsamplingScaleImageView getImageView()
   {return imageView;}
 
+  public void unzoomImageView(int position)
+  {SubsamplingScaleImageView i = (SubsamplingScaleImageView) ownContainer.findViewWithTag("image"+position);
+    i.recycle();
+    if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource())!=null)
+    {i.setImage(ImageSource.uri( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()))) ));}}
 }

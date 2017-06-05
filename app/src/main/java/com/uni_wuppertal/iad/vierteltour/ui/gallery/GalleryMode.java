@@ -152,12 +152,12 @@ public class GalleryMode extends Activity {
   @Override
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
-
     // Checks the orientation of the screen
     if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       x_button.setVisibility(View.GONE);
       gallerytitle.setVisibility(View.GONE);
       gallerytitletop.setText(station);
+      pager_indicator.setVisibility(View.GONE);
       hideGalleryVideoBar();
       ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
       params.height = ViewPager.LayoutParams.MATCH_PARENT;
@@ -168,11 +168,14 @@ public class GalleryMode extends Activity {
       relGalleryTop.setVisibility(View.GONE);
       x_button.setVisibility(View.VISIBLE);
       gallerytitle.setVisibility(View.VISIBLE);
+      pager_indicator.setVisibility(View.VISIBLE);
+
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))showGalleryVideoBar();
 
       ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
       params.height = calculateDP(300);
       imagePagerGallery.setLayoutParams(params);
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("jpg")){mAdapter2.unzoomImageView(singlepage.INSTANCE.position());}
     }
   }
 /**
