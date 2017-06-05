@@ -406,19 +406,61 @@
 
                       </RelativeLayout>
 
+                      <RelativeLayout
+                        android:id="@+id/text_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_below="@+id/listitem_base"
+                        android:layout_marginBottom="10dp">
+                      <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+                        android:id="@+id/stopover"
+                        android:layout_alignParentTop="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hören Sie diesen Text während Sie von hier aus zur nächsten Station gehen."
+                        android:textStyle="bold"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginBottom="15dp"
+                        android:lineSpacingExtra="3dp"
+                        android:textColor="@color/black"
+                        android:visibility="gone"/>
+
                       <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
                         android:id="@+id/stationenbeschreibung"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:autoLink="web"
                         android:text="Hier kommt die Stationenbeschreibung hin!"
-                        android:layout_below="@+id/listitem_base"
+                        android:layout_below="@+id/stopover"
                         android:textColor="@color/black"
                         android:lineSpacingExtra="3dp"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="30dp"
-                        android:layout_marginTop="10dp"
                         />
+
+                      <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+                        android:id="@+id/note_headline"
+                        android:layout_below="@+id/stationenbeschreibung"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Anmerkung zum Audiofile:"
+                        android:textStyle="bold"
+                        android:lineSpacingExtra="3dp"
+                        android:layout_marginTop="15dp"
+                        android:textColor="@color/black"
+                        android:visibility="gone"/>
+
+                      <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+                        android:id="@+id/note"
+                        android:layout_below="@+id/note_headline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:lineSpacingExtra="3dp"
+                        android:textColor="@color/black"
+                        android:visibility="gone"/>
+                      </RelativeLayout>
 
 
                       <RelativeLayout
@@ -429,8 +471,8 @@
                         android:background="@color/black"
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="15dp"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="30dp">
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp">
                         <android.support.v4.view.ViewPager
                           android:layout_width="match_parent"
                           android:layout_height="225dp"
@@ -441,7 +483,7 @@
                       <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/stationenbeschreibung"
+                        android:layout_below="@+id/text_layout"
                         android:id="@+id/media_panel"
                         android:layout_marginTop="15dp"
                         android:background="@color/transparent">
@@ -503,7 +545,7 @@
                       <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@+id/stationenbeschreibung"
+                        android:layout_below="@+id/text_layout"
                         android:background="@drawable/roundred"
                         android:layout_alignParentBottom="true"
                         android:visibility="visible"

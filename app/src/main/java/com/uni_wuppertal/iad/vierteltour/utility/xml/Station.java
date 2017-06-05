@@ -25,7 +25,7 @@ public class Station extends TourListData {
   private int number;
 
   @Element
-  private String description;
+  private Description description;
 
   @ElementList( required = false )
   private ArrayList<Resource> resources;
@@ -48,10 +48,18 @@ public class Station extends TourListData {
   }
 
 
-  public String description(){
-    if(description!=null)return description;
-    else return "";
+  public Description description(){
+    return description;
   }
+
+  public String descText()
+  {return description.text();}
+
+  public String note()
+  {return description.note();}
+
+  public String stopover()
+  {return description.stopover();}
 
   public String audio(){
     return home() + audio;

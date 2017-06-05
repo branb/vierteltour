@@ -27,6 +27,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Visibility;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -642,7 +643,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     info2 = (CustomFontTextView) findViewById(R.id.routeninfo2);
     info2.setText(time + "/" + length);
     description = (TextView) findViewById(R.id.stationenbeschreibung);
-    description.setText(singlepage.INSTANCE.selectedStation().description());
+    description.setText(singlepage.INSTANCE.selectedStation().descText());
+    TextView stopover = (TextView) findViewById(R.id.stopover);
+    if(!singlepage.INSTANCE.selectedStation().stopover().isEmpty())
+    {stopover.setText(singlepage.INSTANCE.selectedStation().stopover());
+    stopover.setVisibility(View.VISIBLE);}
+    else{stopover.setVisibility(View.GONE);}
+    TextView note_headline = (TextView) findViewById(R.id.note_headline);
+    TextView note = (TextView) findViewById(R.id.note);
+    if(!singlepage.INSTANCE.selectedStation().note().isEmpty())
+    {
+      note_headline.setVisibility(View.VISIBLE);
+      note.setVisibility(View.VISIBLE);
+      note.setText(singlepage.INSTANCE.selectedStation().note());
+    }
+    else{
+      note_headline.setVisibility(View.GONE);
+      note.setVisibility(View.GONE);}
+
     singlepage.INSTANCE.position(0);
 
     seekbar = (SeekBar) findViewById(R.id.seek_bar);
@@ -945,9 +963,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   public void startGallery() {
     Intent gallery = new Intent(getApplicationContext(), GalleryMode.class);
 
-    gallery.putParcelableArrayListExtra("resources", stationImagePaths);
+    ArrayList<Resource> tmpList = new ArrayList<Resource>();
     for(int i=0;i<stationImagePaths.size();i++)
-    stationImagePaths.get(i).setSource(stationImagePaths.get(i).source());
+    tmpList.add(i, stationImagePaths.get(i));
+
+    for(int i=0;i<tmpList.size();i++)
+    {
+      System.out.println(tmpList.get(i).getSource());
+      tmpList.get(i).setSource(stationImagePaths.get(i).source());
+      System.out.println(tmpList.get(i).getSource());}
+    gallery.putParcelableArrayListExtra("resources", tmpList);
+
     gallery.putExtra("station", singlepage.INSTANCE.selectedStation().name());
     gallery.putExtra("pfad", path);
     gallery.putExtra("size", size);
@@ -1105,7 +1131,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     singlepage.INSTANCE.selectedTour(tour);
     //adapter.notifyDataSetChanged();
     unfadeTour(tour);
-    System.out.println("SELECT TOUR");
     for (Station station : tour.stations()) {
       markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(tour, "", false)));
     }
@@ -2173,8 +2198,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
       @Override
       public void onDismiss(DialogInterface dialogInterface) {
-        System.out.println("DISMISS");
-        if(reset){resetMainActivity();System.out.println("DISMISS2");}
+        if(reset){resetMainActivity();}
       }
     });
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

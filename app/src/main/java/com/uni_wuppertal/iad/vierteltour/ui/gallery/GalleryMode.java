@@ -180,6 +180,7 @@ public class GalleryMode extends Activity {
  */
   public void gallerymode(){
     setTitleText(0);
+    gallerytitletop.setText(station);
     setUiPageViewController();
 
     if ( getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE) {   //do in Landscape mode
@@ -535,9 +536,11 @@ public class GalleryMode extends Activity {
   public void setTitleText(int position)
   {if(!res.get(position).title().isEmpty())
   {gallerytitle.setText( res.get(position).title() );
-    gallerytitletop.setText(res.get(position).title());}
+   // gallerytitletop.setText(res.get(position).title());
+  }
   else
   {gallerytitle.setText( station );
-    gallerytitletop.setText(station);}}
+  //  gallerytitletop.setText(station);
+  }}
 
 }

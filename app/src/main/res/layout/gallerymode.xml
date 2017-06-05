@@ -33,6 +33,7 @@
   </RelativeLayout>
 
   <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+    android:layout_marginTop="5dp"
     android:id="@+id/titleGallery"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -42,13 +43,13 @@
     android:layout_marginLeft="15dp" />
 
   <LinearLayout
-    android:layout_marginTop="20dp"
+    android:layout_marginBottom="50dp"
     android:id="@+id/viewPagerCountDots"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:color="#ffffff"
-    android:layout_below="@+id/ImagePagerGallery"
+    android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
     android:gravity="center"/>
 

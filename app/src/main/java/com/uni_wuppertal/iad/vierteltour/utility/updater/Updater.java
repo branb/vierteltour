@@ -489,14 +489,14 @@ public class Updater extends ContextWrapper{
       .setDestinationURI( destinationUri ).setPriority( DownloadRequest.Priority.LOW )
     .setStatusListener( new DownloadStatusListenerV1() {
         boolean checkSize=true;
+        boolean noSpace=false;
         String successMessage = "Download completed!";
         String errorMessage = "Download FAILED!\n" + "Message:\n";
 
         @Override
         public void onDownloadComplete( DownloadRequest request ) {
           Log.d( DEBUG_TAG, successMessage  + request.getDestinationURI().toString() );
-          progressDialog.setText(selectedTour.name()+"... 100%");
-          progressDialog.setTextTitle("Entpacken der Tour");
+
           SharedPreferences getPrefs = PreferenceManager
             .getDefaultSharedPreferences( getBaseContext() );
 
@@ -521,7 +521,8 @@ public class Updater extends ContextWrapper{
           //Beende Fortschrittsdialog und gebe Fehlermeldung aus
           progressDialog.dismiss();
           if(returnCode==1004)Toast.makeText(con, "Beim Herunterladen der Tourdaten ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Ihr Gerät Zugang zum Internet hat.", Toast.LENGTH_LONG).show();
-          else if(returnCode==1008)Toast.makeText(con, "Nicht genügend Speicherplatz auf dem Gerät vorhanden.", Toast.LENGTH_LONG).show();
+          else if(returnCode==1008 && noSpace)Toast.makeText(con, "Nicht genügend Speicherplatz auf dem Gerät vorhanden.", Toast.LENGTH_LONG).show();
+          else {Toast.makeText(con, "Download abgebrochen.", Toast.LENGTH_LONG).show();}
           checkingForUpdates = false;
         }
 
@@ -530,12 +531,16 @@ public class Updater extends ContextWrapper{
           //Aktualisiere Fortschrittsdialog
               if(checkSize && totalBytes>bytesAvailable(Environment.getExternalStorageDirectory())){
                 checkSize=false;
+                noSpace=true;
                 request.cancel();
               }
               else if(checkSize){checkSize=false;}
               progressDialog.getProgressBar().setMax((int)totalBytes);
               progressDialog.getProgressBar().setProgress((int)(downloadedBytes));
-              progressDialog.setText(selectedTour.name()+"... "+(downloadedBytes*100/totalBytes)+"%");
+              if((downloadedBytes*100/totalBytes)<99){progressDialog.setText(selectedTour.name()+"... "+(downloadedBytes*100/totalBytes)+"%");}
+              else{progressDialog.setText(selectedTour.name()+"... 100%");
+                progressDialog.setTextTitle("Entpacken der Tour");}
+
        }
       });
       createProgressDialog(context, tour.name()+"... 0%");
