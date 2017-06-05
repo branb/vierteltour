@@ -71,6 +71,7 @@ public class Stationbeendet extends Activity {
       @Override
       public void onClick( View v ){
         setResult(RESULT_NEXT);
+        System.out.println("onBackPressed");
         onBackPressed();
 
       }

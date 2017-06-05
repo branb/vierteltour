@@ -10,7 +10,7 @@
     android:id="@+id/maindivider"
     android:layout_width="fill_parent"
     android:layout_height="1dp"
-    android:layout_gravity="bottom"
+    android:layout_gravity="top"
     android:background="@color/grey"
     android:layout_alignParentTop="true" />
 
@@ -28,23 +28,25 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="geladen"
-    android:layout_alignParentBottom="true"
+    android:paddingRight="3dp"
     android:textColor="@color/black"
     android:visibility="gone"
-    android:paddingRight="3dp"
-    android:paddingBottom="11dp"
-    android:layout_toLeftOf="@+id/geladen"/>
+    android:paddingBottom="6dp"
+    android:layout_alignParentBottom="true"
+    android:layout_toLeftOf="@+id/geladen" />
 
   <ImageView
     android:id="@+id/geladen"
-    android:layout_width="30dp"
-    android:layout_height="wrap_content"
-    android:layout_alignParentRight="true"
-    android:layout_alignParentBottom="true"
-    android:paddingRight="15dp"
+    android:layout_width="wrap_content"
+    android:layout_height="26dp"
     android:scaleType="fitCenter"
-    android:paddingBottom="11dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:paddingTop="3dp"
+    android:paddingBottom="9dp"
+    android:layout_marginRight="20dp"
     />
+
 
     <ImageView
       android:id="@+id/laden"
