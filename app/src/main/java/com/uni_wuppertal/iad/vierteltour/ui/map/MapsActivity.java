@@ -1225,7 +1225,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 e.apply();
                 fragmentAdapter.notifyDataSetChanged();
 
-                gpsbtn_layout.setVisibility(View.GONE);
+                if((station.number()-1)==mPager.getCurrentItem())
+                {
+                  System.out.println((station.number()-1)+ "  "+mPager.getCurrentItem());
+                  gpsbtn_layout.setVisibility(View.GONE);}
               }
             }
           }
