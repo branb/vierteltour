@@ -13,6 +13,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -173,9 +174,11 @@ public class TourAdapter extends BaseExpandableListAdapter {
   public void createDownloadDialog(String txt, Tour tour, int position)
   {// Create custom dialog object
     final Dialog dialog = new Dialog(context);
+    dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     // Include dialog.xml file
     dialog.setContentView(R.layout.alert_dialog);
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
     dialog.show();
     // set values for custom dialog components - text, image and button
     DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();

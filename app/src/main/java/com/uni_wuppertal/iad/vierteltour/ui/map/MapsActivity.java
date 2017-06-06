@@ -406,7 +406,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
               i++;
             }
             if (singlepage.INSTANCE.selectedTour() != null && !test) {
-              resetTour();
+              lv.collapseGroup(singlepage.INSTANCE.selectedTour().trkid()-1);
+              lv.smoothScrollToPosition(0);
             }
 
           }
@@ -1109,6 +1110,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         fadeTour(t);
       }
     }
+    if(supl.getPanelState()== SlidingUpPanelLayout.PanelState.COLLAPSED)
+    {suplInfo("showall");}
   }
 
 
@@ -1117,6 +1120,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    */
   public void resetTour() {
     singlepage.INSTANCE.selectedTour(null);
+
     for (Tour tour : tourlist.city(visibleCity).tours()) {
       unfadeTour(tour);
     }
@@ -1421,6 +1425,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         adapter.notifyDataSetChanged();
 
         drawRoutes();
+      }
+    });
+
+    lv.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+      @Override
+      public void onGroupCollapse(int groupPosition) {
+        resetTour();
       }
     });
 

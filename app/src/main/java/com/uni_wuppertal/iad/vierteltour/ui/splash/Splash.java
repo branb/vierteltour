@@ -126,6 +126,7 @@ public class Splash extends Activity implements UpdateListener {
     title.setTypeface(Typeface.SERIF);
     //title.setTextColor(Color.BLACK);
     TextView txt = (TextView) dialog.findViewById(R.id.text_dialog);
+    txt.setTextColor(getResources().getColor(R.color.black));
     txt.setText(text);
     txt.setTypeface(Typeface.SERIF);
     //txt.setTextColor(Color.BLACK);

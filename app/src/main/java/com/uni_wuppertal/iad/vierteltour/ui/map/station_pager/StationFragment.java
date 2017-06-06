@@ -78,9 +78,9 @@ public class StationFragment extends Fragment{
     RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.302),(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().heightPixels*0.149));
     lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
     lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-    lp.topMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.025);
-    lp.leftMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.025);
-    lp.rightMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.025);
+    lp.topMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.026);
+    lp.leftMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.030);
+    lp.rightMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.030);
     image_layout.setLayoutParams(lp);
     image.setLayoutParams(lp);
 

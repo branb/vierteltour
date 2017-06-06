@@ -71,7 +71,7 @@ public class GalleryMode extends Activity {
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     System.out.println(requestCode);
     System.out.println(resultCode);
-   if(requestCode == 3)
+   if(requestCode == 3 || requestCode==1)
     {int RESULT_NEXT=10;
       if(resultCode == RESULT_OK){imagePagerGallery.setCurrentItem(0);}
       else if(resultCode == RESULT_NEXT){
@@ -307,32 +307,6 @@ public class GalleryMode extends Activity {
           pauseVideoplay();}
         else {startVideoplay();}}
     });
-
-    //After Video is finished, use this method
- /*   player.getVideoview().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-      @Override
-      public void onCompletion(MediaPlayer mediaPlayer) {
-        stopVideoplay();
-        System.out.println("Video Finished");
-        if(!singlepage.INSTANCE.isAudio()){
-          Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
-          if(size.equals(number)){background.putExtra("vergleich", 1);}
-          else {background.putExtra("vergleich", 0);}
-          background.putExtra("pfad", path);
-          startActivity(background); }
-          //duration.setText("0:00");
-         // seekbar.setProgress(0);
-
-        if(){Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
-
-          background.putExtra("vergleich", 0);
-          background.putExtra("pfad", path);
-          startActivity(background);
-         }
-      }});*/
-   // startVideoplay();
-
-
   }
 
   /**

@@ -1,6 +1,8 @@
 package com.uni_wuppertal.iad.vierteltour.ui.drawer.about;
   import android.graphics.Paint;
   import android.graphics.Typeface;
+  import android.os.Parcelable;
+  import android.text.ParcelableSpan;
   import android.text.TextPaint;
   import android.text.style.TypefaceSpan;
 

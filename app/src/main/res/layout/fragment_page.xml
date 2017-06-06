@@ -26,14 +26,15 @@
       <RelativeLayout
         android:id="@+id/image_layout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:gravity="center_horizontal"
+        android:gravity="top"
         android:layout_centerHorizontal="true">
         <ImageView
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:id="@+id/imagefrag"
+          android:gravity="top"
           />
         <RelativeLayout
           android:visibility="gone"
@@ -59,7 +60,7 @@
             android:text="TITLE"
             android:textColor="@color/black"
             android:layout_below="@+id/image_layout"
-            android:paddingLeft="20dp"
+            android:paddingLeft="12dp"
             android:paddingRight="10dp"
             />
         <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
