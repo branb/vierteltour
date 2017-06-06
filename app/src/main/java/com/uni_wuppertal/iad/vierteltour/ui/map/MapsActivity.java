@@ -876,33 +876,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
       @Override
       public void onCompletion(MediaPlayer player) {
-        player.seekTo(0);
-        startaudio = false;
-        setImageResource(true);
-        if (stationActivityRunning) {
-          Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
-          if (size == number) {
-            background.putExtra("vergleich", 1);
-          } else {
-            background.putExtra("vergleich", 0);
-          }
-          background.putExtra("pfad", path);
-          startActivityForResult(background, BACK_FROM_STATION_FINISHED);
-          overridePendingTransition(0, 0);
-
-          duration.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) player.getDuration()), TimeUnit.MILLISECONDS.toSeconds((long) player.getDuration()) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) player.getDuration()))));
-
-          seekbar.setProgress(0);
-          seekbar_supl.setProgress(0);
-         /* Message message = new Message();
-          message.what = MapsActivity.BIG_BAR;
-          myHandler.sendMessage(message);*/
-        } else {
-          seekbar_supl.setProgress(0);
-          Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);
-          duration_supl.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) player.getDuration()), TimeUnit.MILLISECONDS.toSeconds((long) player.getDuration()) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) player.getDuration()))));
-
-        }
+        audioFinished();
       }
 
     });
@@ -2038,24 +2012,35 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     if (requestCode == BACK_FROM_SETTINGS) {
       // Make sure the request was successful
     if(resultCode == RESULT_CANCELED)
-    {SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    {
+      SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
       SharedPreferences.Editor e = sharedPreferences.edit();
       if(singlepage.INSTANCE.selectedTour()!=null && sharedPreferences.getBoolean(singlepage.INSTANCE.selectedTour().slug(), false))zumstart.setVisibility( View.VISIBLE );
       else{zumstart.setVisibility(View.INVISIBLE);}}
   }
   else if(requestCode == BACK_FROM_GALLERY)
-  {imagePager.setCurrentItem(singlepage.INSTANCE.position());
+  {player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+    @Override
+    public void onCompletion(MediaPlayer player) {
+      audioFinished();
+    }
+
+  });
+    imagePager.setCurrentItem(singlepage.INSTANCE.position());
     for (int i = 0; i < dotsCount; i++) {
     if(i==singlepage.INSTANCE.position())
     dots[i].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
   else
       dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));}
-  if(resultCode==STATION_BEENDET_GALLERY)
-  {endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}
+  if(resultCode == STATION_BEENDET_GALLERY)
+  { endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}
   }
 
     else if(requestCode == BACK_FROM_STATION_FINISHED)
-    {int RESULT_NEXT = 10;
+    { int RESULT_NEXT = 10;
+      player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer player) {audioFinished();}});
       if(resultCode == RESULT_OK){imagePager.setCurrentItem(0);}
     else if(resultCode == RESULT_NEXT){endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}}
   }
@@ -2074,6 +2059,35 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   public void onRestart(){
     super.onRestart();
   }
+
+  public void audioFinished()
+  {player.seekTo(0);
+    startaudio = false;
+    setImageResource(true);
+    if (stationActivityRunning) {
+      Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
+      if (size == number) {
+        background.putExtra("vergleich", 1);
+      } else {
+        background.putExtra("vergleich", 0);
+      }
+      background.putExtra("pfad", path);
+      startActivityForResult(background, BACK_FROM_STATION_FINISHED);
+      overridePendingTransition(0, 0);
+
+      duration.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) player.getDuration()), TimeUnit.MILLISECONDS.toSeconds((long) player.getDuration()) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) player.getDuration()))));
+
+      seekbar.setProgress(0);
+      seekbar_supl.setProgress(0);
+         /* Message message = new Message();
+          message.what = MapsActivity.BIG_BAR;
+          myHandler.sendMessage(message);*/
+    } else {
+      seekbar_supl.setProgress(0);
+      Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);
+      duration_supl.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) player.getDuration()), TimeUnit.MILLISECONDS.toSeconds((long) player.getDuration()) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) player.getDuration()))));
+
+    }}
 
 
   /***********************************************************************************************

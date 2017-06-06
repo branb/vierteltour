@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Resource;
@@ -55,6 +57,7 @@ public class GalleryMode extends Activity {
   ArrayList<Resource> res;
   int size;
   String station, path;
+  final int BACK_FROM_STATION_FINISHED=3;
 
   protected void onCreate( Bundle savedInstanceState ){
     super.onCreate( savedInstanceState );
@@ -67,7 +70,8 @@ public class GalleryMode extends Activity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     System.out.println(requestCode);
-   if(requestCode == 1)
+    System.out.println(resultCode);
+   if(requestCode == 3)
     {int RESULT_NEXT=10;
       if(resultCode == RESULT_OK){imagePagerGallery.setCurrentItem(0);}
       else if(resultCode == RESULT_NEXT){
@@ -144,6 +148,21 @@ public class GalleryMode extends Activity {
   imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
   player = ViertelTourMediaPlayer.getInstance( this );
   images();
+
+  player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+      Intent background = new Intent(getApplicationContext(), Stationbeendet.class);
+      if (size == number) {
+        background.putExtra("vergleich", 1);
+      } else {
+        background.putExtra("vergleich", 0);
+      }
+      startActivityForResult(background, BACK_FROM_STATION_FINISHED);
+      overridePendingTransition(0, 0);
+
+    }
+  });
 }
 
   /**

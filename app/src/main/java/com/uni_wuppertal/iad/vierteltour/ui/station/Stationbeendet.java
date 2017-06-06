@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.ui.gallery.GalleryMode;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 
@@ -19,7 +20,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
  */
 public class Stationbeendet extends Activity {
 
-  ImageButton x, /*station_wiederholen,*/ zur_naechsten_station, zur_tourenauswahl;
+  ImageButton x, zur_naechsten_station, zur_tourenauswahl;
   TextView beendet_text;
   Singletonint singlepage;
   Intent getIntent;
@@ -33,8 +34,6 @@ public class Stationbeendet extends Activity {
     //Initialize buttons on layout
     x = (ImageButton) findViewById( R.id.station_x_button );
     Sharp.loadResource(getResources(), R.raw.beenden_hell).into(x);
-    /*station_wiederholen = (ImageButton) findViewById( R.id.station_wiederholen );
-    Sharp.loadResource(getResources(), R.raw.station_wiederholen).into(station_wiederholen);*/
     zur_naechsten_station = (ImageButton) findViewById( R.id.zur_naechsten_station );
     Sharp.loadResource(getResources(), R.raw.zur_naechsten_station).into(zur_naechsten_station);
     zur_tourenauswahl = (ImageButton) findViewById( R.id.zur_tourenauswahl );
@@ -44,7 +43,6 @@ public class Stationbeendet extends Activity {
     getIntent = getIntent();
     b = getIntent.getExtras();
     int var = b.getInt("vergleich");
-    final String path = b.getString("pfad");
     if(var==1){zur_tourenauswahl.setVisibility(View.VISIBLE);
     beendet_text.setText("Sie haben diese Tour\nbeendet!");}
     else{zur_naechsten_station.setVisibility(View.VISIBLE);}
@@ -54,6 +52,7 @@ public class Stationbeendet extends Activity {
       public void onClick( View v ){
         setResult(RESULT_OK);
         onBackPressed();
+
         overridePendingTransition(0, 0);
       }
     });
@@ -70,10 +69,13 @@ public class Stationbeendet extends Activity {
     zur_naechsten_station.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-        setResult(RESULT_NEXT);
-        System.out.println("onBackPressed");
-        onBackPressed();
+        Intent i = new Intent();
+        setResult(RESULT_NEXT, i);
 
+        overridePendingTransition(0, 0);
+        finish();
+        System.out.println("onBackPressed1");
+        overridePendingTransition(0, 0);
       }
     });
 
@@ -82,9 +84,7 @@ public class Stationbeendet extends Activity {
       @Override
       public void onClick( View v ){
         Intent back = new Intent(getApplicationContext(), MapsActivity.class);
-        singlepage.INSTANCE.selectedTour(null);
-        singlepage.INSTANCE.selectedStation(null);
-        singlepage.INSTANCE.selectedOldStation(null);
+        singlepage.INSTANCE.resetAll();
         back.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(back);
         overridePendingTransition(0, 0);

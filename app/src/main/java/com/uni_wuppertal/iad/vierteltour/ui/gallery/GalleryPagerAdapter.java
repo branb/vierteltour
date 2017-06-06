@@ -105,9 +105,9 @@ public class GalleryPagerAdapter extends PagerAdapter {
             Intent background = new Intent((mContext).getApplicationContext(), Stationbeendet.class);
             if(((GalleryMode)mContext).size==(((GalleryMode)mContext).number)){background.putExtra("vergleich", 1);}
             else {background.putExtra("vergleich", 0);}
-            background.putExtra("pfad", ((GalleryMode)mContext).path);
             ((GalleryMode)mContext).startActivityForResult(background, STATION_BEENDET);
-            ((GalleryMode)mContext).overridePendingTransition(0, 0);}
+            ((GalleryMode)mContext).overridePendingTransition(0, 0);
+          }
         }
       });
 
