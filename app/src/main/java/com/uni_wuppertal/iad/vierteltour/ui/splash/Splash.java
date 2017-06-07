@@ -10,11 +10,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.pixplicity.sharp.Sharp;
@@ -46,7 +49,9 @@ public class Splash extends Activity implements UpdateListener {
     vid.start();
 
 
-    checkForUpdates();
+    try{checkForUpdates();}
+    catch(Exception e){
+      Toast.makeText(this, "Die Tourdaten konnten nicht geladen werden", Toast.LENGTH_LONG);}
     //IntentLauncher launcher = new IntentLauncher();
     myintent = new Intent(this, MapsActivity.class);
 
@@ -128,8 +133,10 @@ public class Splash extends Activity implements UpdateListener {
     title.setTypeface(Typeface.SERIF);
     //title.setTextColor(Color.BLACK);
     TextView txt = (TextView) dialog.findViewById(R.id.text_dialog);
+    SpannableString dialog_text = new SpannableString(text + " ");
+    dialog_text.setSpan(new StyleSpan(Typeface.BOLD), 0, dialog_text.length(), 0);
     txt.setTextColor(getResources().getColor(R.color.black));
-    txt.setText(text);
+    txt.setText(dialog_text);
     txt.setTypeface(Typeface.SERIF);
     //txt.setTextColor(Color.BLACK);
     ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);

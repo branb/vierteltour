@@ -1,7 +1,10 @@
 package com.uni_wuppertal.iad.vierteltour.ui.drawer.intro;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v4.view.PagerAdapter;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +46,9 @@ public class IntroAdapter extends PagerAdapter {
     TextView desc = (TextView)itemView.findViewById(R.id.description);
     ImageView img = (ImageView) itemView.findViewById(R.id.intro_image);
 
-    topic.setText("Einführung");
+    SpannableString top = new SpannableString("Einführung ");
+    top.setSpan(new StyleSpan(Typeface.BOLD), 0, top.length(), 0);
+    topic.setText(top);
     if(position==0)
     { welcome.setText("Willkommen!");
       desc.setText("Diese App nimmt Sie mit auf informative Stadtspaziergänge durch die dichte Ökologie- und Kulturlandschaft der Wuppertaler Innenstadt. Begleitet werden Sie dabei von unterschiedlichen Expertinnen und Experten.");

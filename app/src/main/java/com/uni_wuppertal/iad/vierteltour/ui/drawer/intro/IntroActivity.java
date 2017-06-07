@@ -39,8 +39,6 @@ public class IntroActivity extends Activity {
     intro_pager.setOnPageChangeListener(onPageChangeListener);
     intro_pager.setCurrentItem(0);
 
-
-
     x_intro = (ImageButton) findViewById(R.id.x_intro);
     Sharp.loadResource(getResources(), R.raw.beenden_hell).into(x_intro);
     x_intro.setOnClickListener(new View.OnClickListener() {
@@ -57,8 +55,6 @@ public class IntroActivity extends Activity {
         onBackPressed();
       }
     });
-
-
 
     pager_indicator = (LinearLayout) findViewById(R.id.dotsLayout);
     setUiPageViewController();

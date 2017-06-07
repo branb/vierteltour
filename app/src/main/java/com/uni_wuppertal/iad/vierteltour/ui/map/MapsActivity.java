@@ -377,7 +377,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     mMap.setPadding(0, 0, 0, slidingLayoutHeight);
 
     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wuppertal, CurrentZoom));
-    loadTourdata();
+    try{loadTourdata();}
+    catch(Exception e){Toast.makeText(this, "Die Tourdaten konnten nicht geladen werden", Toast.LENGTH_LONG);}
 
     /**
      * When the user clicks anywhere on the map, check which tour or station he clicked onto and mark it as
@@ -649,9 +650,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     tourimage = (ImageView) findViewById(R.id.routenbild);
     tourimage.setImageURI(Uri.fromFile(new File(path + singlepage.INSTANCE.selectedTour().image() + ".png")));
     prof = (CustomFontTextView) findViewById(R.id.routeninfo1);
-    prof.setText(author);
+    SpannableString prof_text = new SpannableString(author + " ");
+    prof_text.setSpan(new StyleSpan(Typeface.BOLD), 0, prof_text.length(), 0);
+    prof.setText(prof_text);
     info2 = (CustomFontTextView) findViewById(R.id.routeninfo2);
-    info2.setText(time + "/" + length);
+    SpannableString info2_text = new SpannableString(time + "/" + length + " ");
+    info2_text.setSpan(new StyleSpan(Typeface.BOLD), 0, info2_text.length(), 0);
+    info2.setText(info2_text);
     description = (TextView) findViewById(R.id.stationenbeschreibung);
     description.setText(singlepage.INSTANCE.selectedStation().descText());
     TextView stopover = (TextView) findViewById(R.id.stopover);
@@ -2232,7 +2237,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    * Loads the list of available tours
    */
   private void loadTourdata(){
-    tourlist = new TourListReader( this ).readTourData();
+   tourlist = new TourListReader( this ).readTourData();
     makePolylines();
     drawRoutes();
     initSupl();
@@ -2245,7 +2250,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     final Dialog dialog = new Dialog(this);
     dialog.setContentView(R.layout.alert_dialog);
     TextView txt = (TextView) dialog.findViewById(R.id.text_dialog);
-    txt.setText(text);
+    SpannableString dialog_text = new SpannableString(text + " ");
+    dialog_text.setSpan(new StyleSpan(Typeface.BOLD), 0, dialog_text.length(), 0);
+    txt.setText(dialog_text);
     TextView titleDialog = (TextView) dialog.findViewById(R.id.title_dialog);
     titleDialog.setText(title);
     dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

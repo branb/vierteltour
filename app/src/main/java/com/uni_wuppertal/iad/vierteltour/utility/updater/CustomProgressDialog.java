@@ -4,10 +4,13 @@ import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +77,9 @@ public class CustomProgressDialog extends ProgressDialog {
   {return progressBar;}
 
   public void setText(String txt)
-  {text.setText(txt);}
+  {SpannableString txt_string = new SpannableString(txt + " ");
+    txt_string.setSpan(new StyleSpan(Typeface.BOLD), 0, txt_string.length(), 0);
+    text.setText(txt_string);}
 
   public void setTextTitle(String title)
   {this.title.setText(title);}

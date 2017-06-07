@@ -119,7 +119,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
       imageView.setVisibility(View.VISIBLE);
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource())!=null)
       {  //imageView.setImageBitmap(BitmapFactory.decodeFile( OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)) ) );
-        imageView.setImage(ImageSource.uri( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()))) ));
+        //imageView.setImage(ImageSource.uri( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()))) ));
       }
       else{imageView.setImage(ImageSource.resource(R.drawable.i));}}
 

@@ -7,19 +7,6 @@
   android:paddingBottom="25dp"
   >
 
-  <ImageButton
-    android:id="@+id/x_intro"
-    android:layout_width="30dp"
-    android:layout_height="wrap_content"
-    android:background="@color/transparent"
-    android:scaleType="fitCenter"
-    android:layout_alignParentRight="true"
-    android:layout_alignParentTop="true"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="10dp"
-    android:paddingRight="5dp"
-    android:paddingLeft="5dp"/>
-
   <android.support.v4.view.ViewPager
     android:id="@+id/intro_pager"
     android:layout_marginTop="25dp"
@@ -29,6 +16,19 @@
     android:layout_above="@+id/bottom_layout"
     android:layout_marginBottom="15dp">
   </android.support.v4.view.ViewPager>
+
+  <ImageButton
+    android:id="@+id/x_intro"
+    android:layout_width="30dp"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:scaleType="fitCenter"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:paddingTop="5dp"
+    android:paddingRight="5dp" />
 
 <RelativeLayout
   android:id="@+id/bottom_layout"

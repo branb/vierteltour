@@ -75,7 +75,6 @@ public class GalleryMode extends Activity {
     {int RESULT_NEXT=10;
       if(resultCode == RESULT_OK){imagePagerGallery.setCurrentItem(0);}
       else if(resultCode == RESULT_NEXT){
-        System.out.println("CLOSE");
        Intent datas = new Intent(); setResult(STATION_BEENDET, datas); onBackPressed();}}
   }
 
