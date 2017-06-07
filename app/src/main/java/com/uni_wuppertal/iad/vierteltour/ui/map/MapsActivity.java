@@ -134,7 +134,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     "Touren freischalten",
     "Touren sperren"
   };
-  protected static final int TINY_BAR = 0x101, BIG_BAR = 0x102, SEEK_BAR = 0x103;
+  protected static final int TINY_BAR = 0x101, BIG_BAR = 0x102, SEEK_BAR = 0x103, ZERO_BAR = 0x104;
   private final double radius = 25;
   private ActionBar actionBar;
   private DrawerLayout mDrawerLayout;
@@ -145,6 +145,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   private LinearLayout slidingLayout;
   public static ClickableViewpager mPager;
   private FragmentAdapter fragmentAdapter;
+  private boolean activeAudio=false;
   private DrawerAdapter draweradapter;
   public static TourAdapter adapter;
   private List<View> tourlistview;
@@ -562,9 +563,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           break;
 
         case MapsActivity.SEEK_BAR:
-          supl.setPanelHeight(panel_top.getHeight() + 63 + (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, displayMetrics));
+          supl.setPanelHeight(panel_top.getHeight()+ (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 55, displayMetrics));
           break;
+
+        case MapsActivity.ZERO_BAR:
+          supl.setPanelHeight(0);
+        break;
       }
+
+
       super.handleMessage(msg);
     }
   };
@@ -901,9 +908,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
               startaudio = false;
               player.pause();
               setImageResource(true);
-             /* Message message = new Message();
-              message.what = MapsActivity.BIG_BAR;
-              myHandler.sendMessage(message);*/
+             Message message = new Message();
+              message.what = MapsActivity.ZERO_BAR;
+              myHandler.sendMessage(message);
             }
             break;
         }
@@ -1867,8 +1874,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         panel.setVisibility( View.VISIBLE );
         adapter.notifyDataSetChanged();}
         else if(singlepage.INSTANCE.selectedStation()!=null)
-        {//if(stationActivityRunning)pager_layout.setVisibility(View.VISIBLE);
+        {if(!player.isPlaying())
+        { Message message = new Message();
+          message.what = MapsActivity.ZERO_BAR;
+          myHandler.sendMessage(message);}
+          else{suplInfo("s_seekbar");}
+          //if(stationActivityRunning)pager_layout.setVisibility(View.VISIBLE);
           panel.setVisibility(View.GONE);}
+
       }
 
       @Override
@@ -1885,14 +1898,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      //   adapter.notifyDataSetChanged();
       }
       if(singlepage.INSTANCE.selectedStation()!=null)
-      {if(player.isPlaying())
       {
+        if(player.isPlaying())
+      {
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+          @Override
+          public void onCompletion(MediaPlayer mp) {
+            audioFinished();
+            activeAudio=false;
+            slidingLayout.setVisibility(View.GONE);
+            supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            suplInfo("h_seekbar");
+          }
+        });
+        activeAudio=true;
         suplInfo("s_seekbar");
-
         up.setVisibility(View.VISIBLE);
-      down.setVisibility(View.GONE);
+        down.setVisibility(View.GONE);
         //umanopanelheight
         }
+        else if(activeAudio)
+        {}
         else{slidingLayout.setVisibility(View.GONE);supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);}//Setze supl höhe, nur wenn audio läuft
 
         pager_layout.setVisibility(View.VISIBLE);
@@ -1902,6 +1928,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
       @Override
       public void onPanelExpanded( View view ){//Ändere Pfeilimage nach unten
+        activeAudio=false;
         suplInfo( "gone" );
         panel.setVisibility( View.GONE );
         if(singlepage.INSTANCE.selectedStation()!=null)
@@ -1919,9 +1946,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if(!player.isPlaying()){slidingLayout.setVisibility(View.GONE);
         if(stationActivityRunning)endStationLayout();}
-
-      }
-    };
+      }};
   }
 
   /**
