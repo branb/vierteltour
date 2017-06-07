@@ -4,12 +4,26 @@
   android:layout_height="match_parent"
   android:background="@drawable/intro_layout"
   android:layout_margin="25dp"
-  android:paddingTop="25dp"
   android:paddingBottom="25dp"
   >
 
+  <ImageButton
+    android:id="@+id/x_intro"
+    android:layout_width="32dp"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:scaleType="fitCenter"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="5dp"
+    android:paddingRight="5dp"
+    android:paddingLeft="5dp"/>
+
   <android.support.v4.view.ViewPager
     android:id="@+id/intro_pager"
+    android:layout_marginTop="25dp"
+    android:overScrollMode="never"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_above="@+id/bottom_layout"
@@ -32,27 +46,11 @@
     android:layout_centerVertical="true"/>
 
   <ImageButton
-    android:id="@+id/skip"
-    android:layout_width="115dp"
-    android:layout_height="wrap_content"
-    android:background="@color/transparent"
-    android:scaleType="fitCenter"
-    android:layout_marginRight="25dp"
-    android:layout_marginLeft="35dp"
-    android:layout_alignParentRight="true"
-    android:paddingTop="10dp"
-    android:paddingRight="10dp"
-    android:paddingLeft="10dp"
-    android:gravity="center"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"/>
-
-  <ImageButton
     android:id="@+id/finish"
     android:layout_width="73dp"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
-    android:visibility="gone"
+    android:visibility="invisible"
     android:scaleType="fitCenter"
     android:layout_marginRight="25dp"
     android:layout_marginLeft="35dp"

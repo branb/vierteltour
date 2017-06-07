@@ -24,7 +24,7 @@ import com.uni_wuppertal.iad.vierteltour.R;
  */
 
 public class IntroActivity extends Activity {
-  private ImageButton skip, finish;
+  private ImageButton x_intro, finish;
   private ViewPager intro_pager;
   private IntroAdapter introAdapter;
   private LinearLayout pager_indicator;
@@ -41,9 +41,9 @@ public class IntroActivity extends Activity {
 
 
 
-    skip = (ImageButton) findViewById(R.id.skip);
-    Sharp.loadResource(getResources(), R.raw.skip).into(skip);
-    skip.setOnClickListener(new View.OnClickListener() {
+    x_intro = (ImageButton) findViewById(R.id.x_intro);
+    Sharp.loadResource(getResources(), R.raw.beenden_hell).into(x_intro);
+    x_intro.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         onBackPressed();
@@ -80,8 +80,8 @@ public class IntroActivity extends Activity {
 
   @Override
   public void onPageSelected(int position) {
-    if(position==2) {skip.setVisibility(View.GONE); finish.setVisibility(View.VISIBLE);}
-    else {skip.setVisibility(View.VISIBLE); finish.setVisibility(View.GONE);}
+    if(position==2)finish.setVisibility(View.VISIBLE);
+    else finish.setVisibility(View.INVISIBLE);
 
     for (int i = 0; i < 3; i++) {
       dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));
@@ -114,7 +114,7 @@ public class IntroActivity extends Activity {
           LinearLayout.LayoutParams.WRAP_CONTENT
         );
 
-        params.setMargins(10, 0, 10, skip.getHeight()/2);
+        params.setMargins(10, 0, 10, finish.getHeight()/2);
         params.gravity= Gravity.CENTER;
 
         pager_indicator.addView(dots[i], params);
