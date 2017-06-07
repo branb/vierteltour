@@ -7,8 +7,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.preference.PreferenceManager;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -157,8 +160,12 @@ public class TourAdapter extends BaseExpandableListAdapter {
     imgAuthor.setImageBitmap(mBitmapInsurance);
 
     txtTitle.setText( tour.name() );
-    txtAuthor.setText( tour.author() );
-    txtTimeLength.setText( tour.time() + "/" + tour.length() );
+    SpannableString author = new SpannableString(tour.author() + " ");
+    author.setSpan(new StyleSpan(Typeface.BOLD), 0, author.length(), 0);
+    txtAuthor.setText(author);
+    SpannableString length = new SpannableString(tour.time() + "/" + tour.length() + " ");
+    length.setSpan(new StyleSpan(Typeface.BOLD), 0, length.length(), 0);
+    txtTimeLength.setText(length);
 
     laden.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -188,7 +195,9 @@ public class TourAdapter extends BaseExpandableListAdapter {
     TextView downloadtitle = (TextView) dialog.findViewById(R.id.title_dialog);
     downloadtitle.setText("Laden der Tour");
     TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
-    text.setText(txt);
+    SpannableString dialogtext = new SpannableString(txt+" ");
+    dialogtext.setSpan(new StyleSpan(Typeface.BOLD), 0, dialogtext.length(), 0);
+    text.setText(dialogtext);
 
     final Tour selectedTour = tour;
 

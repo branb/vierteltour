@@ -27,6 +27,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.transition.Visibility;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -1971,8 +1973,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       subtext1.setVisibility( View.VISIBLE );
       subtext2.setVisibility( View.VISIBLE );
       tourenliste.setText( singlepage.INSTANCE.selectedTour().name() );
-      subtext1.setText( singlepage.INSTANCE.selectedTour().author() );
-      subtext2.setText( singlepage.INSTANCE.selectedTour().time() + "/" + singlepage.INSTANCE.selectedTour().length() );
+      SpannableString author = new SpannableString(singlepage.INSTANCE.selectedTour().author()+" ");
+      author.setSpan(new StyleSpan(Typeface.BOLD), 0, author.length(), 0);
+      subtext1.setText(author);
+      SpannableString length = new SpannableString(singlepage.INSTANCE.selectedTour().time() + "/" + singlepage.INSTANCE.selectedTour().length()+" ");
+      length.setSpan(new StyleSpan(Typeface.BOLD), 0, length.length(), 0);
+      subtext2.setText( length );
       } else {
         tourenliste.setText( "Tourenliste" );
       }

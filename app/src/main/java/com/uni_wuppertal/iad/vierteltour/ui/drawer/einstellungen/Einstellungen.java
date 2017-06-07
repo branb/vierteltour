@@ -12,6 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -163,7 +165,9 @@ public class Einstellungen extends AppCompatActivity {
     dialog.show();
     // set values for custom dialog components - text, image and button
     TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
-    text.setText(txt);
+    SpannableString dialogtext = new SpannableString(txt+" ");
+    dialogtext.setSpan(new StyleSpan(Typeface.BOLD), 0, dialogtext.length(), 0);
+    text.setText(dialogtext);
 
     TextView title = (TextView) dialog.findViewById(R.id.title_dialog);
     title.setText("Löschen der Tour");
@@ -230,7 +234,9 @@ public class Einstellungen extends AppCompatActivity {
     dialog.show();
     // set values for custom dialog components - text, image and button
     TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
-    text.setText(txt);
+    SpannableString dialogtext = new SpannableString(txt+" ");
+    dialogtext.setSpan(new StyleSpan(Typeface.BOLD), 0, dialogtext.length(), 0);
+    text.setText(dialogtext);
     TextView title = (TextView) dialog.findViewById(R.id.title_dialog);
     title.setText("Löschen der Touren");
 

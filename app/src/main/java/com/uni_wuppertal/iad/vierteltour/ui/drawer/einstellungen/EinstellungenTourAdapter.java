@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -91,8 +94,12 @@ public class EinstellungenTourAdapter extends BaseAdapter {
       params.addRule(RelativeLayout.CENTER_VERTICAL, 0);
       txtTitle.setLayoutParams(params); //causes layout update
 
-      txtAuthor.setText(tour.author());
-      txtTimeLength.setText(tour.time() + "/" + tour.length());
+      SpannableString author = new SpannableString(tour.author() + " ");
+      author.setSpan(new StyleSpan(Typeface.BOLD), 0, author.length(), 0);
+      txtAuthor.setText(author);
+      SpannableString length = new SpannableString(tour.time() + "/" + tour.length() + " ");
+      length.setSpan(new StyleSpan(Typeface.BOLD), 0, length.length(), 0);
+      txtTimeLength.setText(length);
 
     return convertView;
   }
