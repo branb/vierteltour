@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -157,6 +158,7 @@ public class Einstellungen extends AppCompatActivity {
   public void createTourDialog(String txt, int pos)
   {// Create custom dialog object
     final Dialog dialog = new Dialog(this);
+    dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     final int position = pos;
 
     // Include dialog.xml file
@@ -227,7 +229,7 @@ public class Einstellungen extends AppCompatActivity {
   public void createAllToursDialog(String txt)
   {// Create custom dialog object
     final Dialog dialog = new Dialog(this);
-
+    dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     // Include dialog.xml file
     dialog.setContentView(R.layout.alert_dialog);
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

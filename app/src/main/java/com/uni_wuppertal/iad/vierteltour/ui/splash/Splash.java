@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -117,6 +118,7 @@ public class Splash extends Activity implements UpdateListener {
   {
     // declare the dialog as a member field of your activity
     final Dialog dialog = new Dialog(this);
+    dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.setContentView(R.layout.alert_dialog);
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     dialog.show();

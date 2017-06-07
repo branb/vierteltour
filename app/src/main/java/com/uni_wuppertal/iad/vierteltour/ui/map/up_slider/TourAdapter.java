@@ -131,11 +131,11 @@ public class TourAdapter extends BaseExpandableListAdapter {
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
     geladen = (ImageView) convertView.findViewById( R.id.geladen);
-    geladen.setTag("ok"+position);
-    Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
+    //geladen.setTag("ok"+position);
+    //Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
     laden = (ImageView) convertView.findViewById( R.id.laden);
-    laden.setTag("laden"+position);
-    Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
+   // laden.setTag("laden"+position);
+   // Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
 
     downloadtext = (TextView) convertView.findViewById(R.id.downloadtext);
     downloadtext.setTag("text"+position);
@@ -147,17 +147,23 @@ public class TourAdapter extends BaseExpandableListAdapter {
     convertView.setBackgroundColor( Color.parseColor( tour.color() ) );
 
     if(sharedPreferences.getBoolean(tour.slug(), false))
-    {geladen.setVisibility(View.VISIBLE);
+    {geladen = (ImageView) convertView.findViewById( R.id.geladen);
+      geladen.setTag("ok"+position);
+      Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
+      geladen.setVisibility(View.VISIBLE);
       laden.setVisibility(View.GONE);
       downloadtext.setText("geladen");
       downloadtext.setVisibility(View.VISIBLE);}
     else{geladen.setVisibility(View.GONE);
+      laden = (ImageView) convertView.findViewById( R.id.laden);
+      laden.setTag("laden"+position);
+      Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
       laden.setVisibility(View.VISIBLE);
       downloadtext.setVisibility(View.GONE);
     }
-    BitmapFactory.Options options = new BitmapFactory.Options();
+   /* BitmapFactory.Options options = new BitmapFactory.Options();
     Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png" ,options);
-    imgAuthor.setImageBitmap(mBitmapInsurance);
+    imgAuthor.setImageBitmap(mBitmapInsurance);*/
 
     txtTitle.setText( tour.name() );
     SpannableString author = new SpannableString(tour.author() + " ");
