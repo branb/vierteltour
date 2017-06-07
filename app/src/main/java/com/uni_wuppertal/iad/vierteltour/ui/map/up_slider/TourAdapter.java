@@ -147,7 +147,7 @@ public class TourAdapter extends BaseExpandableListAdapter {
     convertView.setBackgroundColor( Color.parseColor( tour.color() ) );
 
     if(sharedPreferences.getBoolean(tour.slug(), false))
-    {geladen = (ImageView) convertView.findViewById( R.id.geladen);
+    {
       geladen.setTag("ok"+position);
       Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
       geladen.setVisibility(View.VISIBLE);
@@ -155,15 +155,14 @@ public class TourAdapter extends BaseExpandableListAdapter {
       downloadtext.setText("geladen");
       downloadtext.setVisibility(View.VISIBLE);}
     else{geladen.setVisibility(View.GONE);
-      laden = (ImageView) convertView.findViewById( R.id.laden);
       laden.setTag("laden"+position);
       Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
       laden.setVisibility(View.VISIBLE);
       downloadtext.setVisibility(View.GONE);
     }
-   /* BitmapFactory.Options options = new BitmapFactory.Options();
+    BitmapFactory.Options options = new BitmapFactory.Options();
     Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png" ,options);
-    imgAuthor.setImageBitmap(mBitmapInsurance);*/
+    imgAuthor.setImageBitmap(mBitmapInsurance);
 
     txtTitle.setText( tour.name() );
     SpannableString author = new SpannableString(tour.author() + " ");
@@ -177,14 +176,14 @@ public class TourAdapter extends BaseExpandableListAdapter {
       @Override
       public void onClick(View view) {
         if(context instanceof MapsActivity){
-          createDownloadDialog("Wollen Sie die Tour »"+ tours.get(position).name() + "« herunterladen? Hinweis: Verwenden Sie Ihr WLAN", tour, position);
+          createDownloadDialog("Wollen Sie die Tour »"+ tours.get(position).name() + "« herunterladen? Hinweis: Verwenden Sie Ihr WLAN", tour);
 
         }}});
 
     return convertView;
   }
 
-  public void createDownloadDialog(String txt, Tour tour, int position)
+  public void createDownloadDialog(String txt, Tour tour)
   {// Create custom dialog object
     final Dialog dialog = new Dialog(context);
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
