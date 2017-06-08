@@ -30,13 +30,6 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
     return fragments.get( position);
   }
 
- /* @Override
-  public Object instantiateItem(ViewGroup container, int position) {
-    Object fragment = super.instantiateItem(container, position);
-    fragments.set(position, (StationFragment) fragment);
-    return fragment;
-  }*/
-
   @Override
   public int getItemPosition( Object object ){
     return POSITION_NONE;

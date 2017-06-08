@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.pixplicity.sharp.Sharp;
+import com.squareup.picasso.Picasso;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
@@ -64,15 +65,14 @@ public class StationAdapter extends PagerAdapter{
     Sharp.loadResource(mContext.getResources(), R.raw.play_hell).into(imageBtn);
     Resource resources = stationImagePaths.get(position);     //v für video, i für image
 
-//TODO: stationimagepaths to stationresourcepaths with video and images to show
     if(resources.source().endsWith("mp4"))
     { imageView.setVisibility(View.VISIBLE);
 
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).source())!=null)
       {
         Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).source()),
-        MediaStore.Images.Thumbnails.FULL_SCREEN_KIND);
-      imageView.setImageBitmap(thumbnail);
+        MediaStore.Images.Thumbnails.MINI_KIND);
+        imageView.setImageBitmap(thumbnail);
         background.setVisibility(View.VISIBLE);
         imageBtn.setVisibility(View.VISIBLE);
       }
@@ -83,7 +83,7 @@ public class StationAdapter extends PagerAdapter{
       imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).source())!=null)
-      {//imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).source()))) );   //Out of Memory Error
+      { Picasso.with(mContext).load(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).source()))).into(imageView);
         background.setVisibility(View.GONE);
       }
       else{imageView.setImageResource(R.drawable.i);
@@ -124,7 +124,7 @@ public class StationAdapter extends PagerAdapter{
   public void hideImage()
   {imageView.setVisibility(View.GONE);}
 
-  public ImageView getImageView()
+  public ImageView getImageView(int position)
   {return imageView;}
 
   public void startGallery()

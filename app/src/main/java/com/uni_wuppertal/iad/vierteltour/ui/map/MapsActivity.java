@@ -474,7 +474,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() + "", false))));
       //Erstellte Bitmap wird der Karte hinzugefuegt
       tourMarker.put(singlepage.INSTANCE.selectedOldStation().slug(), m);
-
       //delete Circle
       if (mapCircle != null) mapCircle.remove();
     }
@@ -485,25 +484,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       mapCircle = mMap.addCircle(circle);
       mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(station.latlng(), mMap.getCameraPosition().zoom));
 
-      removeStation(singlepage.INSTANCE.selectedStation().slug());
+     // removeStation(singlepage.INSTANCE.selectedStation().slug());
       Marker m;
       int countnumber = 0;
       if (singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung")) {
         try {
           while (singlepage.INSTANCE.countWaypoints().get(countnumber) < (station.number() - 1))
             countnumber++;
-        } catch (Exception e) {
-        }
-        m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (station.number() - 1), true))));
+        } catch (Exception e) {}
+          m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (station.number() - 1), true))));
       } else {
         try {
           while (singlepage.INSTANCE.countWaypoints().get(countnumber) < (station.number()))
             countnumber++;
         } catch (Exception e) {}
-        m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (station.number()), true))));
+          m = mMap.addMarker(markers.get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (station.number()), true))));
       }
-      m.showInfoWindow();
-      tourMarker.put(singlepage.INSTANCE.selectedStation().slug(), m);
+          m.showInfoWindow();
+          tourMarker.put(singlepage.INSTANCE.selectedStation().slug(), m);
     }
 
     if (PreferenceManager
@@ -685,7 +683,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     pfeilhell = (ImageView) findViewById(R.id.pfeilhell);
     Sharp.loadResource(getResources(), R.raw.google_navi_hell).into(pfeilhell);
     imagePager = (ViewPager) findViewById(R.id.ImagePager);
-    imagePager.setOffscreenPageLimit(2);
+    imagePager.setOffscreenPageLimit(0);
 
     stationImagePaths = singlepage.INSTANCE.selectedStation().resources();
 
@@ -708,14 +706,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     stationLayout.setVisibility(View.GONE);
     slidingLayout.setVisibility(View.GONE);
     if (imagePager != null) {
+      System.out.println(imagePager.getChildCount());
       imagePager.removeAllViews();
+      System.out.println(imagePager.getChildCount());
       imagePager.getAdapter().notifyDataSetChanged();
+      imagePager.setAdapter(null);
+      imagePager=null;
     }
-
     singlepage.INSTANCE.position(0);
     stationActivityRunning = false;
     panel_top.setClickable(false);
-
+    System.gc();
   }
 
 
@@ -799,18 +800,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       pfeilhell.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          sperrvariable = false;
-          gesperrt.setVisibility(View.GONE);
-          if (audio.contains(".mp3") && OurStorage.get(getApplicationContext()).pathToFile(audio) != null) {
-            seekbar.setVisibility(View.VISIBLE);
-            play_button.setVisibility(View.VISIBLE);
-            duration.setVisibility(View.VISIBLE);
-          }
-          if (stationImagePaths.size() > 0 ) {
-            imagePager.setVisibility(View.VISIBLE);
-            videopanel.setVisibility(View.VISIBLE);
-            if(stationImagePaths.size()>1)pager_indicator.setVisibility(View.VISIBLE);
-          }
+          googleNaviRedirection();
         }
       });
     } else {
@@ -1498,44 +1488,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     arrowbtn.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-        enableGPSMessage();
-        // Navigation require current Location
-        if( MyLocation != null && singlepage.INSTANCE.selectedStation()!=null){
-          // Uri for google navigation
-          zoomToLocation=true;
-          String start = MyLocation.getLatitude() + "," + MyLocation.getLongitude();
-          String target;
-          if(singlepage.INSTANCE.selectedStation().number()!=1)
-          {target = singlepage.INSTANCE.selectedStation().latlng().latitude + "," + singlepage.INSTANCE.selectedStation().latlng().longitude;}
-          else{target = singlepage.INSTANCE.selectedTour().station(2).latlng().latitude + "," + singlepage.INSTANCE.selectedTour().station(2).latlng().longitude;}
-          String navigationUrl = "http://maps.google.com/maps?saddr=" + start + "&daddr=" + target;
-
-          Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( navigationUrl ) );
-          intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS );
-          intent.setClassName( "com.google.android.apps.maps", "com.google.android.maps.MapsActivity" );
-          startActivity( intent );
-          overridePendingTransition(0, 0);
-        }
-        else if(MyLocation != null && singlepage.INSTANCE.selectedTour()!=null)
-        { zoomToLocation=true;
-          String start = MyLocation.getLatitude() + "," + MyLocation.getLongitude();
-          String target = singlepage.INSTANCE.selectedTour().station(2).latlng().latitude + "," + singlepage.INSTANCE.selectedTour().station(2).latlng().longitude;
-          String navigationUrl = "http://maps.google.com/maps?saddr=" + start + "&daddr=" + target;
-
-          Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( navigationUrl ) );
-          intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS );
-          intent.setClassName( "com.google.android.apps.maps", "com.google.android.maps.MapsActivity" );
-          startActivity( intent );
-          overridePendingTransition(0, 0);}
-        else if (MyLocation == null){
-          Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT )
-               .show();
-        }
-        else {
-          Toast.makeText( getApplicationContext(), "Keine Tour ausgewählt.", Toast.LENGTH_SHORT )
-            .show();
-          }
-
+       googleNaviRedirection();
       }
     });
 
@@ -1574,6 +1527,46 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     });
 
 
+  }
+
+  public void googleNaviRedirection()
+  {enableGPSMessage();
+    // Navigation require current Location
+    if( MyLocation != null && singlepage.INSTANCE.selectedStation()!=null){
+      // Uri for google navigation
+      zoomToLocation=true;
+      String start = MyLocation.getLatitude() + "," + MyLocation.getLongitude();
+      String target;
+      if(singlepage.INSTANCE.selectedStation().number()!=1)
+      {target = singlepage.INSTANCE.selectedStation().latlng().latitude + "," + singlepage.INSTANCE.selectedStation().latlng().longitude;}
+      else{target = singlepage.INSTANCE.selectedTour().station(2).latlng().latitude + "," + singlepage.INSTANCE.selectedTour().station(2).latlng().longitude;}
+      String navigationUrl = "http://maps.google.com/maps?saddr=" + start + "&daddr=" + target;
+
+      Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( navigationUrl ) );
+      intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS );
+      intent.setClassName( "com.google.android.apps.maps", "com.google.android.maps.MapsActivity" );
+      startActivity( intent );
+      overridePendingTransition(0, 0);
+    }
+    else if(MyLocation != null && singlepage.INSTANCE.selectedTour()!=null)
+    { zoomToLocation=true;
+      String start = MyLocation.getLatitude() + "," + MyLocation.getLongitude();
+      String target = singlepage.INSTANCE.selectedTour().station(2).latlng().latitude + "," + singlepage.INSTANCE.selectedTour().station(2).latlng().longitude;
+      String navigationUrl = "http://maps.google.com/maps?saddr=" + start + "&daddr=" + target;
+
+      Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( navigationUrl ) );
+      intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS );
+      intent.setClassName( "com.google.android.apps.maps", "com.google.android.maps.MapsActivity" );
+      startActivity( intent );
+      overridePendingTransition(0, 0);}
+    else if (MyLocation == null){
+      Toast.makeText( getApplicationContext(), "GPS Signal wird gesucht...", Toast.LENGTH_SHORT )
+        .show();
+    }
+    else {
+      Toast.makeText( getApplicationContext(), "Keine Tour ausgewählt.", Toast.LENGTH_SHORT )
+        .show();
+    }
   }
 
   /**
@@ -1893,8 +1886,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
       @Override
       public void onPanelCollapsed( View view ){
+        if(stationActivityRunning)endStationLayout();
         panel_top.setClickable(false);
-        stationActivityRunning=false;
         //ändere Pfeilrichtung nach oben
         if(singlepage.INSTANCE.selectedStation()==null)
         { if( singlepage.INSTANCE.selectedTour()!=null){
@@ -1949,8 +1942,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
       @Override
       public void onPanelHidden( View view ){
-        stationActivityRunning=false;
-
         if(!player.isPlaying()){slidingLayout.setVisibility(View.GONE);
         if(stationActivityRunning)endStationLayout();}
       }};

@@ -68,6 +68,13 @@ public class GalleryMode extends Activity {
   }
 
   @Override
+  protected void onDestroy()
+  { finish();
+    super.onDestroy();
+    Runtime.getRuntime().gc();
+    System.gc();}
+
+  @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     System.out.println(requestCode);
     System.out.println(resultCode);
@@ -133,7 +140,7 @@ public class GalleryMode extends Activity {
 
   play_buttonGallery_bar = (ImageButton) findViewById( R.id.play_buttonGallery_bar );
   imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
-  imagePagerGallery.setOffscreenPageLimit(3);
+  imagePagerGallery.setOffscreenPageLimit(2);
   gallerytitle = (TextView) findViewById( R.id.titleGallery );
   gallerytitletop = (TextView) findViewById(R.id.titleGalleryTop_bar);
   durationGallery = (TextView) findViewById( R.id.durationGallery );

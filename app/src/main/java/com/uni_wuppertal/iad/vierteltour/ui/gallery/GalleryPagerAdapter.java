@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
@@ -80,8 +81,8 @@ public class GalleryPagerAdapter extends PagerAdapter {
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource())!=null)
       {videoView.setVideoPath(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()));
         Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()),
-        MediaStore.Images.Thumbnails.FULL_SCREEN_KIND);
-        imageView.setImage(ImageSource.bitmap(thumbnail));
+        MediaStore.Images.Thumbnails.MINI_KIND);
+        if(thumbnail!=null)imageView.setImage(ImageSource.bitmap(thumbnail));
         //imageBtn.setVisibility(View.VISIBLE);
         }
       else{imageView.setImage(ImageSource.resource(R.drawable.i));}
@@ -118,8 +119,8 @@ public class GalleryPagerAdapter extends PagerAdapter {
      // imageBtn.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource())!=null)
-      {  //imageView.setImageBitmap(BitmapFactory.decodeFile( OurStorage.get(mContext).pathToFile(stationImagePaths.get(position)) ) );
-        //imageView.setImage(ImageSource.uri( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()))) ));
+      {
+        imageView.setImage(ImageSource.uri( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()))) ));
       }
       else{imageView.setImage(ImageSource.resource(R.drawable.i));}}
 
@@ -162,10 +163,12 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
   @Override
   public void destroyItem( ViewGroup container, int position, Object object ){
+    SubsamplingScaleImageView i = (SubsamplingScaleImageView) container.findViewWithTag("image"+position);
+    i.recycle();
     container.removeView( (RelativeLayout) object );
   }
 
-  //Images can only be found with GalleryAcivity by using their tags
+  //Images can only be found with GalleryActivity by using their tags
   public void showImage(int position)
   {//System.out.println(ownContainer.findViewWithTag("image" + position));
 

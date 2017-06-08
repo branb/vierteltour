@@ -30,6 +30,7 @@ dependencies {
   compile 'com.android.support:appcompat-v7:25.1.0'
   compile 'com.google.android.gms:play-services:10.0.1'
   compile 'com.google.maps.android:android-maps-utils:0.5'
+  compile 'com.squareup.picasso:picasso:2.5.2'
   // compile 'com.github.User:Repo:Tag'
   compile files('libs/xmlpull_1_0_5.jar')
   repositories {

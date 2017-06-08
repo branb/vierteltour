@@ -18,12 +18,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pixplicity.sharp.Sharp;
+import com.squareup.picasso.Picasso;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Station;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -100,7 +102,7 @@ public class StationFragment extends Fragment{
         .getDefaultSharedPreferences( ((MapsActivity) getContext()).getBaseContext() );
 
       if(OurStorage.get(getContext()).pathToFile(appPath+file)!=null)
-      {image.setImageBitmap(BitmapFactory.decodeFile(externalPath+appPath+file));}
+      {Picasso.with(getContext()).load(new File(externalPath+appPath+file)).into(image);}
 
       if(OurStorage.get(getContext()).pathToFile(appPath+file)==null || (!getPrefs.getBoolean(singlepage.INSTANCE.selectedTour().station(position).slug(), false) && !singlepage.INSTANCE.selectedTour().station(position).slug().startsWith("einleitung")))
       {icon.setVisibility(View.VISIBLE);
