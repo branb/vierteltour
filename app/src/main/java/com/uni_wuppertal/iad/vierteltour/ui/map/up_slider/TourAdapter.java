@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -32,6 +33,7 @@ import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.utility.updater.Updater;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.OurStorage;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -40,9 +42,6 @@ import java.util.List;
 public class TourAdapter extends BaseExpandableListAdapter {
 
   private Context context;
-  private View view;
-  private ImageView geladen, laden;
-  private TextView downloadtext;
   private Singletonint singlepage;
   private ViewGroup ownContainer;
   private List<Tour> tours;
@@ -101,20 +100,28 @@ public class TourAdapter extends BaseExpandableListAdapter {
    */
   @Override
   public View getChildView(int groupposition, final int position, boolean isLastChild, View convertView, ViewGroup parent ){
+    ViewHolderChild holderchild;
+
     if( convertView == null && context instanceof MapsActivity){
       LayoutInflater mInflater = (LayoutInflater) (context).getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
       convertView = mInflater.inflate( R.layout.tour_list_expand, null );
+      holderchild = new ViewHolderChild();
+      holderchild.txtDescription = (TextView) convertView.findViewById( R.id.addinfo );
+      holderchild.btnStart = (ImageButton) convertView.findViewById( R.id.zumstartlist );
+    }
+    else {
+      holderchild = (ViewHolderChild) convertView.getTag();
     }
     // Define the visible elements of a single item inside of our ListView
-    ImageButton btnStart = (ImageButton) convertView.findViewById( R.id.zumstartlist );
-    Sharp.loadResource(context.getResources(), R.raw.zum_start).into(btnStart);
-    TextView txtDescription = (TextView) convertView.findViewById( R.id.addinfo );
-    txtDescription.setText( tours.get(groupposition).description() );
+
+    Sharp.loadResource(context.getResources(), R.raw.zum_start).into(holderchild.btnStart);
+
+    holderchild.txtDescription.setText( tours.get(groupposition).description() );
 
     convertView.setBackgroundColor( Color.parseColor( tours.get(groupposition).color() ) );
 
-    if(singlepage.INSTANCE.selectedTour()!=null && sharedPreferences.getBoolean(singlepage.INSTANCE.selectedTour().slug(), false))btnStart.setVisibility(View.VISIBLE);
-    else btnStart.setVisibility(View.INVISIBLE);
+    if(singlepage.INSTANCE.selectedTour()!=null && sharedPreferences.getBoolean(singlepage.INSTANCE.selectedTour().slug(), false))holderchild.btnStart.setVisibility(View.VISIBLE);
+    else holderchild.btnStart.setVisibility(View.INVISIBLE);
 
     return convertView;
   }
@@ -122,62 +129,72 @@ public class TourAdapter extends BaseExpandableListAdapter {
   @Override
   public View getGroupView(final int position, boolean isExpanded,
                            View convertView, ViewGroup parent) {
+    ViewHolderGroup holder;
+
     if( convertView == null && context instanceof MapsActivity){
       LayoutInflater mInflater = (LayoutInflater) (context).getSystemService( Activity.LAYOUT_INFLATER_SERVICE );
       convertView = mInflater.inflate( R.layout.touren_list_single, null );
+      holder = new ViewHolderGroup();
+      holder.imgAuthor = (ImageView) convertView.findViewById( R.id.img );
+      holder.geladen = (ImageView) convertView.findViewById( R.id.geladen);
+      holder.laden = (ImageView) convertView.findViewById( R.id.laden);
+      holder.downloadtext = (TextView) convertView.findViewById(R.id.downloadtext);
+      holder.txtTitle = (TextView) convertView.findViewById( R.id.txt );
+      holder.txtAuthor = (TextView) convertView.findViewById( R.id.subtxt1 );
+      holder.txtTimeLength = (TextView) convertView.findViewById( R.id.subtxt2 );
+      convertView.setTag(holder);
+    }
+    else {
+      holder = (ViewHolderGroup) convertView.getTag();
     }
 
-
     // Define the visible elements of a single item inside of our ListView
-    ImageView imgAuthor = (ImageView) convertView.findViewById( R.id.img );
-    geladen = (ImageView) convertView.findViewById( R.id.geladen);
+
+
     //geladen.setTag("ok"+position);
     //Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
-    laden = (ImageView) convertView.findViewById( R.id.laden);
+
    // laden.setTag("laden"+position);
    // Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
 
-    downloadtext = (TextView) convertView.findViewById(R.id.downloadtext);
-    downloadtext.setTag("text"+position);
-    final TextView txtTitle = (TextView) convertView.findViewById( R.id.txt );
-    TextView txtAuthor = (TextView) convertView.findViewById( R.id.subtxt1 );
-    TextView txtTimeLength = (TextView) convertView.findViewById( R.id.subtxt2 );
+
+    holder.downloadtext.setTag("text"+position);
 
     final Tour tour = tours.get( position );
+
     convertView.setBackgroundColor( Color.parseColor( tour.color() ) );
 
     if(sharedPreferences.getBoolean(tour.slug(), false))
     {
-      geladen.setTag("ok"+position);
-      Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
-      geladen.setVisibility(View.VISIBLE);
-      laden.setVisibility(View.GONE);
-      downloadtext.setText("geladen");
-      downloadtext.setVisibility(View.VISIBLE);}
-    else{geladen.setVisibility(View.GONE);
-      laden.setTag("laden"+position);
-      Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
-      laden.setVisibility(View.VISIBLE);
-      downloadtext.setVisibility(View.GONE);
+      holder.geladen.setTag("ok"+position);
+      holder.laden.setImageDrawable(Sharp.loadResource(context.getResources(), R.raw.ok).getDrawable());
+      holder.geladen.setVisibility(View.VISIBLE);
+      holder.laden.setVisibility(View.GONE);
+      holder.downloadtext.setText("geladen");
+      holder.downloadtext.setVisibility(View.VISIBLE);}
+    else{holder.geladen.setVisibility(View.GONE);
+      holder.laden.setTag("laden"+position);
+      holder.laden.setImageDrawable(Sharp.loadResource(context.getResources(), R.raw.laden).getDrawable());
+      holder.laden.setVisibility(View.VISIBLE);
+      holder.downloadtext.setVisibility(View.GONE);
     }
     BitmapFactory.Options options = new BitmapFactory.Options();
     Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png" ,options);
-    imgAuthor.setImageBitmap(mBitmapInsurance);
+    holder.imgAuthor.setImageBitmap(mBitmapInsurance);
 
-    txtTitle.setText( tour.name() );
+    holder.txtTitle.setText( tour.name() );
     SpannableString author = new SpannableString(tour.author() + " ");
     author.setSpan(new StyleSpan(Typeface.BOLD), 0, author.length(), 0);
-    txtAuthor.setText(author);
+    holder.txtAuthor.setText(author);
     SpannableString length = new SpannableString(tour.time() + "/" + tour.length() + " ");
     length.setSpan(new StyleSpan(Typeface.BOLD), 0, length.length(), 0);
-    txtTimeLength.setText(length);
+    holder.txtTimeLength.setText(length);
 
-    laden.setOnClickListener(new View.OnClickListener() {
+    holder.laden.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         if(context instanceof MapsActivity){
           createDownloadDialog("Wollen Sie die Tour »"+ tours.get(position).name() + "« herunterladen? Hinweis: Verwenden Sie Ihr WLAN", tour);
-
         }}});
 
     return convertView;
@@ -227,4 +244,42 @@ public class TourAdapter extends BaseExpandableListAdapter {
       }});
   }
 
+  static class ViewHolderGroup {
+    private TextView downloadtext;
+    private ImageView geladen;
+    private ImageView laden;
+    private TextView txtTitle;
+    private TextView txtAuthor;
+    private TextView txtTimeLength;
+    private ImageView imgAuthor;
+  }
+
+  static class ViewHolderChild {
+    private ImageView btnStart;
+    private TextView txtDescription;
+  }
+ /* // Using an AsyncTask to load the slow images in a background thread
+  new AsyncTask<ViewHolder, Void, Bitmap>() {
+    private ViewHolder v;
+
+    @Override
+    protected Bitmap doInBackground(ViewHolder... params) {
+      v = params[0];
+      return mFakeImageLoader.getImage();
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap result) {
+      super.onPostExecute(result);
+      if (v.position == position) {
+        // If this item hasn't been recycled already, hide the
+        // progress and set and show the image
+        v.progress.setVisibility(View.GONE);
+        v.icon.setVisibility(View.VISIBLE);
+        v.icon.setImageBitmap(result);
+      }
+    }
+  }.execute(holder);
+*/
 }
+
