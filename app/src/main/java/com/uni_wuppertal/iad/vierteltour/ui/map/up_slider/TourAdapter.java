@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.SpannableString;
@@ -108,6 +109,7 @@ public class TourAdapter extends BaseExpandableListAdapter {
       holderchild = new ViewHolderChild();
       holderchild.txtDescription = (TextView) convertView.findViewById( R.id.addinfo );
       holderchild.btnStart = (ImageButton) convertView.findViewById( R.id.zumstartlist );
+      convertView.setTag(holderchild);
     }
     else {
       holderchild = (ViewHolderChild) convertView.getTag();
@@ -158,6 +160,12 @@ public class TourAdapter extends BaseExpandableListAdapter {
    // Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
 
 
+    holder.laden.setTag(R.raw.laden);
+    new LoadImage(holder.laden, false).execute();
+
+    holder.geladen.setTag(R.raw.ok);
+    new LoadImage(holder.geladen, false).execute();
+
     holder.downloadtext.setTag("text"+position);
 
     final Tour tour = tours.get( position );
@@ -166,21 +174,17 @@ public class TourAdapter extends BaseExpandableListAdapter {
 
     if(sharedPreferences.getBoolean(tour.slug(), false))
     {
-      holder.geladen.setTag("ok"+position);
-      holder.laden.setImageDrawable(Sharp.loadResource(context.getResources(), R.raw.ok).getDrawable());
       holder.geladen.setVisibility(View.VISIBLE);
       holder.laden.setVisibility(View.GONE);
       holder.downloadtext.setText("geladen");
       holder.downloadtext.setVisibility(View.VISIBLE);}
-    else{holder.geladen.setVisibility(View.GONE);
-      holder.laden.setTag("laden"+position);
-      holder.laden.setImageDrawable(Sharp.loadResource(context.getResources(), R.raw.laden).getDrawable());
+    else{
+      holder.geladen.setVisibility(View.GONE);
       holder.laden.setVisibility(View.VISIBLE);
       holder.downloadtext.setVisibility(View.GONE);
     }
-    BitmapFactory.Options options = new BitmapFactory.Options();
-    Bitmap mBitmapInsurance = BitmapFactory.decodeFile(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png" ,options);
-    holder.imgAuthor.setImageBitmap(mBitmapInsurance);
+    holder.imgAuthor.setTag(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png");
+    new LoadImage(holder.imgAuthor, true).execute();
 
     holder.txtTitle.setText( tour.name() );
     SpannableString author = new SpannableString(tour.author() + " ");
@@ -252,34 +256,71 @@ public class TourAdapter extends BaseExpandableListAdapter {
     private TextView txtAuthor;
     private TextView txtTimeLength;
     private ImageView imgAuthor;
+
   }
 
   static class ViewHolderChild {
     private ImageView btnStart;
     private TextView txtDescription;
   }
- /* // Using an AsyncTask to load the slow images in a background thread
-  new AsyncTask<ViewHolder, Void, Bitmap>() {
-    private ViewHolder v;
 
-    @Override
-    protected Bitmap doInBackground(ViewHolder... params) {
-      v = params[0];
-      return mFakeImageLoader.getImage();
+  class LoadImage extends AsyncTask<Object, Void, Bitmap>{
+
+    private ImageView imv;
+    private int path;
+    private boolean isFile;
+    private String stringpath;
+
+    public LoadImage(ImageView imv, boolean isFile) {
+      this.isFile = isFile;
+      this.imv = imv;
+
+      if(isFile)
+      {this.stringpath = imv.getTag().toString();
+        System.out.println(stringpath);
+      this.path=0;}
+      else
+      {this.path = (int) imv.getTag();
+      this.stringpath="";}
     }
 
+    @Override
+    protected Bitmap doInBackground(Object... params) {
+      System.out.println(isFile);
+       Bitmap bitmap = null;
+
+      if(isFile)
+      {File file = new File(stringpath);
+        if(file.exists()){
+          bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        }
+      }
+      return bitmap;
+    }
     @Override
     protected void onPostExecute(Bitmap result) {
-      super.onPostExecute(result);
-      if (v.position == position) {
-        // If this item hasn't been recycled already, hide the
-        // progress and set and show the image
-        v.progress.setVisibility(View.GONE);
-        v.icon.setVisibility(View.VISIBLE);
-        v.icon.setImageBitmap(result);
+
+    /*  if (!imv.getTag().toString().equals(path)) {
+               /* The path is not same. This means that this
+                  image view is handled by some other async task.
+                  We don't do anything and return.
+        return;
+      }*/
+
+
+
+      if(result != null && imv != null){
+        System.out.println(stringpath);
+        imv.setImageBitmap(result);
+      }
+
+      else if(imv != null && !isFile){
+        Sharp.loadResource(context.getResources(), path).into(imv);
       }
     }
-  }.execute(holder);
-*/
+
+  }
+
+
 }
 
