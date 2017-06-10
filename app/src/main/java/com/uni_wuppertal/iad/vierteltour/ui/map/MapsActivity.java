@@ -151,6 +151,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   private DrawerAdapter draweradapter;
   public static TourAdapter adapter;
   private List<View> tourlistview;
+  private boolean onGroupClicked=true;
   private List<DrawerItem> drawerItems;
   private boolean reset=false;
   private LatLng wuppertal;
@@ -1419,9 +1420,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
       @Override
       public void onGroupExpand(int groupPosition) {
+        onGroupClicked=false;
         if (lastExpandedPosition != -1
           && groupPosition != lastExpandedPosition) {
           lv.collapseGroup(lastExpandedPosition);
+          onGroupClicked=true;
         }
         lastExpandedPosition = groupPosition;
 
@@ -1435,7 +1438,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     lv.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
       @Override
       public void onGroupCollapse(int groupPosition) {
-        resetTour();
+        if(onGroupClicked)resetTour();
       }
     });
 
@@ -1477,7 +1480,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     x_supl.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-        resetTour();
+        lv.collapseGroup(singlepage.INSTANCE.selectedTour().trkid()-1);
+        lv.smoothScrollToPosition(0);
       }
     });
 
