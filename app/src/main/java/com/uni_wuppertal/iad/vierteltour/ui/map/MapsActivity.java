@@ -1123,6 +1123,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   public void resetTour() {
     singlepage.INSTANCE.selectedTour(null);
 
+
+
     for (Tour tour : tourlist.city(visibleCity).tours()) {
       unfadeTour(tour);
     }
@@ -1424,8 +1426,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (lastExpandedPosition != -1
           && groupPosition != lastExpandedPosition) {
           lv.collapseGroup(lastExpandedPosition);
-          onGroupClicked=true;
         }
+        onGroupClicked=true;
         lastExpandedPosition = groupPosition;
 
         selectTour(tourlist.city(visibleCity).tours().get(groupPosition));
@@ -1438,7 +1440,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     lv.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
       @Override
       public void onGroupCollapse(int groupPosition) {
-        if(onGroupClicked)resetTour();
+        if(onGroupClicked){resetTour();}
       }
     });
 

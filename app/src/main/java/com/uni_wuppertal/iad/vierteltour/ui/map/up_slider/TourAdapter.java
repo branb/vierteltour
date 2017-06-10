@@ -161,10 +161,8 @@ public class TourAdapter extends BaseExpandableListAdapter {
 
 
     holder.laden.setTag(R.raw.laden);
-    new LoadImage(holder.laden, false).execute();
 
     holder.geladen.setTag(R.raw.ok);
-    new LoadImage(holder.geladen, false).execute();
 
     holder.downloadtext.setTag("text"+position);
 
@@ -173,12 +171,13 @@ public class TourAdapter extends BaseExpandableListAdapter {
     convertView.setBackgroundColor( Color.parseColor( tour.color() ) );
 
     if(sharedPreferences.getBoolean(tour.slug(), false))
-    {
+    {new LoadImage(holder.geladen, false).execute();
       holder.geladen.setVisibility(View.VISIBLE);
       holder.laden.setVisibility(View.GONE);
       holder.downloadtext.setText("geladen");
       holder.downloadtext.setVisibility(View.VISIBLE);}
     else{
+      new LoadImage(holder.laden, false).execute();
       holder.geladen.setVisibility(View.GONE);
       holder.laden.setVisibility(View.VISIBLE);
       holder.downloadtext.setVisibility(View.GONE);
@@ -277,7 +276,6 @@ public class TourAdapter extends BaseExpandableListAdapter {
 
       if(isFile)
       {this.stringpath = imv.getTag().toString();
-        System.out.println(stringpath);
       this.path=0;}
       else
       {this.path = (int) imv.getTag();
@@ -286,7 +284,6 @@ public class TourAdapter extends BaseExpandableListAdapter {
 
     @Override
     protected Bitmap doInBackground(Object... params) {
-      System.out.println(isFile);
        Bitmap bitmap = null;
 
       if(isFile)
@@ -310,7 +307,6 @@ public class TourAdapter extends BaseExpandableListAdapter {
 
 
       if(result != null && imv != null){
-        System.out.println(stringpath);
         imv.setImageBitmap(result);
       }
 
