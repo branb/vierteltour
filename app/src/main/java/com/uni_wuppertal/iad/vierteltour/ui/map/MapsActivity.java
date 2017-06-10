@@ -283,10 +283,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           if (singlepage.INSTANCE.selectedStation().number() == singlepage.INSTANCE.onfragmentclicked()) {
             startStationActivity();
           }
-        }
-      }
-    });
-
+        }}});
 
     supl = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
     slidingLayout = (LinearLayout) findViewById(R.id.dragView);
