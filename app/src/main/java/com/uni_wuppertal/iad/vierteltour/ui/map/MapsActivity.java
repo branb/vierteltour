@@ -704,9 +704,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     stationLayout.setVisibility(View.GONE);
     slidingLayout.setVisibility(View.GONE);
     if (imagePager != null) {
-      System.out.println(imagePager.getChildCount());
       imagePager.removeAllViews();
-      System.out.println(imagePager.getChildCount());
       imagePager.getAdapter().notifyDataSetChanged();
       imagePager.setAdapter(null);
       imagePager=null;
@@ -1134,7 +1132,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   public void resetActivity()
   {if(stationActivityRunning)
   {
-    System.out.println("StationActivityRunning");
     Message message = new Message();
     message.what = MapsActivity.BIG_BAR;
     myHandler.sendMessage(message);
@@ -1253,7 +1250,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if((station.number()-1)==mPager.getCurrentItem())
                 {
-                  System.out.println((station.number()-1)+ "  "+mPager.getCurrentItem());
                   gpsbtn_layout.setVisibility(View.GONE);}
               }
             }
@@ -1911,7 +1907,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
       @Override
       public void onPanelCollapsed( View view ){
-        if(stationActivityRunning)endStationLayout();
+        if(stationActivityRunning && !player.isPlaying())endStationLayout();
         panel_top.setClickable(false);
         //ändere Pfeilrichtung nach oben
         if(singlepage.INSTANCE.selectedStation()==null)
@@ -1944,7 +1940,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         else if(activeAudio)
         {}
-        else{slidingLayout.setVisibility(View.GONE);supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);}//Setze supl höhe, nur wenn audio läuft
+        else{slidingLayout.setVisibility(View.GONE);
+          supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);}//Setze supl höhe, nur wenn audio läuft
 
         pager_layout.setVisibility(View.VISIBLE);
         //zeige Viewpager
