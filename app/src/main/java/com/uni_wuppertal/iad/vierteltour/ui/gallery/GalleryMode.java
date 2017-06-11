@@ -80,7 +80,7 @@ public class GalleryMode extends Activity {
     System.out.println(resultCode);
    if(requestCode == 3 || requestCode==1)
     {int RESULT_NEXT=10;
-      if(resultCode == RESULT_OK){imagePagerGallery.setCurrentItem(0);}
+      if(resultCode == RESULT_OK){}
       else if(resultCode == RESULT_NEXT){
        Intent datas = new Intent(); setResult(STATION_BEENDET, datas); onBackPressed();}}
   }

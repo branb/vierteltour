@@ -2101,7 +2101,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer player) {audioFinished();}});
-      if(resultCode == RESULT_OK){imagePager.setCurrentItem(0);}
+      if(resultCode == RESULT_OK){}
     else if(resultCode == RESULT_NEXT){endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}}
   }
 
