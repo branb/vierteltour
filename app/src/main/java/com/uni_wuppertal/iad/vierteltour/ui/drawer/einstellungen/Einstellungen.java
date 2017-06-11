@@ -198,7 +198,7 @@ public class Einstellungen extends AppCompatActivity {
         File test = new File(getExternalFilesDir(null), testpath);
         deleteRecursive(test);
         e.remove(tours.get(position).slug()).remove(tours.get(position).slug()+"-zip").apply();
-        if(tours.size()==3)tours.remove(tours.size()-1);
+        //if(tours.size()==3)tours.remove(tours.size()-1);
         tours.remove(position);
 
         setResult(RESULT_OK);
