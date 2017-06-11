@@ -1123,8 +1123,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   public void resetTour() {
     singlepage.INSTANCE.selectedTour(null);
 
-
-
     for (Tour tour : tourlist.city(visibleCity).tours()) {
       unfadeTour(tour);
     }
@@ -1132,6 +1130,30 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     drawRoutes();
   }
 
+
+  public void resetActivity()
+  {if(stationActivityRunning)
+  {
+    System.out.println("StationActivityRunning");
+    Message message = new Message();
+    message.what = MapsActivity.BIG_BAR;
+    myHandler.sendMessage(message);
+    endStationLayout();
+  pager_layout.setVisibility(View.VISIBLE);}
+    if(seekbar_layout_supl.getVisibility()==View.VISIBLE){
+      suplInfo("h_seekbar");}
+    if(pager_layout.getVisibility()==View.VISIBLE)
+    { Message message = new Message();
+      message.what = MapsActivity.BIG_BAR;
+      myHandler.sendMessage(message);
+      swapToSupl();}
+    if(singlepage.INSTANCE.selectedTour()!=null)
+    {lv.collapseGroup(singlepage.INSTANCE.selectedTour().trkid()-1);
+    lv.smoothScrollToPosition(0);}
+    else {resetTour();}
+    singlepage.INSTANCE.resetAll();
+
+  }
   /**
    * Convert a view to bitmap with markers and numbers
    */
@@ -2055,12 +2077,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     // Check which request we're responding to
     if (requestCode == BACK_FROM_SETTINGS) {
       // Make sure the request was successful
-    if(resultCode == RESULT_CANCELED)
-    {
-      SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-      SharedPreferences.Editor e = sharedPreferences.edit();
-      if(singlepage.INSTANCE.selectedTour()!=null && sharedPreferences.getBoolean(singlepage.INSTANCE.selectedTour().slug(), false))zumstart.setVisibility( View.VISIBLE );
-      else{zumstart.setVisibility(View.INVISIBLE);}}
+    if(resultCode == RESULT_OK)
+    {resetActivity();}
+
   }
   else if(requestCode == BACK_FROM_GALLERY)
   {player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

@@ -201,6 +201,7 @@ public class Einstellungen extends AppCompatActivity {
         if(tours.size()==3)tours.remove(tours.size()-1);
         tours.remove(position);
 
+        setResult(RESULT_OK);
         einstellungenTourAdapter.notifyDataSetChanged();
         MapsActivity.adapter.notifyDataSetChanged();
         if(tours.isEmpty())
