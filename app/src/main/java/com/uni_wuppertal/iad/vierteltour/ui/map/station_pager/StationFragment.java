@@ -77,14 +77,16 @@ public class StationFragment extends Fragment{
     ImageView icon = (ImageView) rootView.findViewById(R.id.nav_icon);
     RelativeLayout image_layout = (RelativeLayout) rootView.findViewById(R.id.transparentstation);
     Sharp.loadResource(getResources(), R.raw.ausrufezeichen).into(icon);
-    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.302),(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().heightPixels*0.149));
+    //System.out.println("Height: "+getContext().getApplicationContext().getResources().getDisplayMetrics().heightPixels+"width: "+getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels);
+    //System.out.println((int) (getContext().getApplicationContext().getResources().getDisplayMetrics().heightPixels*0.149));
+   /* RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().heightPixels*0.149));
     lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
     lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
     lp.topMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.026);
     lp.leftMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.030);
     lp.rightMargin=(int) (getContext().getApplicationContext().getResources().getDisplayMetrics().widthPixels*0.030);
     image_layout.setLayoutParams(lp);
-    image.setLayoutParams(lp);
+    image.setLayoutParams(lp);*/
 
     numberlayout = rootView.findViewById(R.id.numberlayout);
 
@@ -96,7 +98,7 @@ public class StationFragment extends Fragment{
       String externalPath=OurStorage.get(getContext()).storagePath()+"/";
       String appPath=OurStorage.get(getContext()).lookForTourFile(((MapsActivity)getContext()).tourlist(), singlepage.INSTANCE.selectedTour().image())+"/"+singlepage.INSTANCE.selectedTour().station(position).slug()+"/";
       //Sets small image into fragment
-      String file="i_"+(singlepage.INSTANCE.selectedTour().trkid()<10?"0"+singlepage.INSTANCE.selectedTour().trkid():singlepage.INSTANCE.selectedTour().trkid())+"_"+(position<10?"0"+position:position)+"_01_400.jpg";
+      String file="i_"+(singlepage.INSTANCE.selectedTour().trkid()<10?"0"+singlepage.INSTANCE.selectedTour().trkid():singlepage.INSTANCE.selectedTour().trkid())+"_"+(position<10?"0"+position:position)+"_01.jpg";
 
       SharedPreferences getPrefs = PreferenceManager
         .getDefaultSharedPreferences( ((MapsActivity) getContext()).getBaseContext() );
