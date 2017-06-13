@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.SpannableString;
@@ -182,8 +183,9 @@ public class TourAdapter extends BaseExpandableListAdapter {
       holder.laden.setVisibility(View.VISIBLE);
       holder.downloadtext.setVisibility(View.GONE);
     }
-    holder.imgAuthor.setTag(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png");
-    new LoadImage(holder.imgAuthor, true).execute();
+    //holder.imgAuthor.setTag(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png");
+    //new LoadImage(holder.imgAuthor, true).execute();
+    holder.imgAuthor.setImageURI(Uri.parse(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png"));
 
     holder.txtTitle.setText( tour.name() );
     SpannableString author = new SpannableString(tour.author() + " ");

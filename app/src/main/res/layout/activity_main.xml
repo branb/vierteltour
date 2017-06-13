@@ -434,6 +434,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:autoLink="web"
+                        android:textColorLink="@color/black"
                         android:text="Hier kommt die Stationenbeschreibung hin!"
                         android:layout_below="@+id/stopover"
                         android:textColor="@color/black"
