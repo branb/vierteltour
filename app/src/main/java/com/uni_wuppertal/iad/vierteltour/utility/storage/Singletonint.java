@@ -29,6 +29,7 @@ public enum Singletonint {
       selectedOldStation=null;
       onfragmentclicked=-1;
       videotime=0;
+      position=0;
     }
 
     public int getId(){

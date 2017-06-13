@@ -935,6 +935,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   }
 
 
+
   public void startGallery() {
     Intent gallery = new Intent(getApplicationContext(), GalleryMode.class);
 
@@ -948,6 +949,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     gallery.putExtra("size", size);
     gallery.putExtra("number", number - 1);
 
+    startaudio=false;
     startActivityForResult(gallery, BACK_FROM_GALLERY);
     overridePendingTransition(0, 0);
   }
@@ -1039,7 +1041,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       }
     }
   }
-
   //End StationActivty
 
   /**
@@ -2083,9 +2084,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onCompletion(MediaPlayer player) {
       audioFinished();
-    }
-
-  });
+    }});
+    if(!player.isPlaying()){startaudio=false;setImageResource(true);}
+    else{startaudio=true; seekUpdationAudio();}
     imagePager.setCurrentItem(singlepage.INSTANCE.position());
     for (int i = 0; i < dotsCount; i++) {
     if(i==singlepage.INSTANCE.position())

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
+import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.station.Stationbeendet;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
@@ -76,8 +78,6 @@ public class GalleryMode extends Activity {
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    System.out.println(requestCode);
-    System.out.println(resultCode);
    if(requestCode == 3 || requestCode==1)
     {int RESULT_NEXT=10;
       if(resultCode == RESULT_OK){}
@@ -96,7 +96,9 @@ public class GalleryMode extends Activity {
       mAdapter2.showImage(imagePagerGallery.getCurrentItem());
       startvideo = false;
       Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery);
-      durationGallery.setText("0:00");
+      timeElapsedGallery = mAdapter2.videoView(singlepage.INSTANCE.position()).getDuration();
+      durationGallery.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsedGallery) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery))));
+
       seekbarGallery.setProgress(0);
       mAdapter2.videoView(singlepage.INSTANCE.position()).seekTo(0);
       if(getResources().getConfiguration().orientation!= Configuration.ORIENTATION_PORTRAIT)
@@ -118,9 +120,6 @@ public class GalleryMode extends Activity {
   res = gallerybundle.getParcelableArrayList("resources");
 
   for(int i=0;i<res.size();i++)
-    System.out.println(res.get(i).getSource());
-
-  for(int i=0;i<res.size();i++)
   {if(res.get(i).getSource().contains(".mp4"))
   {containsVideo=true;}}
 
@@ -137,8 +136,8 @@ public class GalleryMode extends Activity {
   seekbarGallery_bar = (SeekBar) findViewById( R.id.seek_barGallery_bar );
   play_buttonGallery = (ImageButton) findViewById( R.id.play_buttonGallery );
   Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery);
-
   play_buttonGallery_bar = (ImageButton) findViewById( R.id.play_buttonGallery_bar );
+  Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery_bar);
   imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
   imagePagerGallery.setOffscreenPageLimit(2);
   gallerytitle = (TextView) findViewById( R.id.titleGallery );
@@ -208,7 +207,7 @@ public class GalleryMode extends Activity {
   * Layout Setup
  */
   public void gallerymode(){
-    setTitleText(0);
+    setTitleText(singlepage.INSTANCE.position());
     gallerytitletop.setText(station);
     setUiPageViewController();
 
@@ -281,11 +280,12 @@ public class GalleryMode extends Activity {
       seekbarGallery_bar.setMax( mAdapter2.videoView(singlepage.INSTANCE.position()).getDuration() );
       seekbarGallery.setProgress( mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition() );
       seekbarGallery_bar.setProgress( mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition() );
-      timeElapsedGallery = mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition();
+      timeElapsedGallery = mAdapter2.videoView(singlepage.INSTANCE.position()).getDuration()-mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition();
 
       singlepage.INSTANCE.videotime(seekbarGallery.getProgress());
-      durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsedGallery ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ) ) ) );
-      durationGallery_bar.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ), TimeUnit.MILLISECONDS.toSeconds( (long) timeElapsedGallery ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) timeElapsedGallery ) ) ) );
+      durationGallery.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsedGallery) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery))));
+      durationGallery_bar.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsedGallery) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery))));
+
       seekHandlerGallery.postDelayed( run2, 100 );
     }}
 
@@ -370,15 +370,21 @@ public class GalleryMode extends Activity {
    */
   public void stopVideoplay()
   {startvideo = false;
+    timeElapsedGallery = mAdapter2.videoView(singlepage.INSTANCE.position()).getDuration();
     mAdapter2.videoView(singlepage.INSTANCE.position()).pause();
     Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery);
     Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery_bar);
     mAdapter2.showImage(imagePagerGallery.getCurrentItem());
     mAdapter2.videoView(singlepage.INSTANCE.position()).setVisibility(View.GONE);
-    durationGallery_bar.setText("0:00");
     seekbarGallery_bar.setProgress(0);
-    durationGallery.setText("0:00");
-    seekbarGallery.setProgress(0);}
+    seekbarGallery.setProgress(0);
+
+
+    singlepage.INSTANCE.videotime(seekbarGallery.getProgress());
+    durationGallery.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsedGallery) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery))));
+    durationGallery_bar.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsedGallery) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery))));
+
+  }
 
   /**
    * Is Used to show/hide the Bars in Landscapemode on top and bottom of screen
@@ -494,9 +500,9 @@ public class GalleryMode extends Activity {
     @Override
     public void onPageSelected( int position ){
       if(mAdapter2.videoView(singlepage.INSTANCE.position()).isPlaying())
-      {stopVideoplay();
-      if(position < mAdapter2.getCount()) mAdapter2.showImage(position);
-      if(position > 0) mAdapter2.showImage(position-1);}      //reset the Neighbours image
+      {stopVideoplay();}
+      mAdapter2.showImage(singlepage.INSTANCE.position());if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("jpg")){mAdapter2.unzoomImageView(singlepage.INSTANCE.position());}
+
 
       hideBars();
 
@@ -508,17 +514,16 @@ public class GalleryMode extends Activity {
 
       dots[position].setImageDrawable( getResources().getDrawable( R.drawable.selecteditem ) );
 
-      isimages=singlepage.INSTANCE.position();
-      imagePagerGallery.setCurrentItem(singlepage.INSTANCE.position());
+      isimages=position;
+      imagePagerGallery.setCurrentItem(position);
 
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE && res.get(position)!=null)
-      { mAdapter2.videoView(singlepage.INSTANCE.position()).setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position));
-        showGalleryVideoBar();}
+      { mAdapter2.videoView(singlepage.INSTANCE.position()).setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position).getSource());
+        showGalleryVideoBar();
+      video();
+        setVideoTime(singlepage.INSTANCE.videotime());}
       else
       {hideGalleryVideoBar();}
-
-
-      setVideoTime(singlepage.INSTANCE.videotime());
 
       setTitleText(position);
     }
@@ -531,10 +536,22 @@ public class GalleryMode extends Activity {
 
   public void setVideoTime(int time)
   {mAdapter2.videoView(singlepage.INSTANCE.position()).seekTo(time);
-    durationGallery.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) time ), TimeUnit.MILLISECONDS.toSeconds( (long) time ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) time ) ) ) );
-    durationGallery_bar.setText( String.format( "%d:%02d", TimeUnit.MILLISECONDS.toMinutes( (long) time ), TimeUnit.MILLISECONDS.toSeconds( (long) time ) - TimeUnit.MINUTES.toSeconds( TimeUnit.MILLISECONDS.toMinutes( (long) time ) ) ) );
     seekbarGallery.setProgress(time);
-    seekbarGallery_bar.setProgress(time);}
+    seekbarGallery_bar.setProgress(time);
+
+    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+    retriever.setDataSource(getExternalFilesDir( null ) +"/" + res.get(singlepage.INSTANCE.position()).getSource());
+    String time2 = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+    long timeInmillisec = Long.parseLong( time2 );
+
+    timeElapsedGallery = timeInmillisec-mAdapter2.videoView(singlepage.INSTANCE.position()).getCurrentPosition();
+
+
+    singlepage.INSTANCE.videotime(seekbarGallery.getProgress());
+    durationGallery.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsedGallery) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery))));
+    durationGallery_bar.setText("-"+String.format("%d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery), TimeUnit.MILLISECONDS.toSeconds((long) timeElapsedGallery) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeElapsedGallery))));
+
+    }
 
   public void setTitleText(int position)
   {if(!res.get(position).title().isEmpty())

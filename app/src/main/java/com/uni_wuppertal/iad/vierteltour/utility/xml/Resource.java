@@ -41,8 +41,8 @@ public class Resource extends TourListData implements Parcelable {
 
   public String source(){
     if(source==null)return "";
-    else if(source.contains(home())) return source;
-    else return home() + source;
+    else if(source.contains(home())) {return source;}
+    else {return home() + source;}
   }
 
   public void setSource(String newSource)

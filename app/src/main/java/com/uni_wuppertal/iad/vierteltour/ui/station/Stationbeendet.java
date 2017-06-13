@@ -74,7 +74,6 @@ public class Stationbeendet extends Activity {
 
         overridePendingTransition(0, 0);
         finish();
-        System.out.println("onBackPressed1");
         overridePendingTransition(0, 0);
       }
     });
