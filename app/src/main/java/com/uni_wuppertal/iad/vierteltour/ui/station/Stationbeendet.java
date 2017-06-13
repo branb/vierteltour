@@ -78,14 +78,12 @@ public class Stationbeendet extends Activity {
       }
     });
 
-    //Sets all singleton variables to null and opens MapsActivity again
+    //go back to start screen
     zur_tourenauswahl.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-        Intent back = new Intent(getApplicationContext(), MapsActivity.class);
-        singlepage.INSTANCE.resetAll();
-        back.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(back);
+        setResult(9);
+        onBackPressed();
         overridePendingTransition(0, 0);
       }
     });

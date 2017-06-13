@@ -82,7 +82,11 @@ public class GalleryMode extends Activity {
     {int RESULT_NEXT=10;
       if(resultCode == RESULT_OK){}
       else if(resultCode == RESULT_NEXT){
-       Intent datas = new Intent(); setResult(STATION_BEENDET, datas); onBackPressed();}}
+       Intent datas = new Intent(); setResult(STATION_BEENDET, datas); onBackPressed();}
+
+      if(resultCode == 9)
+      {setResult(9);onBackPressed();}
+    }
   }
 
   /**
@@ -521,7 +525,7 @@ public class GalleryMode extends Activity {
       { mAdapter2.videoView(singlepage.INSTANCE.position()).setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position).getSource());
         showGalleryVideoBar();
       video();
-        setVideoTime(singlepage.INSTANCE.videotime());}
+        try{setVideoTime(singlepage.INSTANCE.videotime());}catch(Exception e){}}
       else
       {hideGalleryVideoBar();}
 

@@ -946,7 +946,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     gallery.putExtra("station", singlepage.INSTANCE.selectedStation().name());
     gallery.putExtra("pfad", path);
-    gallery.putExtra("size", size);
+    gallery.putExtra("size", size-1);
     gallery.putExtra("number", number - 1);
 
     startaudio=false;
@@ -2095,6 +2095,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));}
   if(resultCode == STATION_BEENDET_GALLERY)
   { endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}
+
+  if(resultCode==9)
+  {resetActivity();}
+
   }
 
     else if(requestCode == BACK_FROM_STATION_FINISHED)
@@ -2103,7 +2107,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         public void onCompletion(MediaPlayer player) {audioFinished();}});
       if(resultCode == RESULT_OK){}
-    else if(resultCode == RESULT_NEXT){endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}}
+    else if(resultCode == RESULT_NEXT){endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}
+
+      if(resultCode==9)
+      {resetActivity();}
+    }
   }
 
   @Override
