@@ -1147,7 +1147,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       swapToSupl();}
     if(singlepage.INSTANCE.selectedTour()!=null)
     {lv.collapseGroup(singlepage.INSTANCE.selectedTour().trkid()-1);
-    lv.smoothScrollToPosition(0);}
+    lv.smoothScrollToPosition(0);
+    suplInfo("invisible");}
     else {resetTour();}
     singlepage.INSTANCE.resetAll();
 

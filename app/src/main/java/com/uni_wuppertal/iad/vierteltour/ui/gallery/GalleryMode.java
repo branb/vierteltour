@@ -505,8 +505,9 @@ public class GalleryMode extends Activity {
     public void onPageSelected( int position ){
       if(mAdapter2.videoView(singlepage.INSTANCE.position()).isPlaying())
       {stopVideoplay();}
-      mAdapter2.showImage(singlepage.INSTANCE.position());if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("jpg")){mAdapter2.unzoomImageView(singlepage.INSTANCE.position());}
-
+      mAdapter2.showImage(singlepage.INSTANCE.position());
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("jpg"))
+      {mAdapter2.unzoomImageView(singlepage.INSTANCE.position());}
 
       hideBars();
 
