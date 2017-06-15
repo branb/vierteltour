@@ -64,7 +64,7 @@ public class Splash extends Activity implements UpdateListener {
         finish();
           overridePendingTransition(0, 0);}
       }
-    }, 1000);
+    }, 1);
     //checkForUpdates();
    // launcher.start();
   }
@@ -126,19 +126,17 @@ public class Splash extends Activity implements UpdateListener {
     dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.setContentView(R.layout.alert_dialog);
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    dialog.setCanceledOnTouchOutside(false);
     dialog.show();
 
     TextView title = (TextView) dialog.findViewById(R.id.title_dialog);
     title.setText("Verbindungsprobleme");
-    title.setTypeface(Typeface.SERIF);
-    //title.setTextColor(Color.BLACK);
+    title.setTextColor(getResources().getColor(R.color.black));
     TextView txt = (TextView) dialog.findViewById(R.id.text_dialog);
     SpannableString dialog_text = new SpannableString(text + " ");
     dialog_text.setSpan(new StyleSpan(Typeface.BOLD), 0, dialog_text.length(), 0);
     txt.setTextColor(getResources().getColor(R.color.black));
     txt.setText(dialog_text);
-    txt.setTypeface(Typeface.SERIF);
-    //txt.setTextColor(Color.BLACK);
     ImageButton okayButton = (ImageButton) dialog.findViewById(R.id.button_dialog);
     Sharp.loadResource(getResources(), R.raw.schliessen).into(okayButton);
     // if decline button is clicked, close the custom dialog

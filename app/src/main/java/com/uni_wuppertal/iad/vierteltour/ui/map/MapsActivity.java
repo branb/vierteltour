@@ -38,6 +38,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -249,8 +250,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     mFragmentShadowTransformer = new ShadowTransformer(mPager, fragmentAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
-
-
   }
 
   @Override
@@ -2268,6 +2267,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   {
     // declare the dialog as a member field of your activity
     final Dialog dialog = new Dialog(this);
+    dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     dialog.setContentView(R.layout.alert_dialog);
     TextView txt = (TextView) dialog.findViewById(R.id.text_dialog);
     SpannableString dialog_text = new SpannableString(text + " ");

@@ -61,7 +61,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.splash.Splash" android:theme="@style/Theme.Transparent" android:screenOrientation="portrait">
+        <activity android:name=".ui.splash.Splash" android:theme="@style/SplashTheme" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
               <category android:name="android.intent.category.LAUNCHER"/>
