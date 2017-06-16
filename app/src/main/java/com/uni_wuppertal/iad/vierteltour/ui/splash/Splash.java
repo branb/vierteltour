@@ -48,10 +48,16 @@ public class Splash extends Activity implements UpdateListener {
     vid.requestFocus();
     vid.start();
 
-    myintent = new Intent(this, MapsActivity.class);
+
     try{checkForUpdates();}
     catch(Exception e){
       Toast.makeText(this, "Die Tourdaten konnten nicht geladen werden", Toast.LENGTH_LONG);}
+    //IntentLauncher launcher = new IntentLauncher();
+    myintent = new Intent(this, MapsActivity.class);
+
+
+    //checkForUpdates();
+   // launcher.start();
   }
 
   private void initTypeface() {
@@ -92,11 +98,16 @@ public class Splash extends Activity implements UpdateListener {
   }
 
   @Override
-  public void noNewTourdataAvailable(){if(!stop)
-  { startActivity(myintent);
-    overridePendingTransition(0, 0);
-    finish();
-    overridePendingTransition(0, 0);}}
+  public void noNewTourdataAvailable(){new Handler().postDelayed(new Runnable(){
+    @Override
+    public void run() {
+      if(!stop)
+      { startActivity(myintent);
+        overridePendingTransition(0, 0);
+        finish();
+        overridePendingTransition(0, 0);}
+    }
+  }, 1);}
 
   @Override
   public void tourlistDownloaded(){
@@ -106,11 +117,17 @@ public class Splash extends Activity implements UpdateListener {
   @Override
   public void tourdataDownloaded(){
     singlepage.INSTANCE.versionUpdate(false);
-    if(!stop)
-    { startActivity(myintent);
-      overridePendingTransition(0, 0);
-      finish();
-      overridePendingTransition(0, 0);} }
+    
+    new Handler().postDelayed(new Runnable(){
+      @Override
+      public void run() {
+        if(!stop)
+        { startActivity(myintent);
+          overridePendingTransition(0, 0);
+          finish();
+          overridePendingTransition(0, 0);}
+      }
+    }, 1); }
 
   public void createDialog(String text)
   {
