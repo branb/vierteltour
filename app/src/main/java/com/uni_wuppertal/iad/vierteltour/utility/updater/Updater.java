@@ -131,6 +131,8 @@ public class Updater extends ContextWrapper{
       try{
       updateListener.noNewTourdataAvailable();}
       catch (Exception e){Log.d( DEBUG_TAG, "No Tourdata found!" );}
+      System.out.println("true3");
+      singlepage.INSTANCE.start(true);
       return false;
     }
     Log.d( DEBUG_TAG, "Checking for updates..." );
@@ -199,6 +201,8 @@ public class Updater extends ContextWrapper{
           updateListener.newTourdataAvailable();
         }
         checkingForUpdates = false;
+      /*  System.out.println("true1");
+        singlepage.INSTANCE.start(true);*/
         return result;
       } catch (IOException e) {
         return "Unable to retrieve web page. URL may be invalid.";

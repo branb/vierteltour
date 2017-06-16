@@ -67,9 +67,7 @@ public enum Singletonint {
 
     public boolean start(){return start;}
     public void start(boolean start){
-      System.out.println(this.start);
       this.start=start;
-      System.out.println(this.start);
     }
 
     public ArrayList<Integer> countWaypoints() {return countWaypoints;}
