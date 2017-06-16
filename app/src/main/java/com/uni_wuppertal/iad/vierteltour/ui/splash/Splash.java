@@ -117,7 +117,7 @@ public class Splash extends Activity implements UpdateListener {
   @Override
   public void tourdataDownloaded(){
     singlepage.INSTANCE.versionUpdate(false);
-    
+
     new Handler().postDelayed(new Runnable(){
       @Override
       public void run() {

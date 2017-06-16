@@ -1501,8 +1501,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     x_supl.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
-        lv.collapseGroup(singlepage.INSTANCE.selectedTour().trkid()-1);
-        lv.smoothScrollToPosition(0);
+    if(singlepage.INSTANCE.selectedTour()!=null)
+    {lv.collapseGroup(singlepage.INSTANCE.selectedTour().trkid()-1);
+     lv.smoothScrollToPosition(0);}
       }
     });
 
