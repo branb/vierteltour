@@ -1929,7 +1929,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           else{suplInfo("s_seekbar");}
           //if(stationActivityRunning)pager_layout.setVisibility(View.VISIBLE);
           panel.setVisibility(View.GONE);}
-
+          showNavBtns();
       }
 
       @Override
@@ -1977,6 +1977,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
       @Override
       public void onPanelExpanded( View view ){//Ändere Pfeilimage nach unten
+        hideNavBtns();
         activeAudio=false;
         suplInfo( "gone" );
         panel.setVisibility( View.GONE );
@@ -1995,6 +1996,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(stationActivityRunning)endStationLayout();}
       }};
   }
+
+  public void hideNavBtns()
+  {tarbtn.setVisibility(View.GONE);
+   arrowbtn.setVisibility(View.GONE);}
+
+  public void showNavBtns()
+  {tarbtn.setVisibility(View.VISIBLE);
+    arrowbtn.setVisibility(View.VISIBLE);}
 
   /**
    * Shows or hides information on interface of supl

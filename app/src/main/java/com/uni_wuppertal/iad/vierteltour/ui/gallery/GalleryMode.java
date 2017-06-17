@@ -350,7 +350,8 @@ public class GalleryMode extends Activity {
    * Stops Audio, Starts Video, Managing all Buttons
    */
   public void startVideoplay()
-  {if(player.isPlaying())player.pause();
+  {mAdapter2.hideVideoThumbnail(singlepage.INSTANCE.position());
+    if(player.isPlaying())player.pause();
     startvideo = true;
     mAdapter2.videoView(singlepage.INSTANCE.position()).setVisibility(View.VISIBLE);
     try{mAdapter2.hideImage(imagePagerGallery.getCurrentItem());}catch(Exception e){}
@@ -508,6 +509,7 @@ public class GalleryMode extends Activity {
       mAdapter2.showImage(singlepage.INSTANCE.position());
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("jpg"))
       {mAdapter2.unzoomImageView(singlepage.INSTANCE.position());}
+      mAdapter2.showVideoThumbnail(singlepage.INSTANCE.position());
 
       hideBars();
 
@@ -561,11 +563,11 @@ public class GalleryMode extends Activity {
   public void setTitleText(int position)
   {if(!res.get(position).title().isEmpty())
   {gallerytitle.setText( res.get(position).title() );
-   // gallerytitletop.setText(res.get(position).title());
-  }
+    gallerytitletop.setText(res.get(position).title());}
+
   else
-  {gallerytitle.setText( station );
-  //  gallerytitletop.setText(station);
+  {gallerytitle.setText( "" ); gallerytitle.setVisibility(View.GONE);
+    gallerytitletop.setText( "" ); gallerytitletop.setVisibility(View.GONE);
   }}
 
 }

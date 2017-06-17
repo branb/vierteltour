@@ -201,9 +201,10 @@ public class GalleryPagerAdapter extends PagerAdapter {
   }
 
   public void showVideoThumbnail(int position)
+  {if(stationImagePaths.get(position).getSource().endsWith(".mp4"))
   {ownContainer.findViewWithTag("image" + position).setVisibility(View.VISIBLE);
     ownContainer.findViewWithTag("play" + position).setVisibility(View.VISIBLE);
-    ownContainer.findViewWithTag("background" + position).setVisibility(View.VISIBLE);}
+    ownContainer.findViewWithTag("background" + position).setVisibility(View.VISIBLE);}}
 
   public void hideVideoThumbnail(int position)
   {ownContainer.findViewWithTag("image" + position).setVisibility(View.GONE);
