@@ -242,7 +242,7 @@
                         android:paddingRight="20dp"
                       android:paddingLeft="15dp"
                       android:paddingTop="15dp"
-                        android:paddingBottom="15dp"
+                        android:paddingBottom="7dp"
                         android:layout_alignParentBottom="true"
                         android:background="@color/transparent"
                         android:visibility="invisible"    />
@@ -431,9 +431,10 @@
 
                       <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
                         android:id="@+id/stationenbeschreibung"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:autoLink="web"
+                        android:hyphenationFrequency="full"
                         android:textColorLink="@color/black"
                         android:text="Hier kommt die Stationenbeschreibung hin!"
                         android:layout_below="@+id/stopover"

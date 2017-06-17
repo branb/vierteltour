@@ -656,6 +656,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     info2.setText(info2_text);
     description = (TextView) findViewById(R.id.stationenbeschreibung);
     description.setText(singlepage.INSTANCE.selectedStation().descText());
+    //description.setText("Am Café du Kongo vorbei gelangen Sie zur Sophien/kirche. Diese ist ein weiterer wichtiger Klang-raum Wuppertals. Die Reihe „Unerhört“ findet dort regelmäßig statt.");
     TextView stopover = (TextView) findViewById(R.id.stopover);
     if(!singlepage.INSTANCE.selectedStation().stopover().isEmpty())
     {stopover.setText(singlepage.INSTANCE.selectedStation().stopover());
