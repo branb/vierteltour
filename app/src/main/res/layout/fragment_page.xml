@@ -60,12 +60,13 @@
       </RelativeLayout>
         <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
             android:id="@+id/titlefrag"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TITLE"
+          android:textSize="13sp"
             android:textColor="@color/black"
             android:layout_below="@+id/image_layout"
-            android:paddingLeft="12dp"
+            android:paddingLeft="10dp"
             android:paddingRight="10dp"
             />
         <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView

@@ -2,6 +2,7 @@ package com.uni_wuppertal.iad.vierteltour.ui.splash;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -98,14 +99,15 @@ public class Splash extends Activity implements UpdateListener {
   }
 
   @Override
-  public void noNewTourdataAvailable(){new Handler().postDelayed(new Runnable(){
+  public void noNewTourdataAvailable(){
+    new Handler().postDelayed(new Runnable(){
     @Override
     public void run() {
       if(!stop)
-      { startActivity(myintent);
-        overridePendingTransition(0, 0);
-        finish();
-        overridePendingTransition(0, 0);}
+      { Splash.this.startActivity(myintent);
+        Splash.this.overridePendingTransition(0, 0);
+        Splash.this.finish();
+        Splash.this.overridePendingTransition(0, 0);}
     }
   }, 1);}
 
@@ -122,10 +124,10 @@ public class Splash extends Activity implements UpdateListener {
       @Override
       public void run() {
         if(!stop)
-        { startActivity(myintent);
-          overridePendingTransition(0, 0);
-          finish();
-          overridePendingTransition(0, 0);}
+        { Splash.this.startActivity(myintent);
+          Splash.this.overridePendingTransition(0, 0);
+          Splash.this.finish();
+          Splash.this.overridePendingTransition(0, 0);}
       }
     }, 1); }
 

@@ -17,6 +17,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -64,6 +65,7 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -1264,11 +1266,34 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    * (Re-)Draw the routes of the currently visible tours and their station markers
    */
   private void drawRoutes() {
+    new DrawRoutes().execute();
     //lösche alles
-    if (mMap != null) mMap.clear();
-    drawOwnLocation();
-    drawPolylines();
-    drawStations();
+
+
+  }
+
+  class DrawRoutes extends AsyncTask<Object, Void, Bitmap> {
+
+    @Override
+    protected void onPreExecute()
+    {}
+
+    @Override
+    protected Bitmap doInBackground(Object... params) {
+      Bitmap bitmap = null;
+
+
+
+      return bitmap;
+    }
+    @Override
+    protected void onPostExecute(Bitmap result) {
+      if (mMap != null) mMap.clear();
+      drawOwnLocation();
+      drawPolylines();
+      drawStations();
+    }
+
   }
 
   /**
@@ -1459,7 +1484,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     lv.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
       @Override
       public void onGroupCollapse(int groupPosition) {
-        if(onGroupClicked){resetTour();}
+        if(singlepage.INSTANCE.selectedTour()!=null && onGroupClicked){resetTour();}
       }
     });
 

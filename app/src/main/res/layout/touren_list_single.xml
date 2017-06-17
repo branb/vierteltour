@@ -18,8 +18,8 @@
     android:id="@+id/img"
     android:layout_width="50dp"
     android:layout_height="50dp"
-    android:layout_marginLeft="25dp"
-    android:layout_marginRight="30dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
     android:layout_centerVertical="true"
     />
 

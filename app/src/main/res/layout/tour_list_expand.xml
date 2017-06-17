@@ -20,7 +20,7 @@
     android:id="@+id/addinfo"
     android:lineSpacingExtra="3dp"
     android:textSize="15sp"
-    android:layout_marginLeft="70dp"
+    android:layout_marginLeft="90dp"
     android:textColor="@color/black"
     android:paddingRight="20dp"
     android:layout_marginTop="10dp"/>

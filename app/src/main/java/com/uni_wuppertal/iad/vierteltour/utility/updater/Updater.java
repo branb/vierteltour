@@ -169,7 +169,6 @@ public class Updater extends ContextWrapper{
   // displayed in the UI by the AsyncTask's onPostExecute method.
   private class DownloadTourdataVersionTask extends AsyncTask<String, Void, String>{
 
-
     @Override
     protected String doInBackground( String... urls ) {
       // urls comes from the execute() call: urls[0] is the url.
@@ -212,7 +211,7 @@ public class Updater extends ContextWrapper{
     // onPostExecute displays the results of the AsyncTask.
     @Override
     protected void onPostExecute( String result ) {
-
+      System.out.println("ASYNCFINISHED");
     }
 
 
