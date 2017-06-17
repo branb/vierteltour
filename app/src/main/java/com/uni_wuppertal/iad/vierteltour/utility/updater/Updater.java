@@ -211,7 +211,6 @@ public class Updater extends ContextWrapper{
     // onPostExecute displays the results of the AsyncTask.
     @Override
     protected void onPostExecute( String result ) {
-      System.out.println("ASYNCFINISHED");
     }
 
 
