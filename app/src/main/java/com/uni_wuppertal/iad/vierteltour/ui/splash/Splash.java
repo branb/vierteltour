@@ -42,19 +42,20 @@ public class Splash extends Activity implements UpdateListener {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.splash);
     initTypeface();                                                //only for SplashActivity
+    singlepage.INSTANCE.restart(true);      //On First Start
 
     pbar = (ProgressBar) findViewById(R.id.progressBar);
     vid = (VideoView) findViewById(R.id.videoView);
     vid.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.animation));
     vid.requestFocus();
     vid.start();
-
+    myintent = new Intent(this, MapsActivity.class);
 
     try{checkForUpdates();}
     catch(Exception e){
       Toast.makeText(this, "Die Tourdaten konnten nicht geladen werden", Toast.LENGTH_LONG);}
     //IntentLauncher launcher = new IntentLauncher();
-    myintent = new Intent(this, MapsActivity.class);
+
 
 
     //checkForUpdates();
@@ -103,11 +104,12 @@ public class Splash extends Activity implements UpdateListener {
     new Handler().postDelayed(new Runnable(){
     @Override
     public void run() {
-      if(!stop)
+      if(!stop && singlepage.INSTANCE.restart())
       { Splash.this.startActivity(myintent);
         Splash.this.overridePendingTransition(0, 0);
         Splash.this.finish();
-        Splash.this.overridePendingTransition(0, 0);}
+        Splash.this.overridePendingTransition(0, 0);
+        singlepage.INSTANCE.restart(false);}
     }
   }, 1);}
 
@@ -123,11 +125,12 @@ public class Splash extends Activity implements UpdateListener {
     new Handler().postDelayed(new Runnable(){
       @Override
       public void run() {
-        if(!stop)
+        if(!stop && singlepage.INSTANCE.restart())
         { Splash.this.startActivity(myintent);
           Splash.this.overridePendingTransition(0, 0);
           Splash.this.finish();
-          Splash.this.overridePendingTransition(0, 0);}
+          Splash.this.overridePendingTransition(0, 0);
+          singlepage.INSTANCE.restart(false);}
       }
     }, 1); }
 

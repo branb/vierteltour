@@ -2330,7 +2330,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   }
 
   public void resetMainActivity()
-  {Intent back = new Intent(getApplicationContext(), MapsActivity.class);
+  {
+    System.out.println("RESET");
+    Intent back = new Intent(getApplicationContext(), MapsActivity.class);
     singlepage.INSTANCE.resetAll();
     back.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(back);

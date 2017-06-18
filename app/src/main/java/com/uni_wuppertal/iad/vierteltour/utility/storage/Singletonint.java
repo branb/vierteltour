@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public enum Singletonint {
     INSTANCE;
 
-    private boolean start=false;
+    private boolean restart=false;
     private boolean isAudio, versionUpdate=false;
     private int videotime;    //Videozeitpunkt einspeichern.
     private int id;     //Zur Zeit nur Nummer der Station, soll später zu ID werden
@@ -65,9 +65,9 @@ public enum Singletonint {
     public int videotime(){return videotime;}
     public void videotime(int videotime){this.videotime=videotime;}
 
-    public boolean start(){return start;}
-    public void start(boolean start){
-      this.start=start;
+    public boolean restart(){return restart;}
+    public void restart(boolean restart){
+      this.restart=restart;
     }
 
     public ArrayList<Integer> countWaypoints() {return countWaypoints;}
