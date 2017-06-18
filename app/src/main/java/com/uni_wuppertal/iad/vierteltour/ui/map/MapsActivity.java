@@ -520,7 +520,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    */
   private void fadeTour(Tour tour) {
     String color = "#30" + tour.color().substring(1, 7); // #xx (Hex) transparency
-
+    System.out.println("FADE");
     polylines.get(tour.slug()).color(Color.parseColor(color));
 
     for (Station station : tour.stations()) {
@@ -1061,7 +1061,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     // Unselect all other tours
-    for (Tour t : tourlist.city(visibleCity).tours()) {
+ /*   for (Tour t : tourlist.city(visibleCity).tours()) {
       if (!t.slug().equals(tour.slug())) {
         String color = "#00" + t.color().substring(1, 7); // #xx (Hex) transparency
 
@@ -1073,7 +1073,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       } else {
         unfadeTour(t);
       }
-    }
+    }*/
     selectStation(tour.station(1));
     drawRoutes();
   }
@@ -1087,6 +1087,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     polylines.get(tour.slug()).color(Color.parseColor(tour.color()));
 
     for (Station station : tour.stations()) {
+      System.out.println("UNFADE");
       markers.get(station.slug()).alpha(1.0f);
     }
   }
@@ -2331,7 +2332,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   public void resetMainActivity()
   {
-    System.out.println("RESET");
     Intent back = new Intent(getApplicationContext(), MapsActivity.class);
     singlepage.INSTANCE.resetAll();
     back.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
