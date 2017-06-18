@@ -155,7 +155,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
       @Override
       public void onClick(View v)
       {
-        if(resources.getSource().endsWith("mp4")){
+       /* if(resources.getSource().endsWith("mp4")){
           if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
           {((GalleryMode)mContext).mediaplayerbars();}
         else{
@@ -166,7 +166,9 @@ public class GalleryPagerAdapter extends PagerAdapter {
         } else if (resources.getSource().endsWith("jpg")) {
           if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
           {((GalleryMode)mContext).imageBar();}
-        }
+        }*/
+
+        ((GalleryMode)mContext).mediaplayerbars();
 
       }});
     if(singlepage.INSTANCE.position()==position && resources.getSource().endsWith("mp4"))

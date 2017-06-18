@@ -42,14 +42,14 @@ public class GalleryMode extends Activity {
   ViewPager imagePagerGallery;
   ViertelTourMediaPlayer player;
   Singletonint singlepage;
-  ImageButton play_buttonGallery, x_button, x_button_bar, play_buttonGallery_bar;
+  ImageButton play_buttonGallery, /*x_button,*/ x_button_bar, play_buttonGallery_bar;
   SeekBar seekbarGallery, seekbarGallery_bar;
-  TextView gallerytitle, gallerytitletop, durationGallery, durationGallery_bar;
+  TextView gallerytitle, durationGallery, durationGallery_bar;
   GalleryPagerAdapter mAdapter2;
   ImageView dots[];
   int dotsCount, number, STATION_BEENDET=4;
   LinearLayout pager_indicator;
-  RelativeLayout relGalleryBot, relGalleryTop;
+  RelativeLayout relGalleryBot, relGalleryTop, seekbar_layout_top;
   Boolean startvideo = true;
   double timeElapsedGallery = 0;
   Handler seekHandlerGallery = new Handler();
@@ -132,12 +132,14 @@ public class GalleryMode extends Activity {
   size =  (Integer) gallerybundle.get("size");
   number = (Integer) gallerybundle.get("number");
 
-  x_button = (ImageButton) findViewById( R.id.x_button );
-  Sharp.loadResource(getResources(), R.raw.beenden_hell).into(x_button);
+  /*x_button = (ImageButton) findViewById( R.id.x_button );
+  Sharp.loadResource(getResources(), R.raw.beenden_hell).into(x_button);*/
   x_button_bar = (ImageButton) findViewById( R.id.x_button_bar );
+  Sharp.loadResource(getResources(), R.raw.beenden_hell).into(x_button_bar);
 
+  seekbar_layout_top = (RelativeLayout) findViewById( R.id.seekbar_layout_top);
   seekbarGallery = (SeekBar) findViewById( R.id.seek_barGallery );
-  seekbarGallery_bar = (SeekBar) findViewById( R.id.seek_barGallery_bar );
+  seekbarGallery_bar = (SeekBar) findViewById( R.id.seek_barGallery_bar);
   play_buttonGallery = (ImageButton) findViewById( R.id.play_buttonGallery );
   Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery);
   play_buttonGallery_bar = (ImageButton) findViewById( R.id.play_buttonGallery_bar );
@@ -145,7 +147,6 @@ public class GalleryMode extends Activity {
   imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
   imagePagerGallery.setOffscreenPageLimit(1);
   gallerytitle = (TextView) findViewById( R.id.titleGallery );
-  gallerytitletop = (TextView) findViewById(R.id.titleGalleryTop_bar);
   durationGallery = (TextView) findViewById( R.id.durationGallery );
   durationGallery_bar = (TextView) findViewById( R.id.durationGallery_bar );
   relGalleryBot = (RelativeLayout) findViewById(R.id.relativeBot);
@@ -183,19 +184,22 @@ public class GalleryMode extends Activity {
     super.onConfigurationChanged(newConfig);
     // Checks the orientation of the screen
     if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-      x_button.setVisibility(View.GONE);
-      gallerytitle.setVisibility(View.GONE);
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))seekbar_layout_top.setVisibility(View.VISIBLE);
+
+      //x_button.setVisibility(View.GONE);
+      /*gallerytitle.setVisibility(View.GONE);
       gallerytitletop.setText(station);
       pager_indicator.setVisibility(View.GONE);
       hideGalleryVideoBar();
       ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
       params.height = ViewPager.LayoutParams.MATCH_PARENT;
       imagePagerGallery.setLayoutParams(params);
-
+*/
     } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-      relGalleryBot.setVisibility(View.GONE);
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))seekbar_layout_top.setVisibility(View.GONE);
+     /* relGalleryBot.setVisibility(View.GONE);
       relGalleryTop.setVisibility(View.GONE);
-      x_button.setVisibility(View.VISIBLE);
+      //x_button.setVisibility(View.VISIBLE);
       gallerytitle.setVisibility(View.VISIBLE);
       pager_indicator.setVisibility(View.VISIBLE);
 
@@ -204,7 +208,7 @@ public class GalleryMode extends Activity {
       ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
       params.height = calculateDP(300);
       imagePagerGallery.setLayoutParams(params);
-      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("jpg")){mAdapter2.unzoomImageView(singlepage.INSTANCE.position());}
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("jpg")){mAdapter2.unzoomImageView(singlepage.INSTANCE.position());}*/
     }
   }
 /**
@@ -212,41 +216,40 @@ public class GalleryMode extends Activity {
  */
   public void gallerymode(){
     setTitleText(singlepage.INSTANCE.position());
-    gallerytitletop.setText(station);
     setUiPageViewController();
 
     if ( getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE) {   //do in Landscape mode
-      x_button.setVisibility(View.GONE);                                //Hide Layout except Image/Video
+    /*  //x_button.setVisibility(View.GONE);                                //Hide Layout except Image/Video
       gallerytitle.setVisibility(View.GONE);
 
       hideGalleryVideoBar();
       ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();      //Resize Viewpager of Image/Video
       params.height = ViewPager.LayoutParams.MATCH_PARENT;
-      imagePagerGallery.setLayoutParams(params);}
+      imagePagerGallery.setLayoutParams(params);*/}
     else if (getResources().getConfiguration().orientation  == Configuration.ORIENTATION_PORTRAIT){
-      relGalleryBot.setVisibility(View.GONE);
+     /* relGalleryBot.setVisibility(View.GONE);
       relGalleryTop.setVisibility(View.GONE);
-      x_button.setVisibility(View.VISIBLE);
+//      x_button.setVisibility(View.VISIBLE);
       gallerytitle.setVisibility(View.VISIBLE);
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4")){showGalleryVideoBar();}
 
       ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();//Resize Viewpager of Image/Video
       params.height = calculateDP(300);
-      imagePagerGallery.setLayoutParams(params);
+      imagePagerGallery.setLayoutParams(params);*/
     }
 
-    if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE)
-    {showGalleryVideoBar();}
+    if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4") && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+    {seekbar_layout_top.setVisibility(View.VISIBLE);}
     else
-    {hideGalleryVideoBar();}
+    {seekbar_layout_top.setVisibility(View.GONE);}
 
 
-    x_button.setOnClickListener( new View.OnClickListener(){
+    /*x_button.setOnClickListener( new View.OnClickListener(){
       @Override
       public void onClick( View v ){
         onBackPressed();
       }
-    });
+    });*/
     x_button_bar.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -257,11 +260,9 @@ public class GalleryMode extends Activity {
     if(res.get(singlepage.INSTANCE.position()).getSource().contains(".mp4"))video();
 
     //White Color for Seekbar and Thumb
-    seekbarGallery.getProgressDrawable().setColorFilter(
-      Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
+    seekbarGallery.getProgressDrawable().setColorFilter(Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
     seekbarGallery.getThumb().setColorFilter(Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
-    seekbarGallery_bar.getProgressDrawable().setColorFilter(
-      Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
+    seekbarGallery_bar.getProgressDrawable().setColorFilter(Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
     seekbarGallery_bar.getThumb().setColorFilter(Color.parseColor("#E6EBE0"), android.graphics.PorterDuff.Mode.SRC_IN);
   }
 
@@ -336,13 +337,12 @@ public class GalleryMode extends Activity {
           LinearLayout.LayoutParams.WRAP_CONTENT
         );
 
-        params.setMargins(4, 0, 4, 0);
+        params.setMargins(6, 0, 6, 0);
 
         pager_indicator.addView(dots[i], params);
       }
 
       dots[singlepage.INSTANCE.position()].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
-
     }
   }
 
@@ -428,22 +428,6 @@ public class GalleryMode extends Activity {
   }
 
   /**
-   * Shows custom videoseekbar
-   */
-  public void showGalleryVideoBar()
-  {seekbarGallery.setVisibility(View.VISIBLE);
-    play_buttonGallery.setVisibility(View.VISIBLE);
-    durationGallery.setVisibility(View.VISIBLE);}
-
-  /**
-   * Hides custom videoseekbar
-   */
-  public void hideGalleryVideoBar()
-  {seekbarGallery.setVisibility(View.GONE);
-    play_buttonGallery.setVisibility(View.GONE);
-    durationGallery.setVisibility(View.GONE);}
-
-  /**
    *
    */
   public void imageBar()
@@ -526,11 +510,11 @@ public class GalleryMode extends Activity {
 
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE && res.get(position)!=null)
       { mAdapter2.videoView(singlepage.INSTANCE.position()).setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position).getSource());
-        showGalleryVideoBar();
+        seekbar_layout_top.setVisibility(View.VISIBLE);
       video();
         try{setVideoTime(singlepage.INSTANCE.videotime());}catch(Exception e){}}
       else
-      {hideGalleryVideoBar();}
+      {seekbar_layout_top.setVisibility(View.GONE);}
 
       setTitleText(position);
     }
@@ -563,11 +547,12 @@ public class GalleryMode extends Activity {
   public void setTitleText(int position)
   {if(!res.get(position).title().isEmpty())
   {gallerytitle.setText( res.get(position).title() );
-    gallerytitletop.setText(res.get(position).title());}
+    //gallerytitletop.setText(res.get(position).title());
+    }
 
   else
   {gallerytitle.setText( "" ); gallerytitle.setVisibility(View.GONE);
-    gallerytitletop.setText( "" ); gallerytitletop.setVisibility(View.GONE);
+   // gallerytitletop.setText( "" ); gallerytitletop.setVisibility(View.GONE);
   }}
 
 }
