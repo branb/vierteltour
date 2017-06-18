@@ -84,18 +84,32 @@
   <RelativeLayout
     android:id="@+id/relativeBot"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
     android:layout_alignParentBottom="true"
     android:background="#70000000"
     android:animateLayoutChanges="true"
     android:visibility="gone">
+
+    <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+      android:id="@+id/titleGallery"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_marginLeft="10dp"
+      android:layout_marginRight="10dp"
+      android:gravity="center"
+      android:layout_above="@+id/viewPagerCountDots"
+      android:layout_marginTop="5dp"
+      android:layout_marginBottom="5dp"
+      android:textColor="#ffffff"
+      />
 
     <RelativeLayout
       android:id="@+id/seekbar_layout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_above="@+id/titleGallery"
-      >
+      android:visibility="gone">
 
     <SeekBar
       android:id="@+id/seek_barGallery_bar"
@@ -141,20 +155,11 @@
       android:orientation="horizontal"
       android:gravity="center"
       android:layout_centerHorizontal="true"
-      android:color="#ffffff"
       android:layout_alignParentBottom="true"
-      android:visibility="visible"/>
+      android:visibility="visible"
+      android:layout_marginBottom="5dp"/>
 
-      <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
-        android:id="@+id/titleGallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="15dp"
-        android:layout_above="@+id/viewPagerCountDots"
-        android:layout_marginTop="5dp"
-        android:textColor="#ffffff"
-        />
+
 
   </RelativeLayout>
 

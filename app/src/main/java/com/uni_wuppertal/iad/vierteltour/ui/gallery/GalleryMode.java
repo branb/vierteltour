@@ -49,7 +49,7 @@ public class GalleryMode extends Activity {
   ImageView dots[];
   int dotsCount, number, STATION_BEENDET=4;
   LinearLayout pager_indicator;
-  RelativeLayout relGalleryBot, relGalleryTop, seekbar_layout_top;
+  RelativeLayout relGalleryBot, relGalleryTop, seekbar_layout_top, seekbar_layout_bot;
   Boolean startvideo = true;
   double timeElapsedGallery = 0;
   Handler seekHandlerGallery = new Handler();
@@ -138,6 +138,7 @@ public class GalleryMode extends Activity {
   Sharp.loadResource(getResources(), R.raw.beenden_hell).into(x_button_bar);
 
   seekbar_layout_top = (RelativeLayout) findViewById( R.id.seekbar_layout_top);
+  seekbar_layout_bot = (RelativeLayout) findViewById( R.id.seekbar_layout);
   seekbarGallery = (SeekBar) findViewById( R.id.seek_barGallery );
   seekbarGallery_bar = (SeekBar) findViewById( R.id.seek_barGallery_bar);
   play_buttonGallery = (ImageButton) findViewById( R.id.play_buttonGallery );
@@ -184,7 +185,9 @@ public class GalleryMode extends Activity {
     super.onConfigurationChanged(newConfig);
     // Checks the orientation of the screen
     if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))seekbar_layout_top.setVisibility(View.VISIBLE);
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
+      {seekbar_layout_bot.setVisibility(View.GONE);
+        seekbar_layout_top.setVisibility(View.VISIBLE);}
 
       //x_button.setVisibility(View.GONE);
       /*gallerytitle.setVisibility(View.GONE);
@@ -196,11 +199,12 @@ public class GalleryMode extends Activity {
       imagePagerGallery.setLayoutParams(params);
 */
     } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))seekbar_layout_top.setVisibility(View.GONE);
-     /* relGalleryBot.setVisibility(View.GONE);
-      relGalleryTop.setVisibility(View.GONE);
-      //x_button.setVisibility(View.VISIBLE);
-      gallerytitle.setVisibility(View.VISIBLE);
+
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
+      {seekbar_layout_bot.setVisibility(View.VISIBLE);
+        seekbar_layout_top.setVisibility(View.GONE);}
+
+      /*gallerytitle.setVisibility(View.VISIBLE);
       pager_indicator.setVisibility(View.VISIBLE);
 
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))showGalleryVideoBar();
@@ -219,29 +223,16 @@ public class GalleryMode extends Activity {
     setUiPageViewController();
 
     if ( getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE) {   //do in Landscape mode
-    /*  //x_button.setVisibility(View.GONE);                                //Hide Layout except Image/Video
-      gallerytitle.setVisibility(View.GONE);
-
-      hideGalleryVideoBar();
-      ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();      //Resize Viewpager of Image/Video
-      params.height = ViewPager.LayoutParams.MATCH_PARENT;
-      imagePagerGallery.setLayoutParams(params);*/}
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
+      {seekbar_layout_bot.setVisibility(View.GONE);seekbar_layout_top.setVisibility(View.VISIBLE);}}
     else if (getResources().getConfiguration().orientation  == Configuration.ORIENTATION_PORTRAIT){
-     /* relGalleryBot.setVisibility(View.GONE);
-      relGalleryTop.setVisibility(View.GONE);
-//      x_button.setVisibility(View.VISIBLE);
-      gallerytitle.setVisibility(View.VISIBLE);
-      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4")){showGalleryVideoBar();}
-
-      ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();//Resize Viewpager of Image/Video
-      params.height = calculateDP(300);
-      imagePagerGallery.setLayoutParams(params);*/
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
+      {seekbar_layout_bot.setVisibility(View.VISIBLE);seekbar_layout_top.setVisibility(View.GONE);}
     }
 
-    if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4") && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-    {seekbar_layout_top.setVisibility(View.VISIBLE);}
-    else
-    {seekbar_layout_top.setVisibility(View.GONE);}
+
+    if(!res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
+    {seekbar_layout_top.setVisibility(View.GONE);seekbar_layout_bot.setVisibility(View.GONE);}
 
 
     /*x_button.setOnClickListener( new View.OnClickListener(){
@@ -343,6 +334,7 @@ public class GalleryMode extends Activity {
       }
 
       dots[singlepage.INSTANCE.position()].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
+
     }
   }
 
@@ -414,34 +406,6 @@ public class GalleryMode extends Activity {
   }}
 
   /**
-   * Hides single Bar if shown
-   */
-  public void hideBars()
-  {if(relGalleryBot.getVisibility() == View.VISIBLE)
-  {Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_down);
-    relGalleryBot.startAnimation(slide1);
-    relGalleryBot.setVisibility(View.GONE);}
-  if(relGalleryTop.getVisibility() == View.VISIBLE)
-  {Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_up);
-    relGalleryTop.startAnimation(slide2);
-    relGalleryTop.setVisibility(View.GONE);}
-  }
-
-  /**
-   *
-   */
-  public void imageBar()
-  {if (relGalleryTop.getVisibility() == View.VISIBLE) {
-    Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_up);
-    relGalleryTop.startAnimation(slide2);
-    relGalleryTop.setVisibility(View.GONE);}
-  else if(relGalleryTop.getVisibility() == View.GONE){
-    Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_down);
-    relGalleryTop.startAnimation(slide2);
-    relGalleryTop.setVisibility(View.VISIBLE);}
-  }
-
-  /**
    * calculates sizes for ViewPager depending on pixels and size on used screen
    * @param pixel
    * @return
@@ -495,7 +459,7 @@ public class GalleryMode extends Activity {
       {mAdapter2.unzoomImageView(singlepage.INSTANCE.position());}
       mAdapter2.showVideoThumbnail(singlepage.INSTANCE.position());
 
-      hideBars();
+      //hideBars();
 
       singlepage.INSTANCE.position(position);   //Updating position
 

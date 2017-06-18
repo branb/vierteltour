@@ -21,9 +21,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/img_pager_item_gallery"
     android:visibility="gone"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
-    android:gravity="center"/>
+   />
 
   <ImageView
     android:layout_width="match_parent"
