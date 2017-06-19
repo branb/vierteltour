@@ -84,6 +84,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/subtxt1"
             android:textStyle="italic"
+            android:textColor="@color/black"
             android:layout_below="@+id/txt"/>
 
 
@@ -92,6 +93,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/subtxt2"
         android:textStyle="italic"
+        android:textColor="@color/black"
         android:layout_below="@+id/subtxt1"/>
 </RelativeLayout>
 </RelativeLayout>

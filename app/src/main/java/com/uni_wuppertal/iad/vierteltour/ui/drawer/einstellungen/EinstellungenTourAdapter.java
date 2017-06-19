@@ -60,7 +60,7 @@ public class EinstellungenTourAdapter extends BaseAdapter {
 
     // Define the visible elements of a single item inside of our ListView
     ImageView imgAuthor = (ImageView) convertView.findViewById(R.id.img);
-    ImageView delete = (ImageView) convertView.findViewById(R.id.geladen);
+    ImageView delete = (ImageView) convertView.findViewById(R.id.laden);
     TextView txtTitle = (TextView) convertView.findViewById(R.id.txt);
     TextView txtAuthor = (TextView) convertView.findViewById(R.id.subtxt1);
     TextView txtTimeLength = (TextView) convertView.findViewById(R.id.subtxt2);
@@ -75,13 +75,13 @@ public class EinstellungenTourAdapter extends BaseAdapter {
 
 
       Sharp.loadResource(context.getResources(), R.raw.loeschen).into(delete);
-    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 65, context.getResources().getDisplayMetrics()), ViewGroup.LayoutParams.WRAP_CONTENT);
+    /*RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 65, context.getResources().getDisplayMetrics()), ViewGroup.LayoutParams.WRAP_CONTENT);
     lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
     lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
     lp.setMargins(0,0,(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, context.getResources().getDisplayMetrics()),0);
-    delete.setLayoutParams(lp);
+    delete.setLayoutParams(lp);*/
 
-    delete.setPadding(0,0,0,(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, context.getResources().getDisplayMetrics()));
+   // delete.setPadding(0,0,0,(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, context.getResources().getDisplayMetrics()));
 
 
       BitmapFactory.Options options = new BitmapFactory.Options();
