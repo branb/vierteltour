@@ -154,7 +154,7 @@ public class Updater extends ContextWrapper{
       return true;
     }*/
 
-    updateListener.noNewTourdataAvailable();
+    //updateListener.noNewTourdataAvailable();
     return false;
   }
 
@@ -197,6 +197,7 @@ public class Updater extends ContextWrapper{
           singlepage.INSTANCE.versionUpdate(true);
           updateListener.newTourdataAvailable();
         }
+        //else{updateListener.noNewTourdataAvailable();}
         checkingForUpdates = false;
         return result;
       } catch (IOException e) {
@@ -207,6 +208,7 @@ public class Updater extends ContextWrapper{
     // onPostExecute displays the results of the AsyncTask.
     @Override
     protected void onPostExecute( String result ) {
+      if(!singlepage.INSTANCE.versionUpdate())updateListener.noNewTourdataAvailable();
     }
 
 
