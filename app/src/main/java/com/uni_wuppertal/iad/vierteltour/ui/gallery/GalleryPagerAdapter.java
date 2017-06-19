@@ -18,8 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
-import com.davemorrissey.labs.subscaleview.ImageSource;
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.pixplicity.sharp.Sharp;
 import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.media_player.ViertelTourMediaPlayer;
@@ -39,7 +38,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
   private Context mContext;
   private ArrayList<Resource> stationImagePaths;
-  private SubsamplingScaleImageView imageView;
+  private PhotoView imageView;
   private ImageView play, background;
   private ViertelTourMediaPlayer player;
   private VideoView videoView;
@@ -72,9 +71,9 @@ public class GalleryPagerAdapter extends PagerAdapter {
     play.setTag("play"+position);
     background = (ImageView) itemView.findViewById(R.id.img_pager_background_gallery);
     background.setTag("background"+position);
-    imageView = (SubsamplingScaleImageView) itemView.findViewById( R.id.img_pager_item_gallery );
+    imageView = (PhotoView) itemView.findViewById( R.id.img_pager_item_gallery );
     imageView.setTag("image" + position);
-    imageView.setParallelLoadingEnabled(true);
+    //imageView.setParallelLoadingEnabled(true);
     //imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button_gallery );
     //imageBtn.setTag("button" + position);
     videoView = (VideoView) itemView.findViewById( R.id.vid_pager_item_gallery );
@@ -94,9 +93,9 @@ public class GalleryPagerAdapter extends PagerAdapter {
       {videoView.setVideoPath(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()));
         Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()),
         MediaStore.Images.Thumbnails.MINI_KIND);
-        if(thumbnail!=null)imageView.setImage(ImageSource.bitmap(thumbnail));
+        if(thumbnail!=null)imageView.setImageBitmap(thumbnail);
         }
-      else{imageView.setImage(ImageSource.resource(R.drawable.i));}
+      else{/*imageView.setImage(ImageSource.resource(R.drawable.i));*/}
 
 
       videoView.setOnTouchListener(new View.OnTouchListener() {
@@ -133,9 +132,9 @@ public class GalleryPagerAdapter extends PagerAdapter {
       imageView.setVisibility(View.VISIBLE);
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource())!=null)
       {
-        imageView.setImage(ImageSource.uri( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()))) ));
+        imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()))));
       }
-      else{imageView.setImage(ImageSource.resource(R.drawable.i));}}
+      else{/*imageView.setImageDrawable(R.drawable.i);*/}}
 
 
 
@@ -183,8 +182,8 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
   @Override
   public void destroyItem( ViewGroup container, int position, Object object ){
-    SubsamplingScaleImageView i = (SubsamplingScaleImageView) container.findViewWithTag("image"+position);
-    i.recycle();
+    //SubsamplingScaleImageView i = (SubsamplingScaleImageView) container.findViewWithTag("image"+position);
+    //i.recycle();
     container.removeView( (RelativeLayout) object );
   }
 
@@ -220,12 +219,13 @@ public class GalleryPagerAdapter extends PagerAdapter {
   public ViewGroup container()
   {return ownContainer;}
 
-  public SubsamplingScaleImageView getImageView()
-  {return imageView;}
+ /* public SubsamplingScaleImageView getImageView()
+  {return imageView;}*/
 
   public void unzoomImageView(int position)
-  {SubsamplingScaleImageView i = (SubsamplingScaleImageView) ownContainer.findViewWithTag("image"+position);
-    i.recycle();
-    if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource())!=null)
-    {i.setImage(ImageSource.uri( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()))) ));}}
+  {//SubsamplingScaleImageView i = (SubsamplingScaleImageView) ownContainer.findViewWithTag("image"+position);
+    //i.recycle();
+    //if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource())!=null)
+  //  {i.setImage(ImageSource.uri( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()))) ));}
+  }
 }

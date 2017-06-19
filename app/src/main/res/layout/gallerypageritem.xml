@@ -16,9 +16,9 @@
     android:gravity="center"
     />
 
-  <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+  <com.github.chrisbanes.photoview.PhotoView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:id="@+id/img_pager_item_gallery"
     android:visibility="gone"
    />
