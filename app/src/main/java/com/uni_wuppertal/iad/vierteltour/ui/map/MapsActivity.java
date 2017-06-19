@@ -654,6 +654,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     SpannableString info2_text = new SpannableString(time + "/" + length + " ");
     info2_text.setSpan(new StyleSpan(Typeface.BOLD), 0, info2_text.length(), 0);
     info2.setText(info2_text);
+
     description = (TextView) findViewById(R.id.stationenbeschreibung);
     description.setText(singlepage.INSTANCE.selectedStation().descText());
     TextView stopover = (TextView) findViewById(R.id.stopover);

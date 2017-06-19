@@ -67,6 +67,8 @@ public class GalleryMode extends Activity {
 
     initAll();
     gallerymode();
+
+    System.out.println("INSGESAMT: "+relGalleryBot.getHeight()+"TEXT:"+gallerytitle.getHeight()+"LINEAR:"+pager_indicator.getHeight()+"PLAYER:"+seekbar_layout_bot.getHeight());
   }
 
   @Override

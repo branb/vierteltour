@@ -433,7 +433,7 @@
 
                       <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
                         android:id="@+id/stationenbeschreibung"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:autoLink="web"
                         android:hyphenationFrequency="normal"
