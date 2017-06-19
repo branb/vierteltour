@@ -75,6 +75,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 import com.pixplicity.sharp.Sharp;
@@ -222,9 +223,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   // TODO: I don't know if it's the best approach to save it on a map ACTIVITY, but it certainly is NOT a good approach to couple it to the data model aka the Tour* classes
   // Holds the configuration of the current polylines drawn on the map
   private Map<String, PolylineOptions> polylines = new HashMap<String, PolylineOptions>();
+  private Map<String, Polyline> polys = new HashMap<String, Polyline>();
 
   // Holds the configuration of the current markers drawn on the map
   private Map<String, MarkerOptions> markers = new HashMap<String, MarkerOptions>();
+  private Map<String, Marker> marks = new HashMap<String, Marker>();
 
   private Map<String, Marker> tourMarker = new HashMap<String, Marker>();
 
@@ -398,11 +401,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
               if (PolyUtil.isLocationOnPath(clickCoords, tour.route().latLngs(), false, 10)) {
                 test = true;
                 if (singlepage.INSTANCE.selectedTour() != tour) {
-                  selectTour(tour);
-                  suplInfo("showall");
                   lv.expandGroup(i);
                   lv.smoothScrollToPosition(i);
-                  drawRoutes();
+                  suplInfo("showall");
                   break;
                 }
               }
@@ -519,8 +520,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    * @param tour Tour to blend with the background
    */
   private void fadeTour(Tour tour) {
-    String color = "#30" + tour.color().substring(1, 7); // #xx (Hex) transparency
-    System.out.println("FADE");
+    String color = "#40" + tour.color().substring(1, 7); // #xx (Hex) transparency
     polylines.get(tour.slug()).color(Color.parseColor(color));
 
     for (Station station : tour.stations()) {
@@ -1088,7 +1088,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     polylines.get(tour.slug()).color(Color.parseColor(tour.color()));
 
     for (Station station : tour.stations()) {
-      System.out.println("UNFADE");
       markers.get(station.slug()).alpha(1.0f);
     }
   }
@@ -1101,6 +1100,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    * @param tour Tour that was selected
    */
   public void selectTour(Tour tour) {
+    System.out.println(tour + "   "+ singlepage.INSTANCE.selectedTour() + "   " + singlepage.INSTANCE.selectedOldTour() );
+    singlepage.INSTANCE.selectedOldTour(singlepage.INSTANCE.selectedTour());
     singlepage.INSTANCE.selectedTour(tour);
     //adapter.notifyDataSetChanged();
     unfadeTour(tour);
@@ -1114,6 +1115,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         fadeTour(t);
       }
     }
+
     if(supl.getPanelState()== SlidingUpPanelLayout.PanelState.COLLAPSED)
     {suplInfo("showall");}
   }
@@ -1123,6 +1125,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    * Reset all tours, make all markers and polylines visible again
    */
   public void resetTour() {
+    singlepage.INSTANCE.selectedOldTour(null);
     singlepage.INSTANCE.selectedTour(null);
 
     for (Tour tour : tourlist.city(visibleCity).tours()) {
@@ -1284,13 +1287,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected Bitmap doInBackground(Object... params) {
       Bitmap bitmap = null;
 
-
-
       return bitmap;
     }
     @Override
     protected void onPostExecute(Bitmap result) {
-      if (mMap != null) mMap.clear();
+     // if (mMap != null) mMap.clear();
       drawOwnLocation();
       drawPolylines();
       drawStations();
@@ -1317,19 +1318,35 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    * (Re-)Draw the Path of the currently visible tours
    */
   private void drawPolylines() {//nur Pfad der ausgewählten Tour anzeigen
-    if (singlepage.INSTANCE.selectedStation() != null) {
-      for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet())
-        if (singlepage.INSTANCE.selectedTour().slug().equals(polyline.getKey()))
-          mMap.addPolyline(polyline.getValue());
+    if (singlepage.INSTANCE.selectedStation() != null)
+    {System.out.println("1");for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet())
+    {if (!singlepage.INSTANCE.selectedTour().slug().equals(polyline.getKey()))
+      {removePolyline(polyline.getKey());}}
     }
-    //sonst Pfad aller Touren anzeigen
-    else {
-      for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet()) {
+    else if(singlepage.INSTANCE.selectedTour() != null && singlepage.INSTANCE.selectedOldTour()!=null)
+    {System.out.println("2"+ singlepage.INSTANCE.selectedTour().slug() + singlepage.INSTANCE.selectedOldTour().slug() );removePolyline(singlepage.INSTANCE.selectedOldTour().slug());
+     addPolyline(polylines.get(singlepage.INSTANCE.selectedOldTour().slug()), singlepage.INSTANCE.selectedOldTour().slug());
+     removePolyline(singlepage.INSTANCE.selectedTour().slug());
+     addPolyline(polylines.get(singlepage.INSTANCE.selectedTour().slug()), singlepage.INSTANCE.selectedTour().slug());}
 
-        mMap.addPolyline(polyline.getValue());
-      }
-    }
+    else if(singlepage.INSTANCE.selectedTour() != null)
+    {
+      System.out.println("3");for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet())
+    {if (!singlepage.INSTANCE.selectedTour().slug().equals(polyline.getKey()))
+    {removePolyline(polyline.getKey());addPolyline(polyline.getValue(), polyline.getKey());}}}
+
+    else
+    {System.out.println("4");for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet())
+    {removePolyline(polyline.getKey());addPolyline(polyline.getValue(), polyline.getKey());}}
   }
+
+  public void removePolyline(String slug)
+  {if(polys.get(slug)!=null)
+  {polys.get(slug).remove();}}
+
+  public void addPolyline(PolylineOptions poly, String slug)
+  {Polyline polyline1 = mMap.addPolyline(poly);
+    polys.put(slug, polyline1);}
 
   /**
    * (Re-)Draw the station markers of the currently visible tours
@@ -1348,9 +1365,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           } else if (marker.getValue().getPosition() != null && marker.getKey().equals(station.slug())) {
             Marker m = mMap.addMarker(marker.getValue());
             tourMarker.put(station.slug(), m);
-          }
-        }
-      }
+          }}}
 
       //Sonst zeichne alle Marker
       else if (marker.getValue().getPosition() != null) {
@@ -1361,8 +1376,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Wenn ein Kreis gesetzt wurde, zeichne ihn
     if (circle.getCenter() != null) {
       mapCircle = mMap.addCircle(circle);
-    }
-  }
+    }}
+
+  public void removeMarker()
+  {if(marks.get(slug)!=null)
+  {marks.get(slug).remove();}}
+
+  public void addMarker(MarkerOptions mark, String slug)
+  {Marker marker1 = mMap.addMarker(mark);
+  marks.put(slug, marker1);}
+
 
   public Bitmap createBitmapFromSharp(Context context, SharpDrawable d, double scale)
   {Bitmap bitmap = null;
@@ -2213,6 +2236,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
       polyline.color( Color.parseColor( tour.color() ) );
       polylines.put( tour.slug(), polyline );
+
+      Polyline polyline1 = mMap.addPolyline(polyline);
+      polys.put(tour.slug(), polyline1);
 
       makeMarkers( tour );
     }

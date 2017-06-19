@@ -18,6 +18,7 @@ public enum Singletonint {
     private int id;     //Zur Zeit nur Nummer der Station, soll später zu ID werden
     private int position;   //Position des GalleryPagers
     private Tour selectedTour;  //Ausgewählte Tour
+    private Tour selectedOldTour;
     private Station selectedStation;   //Ausgewählte Station
     private Station selectedOldStation; //Zuletzt ausgewählte Station (wird nur im StationFragment geändert)
     private int onfragmentclicked;  //Bei Stationenübersicht kann im Viewpager in die Lücke geklickt werden, was zu einer fehlerhaften Navigation führt.
@@ -26,6 +27,7 @@ public enum Singletonint {
     Singletonint(){
       id=-1;
       selectedTour=null;
+      selectedOldTour=null;
       selectedStation=null;
       selectedOldStation=null;
       onfragmentclicked=-1;
@@ -45,6 +47,9 @@ public enum Singletonint {
 
     public Tour selectedTour() {return selectedTour;}
     public void selectedTour(Tour selectedTour) {this.selectedTour = selectedTour;}
+
+    public Tour selectedOldTour() {return selectedOldTour;}
+    public void selectedOldTour(Tour selectedOldTour) {this.selectedOldTour = selectedOldTour;}
 
     public Station selectedStation() {if(selectedStation!=null)return selectedStation;
                                       else return null;}
@@ -76,6 +81,7 @@ public enum Singletonint {
       versionUpdate = false;
       id=-1;
       selectedTour=null;
+      selectedOldTour=null;
       selectedStation=null;
       selectedOldStation=null;
       onfragmentclicked=-1;
