@@ -1319,24 +1319,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    */
   private void drawPolylines() {//nur Pfad der ausgewählten Tour anzeigen
     if (singlepage.INSTANCE.selectedStation() != null)
-    {System.out.println("1");for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet())
+    {for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet())
     {if (!singlepage.INSTANCE.selectedTour().slug().equals(polyline.getKey()))
       {removePolyline(polyline.getKey());}}
     }
     else if(singlepage.INSTANCE.selectedTour() != null && singlepage.INSTANCE.selectedOldTour()!=null)
-    {System.out.println("2"+ singlepage.INSTANCE.selectedTour().slug() + singlepage.INSTANCE.selectedOldTour().slug() );removePolyline(singlepage.INSTANCE.selectedOldTour().slug());
+    {removePolyline(singlepage.INSTANCE.selectedOldTour().slug());
      addPolyline(polylines.get(singlepage.INSTANCE.selectedOldTour().slug()), singlepage.INSTANCE.selectedOldTour().slug());
      removePolyline(singlepage.INSTANCE.selectedTour().slug());
      addPolyline(polylines.get(singlepage.INSTANCE.selectedTour().slug()), singlepage.INSTANCE.selectedTour().slug());}
 
     else if(singlepage.INSTANCE.selectedTour() != null)
-    {
-      System.out.println("3");for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet())
+    {for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet())
     {if (!singlepage.INSTANCE.selectedTour().slug().equals(polyline.getKey()))
     {removePolyline(polyline.getKey());addPolyline(polyline.getValue(), polyline.getKey());}}}
 
     else
-    {System.out.println("4");for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet())
+    {for (Map.Entry<String, PolylineOptions> polyline : polylines.entrySet())
     {removePolyline(polyline.getKey());addPolyline(polyline.getValue(), polyline.getKey());}}
   }
 
@@ -1376,9 +1375,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Wenn ein Kreis gesetzt wurde, zeichne ihn
     if (circle.getCenter() != null) {
       mapCircle = mMap.addCircle(circle);
-    }}
+    }
+   /* tmpmarker = null;
+    singlepage.INSTANCE.countWaypoints().clear();
+    if(singlepage.INSTANCE.selectedStation()!=null)
+    {for (int i=0;i<marks.size();i++)
+    {if()}
+    }
+    else if(singlepage.INSTANCE.selectedTour()!=null && singlepage.INSTANCE.selectedOldTour()!=null)
+    {}
+    else if(singlepage.INSTANCE.selectedTour()!=null)
+    {for (Map.Entry<String, MarkerOptions> marker : markers.entrySet())
+    {if (!singlepage.INSTANCE.selectedStation().slug().equals(marker.getKey()))
+    {removeMarker(marker.getKey());addMarker(marker.getValue(), marker.getKey());}}}
+    else {for (Map.Entry<String, MarkerOptions> marker : markers.entrySet())
+    {removeMarker(marker.getKey());addMarker(marker.getValue(), marks.getKey());}
+    }
+*/
+  }
 
-  public void removeMarker()
+  public void removeMarker(String slug)
   {if(marks.get(slug)!=null)
   {marks.get(slug).remove();}}
 
@@ -2252,7 +2268,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    */
   private void makeMarkers( Tour tour ){
     for( Station station : tour.stations() ){
-      markers.put( station.slug(), createMarker(station, tour) );
+      MarkerOptions m1 = createMarker(station, tour);
+      markers.put( station.slug(), m1 );
+
+     /* Marker marker1 = mMap.addMarker(m1);
+      marks.put(tour.slug(), marker1);*/
     }
 
   }
