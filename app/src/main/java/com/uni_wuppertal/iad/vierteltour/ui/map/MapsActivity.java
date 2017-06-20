@@ -559,6 +559,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         case MapsActivity.BIG_BAR:
           supl.setPanelHeight(defaultPanelHeight);
+          slidingLayout.setVisibility(View.VISIBLE);
           supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
           break;
 
@@ -605,6 +606,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           suplInfo("s_seekbar");
           panel_top.setClickable(false);
         } else {
+          slidingLayout.setVisibility(View.GONE);
           supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
           pager_layout.setVisibility(View.VISIBLE);
         }
@@ -1454,7 +1456,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( singlepage.INSTANCE.selectedTour().station(2).latlng(), CurrentZoom ) );
 
     mMap.moveCamera( CameraUpdateFactory.newCameraPosition(cameraPosition));
+    slidingLayout.setVisibility(View.GONE);
     supl.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
+    //slidingLayout.setVisibility(View.GONE);
 
     xbtn.setVisibility( View.VISIBLE );
     title.setText( singlepage.INSTANCE.selectedTour().name() );
@@ -2033,6 +2037,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       public void onPanelHidden( View view ){
         if(!player.isPlaying()){slidingLayout.setVisibility(View.GONE);
         if(stationActivityRunning)endStationLayout();}
+        else slidingLayout.setVisibility(View.VISIBLE);
       }};
   }
 
@@ -2099,7 +2104,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       if(player.isPlaying())Sharp.loadResource(getResources(), R.raw.stop_dunkel).into(play_button_supl);
       else Sharp.loadResource(getResources(), R.raw.play_dunkel).into(play_button_supl);
 
-
+      slidingLayout.setVisibility(View.VISIBLE);
       supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
       RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(pager_layout.getLayoutParams());
       lp.setMargins(0,0,0, supl.getPanelHeight());
@@ -2127,10 +2132,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   @Override
   public void onBackPressed(){
     if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()==null )      //Wenn SUPL geöffnet, und zurück gedrückt wird, schließe nur SUPL
-    {supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );}
+    {slidingLayout.setVisibility(View.VISIBLE);supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );}
     else if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null )    //Wenn Station geöffnet ist, schließe nur Station mit SUPL
     { if(player.isPlaying()){suplInfo("s_seekbar");}
-    else{supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}}
+    else{slidingLayout.setVisibility(View.GONE);supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}}
 
     else if( pager_layout.getVisibility() == View.VISIBLE ){
       Message message = new Message();

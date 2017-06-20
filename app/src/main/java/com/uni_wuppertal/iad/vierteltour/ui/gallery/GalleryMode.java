@@ -148,7 +148,7 @@ public class GalleryMode extends Activity {
   play_buttonGallery_bar = (ImageButton) findViewById( R.id.play_buttonGallery_bar );
   Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery_bar);
   imagePagerGallery = (ViewPager) findViewById( R.id.ImagePagerGallery );
-  imagePagerGallery.setOffscreenPageLimit(1);
+  imagePagerGallery.setOffscreenPageLimit(3);
   gallerytitle = (TextView) findViewById( R.id.titleGallery );
   durationGallery = (TextView) findViewById( R.id.durationGallery );
   durationGallery_bar = (TextView) findViewById( R.id.durationGallery_bar );
