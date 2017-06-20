@@ -228,8 +228,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   private Map<String, Map<String, MarkerOptions>> markers = new HashMap<String, Map<String, MarkerOptions>>();
   private Map<String, Map<String, Marker>> marks = new HashMap<String, Map<String, Marker>>();
 
-  private Map<String, Marker> tourMarker = new HashMap<String, Marker>();
-
   private CircleOptions circle = new CircleOptions();
   private Circle mapCircle;
 
@@ -455,7 +453,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    * @param station Station will be marked as selected
    */
 //Wird aufgerufen, sobald eine Station ausgewaehlt wird
-  public void selectStation(Station station) {//selectedOldStation dient als Zwischenspeicher der abgewaehlten Station
+  public void selectStation(Station station) {
+    //if (singlepage.INSTANCE.selectedOldStation() != null && !singlepage.INSTANCE.selectedOldStation().slug().contains("einleitung"))removeMarker(singlepage.INSTANCE.selectedTour().slug() ,singlepage.INSTANCE.selectedOldStation().slug());
+    //selectedOldStation dient als Zwischenspeicher der abgewaehlten Station
 //selectedStation dient als Zwischenspeicher der ausgewaehlten Station
 //vorherig ausgewaehlte Station wird abgewaehlte Station
     singlepage.INSTANCE.selectedOldStation(singlepage.INSTANCE.selectedStation());   //vorherige Station wird alte Station
@@ -463,7 +463,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //loescht alte Station, setzt Groesse auf Ursprung zurueck
     //Ausnahme: Einleitungen haben keine Marker
     if (singlepage.INSTANCE.selectedOldStation() != null && !singlepage.INSTANCE.selectedOldStation().slug().contains("einleitung")) {
-      removeStation(singlepage.INSTANCE.selectedOldStation().slug());
+      removeMarker(singlepage.INSTANCE.selectedTour().slug() ,singlepage.INSTANCE.selectedOldStation().slug());
       Marker m;
       if (singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
         m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedTour().slug()).get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() - 1 + "", false))));
@@ -471,7 +471,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       else
         m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedTour().slug()).get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() + "", false))));
       //Erstellte Bitmap wird der Karte hinzugefuegt
-      tourMarker.put(singlepage.INSTANCE.selectedOldStation().slug(), m);
+      removeMarker(singlepage.INSTANCE.selectedTour().slug(), singlepage.INSTANCE.selectedOldStation().slug());
+      marks.get(singlepage.INSTANCE.selectedTour().slug()).put(singlepage.INSTANCE.selectedOldStation().slug(), m);
       //delete Circle
       if (mapCircle != null) mapCircle.remove();
     }
@@ -499,7 +500,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedTour().slug()).get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (station.number()), true))));
       }
           m.showInfoWindow();
-          tourMarker.put(singlepage.INSTANCE.selectedStation().slug(), m);
+          removeMarker(singlepage.INSTANCE.selectedTour().slug(), singlepage.INSTANCE.selectedStation().slug());
+          marks.get(singlepage.INSTANCE.selectedTour().slug()).put(singlepage.INSTANCE.selectedStation().slug(), m);
     }
 
     if (PreferenceManager
@@ -1319,7 +1321,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     {if (!singlepage.INSTANCE.selectedTour().slug().equals(polyline.getKey()))
       {removePolyline(polyline.getKey());}}
     }
-    else if(singlepage.INSTANCE.selectedTour() != null && singlepage.INSTANCE.selectedOldTour()!=null)
+    else if(singlepage.INSTANCE.selectedTour() != null && singlepage.INSTANCE.selectedOldTour()!=null && singlepage.INSTANCE.selectedOldTour()!=singlepage.INSTANCE.selectedTour())
     {removePolyline(singlepage.INSTANCE.selectedOldTour().slug());
      addPolyline(polylines.get(singlepage.INSTANCE.selectedOldTour().slug()), singlepage.INSTANCE.selectedOldTour().slug());
      removePolyline(singlepage.INSTANCE.selectedTour().slug());
@@ -1354,6 +1356,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     {removeMarkerTour(marker1.getValue());}
      addMarkerTour(singlepage.INSTANCE.selectedTour().slug());
     }
+    else if(singlepage.INSTANCE.selectedOldTour()==singlepage.INSTANCE.selectedTour() && singlepage.INSTANCE.selectedOldTour()!=null)
+    {for(Map.Entry<String, Map<String, Marker>> marker1 : marks.entrySet())
+    { removeMarkerTour(marker1.getValue());
+      addMarkerTour(marker1.getKey());}}
     else if(singlepage.INSTANCE.selectedTour()!=null && singlepage.INSTANCE.selectedOldTour()!=null)
     { removeMarkerTour(marks.get(singlepage.INSTANCE.selectedTour().slug()));
       addMarkerTour(singlepage.INSTANCE.selectedTour().slug());
@@ -1411,16 +1417,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     d.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
     d.draw(canvas);
     return bitmap;}
-
-  /**
-   * Remove one marker of a station
-   * @param slug
-     */
-  private void removeStation(String slug)
-  { for( Map.Entry<String, Marker> marker : tourMarker.entrySet() ){
-    if(marker.getKey().equals(slug))
-    {marker.getValue().remove();}
-  }}
 
 
   /**
@@ -1481,11 +1477,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     if(player.isPlaying())player.stop();
     player.reset();
 
-    tourMarker.clear();
     singlepage.INSTANCE.selectedStation(null);
     singlepage.INSTANCE.selectedOldStation(null);
     circle = new CircleOptions();
 
+    //removeMarkerTour(marks.get(singlepage.INSTANCE.selectedTour().slug()));
     selectTour(singlepage.INSTANCE.selectedTour());
     drawRoutes();
 
