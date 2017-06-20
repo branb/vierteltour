@@ -131,7 +131,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   public LatLng pos;
   public LocationManager locationManager;
   public LocationListener locationListener;
-  final static int REQUEST_LOCATION = 1;
+  final static int REQUEST_LOCATION = 100;
   private GoogleApiClient googleApiClient;
   private LocationSettingsRequest.Builder builder;
   public int CurrentZoom = 15;
@@ -1076,6 +1076,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       }
     }*/
     selectStation(tour.station(1));
+    System.out.println("2");
     drawRoutes();
   }
 
@@ -1154,7 +1155,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     {lv.collapseGroup(singlepage.INSTANCE.selectedTour().trkid()-1);
     lv.smoothScrollToPosition(0);
     suplInfo("invisible");}
-    else {resetTour();}
+    else {System.out.println("1");resetTour();}
     singlepage.INSTANCE.resetAll();
 
   }
@@ -1186,6 +1187,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       @Override
       public void onGpsStatusChanged(int i) {
         if (i == GPS_EVENT_STOPPED) {
+          pos=null;
+          MyLocation = null;
+          zoomToLocation=false;
           if (curLocation != null) curLocation.remove();
         }
       }
@@ -1485,6 +1489,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //removeMarkerTour(marks.get(singlepage.INSTANCE.selectedTour().slug()));
     selectTour(singlepage.INSTANCE.selectedTour());
+    System.out.println("4");
     drawRoutes();
 
     singlepage.INSTANCE.setId(0);
@@ -1510,7 +1515,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         selectTour(tourlist.city(visibleCity).tours().get(groupPosition));
         adapter.notifyDataSetChanged();
-
+        System.out.println("3");
         drawRoutes();
       }
     });
@@ -1518,7 +1523,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     lv.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
       @Override
       public void onGroupCollapse(int groupPosition) {
-        if(singlepage.INSTANCE.selectedTour()!=null && onGroupClicked){resetTour();}
+        if(singlepage.INSTANCE.selectedTour()!=null && onGroupClicked){System.out.println("2");resetTour();}
       }
     });
 
@@ -2336,7 +2341,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   private void loadTourdata(){
    tourlist = new TourListReader( this ).readTourData();
     makePolylines();
-    //drawRoutes();
     initSupl();
     tourdataAvailable=true;
   }
