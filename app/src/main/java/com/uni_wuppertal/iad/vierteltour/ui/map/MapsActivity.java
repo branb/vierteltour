@@ -466,10 +466,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       removeStation(singlepage.INSTANCE.selectedOldStation().slug());
       Marker m;
       if (singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
-        m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedTour()).get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() - 1 + "", false))));
+        m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedTour().slug()).get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() - 1 + "", false))));
         //Ausgewaehlte Station wird per Bitmap groesser skaliert
       else
-        m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedTour()).get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() + "", false))));
+        m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedTour().slug()).get(singlepage.INSTANCE.selectedOldStation().slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), singlepage.INSTANCE.selectedOldStation().number() + "", false))));
       //Erstellte Bitmap wird der Karte hinzugefuegt
       tourMarker.put(singlepage.INSTANCE.selectedOldStation().slug(), m);
       //delete Circle
@@ -490,13 +490,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           while (singlepage.INSTANCE.countWaypoints().get(countnumber) < (station.number() - 1))
             countnumber++;
         } catch (Exception e) {}
-          m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedTour()).get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (station.number() - 1), true))));
+          m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedTour().slug()).get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (station.number() - 1), true))));
       } else {
         try {
           while (singlepage.INSTANCE.countWaypoints().get(countnumber) < (station.number()))
             countnumber++;
         } catch (Exception e) {}
-          m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedTour()).get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (station.number()), true))));
+          m = mMap.addMarker(markers.get(singlepage.INSTANCE.selectedTour().slug()).get(station.slug()).icon(BitmapDescriptorFactory.fromBitmap(markertext(singlepage.INSTANCE.selectedTour(), "" + (station.number()), true))));
       }
           m.showInfoWindow();
           tourMarker.put(singlepage.INSTANCE.selectedStation().slug(), m);
@@ -1350,7 +1350,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     singlepage.INSTANCE.countWaypoints().clear();
 
     if(singlepage.INSTANCE.selectedStation()!=null)
-    {}
+    {for(Map.Entry<String, Map<String, Marker>> marker1 : marks.entrySet())
+    {removeMarkerTour(marker1.getValue());}
+     addMarkerTour(singlepage.INSTANCE.selectedTour().slug());
+    }
     else if(singlepage.INSTANCE.selectedTour()!=null && singlepage.INSTANCE.selectedOldTour()!=null)
     { removeMarkerTour(marks.get(singlepage.INSTANCE.selectedTour().slug()));
       addMarkerTour(singlepage.INSTANCE.selectedTour().slug());
@@ -1363,14 +1366,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       {if(marker1.getKey()!=singlepage.INSTANCE.selectedTour().slug())
       { removeMarkerTour(marker1.getValue());
         addMarkerTour(marker1.getKey());
-      }}
-
-    }
+      }}}
 
     else {for(Map.Entry<String, Map<String, Marker>> marker1 : marks.entrySet())
       {if(marker1.getKey()!=singlepage.INSTANCE.selectedOldTour().slug())
-      {System.out.println(marker1.getKey());
-        removeMarkerTour(marker1.getValue());
+      { removeMarkerTour(marker1.getValue());
         addMarkerTour(marker1.getKey());}
 
   }}}
@@ -1384,9 +1384,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   marks.get(tourslug).put(stationslug, marker1);}
 
   public void addMarkerTour(String tourslug)
-  {
-    System.out.println(tourslug);
-    for(Map.Entry<String, MarkerOptions> marker1 : markers.get(tourslug).entrySet())
+  {for(Map.Entry<String, MarkerOptions> marker1 : markers.get(tourslug).entrySet())
   {if(marker1.getValue().getPosition()!=null)
   {Marker m1 = mMap.addMarker(marker1.getValue());
   marks.get(tourslug).put(marker1.getKey(), m1);}}}
