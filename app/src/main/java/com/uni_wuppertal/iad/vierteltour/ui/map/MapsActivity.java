@@ -1290,7 +1290,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     @Override
     protected void onPostExecute(Bitmap result) {
-      drawOwnLocation();
+      //drawOwnLocation();
       drawPolylines();
       drawStations();
     }
@@ -1307,7 +1307,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
       marker.icon(BitmapDescriptorFactory.fromBitmap(createBitmapFromSharp(this, Sharp.loadResource(getResources(), R.raw.standort_blau).getDrawable(), 2.6)));
 
-      if (mMap != null) curLocation = mMap.addMarker(marker);
+      if (mMap != null){
+        if(curLocation!=null)curLocation.remove();
+        curLocation = mMap.addMarker(marker);}
     }
   }
 
