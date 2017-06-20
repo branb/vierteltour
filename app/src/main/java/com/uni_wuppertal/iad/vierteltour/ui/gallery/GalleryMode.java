@@ -42,14 +42,15 @@ public class GalleryMode extends Activity {
   ViewPager imagePagerGallery;
   ViertelTourMediaPlayer player;
   Singletonint singlepage;
-  ImageButton play_buttonGallery, /*x_button,*/ x_button_bar, play_buttonGallery_bar;
+  ImageButton play_buttonGallery, x_button_bar, play_buttonGallery_bar;
   SeekBar seekbarGallery, seekbarGallery_bar;
   TextView gallerytitle, durationGallery, durationGallery_bar;
   GalleryPagerAdapter mAdapter2;
   ImageView dots[];
   int dotsCount, number, STATION_BEENDET=4;
   LinearLayout pager_indicator;
-  RelativeLayout relGalleryBot, relGalleryTop, seekbar_layout_top, seekbar_layout_bot;
+  RelativeLayout relGalleryTop, seekbar_layout_top, seekbar_layout_bot;
+  LinearLayout relGalleryBot;
   Boolean startvideo = true;
   double timeElapsedGallery = 0;
   Handler seekHandlerGallery = new Handler();
@@ -68,7 +69,7 @@ public class GalleryMode extends Activity {
     initAll();
     gallerymode();
 
-    System.out.println("INSGESAMT: "+relGalleryBot.getHeight()+"TEXT:"+gallerytitle.getHeight()+"LINEAR:"+pager_indicator.getHeight()+"PLAYER:"+seekbar_layout_bot.getHeight());
+//    System.out.println("INSGESAMT: "+relGalleryBot.getMeasuredHeight()+"TEXT:"+gallerytitle.getMeasuredHeight()+"LINEAR:"+pager_indicator.getMeasuredHeight()+"PLAYER:"+seekbar_layout_bot.getMeasuredHeight());
   }
 
   @Override
@@ -152,7 +153,7 @@ public class GalleryMode extends Activity {
   gallerytitle = (TextView) findViewById( R.id.titleGallery );
   durationGallery = (TextView) findViewById( R.id.durationGallery );
   durationGallery_bar = (TextView) findViewById( R.id.durationGallery_bar );
-  relGalleryBot = (RelativeLayout) findViewById(R.id.relativeBot);
+  relGalleryBot = (LinearLayout) findViewById(R.id.relativeBot);
   relGalleryTop = (RelativeLayout) findViewById(R.id.relativeTop);
   pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
   //Adapter for ViewPager which contains media
@@ -319,24 +320,23 @@ public class GalleryMode extends Activity {
   private void setUiPageViewController(){
     if(mAdapter2.getCount()>1) {
       dotsCount = mAdapter2.getCount();
-      dots = new ImageView[dotsCount];
+       dots = new ImageView[dotsCount];
 
       for (int i = 0; i < dotsCount; i++) {
         dots[i] = new ImageView(this);
+
         dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-          LinearLayout.LayoutParams.WRAP_CONTENT,
-          LinearLayout.LayoutParams.WRAP_CONTENT
+       RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+         RelativeLayout.LayoutParams.WRAP_CONTENT,
+         RelativeLayout.LayoutParams.WRAP_CONTENT
         );
-
-        params.setMargins(6, 0, 6, 0);
+        params.setMargins(10, 0, 10, 0);
 
         pager_indicator.addView(dots[i], params);
       }
 
       dots[singlepage.INSTANCE.position()].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
-
     }
   }
 
@@ -474,13 +474,14 @@ public class GalleryMode extends Activity {
       isimages=position;
       imagePagerGallery.setCurrentItem(position);
 
-      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4") && getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE && res.get(position)!=null)
+      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4") && res.get(position)!=null)
       { mAdapter2.videoView(singlepage.INSTANCE.position()).setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position).getSource());
-        seekbar_layout_top.setVisibility(View.VISIBLE);
+        if(getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE)seekbar_layout_top.setVisibility(View.VISIBLE);
+        else if(getResources().getConfiguration().orientation  == Configuration.ORIENTATION_PORTRAIT)seekbar_layout_bot.setVisibility(View.VISIBLE);
       video();
         try{setVideoTime(singlepage.INSTANCE.videotime());}catch(Exception e){}}
       else
-      {seekbar_layout_top.setVisibility(View.GONE);}
+      {seekbar_layout_top.setVisibility(View.GONE); seekbar_layout_bot.setVisibility(View.GONE);}
 
       setTitleText(position);
     }
@@ -513,12 +514,10 @@ public class GalleryMode extends Activity {
   public void setTitleText(int position)
   {if(!res.get(position).title().isEmpty())
   {gallerytitle.setText( res.get(position).title() );
-    //gallerytitletop.setText(res.get(position).title());
     }
 
   else
   {gallerytitle.setText( "" ); gallerytitle.setVisibility(View.GONE);
-   // gallerytitletop.setText( "" ); gallerytitletop.setVisibility(View.GONE);
   }}
 
 }
