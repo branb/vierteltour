@@ -354,11 +354,10 @@ public class GalleryMode extends Activity {
   }
   protected void onResume()
   {super.onResume();
-    Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery);
-    Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery_bar);
-    seekbarGallery.setProgress(0);
-    seekbarGallery_bar.setProgress(0);
-    try{mAdapter2.showVideoThumbnail(singlepage.INSTANCE.position());}catch (Exception e) {}
+    try{Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery);
+      Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery_bar);
+      setVideoTime(0);
+      mAdapter2.showVideoThumbnail(singlepage.INSTANCE.position());}catch (Exception e) {}
   }
   /**
    * Stops Audio, Starts Video, Managing all Buttons
