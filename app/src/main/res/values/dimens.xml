@@ -6,8 +6,8 @@
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html STANDARD 240dp-->
     <dimen name="navigation_drawer_width">180dp</dimen>
-    <dimen name="tourenliste">113dip</dimen>
-    <dimen name="tourenlistedown">78dip</dimen>
+    <dimen name="tourenliste">117dip</dimen>
+    <dimen name="tourenlistedown">82dip</dimen>
     <dimen name="tourenlisteup">35dip</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>

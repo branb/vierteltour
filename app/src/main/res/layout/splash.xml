@@ -29,6 +29,7 @@
         android:text="WUPPERTAL"
         android:background="@color/ColorPrimary"
         android:id="@+id/textView"
+        android:textColor="@color/black"
         android:gravity="center_horizontal"
         android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"

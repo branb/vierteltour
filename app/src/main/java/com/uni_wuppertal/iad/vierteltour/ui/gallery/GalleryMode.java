@@ -188,34 +188,34 @@ public class GalleryMode extends Activity {
     super.onConfigurationChanged(newConfig);
     // Checks the orientation of the screen
     if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      int sdk = android.os.Build.VERSION.SDK_INT;
+      if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+        relGalleryBot.setBackgroundDrawable(getResources().getDrawable(R.drawable.gallerybotlayout));
+        relGalleryTop.setBackgroundDrawable(getResources().getDrawable(R.drawable.gallerytoplayout));
+      } else {
+        relGalleryBot.setBackground(getResources().getDrawable(R.drawable.gallerybotlayout));
+        relGalleryTop.setBackground(getResources().getDrawable(R.drawable.gallerytoplayout));
+      }
+
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
       {seekbar_layout_bot.setVisibility(View.GONE);
         seekbar_layout_top.setVisibility(View.VISIBLE);}
 
-      //x_button.setVisibility(View.GONE);
-      /*gallerytitle.setVisibility(View.GONE);
-      gallerytitletop.setText(station);
-      pager_indicator.setVisibility(View.GONE);
-      hideGalleryVideoBar();
-      ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
-      params.height = ViewPager.LayoutParams.MATCH_PARENT;
-      imagePagerGallery.setLayoutParams(params);
-*/
     } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+
+      int sdk = android.os.Build.VERSION.SDK_INT;
+      if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+        relGalleryBot.setBackgroundDrawable(getResources().getDrawable(R.color.blacktransparentlayout));
+        relGalleryTop.setBackgroundDrawable(getResources().getDrawable(R.color.blacktransparentlayout));
+      } else {
+        relGalleryBot.setBackground(getResources().getDrawable(R.color.blacktransparentlayout));
+        relGalleryTop.setBackground(getResources().getDrawable(R.color.blacktransparentlayout));
+      }
 
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
       {seekbar_layout_bot.setVisibility(View.VISIBLE);
         seekbar_layout_top.setVisibility(View.GONE);}
 
-      /*gallerytitle.setVisibility(View.VISIBLE);
-      pager_indicator.setVisibility(View.VISIBLE);
-
-      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))showGalleryVideoBar();
-
-      ViewGroup.LayoutParams params = imagePagerGallery.getLayoutParams();
-      params.height = calculateDP(300);
-      imagePagerGallery.setLayoutParams(params);
-      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("jpg")){mAdapter2.unzoomImageView(singlepage.INSTANCE.position());}*/
     }
   }
 /**
@@ -226,24 +226,34 @@ public class GalleryMode extends Activity {
     setUiPageViewController();
 
     if ( getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE) {   //do in Landscape mode
+      int sdk = android.os.Build.VERSION.SDK_INT;
+      if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+        relGalleryBot.setBackgroundDrawable(getResources().getDrawable(R.drawable.gallerybotlayout));
+        relGalleryTop.setBackgroundDrawable(getResources().getDrawable(R.drawable.gallerytoplayout));
+      } else {
+        relGalleryBot.setBackground(getResources().getDrawable(R.drawable.gallerybotlayout));
+        relGalleryTop.setBackground(getResources().getDrawable(R.drawable.gallerytoplayout));
+      }
+
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
       {seekbar_layout_bot.setVisibility(View.GONE);seekbar_layout_top.setVisibility(View.VISIBLE);}}
     else if (getResources().getConfiguration().orientation  == Configuration.ORIENTATION_PORTRAIT){
+      int sdk = android.os.Build.VERSION.SDK_INT;
+      if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+        relGalleryBot.setBackgroundDrawable(getResources().getDrawable(R.color.blacktransparentlayout));
+        relGalleryTop.setBackgroundDrawable(getResources().getDrawable(R.color.blacktransparentlayout));
+      } else {
+        relGalleryBot.setBackground(getResources().getDrawable(R.color.blacktransparentlayout));
+        relGalleryTop.setBackground(getResources().getDrawable(R.color.blacktransparentlayout));
+      }
+
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
       {seekbar_layout_bot.setVisibility(View.VISIBLE);seekbar_layout_top.setVisibility(View.GONE);}
     }
 
-
     if(!res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
     {seekbar_layout_top.setVisibility(View.GONE);seekbar_layout_bot.setVisibility(View.GONE);}
 
-
-    /*x_button.setOnClickListener( new View.OnClickListener(){
-      @Override
-      public void onClick( View v ){
-        onBackPressed();
-      }
-    });*/
     x_button_bar.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -331,7 +341,7 @@ public class GalleryMode extends Activity {
          RelativeLayout.LayoutParams.WRAP_CONTENT,
          RelativeLayout.LayoutParams.WRAP_CONTENT
         );
-        params.setMargins(10, 0, 10, 0);
+        params.setMargins(4, 0, 4, 0);
 
         pager_indicator.addView(dots[i], params);
       }
