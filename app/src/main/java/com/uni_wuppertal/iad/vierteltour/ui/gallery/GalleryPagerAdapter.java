@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.VideoView;
@@ -39,7 +40,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
   private Context mContext;
   private ArrayList<Resource> stationImagePaths;
   private PhotoView imageView;
-  private ImageView play, background;
+  private ImageView play;
   private ViertelTourMediaPlayer player;
   private VideoView videoView;
   private ViewGroup ownContainer;
@@ -69,8 +70,6 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
     play = (ImageView) itemView.findViewById(R.id.img_play_button_gallery);
     play.setTag("play"+position);
-    background = (ImageView) itemView.findViewById(R.id.img_pager_background_gallery);
-    background.setTag("background"+position);
     imageView = (PhotoView) itemView.findViewById( R.id.img_pager_item_gallery );
     imageView.setTag("image" + position);
     //imageView.setParallelLoadingEnabled(true);
@@ -87,24 +86,28 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
       videoView.setVisibility(View.GONE);
       play.setVisibility(View.VISIBLE);
-      background.setVisibility(View.VISIBLE);
       imageView.setVisibility(View.VISIBLE);
+      imageView.setAlpha(0.5f);
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource())!=null)
       {videoView.setVideoPath(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()));
         Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()),
         MediaStore.Images.Thumbnails.MINI_KIND);
         if(thumbnail!=null)imageView.setImageBitmap(thumbnail);
+
+
+
         }
-      else{/*imageView.setImage(ImageSource.resource(R.drawable.i));*/}
+    //  else{/*imageView.setImage(ImageSource.resource(R.drawable.i));*/}
 
 
       videoView.setOnTouchListener(new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-         if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && videoView != null)
-          {((GalleryMode)mContext).mediaplayerbars();}
+          if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+          if(videoView != null)
+          {((GalleryMode)mContext).mediaplayerbars();}}
 
-          return false;
+          return true;
         }
       });
 
@@ -127,15 +130,14 @@ public class GalleryPagerAdapter extends PagerAdapter {
     //Layout for Images
     else if (resources.getSource().endsWith("jpg")) {
       play.setVisibility(View.GONE);
-      background.setVisibility(View.GONE);
       videoView.setVisibility(View.GONE);
       imageView.setVisibility(View.VISIBLE);
       if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource())!=null)
       {
         imageView.setImageURI( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()))));
       }
-      else{/*imageView.setImageDrawable(R.drawable.i);*/}}
-
+     // else{/*imageView.setImageDrawable(R.drawable.i);*/}
+      }
 
 
     play.setOnClickListener(new View.OnClickListener() {
@@ -154,20 +156,10 @@ public class GalleryPagerAdapter extends PagerAdapter {
       @Override
       public void onClick(View v)
       {
-       /* if(resources.getSource().endsWith("mp4")){
-          if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-          {((GalleryMode)mContext).mediaplayerbars();}
-        else{
-            play.setVisibility(View.GONE);
-            background.setVisibility(View.GONE);
-            ((GalleryMode)mContext).startVideoplay();}
-
-        } else if (resources.getSource().endsWith("jpg")) {
-          if(mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-          {((GalleryMode)mContext).imageBar();}
-        }*/
-
-        ((GalleryMode)mContext).mediaplayerbars();
+        if(resources.getSource().endsWith("mp4"))
+        {hideVideoThumbnail(position);
+          ((GalleryMode)mContext).startVideoplay();}
+        else{((GalleryMode)mContext).mediaplayerbars();}
 
       }});
     if(singlepage.INSTANCE.position()==position && resources.getSource().endsWith("mp4"))
@@ -204,13 +196,11 @@ public class GalleryPagerAdapter extends PagerAdapter {
   public void showVideoThumbnail(int position)
   {if(stationImagePaths.get(position).getSource().endsWith(".mp4"))
   {ownContainer.findViewWithTag("image" + position).setVisibility(View.VISIBLE);
-    ownContainer.findViewWithTag("play" + position).setVisibility(View.VISIBLE);
-    ownContainer.findViewWithTag("background" + position).setVisibility(View.VISIBLE);}}
+    ownContainer.findViewWithTag("play" + position).setVisibility(View.VISIBLE);}}
 
   public void hideVideoThumbnail(int position)
   {ownContainer.findViewWithTag("image" + position).setVisibility(View.GONE);
-    ownContainer.findViewWithTag("play" + position).setVisibility(View.GONE);
-    ownContainer.findViewWithTag("background" + position).setVisibility(View.GONE);}
+    ownContainer.findViewWithTag("play" + position).setVisibility(View.GONE);}
 
   public VideoView videoView(int position)
   {
@@ -219,13 +209,4 @@ public class GalleryPagerAdapter extends PagerAdapter {
   public ViewGroup container()
   {return ownContainer;}
 
- /* public SubsamplingScaleImageView getImageView()
-  {return imageView;}*/
-
-  public void unzoomImageView(int position)
-  {//SubsamplingScaleImageView i = (SubsamplingScaleImageView) ownContainer.findViewWithTag("image"+position);
-    //i.recycle();
-    //if(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource())!=null)
-  //  {i.setImage(ImageSource.uri( Uri.fromFile(new File(OurStorage.get(mContext).pathToFile(stationImagePaths.get(position).getSource()))) ));}
-  }
 }

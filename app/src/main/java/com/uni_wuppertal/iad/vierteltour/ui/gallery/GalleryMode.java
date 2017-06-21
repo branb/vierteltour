@@ -389,7 +389,9 @@ public class GalleryMode extends Activity {
    * Is Used to show/hide the Bars in Landscapemode on top and bottom of screen
    */
   public void mediaplayerbars()
-  {if (relGalleryBot.getVisibility() == View.VISIBLE) {
+  {
+    System.out.println("Change Layout");
+    if (relGalleryBot.getVisibility() == View.VISIBLE) {
     Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_down);
     Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_up);
     relGalleryBot.startAnimation(slide1);
@@ -457,11 +459,7 @@ public class GalleryMode extends Activity {
       if(mAdapter2.videoView(singlepage.INSTANCE.position()).isPlaying())
       {stopVideoplay();}
       mAdapter2.showImage(singlepage.INSTANCE.position());
-      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("jpg"))
-      {mAdapter2.unzoomImageView(singlepage.INSTANCE.position());}
       mAdapter2.showVideoThumbnail(singlepage.INSTANCE.position());
-
-      //hideBars();
 
       singlepage.INSTANCE.position(position);   //Updating position
 
@@ -478,7 +476,7 @@ public class GalleryMode extends Activity {
       { mAdapter2.videoView(singlepage.INSTANCE.position()).setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position).getSource());
         if(getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE)seekbar_layout_top.setVisibility(View.VISIBLE);
         else if(getResources().getConfiguration().orientation  == Configuration.ORIENTATION_PORTRAIT)seekbar_layout_bot.setVisibility(View.VISIBLE);
-      video();
+        video();
         try{setVideoTime(singlepage.INSTANCE.videotime());}catch(Exception e){}}
       else
       {seekbar_layout_top.setVisibility(View.GONE); seekbar_layout_bot.setVisibility(View.GONE);}
