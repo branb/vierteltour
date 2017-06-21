@@ -176,12 +176,14 @@ public class TourAdapter extends BaseExpandableListAdapter {
       holder.geladen.setVisibility(View.VISIBLE);
       holder.laden.setVisibility(View.GONE);
       holder.downloadtext.setText("geladen");
-      holder.downloadtext.setVisibility(View.VISIBLE);}
+      holder.downloadtext.setVisibility(View.VISIBLE);
+      holder.laden.setImageURI(null);}
     else{
       new LoadImage(holder.laden, false).execute();
       holder.geladen.setVisibility(View.GONE);
       holder.laden.setVisibility(View.VISIBLE);
       holder.downloadtext.setVisibility(View.GONE);
+      holder.geladen.setImageURI(null);
     }
     //holder.imgAuthor.setTag(OurStorage.get(context).storagePath()+"/"+OurStorage.get(context).lookForTourFile(((MapsActivity)context).tourlist(),tour.image())+tour.image()+".png");
     //new LoadImage(holder.imgAuthor, true).execute();

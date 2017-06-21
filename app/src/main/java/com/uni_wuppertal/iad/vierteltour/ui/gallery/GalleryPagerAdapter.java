@@ -72,9 +72,6 @@ public class GalleryPagerAdapter extends PagerAdapter {
     play.setTag("play"+position);
     imageView = (PhotoView) itemView.findViewById( R.id.img_pager_item_gallery );
     imageView.setTag("image" + position);
-    //imageView.setParallelLoadingEnabled(true);
-    //imageBtn = (ImageView) itemView.findViewById( R.id.img_play_button_gallery );
-    //imageBtn.setTag("button" + position);
     videoView = (VideoView) itemView.findViewById( R.id.vid_pager_item_gallery );
     videoView.setTag("video" + position);
     final Resource resources = stationImagePaths.get(position);     //v für video, i für image
@@ -174,8 +171,6 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
   @Override
   public void destroyItem( ViewGroup container, int position, Object object ){
-    //SubsamplingScaleImageView i = (SubsamplingScaleImageView) container.findViewWithTag("image"+position);
-    //i.recycle();
     container.removeView( (RelativeLayout) object );
   }
 

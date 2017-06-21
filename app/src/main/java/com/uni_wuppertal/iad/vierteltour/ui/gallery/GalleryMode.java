@@ -1,5 +1,6 @@
 package com.uni_wuppertal.iad.vierteltour.ui.gallery;
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -186,6 +187,7 @@ public class GalleryMode extends Activity {
   @Override
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
+    // relGalleryBot.setLayoutTransition(null);
     // Checks the orientation of the screen
     if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       int sdk = android.os.Build.VERSION.SDK_INT;
@@ -217,6 +219,7 @@ public class GalleryMode extends Activity {
         seekbar_layout_top.setVisibility(View.GONE);}
 
     }
+    //relGalleryBot.setLayoutTransition(new LayoutTransition());
   }
 /**
   * Layout Setup
@@ -349,7 +352,14 @@ public class GalleryMode extends Activity {
       dots[singlepage.INSTANCE.position()].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem));
     }
   }
-
+  protected void onResume()
+  {super.onResume();
+    Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery);
+    Sharp.loadResource(getResources(), R.raw.play_hell).into(play_buttonGallery_bar);
+    seekbarGallery.setProgress(0);
+    seekbarGallery_bar.setProgress(0);
+    try{mAdapter2.showVideoThumbnail(singlepage.INSTANCE.position());}catch (Exception e) {}
+  }
   /**
    * Stops Audio, Starts Video, Managing all Buttons
    */
@@ -400,7 +410,6 @@ public class GalleryMode extends Activity {
    */
   public void mediaplayerbars()
   {
-    System.out.println("Change Layout");
     if (relGalleryBot.getVisibility() == View.VISIBLE) {
     Animation slide1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide1_down);
     Animation slide2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide2_up);
@@ -466,6 +475,8 @@ public class GalleryMode extends Activity {
     //If Page is Selected, stop last videoplay and reset Neighbours
     @Override
     public void onPageSelected( int position ){
+
+      relGalleryBot.setLayoutTransition(new LayoutTransition());
       if(mAdapter2.videoView(singlepage.INSTANCE.position()).isPlaying())
       {stopVideoplay();}
       mAdapter2.showImage(singlepage.INSTANCE.position());
@@ -492,6 +503,8 @@ public class GalleryMode extends Activity {
       {seekbar_layout_top.setVisibility(View.GONE); seekbar_layout_bot.setVisibility(View.GONE);}
 
       setTitleText(position);
+
+
     }
 
     @Override
