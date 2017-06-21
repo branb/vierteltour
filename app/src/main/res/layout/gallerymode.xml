@@ -38,7 +38,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentTop="true"
-      android:visibility="gone">
+      >
 
       <SeekBar
         android:id="@+id/seek_barGallery"
@@ -50,7 +50,7 @@
         android:thumb="@drawable/thumb"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:visibility="visible"
+        android:visibility="gone"
         />
 
       <ImageButton
@@ -63,7 +63,7 @@
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:layout_toLeftOf="@+id/seek_barGallery"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
       <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
         android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
         android:textColor="@color/white"
         android:id="@+id/durationGallery"
         android:layout_toRightOf="@+id/seek_barGallery"
-        android:visibility="visible"
+        android:visibility="gone"
         />
 
     </RelativeLayout>

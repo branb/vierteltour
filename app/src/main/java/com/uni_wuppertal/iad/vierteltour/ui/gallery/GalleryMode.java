@@ -191,7 +191,7 @@ public class GalleryMode extends Activity {
     // Checks the orientation of the screen
     if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
       int sdk = android.os.Build.VERSION.SDK_INT;
-      if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+      if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
         relGalleryBot.setBackgroundDrawable(getResources().getDrawable(R.drawable.gallerybotlayout));
         relGalleryTop.setBackgroundDrawable(getResources().getDrawable(R.drawable.gallerytoplayout));
       } else {
@@ -201,9 +201,16 @@ public class GalleryMode extends Activity {
 
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
       {seekbar_layout_bot.setVisibility(View.GONE);
-        seekbar_layout_top.setVisibility(View.VISIBLE);}
+        showSeekbarTop();}
 
-    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+    }
+
+    else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+
+       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
+      {seekbar_layout_bot.setVisibility(View.VISIBLE);
+        hideSeekbarTop();
+      }
 
       int sdk = android.os.Build.VERSION.SDK_INT;
       if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -214,13 +221,22 @@ public class GalleryMode extends Activity {
         relGalleryTop.setBackground(getResources().getDrawable(R.color.blacktransparentlayout));
       }
 
-      if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
-      {seekbar_layout_bot.setVisibility(View.VISIBLE);
-        seekbar_layout_top.setVisibility(View.GONE);}
+
 
     }
     //relGalleryBot.setLayoutTransition(new LayoutTransition());
   }
+
+  public void hideSeekbarTop()
+  {seekbarGallery.setVisibility(View.GONE);
+    durationGallery.setVisibility(View.GONE);
+    play_buttonGallery.setVisibility(View.GONE);}
+
+  public void showSeekbarTop()
+  {seekbarGallery.setVisibility(View.VISIBLE);
+    durationGallery.setVisibility(View.VISIBLE);
+    play_buttonGallery.setVisibility(View.VISIBLE);}
+
 /**
   * Layout Setup
  */
@@ -239,7 +255,7 @@ public class GalleryMode extends Activity {
       }
 
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
-      {seekbar_layout_bot.setVisibility(View.GONE);seekbar_layout_top.setVisibility(View.VISIBLE);}}
+      {seekbar_layout_bot.setVisibility(View.GONE);hideSeekbarTop();}}
     else if (getResources().getConfiguration().orientation  == Configuration.ORIENTATION_PORTRAIT){
       int sdk = android.os.Build.VERSION.SDK_INT;
       if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -251,11 +267,11 @@ public class GalleryMode extends Activity {
       }
 
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
-      {seekbar_layout_bot.setVisibility(View.VISIBLE);seekbar_layout_top.setVisibility(View.GONE);}
+      {seekbar_layout_bot.setVisibility(View.VISIBLE);hideSeekbarTop();}
     }
 
     if(!res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
-    {seekbar_layout_top.setVisibility(View.GONE);seekbar_layout_bot.setVisibility(View.GONE);}
+    {hideSeekbarTop();seekbar_layout_bot.setVisibility(View.GONE);}
 
     x_button_bar.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -494,12 +510,12 @@ public class GalleryMode extends Activity {
 
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4") && res.get(position)!=null)
       { mAdapter2.videoView(singlepage.INSTANCE.position()).setVideoPath(getExternalFilesDir( null ) +"/" + res.get(position).getSource());
-        if(getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE)seekbar_layout_top.setVisibility(View.VISIBLE);
+        if(getResources().getConfiguration().orientation  == Configuration.ORIENTATION_LANDSCAPE)showSeekbarTop();
         else if(getResources().getConfiguration().orientation  == Configuration.ORIENTATION_PORTRAIT)seekbar_layout_bot.setVisibility(View.VISIBLE);
         video();
         try{setVideoTime(singlepage.INSTANCE.videotime());}catch(Exception e){}}
       else
-      {seekbar_layout_top.setVisibility(View.GONE); seekbar_layout_bot.setVisibility(View.GONE);}
+      {hideSeekbarTop(); seekbar_layout_bot.setVisibility(View.GONE);}
 
       setTitleText(position);
 
