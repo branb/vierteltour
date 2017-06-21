@@ -371,7 +371,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }*/
     wuppertal = new LatLng(51.256972, 7.139341);
     //Gesamte Bildschirmgröße - Toolbargröße
-    slidingLayoutHeight = slidingLayout.getLayoutParams().height+20;
+    slidingLayoutHeight = slidingLayout.getLayoutParams().height;
     mMap.setPadding(0, 0, 0, slidingLayoutHeight);
 
     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wuppertal, CurrentZoom));
@@ -1383,7 +1383,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       }}}
 
     else {for(Map.Entry<String, Map<String, Marker>> marker1 : marks.entrySet())
-      {if(marker1.getKey()!=singlepage.INSTANCE.selectedOldTour().slug())
+      {if(singlepage.INSTANCE.selectedOldTour()!=null && marker1.getKey()!=singlepage.INSTANCE.selectedOldTour().slug())
       { removeMarkerTour(marker1.getValue());
         addMarkerTour(marker1.getKey());}
 
