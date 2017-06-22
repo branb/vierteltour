@@ -2,70 +2,70 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.splash.Splash"
-    android:background="@color/ColorPrimary"
+    android:background="@drawable/splashscreen"
     >
 
-  <VideoView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/videoView"
-    android:layout_alignParentTop="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="-150dp"/>
+  <!--  <VideoView
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:id="@+id/videoView"
+     android:layout_alignParentTop="true"
+     android:layout_centerHorizontal="true"
+     android:layout_marginTop="-150dp"/>
 
-  <!--  <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="7dp"
-        android:id="@+id/progressBar"
-        android:background="#e6ebe0"
-        android:layout_alignParentBottom="true"
-        android:progress="0"
-        android:progressTint="#ff5d59" />  -->
+    <ProgressBar
+         style="?android:attr/progressBarStyleHorizontal"
+         android:layout_width="match_parent"
+         android:layout_height="7dp"
+         android:id="@+id/progressBar"
+         android:background="#e6ebe0"
+         android:layout_alignParentBottom="true"
+         android:progress="0"
+         android:progressTint="#ff5d59" />
 
-    <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="WUPPERTAL"
-        android:background="@color/ColorPrimary"
-        android:id="@+id/textView"
-        android:textColor="@color/black"
-        android:gravity="center_horizontal"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="20dp" />
+     <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="WUPPERTAL"
+         android:background="@color/ColorPrimary"
+         android:id="@+id/textView"
+         android:textColor="@color/black"
+         android:gravity="center_horizontal"
+         android:layout_marginBottom="10dp"
+         android:layout_alignParentBottom="true"
+         android:layout_centerHorizontal="true"
+         android:textSize="20dp" />
 
-  <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:textColor="#ff5d59"
-    android:textStyle="bold"
-    android:background="@color/transparent"
-    android:text="TOUR"
-    android:gravity="center_horizontal"
-    android:id="@+id/textView3"
-    android:layout_marginBottom="75dp"
-    android:layout_centerHorizontal="true"
-    android:layout_alignParentBottom="true"
-    android:textSize="30dp" />
+   <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:textAppearance="?android:attr/textAppearanceLarge"
+     android:textColor="#ff5d59"
+     android:textStyle="bold"
+     android:background="@color/transparent"
+     android:text="TOUR"
+     android:gravity="center_horizontal"
+     android:id="@+id/textView3"
+     android:layout_marginBottom="75dp"
+     android:layout_centerHorizontal="true"
+     android:layout_alignParentBottom="true"
+     android:textSize="30dp" />
 
-    <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="VIERTEL"
-        android:textStyle="bold"
-        android:gravity="center_horizontal"
-        android:textColor="#ff5d59"
-        android:background="@color/transparent"
-        android:id="@+id/textView2"
-        android:layout_above="@id/textView3"
-        android:layout_centerHorizontal="true"
-        android:textSize="30dp" />
+     <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:textAppearance="?android:attr/textAppearanceLarge"
+         android:text="VIERTEL"
+         android:textStyle="bold"
+         android:gravity="center_horizontal"
+         android:textColor="#ff5d59"
+         android:background="@color/transparent"
+         android:id="@+id/textView2"
+         android:layout_above="@id/textView3"
+         android:layout_centerHorizontal="true"
+         android:textSize="30dp" />
 
-
+ -->
 
 
 

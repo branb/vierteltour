@@ -41,14 +41,14 @@ public class Splash extends Activity implements UpdateListener {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.splash);
-    initTypeface();                                                //only for SplashActivity
+   // initTypeface();                                                //only for SplashActivity
     singlepage.INSTANCE.restart(true);      //On First Start
 
     pbar = (ProgressBar) findViewById(R.id.progressBar);
-    vid = (VideoView) findViewById(R.id.videoView);
+    /*vid = (VideoView) findViewById(R.id.videoView);
     vid.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.animation));
     vid.requestFocus();
-    vid.start();
+    vid.start();*/
     myintent = new Intent(this, MapsActivity.class);
 
     try{checkForUpdates();}
@@ -62,7 +62,7 @@ public class Splash extends Activity implements UpdateListener {
    // launcher.start();
   }
 
-  private void initTypeface() {
+ /* private void initTypeface() {
     Typeface font = Typeface.createFromAsset(getAssets(), "Bariol_Regular.ttf");
     TextView tv = (TextView) findViewById(R.id.textView);
     tv.setTypeface(font);
@@ -70,7 +70,7 @@ public class Splash extends Activity implements UpdateListener {
     tv2.setTypeface(font);
     TextView tv3 = (TextView) findViewById(R.id.textView3);
     tv3.setTypeface(font);
-  }
+  }*/
 
   protected void onDestroy() {
     super.onDestroy();
