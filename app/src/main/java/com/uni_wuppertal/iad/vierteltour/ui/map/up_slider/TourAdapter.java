@@ -151,16 +151,6 @@ public class TourAdapter extends BaseExpandableListAdapter {
       holder = (ViewHolderGroup) convertView.getTag();
     }
 
-    // Define the visible elements of a single item inside of our ListView
-
-
-    //geladen.setTag("ok"+position);
-    //Sharp.loadResource(context.getResources(), R.raw.ok).into(geladen);
-
-   // laden.setTag("laden"+position);
-   // Sharp.loadResource(context.getResources(), R.raw.laden).into(laden);
-
-
     holder.laden.setTag(R.raw.laden);
 
     holder.geladen.setTag(R.raw.ok);
@@ -177,7 +167,8 @@ public class TourAdapter extends BaseExpandableListAdapter {
       holder.laden.setVisibility(View.GONE);
       holder.downloadtext.setText("geladen");
       holder.downloadtext.setVisibility(View.VISIBLE);
-      holder.laden.setImageURI(null);}
+      holder.laden.setImageURI(null);
+    }
     else{
       new LoadImage(holder.laden, false).execute();
       holder.geladen.setVisibility(View.GONE);
@@ -309,14 +300,17 @@ public class TourAdapter extends BaseExpandableListAdapter {
       }*/
 
 
-
+      //author image
       if(result != null && imv != null){
         imv.setImageBitmap(result);
       }
-
+      //laden geladen
       else if(imv != null && !isFile){
-        Sharp.loadResource(context.getResources(), path).into(imv);
+        //Sharp.loadResource(context.getResources(), path).into(imv);
+        imv.setImageDrawable(Sharp.loadResource(context.getResources(), path).getDrawable());
       }
+
+
     }
 
   }

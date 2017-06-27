@@ -1078,7 +1078,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       }
     }*/
     selectStation(tour.station(1));
-    System.out.println("2");
     drawRoutes();
   }
 
@@ -1157,7 +1156,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     {lv.collapseGroup(singlepage.INSTANCE.selectedTour().trkid()-1);
     lv.smoothScrollToPosition(0);
     suplInfo("invisible");}
-    else {System.out.println("1");resetTour();}
+    else {resetTour();}
     singlepage.INSTANCE.resetAll();
 
   }
@@ -1493,7 +1492,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //removeMarkerTour(marks.get(singlepage.INSTANCE.selectedTour().slug()));
     selectTour(singlepage.INSTANCE.selectedTour());
-    System.out.println("4");
     drawRoutes();
 
     singlepage.INSTANCE.setId(0);
@@ -1519,7 +1517,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         selectTour(tourlist.city(visibleCity).tours().get(groupPosition));
         adapter.notifyDataSetChanged();
-        System.out.println("3");
         drawRoutes();
       }
     });
@@ -1527,7 +1524,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     lv.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
       @Override
       public void onGroupCollapse(int groupPosition) {
-        if(singlepage.INSTANCE.selectedTour()!=null && onGroupClicked){System.out.println("2");resetTour();}
+        if(singlepage.INSTANCE.selectedTour()!=null && onGroupClicked){resetTour();}
       }
     });
 
