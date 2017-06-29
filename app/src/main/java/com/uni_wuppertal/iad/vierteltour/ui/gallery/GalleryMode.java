@@ -69,8 +69,6 @@ public class GalleryMode extends Activity {
 
     initAll();
     gallerymode();
-
-//    System.out.println("INSGESAMT: "+relGalleryBot.getMeasuredHeight()+"TEXT:"+gallerytitle.getMeasuredHeight()+"LINEAR:"+pager_indicator.getMeasuredHeight()+"PLAYER:"+seekbar_layout_bot.getMeasuredHeight());
   }
 
   @Override
@@ -356,7 +354,7 @@ public class GalleryMode extends Activity {
 
         dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));
 
-       RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
          RelativeLayout.LayoutParams.WRAP_CONTENT,
          RelativeLayout.LayoutParams.WRAP_CONTENT
         );
