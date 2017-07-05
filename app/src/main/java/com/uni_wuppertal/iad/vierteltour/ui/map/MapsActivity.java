@@ -82,6 +82,7 @@ import com.pixplicity.sharp.Sharp;
 import com.pixplicity.sharp.SharpDrawable;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import com.uncopt.android.widget.text.justify.JustifiedTextView;
 import com.uni_wuppertal.iad.vierteltour.ui.drawer.intro.IntroActivity;
 import com.uni_wuppertal.iad.vierteltour.ui.gallery.GalleryMode;
 import com.uni_wuppertal.iad.vierteltour.ui.map.Marker.MapWindowAdapter;
@@ -191,7 +192,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   Handler seekHandler = new Handler();
   ;
   TextView duration, duration_supl;  //Textfeld
-  TextView routenname, description, stationtitle;
+  TextView routenname, stationtitle;
+  JustifiedTextView description;
   double timeElapsed = 0;
   int dotsCount;
   ImageView dots[], tourimage, pager_play_btn, pfeilhell;
@@ -657,7 +659,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     info2_text.setSpan(new StyleSpan(Typeface.BOLD), 0, info2_text.length(), 0);
     info2.setText(info2_text);
 
-    description = (TextView) findViewById(R.id.stationenbeschreibung);
+    description = (JustifiedTextView) findViewById(R.id.stationenbeschreibung);
     description.setText(singlepage.INSTANCE.selectedStation().descText());
     TextView stopover = (TextView) findViewById(R.id.stopover);
     if(!singlepage.INSTANCE.selectedStation().stopover().isEmpty())

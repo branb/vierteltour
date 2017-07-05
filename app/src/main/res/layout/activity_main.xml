@@ -434,12 +434,12 @@
                         android:textColor="@color/black"
                         android:visibility="gone"/>
 
-                      <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+                      <com.uncopt.android.widget.text.justify.JustifiedTextView
                         android:id="@+id/stationenbeschreibung"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:autoLink="web"
-                        android:hyphenationFrequency="normal"
+                        android:hyphenationFrequency="full"
                         android:textColorLink="@color/black"
                         android:text="Hier kommt die Stationenbeschreibung hin!"
                         android:layout_below="@+id/stopover"
