@@ -421,7 +421,7 @@
                         android:paddingRight="30dp"
                         android:layout_below="@+id/listitem_base"
                         android:layout_marginBottom="10dp">
-                      <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+                      <com.uncopt.android.widget.text.justify.JustifiedTextView
                         android:id="@+id/stopover"
                         android:layout_alignParentTop="true"
                         android:layout_width="wrap_content"
@@ -447,7 +447,7 @@
                         android:lineSpacingExtra="3dp"
                         />
 
-                      <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+                      <com.uncopt.android.widget.text.justify.JustifiedTextView
                         android:id="@+id/note_headline"
                         android:layout_below="@+id/stationenbeschreibung"
                         android:layout_width="wrap_content"
@@ -459,7 +459,7 @@
                         android:textColor="@color/black"
                         android:visibility="gone"/>
 
-                      <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+                      <com.uncopt.android.widget.text.justify.JustifiedTextView
                         android:id="@+id/note"
                         android:layout_below="@+id/note_headline"
                         android:layout_width="wrap_content"

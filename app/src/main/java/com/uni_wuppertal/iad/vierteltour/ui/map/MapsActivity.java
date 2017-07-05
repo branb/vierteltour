@@ -1474,6 +1474,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     mMap.setPadding(0,0,0,slidingLayoutHeight);
     suplInfo( "showall" );
     slidingLayout.setVisibility(View.VISIBLE);
+    supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     supl.setScrollableView(lv);
     singlepage.INSTANCE.countWaypoints().clear();
 
