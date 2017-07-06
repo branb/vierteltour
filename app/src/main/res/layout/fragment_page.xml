@@ -58,19 +58,24 @@
         />
 
       </RelativeLayout>
-        <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
-            android:id="@+id/titlefrag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TITLE"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textSize="13sp"
-            android:textColor="@color/black"
-            android:layout_below="@+id/image_layout"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            />
+
+      <com.bluejamesbond.text.DocumentView xmlns:ext="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titlefrag"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@color/black"
+        android:layout_below="@+id/image_layout"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        ext:documentView_cacheConfig="auto_quality"
+        ext:documentView_hyphen="-"
+        ext:documentView_insetPaddingLeft="10dp"
+        ext:documentView_insetPaddingRight="10dp"
+        ext:documentView_insetPaddingTop="5dp"
+        ext:documentView_reverse="false"
+        ext:documentView_textSize="12sp"
+        ext:documentView_textSubPixel="true"
+        ext:documentView_textTypefacePath="Bariol_Regular.ttf"/>
         <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
             android:id="@+id/subtitlefrag"
             android:layout_width="wrap_content"

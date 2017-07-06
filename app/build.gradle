@@ -29,6 +29,7 @@ dependencies {
   testCompile 'junit:junit:4.12'
   compile 'com.uncopt:android.justified:1.0'
   compile 'com.android.support:appcompat-v7:25.1.0'
+  compile 'com.github.bluejamesbond:textjustify-android:2.1.6'
   compile 'com.google.android.gms:play-services:10.0.1'
   compile 'com.google.maps.android:android-maps-utils:0.5'
   compile 'com.squareup.picasso:picasso:2.5.2'

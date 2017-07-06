@@ -17,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bluejamesbond.text.DocumentView;
+import com.bluejamesbond.text.hyphen.DefaultHyphenator;
+import com.bluejamesbond.text.style.TextAlignment;
 import com.pixplicity.sharp.Sharp;
 import com.squareup.picasso.Picasso;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
@@ -68,10 +71,12 @@ public class StationFragment extends Fragment{
   @Override
   public View onCreateView( LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState ){
     View rootView = inflater.inflate( R.layout.fragment_page, container, false );
-    RelativeLayout btItem = (RelativeLayout) rootView.findViewById( R.id.clicklayout );
+    final RelativeLayout btItem = (RelativeLayout) rootView.findViewById( R.id.clicklayout );
 
     TextView number = (TextView) rootView.findViewById(R.id.numbertext);
-    TextView title = (TextView) rootView.findViewById( R.id.titlefrag );
+  //  DocumentView title = new DocumentView(this, DocumentView.PLAIN_TEXT);  // Support plain text
+    DocumentView title = (DocumentView) rootView.findViewById( R.id.titlefrag );
+
     //Image Sizes of Fragment
     ImageView image = (ImageView) rootView.findViewById(R.id.imagefrag);
     ImageView icon = (ImageView) rootView.findViewById(R.id.nav_icon);
@@ -123,7 +128,23 @@ public class StationFragment extends Fragment{
       { try{countnumber=0;
         while(singlepage.INSTANCE.countWaypoints().get(countnumber)<(position))countnumber++;}catch (Exception e){}}
 
-      title.setText( ztitle.get( position-1 ) );
+      title.getDocumentLayoutParams().setHyphenator(DefaultHyphenator.getInstance(DefaultHyphenator.HyphenPattern.DE));
+      title.getDocumentLayoutParams().setHyphenated(true);
+      title.setText(ztitle.get( position-1 )); // Set to `true` to enable justification
+      title.setOnTouchListener(new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+          int action = event.getAction();
+          switch (action) {
+            case MotionEvent.ACTION_DOWN:
+              break;
+            case MotionEvent.ACTION_UP:
+
+              break;
+          }
+          return true;
+        }});
+
       //Sets number layout in the right corner
       if(singlepage.INSTANCE.selectedTour().station(position).latlng()!=null && singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung") && !isWaypoint)
       {number.setText((position-1-countnumber) + "");

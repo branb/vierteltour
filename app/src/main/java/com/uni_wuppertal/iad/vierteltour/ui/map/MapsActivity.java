@@ -1474,7 +1474,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     mMap.setPadding(0,0,0,slidingLayoutHeight);
     suplInfo( "showall" );
     slidingLayout.setVisibility(View.VISIBLE);
-    supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     supl.setScrollableView(lv);
     singlepage.INSTANCE.countWaypoints().clear();
 
@@ -1498,7 +1497,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     drawRoutes();
 
     singlepage.INSTANCE.setId(0);
-
+    //slidingLayout.setVisibility(View.VISIBLE);
+    //supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+    System.out.println(supl.getPanelState() + " " + slidingLayout.getVisibility());
   }
 
   /**
@@ -1824,7 +1825,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         message.what = MapsActivity.BIG_BAR;
         myHandler.sendMessage(message);
         if(seekbar_layout_supl.getVisibility()==View.VISIBLE){suplInfo("h_seekbar");}
-        endStationLayout();
         swapToSupl();
       }
     });
@@ -2038,6 +2038,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(!player.isPlaying()){slidingLayout.setVisibility(View.GONE);
         if(stationActivityRunning)endStationLayout();}
         else slidingLayout.setVisibility(View.VISIBLE);
+        if(singlepage.INSTANCE.selectedStation()==null)
+        {
+          slidingLayout.setVisibility(View.VISIBLE);
+         supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);}
       }};
   }
 
@@ -2135,7 +2139,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     {slidingLayout.setVisibility(View.VISIBLE);supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );}
     else if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null )    //Wenn Station geöffnet ist, schließe nur Station mit SUPL
     { if(player.isPlaying()){suplInfo("s_seekbar");}
-    else{slidingLayout.setVisibility(View.GONE);supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}}
+    else{slidingLayout.setVisibility(View.GONE);supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}}   //TODO
 
     else if( pager_layout.getVisibility() == View.VISIBLE ){
       Message message = new Message();
@@ -2143,7 +2147,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       myHandler.sendMessage(message);
       if(seekbar_layout_supl.getVisibility()==View.VISIBLE){suplInfo("h_seekbar");}
       endStationLayout();
-      swapToSupl();}        //Gehe von Stationenauswahl zurück zur Tourenauswahl
+      swapToSupl();
+    }        //Gehe von Stationenauswahl zurück zur Tourenauswahl
 
     else if(supl != null && supl.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null){}    //Mache nichts wenn er gerade von einem in den anderen Zustand geht
     else if( getFragmentManager().getBackStackEntryCount() == 0 ){super.onBackPressed();}

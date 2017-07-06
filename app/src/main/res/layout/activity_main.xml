@@ -324,8 +324,7 @@
                     <RelativeLayout
                       android:orientation="vertical" android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:id="@+id/rellayout"
-                      android:paddingBottom="25dp">
+                      android:id="@+id/rellayout">
 
                       <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
                         android:id="@+id/stationtitle"
@@ -544,7 +543,8 @@
                         android:orientation="horizontal"
                         android:layout_below="@+id/video_panel"
                         android:gravity="center"
-                        android:layout_centerHorizontal="true"/>
+                        android:layout_centerHorizontal="true"
+                        android:paddingBottom="25dp"/>
 
 
                       <RelativeLayout
