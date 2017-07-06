@@ -40,6 +40,7 @@ public class StationFragment extends Fragment{
   private static Bundle arguments;
   private static ArrayList<String> ztitle = new ArrayList<>();
   private ViewGroup ownContainer;
+  private boolean isDown=false;
   private Singletonint singlepage;
   private int position;
   private View numberlayout;
@@ -136,10 +137,19 @@ public class StationFragment extends Fragment{
         public boolean onTouch(View v, MotionEvent event) {
           int action = event.getAction();
           switch (action) {
+            case MotionEvent.ACTION_MOVE:
+              isDown = false;
             case MotionEvent.ACTION_DOWN:
+              isDown=true;
               break;
             case MotionEvent.ACTION_UP:
-
+              if(isDown){singlepage.INSTANCE.onfragmentclicked(position);
+              if (singlepage.INSTANCE.onfragmentclicked() != -1) {
+                ((MapsActivity)getContext()).mPager.setCurrentItem(singlepage.INSTANCE.onfragmentclicked() - 1);
+                if (singlepage.INSTANCE.selectedStation().number() == singlepage.INSTANCE.onfragmentclicked()) {
+                  ((MapsActivity)getContext()).startStationActivity();
+                }}}
+              isDown=false;
               break;
           }
           return true;
