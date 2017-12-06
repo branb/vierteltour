@@ -1373,26 +1373,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     else if(singlepage.INSTANCE.selectedTour()!=null)
-    {addFirstMarkerTour();
-
-      /*if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
-      { removeMarker(singlepage.INSTANCE.selectedTour().slug(), singlepage.INSTANCE.selectedTour().station(2).slug());     //remove 1 marker
-        addMarker(markers.get(singlepage.INSTANCE.selectedTour().slug()).get(singlepage.INSTANCE.selectedTour().station(2).slug()), singlepage.INSTANCE.selectedTour().slug(), singlepage.INSTANCE.selectedTour().station(2).slug());
-      }
-      else{removeMarker(singlepage.INSTANCE.selectedTour().slug(), singlepage.INSTANCE.selectedTour().station(1).slug());     //remove 1 marker
-        addMarker(markers.get(singlepage.INSTANCE.selectedTour().slug()).get(singlepage.INSTANCE.selectedTour().station(1).slug()), singlepage.INSTANCE.selectedTour().slug(), singlepage.INSTANCE.selectedTour().station(1).slug());}
-
-      if(singlepage.INSTANCE.selectedOldTour()!=null)
-      {if(singlepage.INSTANCE.selectedOldTour().station(1).slug().contains("einleitung"))
-        { removeMarker(singlepage.INSTANCE.selectedOldTour().slug(), singlepage.INSTANCE.selectedOldTour().station(2).slug());     //remove 1 marker
-          addMarker(markers.get(singlepage.INSTANCE.selectedOldTour().slug()).get(singlepage.INSTANCE.selectedOldTour().station(2).slug()), singlepage.INSTANCE.selectedOldTour().slug(), singlepage.INSTANCE.selectedOldTour().station(2).slug());
-        }//add 1 marker
-      else{
-          removeMarker(singlepage.INSTANCE.selectedOldTour().slug(), singlepage.INSTANCE.selectedOldTour().station(1).slug());     //remove 1 marker
-          addMarker(markers.get(singlepage.INSTANCE.selectedOldTour().slug()).get(singlepage.INSTANCE.selectedOldTour().station(1).slug()), singlepage.INSTANCE.selectedOldTour().slug(), singlepage.INSTANCE.selectedOldTour().station(1).slug());
-        }
-      }*/
-    }
+    {addFirstMarkerTour();}
 
     else {for(Map.Entry<String, Map<String, Marker>> marker1 : marks.entrySet())
       {if(singlepage.INSTANCE.selectedOldTour()!=null && marker1.getKey()!=singlepage.INSTANCE.selectedOldTour().slug())
@@ -1406,16 +1387,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   {Marker marker1 = mMap.addMarker(mark);
   marks.get(tourslug).put(stationslug, marker1);}
 
- /* public void removeFirstMarkerTour()
-  {  for (Tour t : tourlist.city(visibleCity).tours()) {
-    if(t.station(1).slug().contains("einleitung"))
-    {
-      removeMarker(t.slug(), t.station(2).slug());
-    }
-    else{
-      removeMarker(t.slug(), t.station(1).slug());
-    }}}
-  */
   public void addFirstMarkerTour()
   {  for (Tour t : tourlist.city(visibleCity).tours()) {
     if(t.station(1).slug().contains("einleitung"))
