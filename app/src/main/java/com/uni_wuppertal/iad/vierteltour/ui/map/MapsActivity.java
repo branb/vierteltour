@@ -1365,42 +1365,38 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     {removeMarkerTour(marker1.getValue());}
      addMarkerTour(singlepage.INSTANCE.selectedTour().slug());
     }
+
     else if(singlepage.INSTANCE.selectedOldTour()==singlepage.INSTANCE.selectedTour() && singlepage.INSTANCE.selectedOldTour()!=null)
-    {}
-    else if(singlepage.INSTANCE.selectedTour()!=null && singlepage.INSTANCE.selectedOldTour()!=null)
-    {
-      if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
-      {removeMarker(marks.get(singlepage.INSTANCE.selectedTour().slug()));     //remove 1 marker
-      addMarker(singlepage.INSTANCE.selectedTour().slug());
-        if(singlepage.INSTANCE.selectedOldTour().station(1).slug().contains("einleitung"))
-        {removeMarker(marks.get(singlepage.INSTANCE.selectedOldTour().slug()));  //remove 1 marker
-        addMarker(singlepage.INSTANCE.selectedOldTour().slug());}//add 1 marker
-        else{removeMarker(marks.get(singlepage.INSTANCE.selectedOldTour().slug()));  //remove 1 marker
-          addMarker(singlepage.INSTANCE.selectedOldTour().slug());}
-      }
-      else{removeMarker(marks.get(singlepage.INSTANCE.selectedTour().slug()));     //remove 1 marker
-        addMarker(singlepage.INSTANCE.selectedTour().slug());
-        if(singlepage.INSTANCE.selectedOldTour().station(1).slug().contains("einleitung"))
-        {removeMarker(marks.get(singlepage.INSTANCE.selectedOldTour().slug()));  //remove 1 marker
-          addMarker(singlepage.INSTANCE.selectedOldTour().slug());}//add 1 marker
-        else{removeMarker(marks.get(singlepage.INSTANCE.selectedOldTour().slug()));  //remove 1 marker
-        addMarker(singlepage.INSTANCE.selectedOldTour().slug());}
-      }
-    }
+    {for(Map.Entry<String, Map<String, Marker>> marker1 : marks.entrySet())
+    {removeMarkerTour(marker1.getValue());}
+    addFirstMarkerTour();}
+
 
     else if(singlepage.INSTANCE.selectedTour()!=null)
-    {for(Map.Entry<String, Map<String, Marker>> marker1 : marks.entrySet())
-      {if(marker1.getKey()!=singlepage.INSTANCE.selectedTour().slug())
-      { removeMarkerTour(marker1.getValue());
-        addMarkerTour(marker1.getKey());
-      }}}
+    {addFirstMarkerTour();
+
+      /*if(singlepage.INSTANCE.selectedTour().station(1).slug().contains("einleitung"))
+      { removeMarker(singlepage.INSTANCE.selectedTour().slug(), singlepage.INSTANCE.selectedTour().station(2).slug());     //remove 1 marker
+        addMarker(markers.get(singlepage.INSTANCE.selectedTour().slug()).get(singlepage.INSTANCE.selectedTour().station(2).slug()), singlepage.INSTANCE.selectedTour().slug(), singlepage.INSTANCE.selectedTour().station(2).slug());
+      }
+      else{removeMarker(singlepage.INSTANCE.selectedTour().slug(), singlepage.INSTANCE.selectedTour().station(1).slug());     //remove 1 marker
+        addMarker(markers.get(singlepage.INSTANCE.selectedTour().slug()).get(singlepage.INSTANCE.selectedTour().station(1).slug()), singlepage.INSTANCE.selectedTour().slug(), singlepage.INSTANCE.selectedTour().station(1).slug());}
+
+      if(singlepage.INSTANCE.selectedOldTour()!=null)
+      {if(singlepage.INSTANCE.selectedOldTour().station(1).slug().contains("einleitung"))
+        { removeMarker(singlepage.INSTANCE.selectedOldTour().slug(), singlepage.INSTANCE.selectedOldTour().station(2).slug());     //remove 1 marker
+          addMarker(markers.get(singlepage.INSTANCE.selectedOldTour().slug()).get(singlepage.INSTANCE.selectedOldTour().station(2).slug()), singlepage.INSTANCE.selectedOldTour().slug(), singlepage.INSTANCE.selectedOldTour().station(2).slug());
+        }//add 1 marker
+      else{
+          removeMarker(singlepage.INSTANCE.selectedOldTour().slug(), singlepage.INSTANCE.selectedOldTour().station(1).slug());     //remove 1 marker
+          addMarker(markers.get(singlepage.INSTANCE.selectedOldTour().slug()).get(singlepage.INSTANCE.selectedOldTour().station(1).slug()), singlepage.INSTANCE.selectedOldTour().slug(), singlepage.INSTANCE.selectedOldTour().station(1).slug());
+        }
+      }*/
+    }
 
     else {for(Map.Entry<String, Map<String, Marker>> marker1 : marks.entrySet())
       {if(singlepage.INSTANCE.selectedOldTour()!=null && marker1.getKey()!=singlepage.INSTANCE.selectedOldTour().slug())
-      { removeMarkerTour(marker1.getValue());
-        addMarkerTour(marker1.getKey());}
-
-  }}}
+      {addFirstMarkerTour();}}}}
 
   public void removeMarker(String tourslug, String stationslug)
   {if(marks.get(tourslug).get(stationslug)!=null)
@@ -1409,6 +1405,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   public void addMarker(MarkerOptions mark, String tourslug, String stationslug)
   {Marker marker1 = mMap.addMarker(mark);
   marks.get(tourslug).put(stationslug, marker1);}
+
+ /* public void removeFirstMarkerTour()
+  {  for (Tour t : tourlist.city(visibleCity).tours()) {
+    if(t.station(1).slug().contains("einleitung"))
+    {
+      removeMarker(t.slug(), t.station(2).slug());
+    }
+    else{
+      removeMarker(t.slug(), t.station(1).slug());
+    }}}
+  */
+  public void addFirstMarkerTour()
+  {  for (Tour t : tourlist.city(visibleCity).tours()) {
+    if(t.station(1).slug().contains("einleitung"))
+  {
+    removeMarker(t.slug(), t.station(2).slug());     //remove 1 marker
+    addMarker(markers.get(t.slug()).get(t.station(2).slug()), t.slug(), t.station(2).slug());
+  }//add 1 marker
+  else{
+      removeMarker(t.slug(), t.station(1).slug());     //remove 1 marker
+      addMarker(markers.get(t.slug()).get(t.station(1).slug()), t.slug(), t.station(1).slug());
+  }}}
 
   public void addMarkerTour(String tourslug)
   {for(Map.Entry<String, MarkerOptions> marker1 : markers.get(tourslug).entrySet())
