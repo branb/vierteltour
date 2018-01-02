@@ -391,28 +391,48 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       public void onMapClick(LatLng clickCoords) {
         if (tourdataAvailable) {
           if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED && slidingLayout.getVisibility() == View.VISIBLE) {
-
-            boolean test = false;
+            boolean test = false, markerClicked = false;
             int i=0;
+
+              for (Tour tour : tourlist.city(visibleCity).tours()) {
+                if(tour.station(1).latlng()!=null)
+                {if(tour.station(1).latlng().longitude==clickCoords.longitude && tour.station(1).latlng().latitude==clickCoords.latitude)
+                  {markerClicked=true;
+                    System.out.println("Map Click1");
+                    test = true;
+                    if (singlepage.INSTANCE.selectedTour() != tour) {
+                      lv.expandGroup(i);
+                      lv.smoothScrollToPosition(i);
+                      suplInfo("showall");
+                      break;
+                    }}}
+                  else if(tour.station(2).latlng().longitude==clickCoords.longitude && tour.station(2).latlng().latitude==clickCoords.latitude)
+                  {markerClicked=true;
+                    System.out.println("Map Click4");
+                    test = true;
+                    if (singlepage.INSTANCE.selectedTour() != tour) {
+                      lv.expandGroup(i);
+                      lv.smoothScrollToPosition(i);
+                      suplInfo("showall");
+                      break;
+                    }}
+                i++;
+              }
+            i=0;
+            if(!markerClicked)
             for (Tour tour : tourlist.city(visibleCity).tours()) {
-              if(tour.station(1).latlng()==clickCoords || tour.station(2).latlng()==clickCoords)
-              {test = true;
-                if (singlepage.INSTANCE.selectedTour() != tour) {
-                  lv.expandGroup(i);
-                  lv.smoothScrollToPosition(i);
-                  suplInfo("showall");
-                  break;
-                }}
-              else if(PolyUtil.isLocationOnPath(clickCoords, tour.route().latLngs(), false, 10)) {
+              if(PolyUtil.isLocationOnPath(clickCoords, tour.route().latLngs(), false, 10)) {
+                System.out.println("Map Click2");
                 test = true;
                 if (singlepage.INSTANCE.selectedTour() != tour) {
                   lv.expandGroup(i);
                   lv.smoothScrollToPosition(i);
                   suplInfo("showall");
+                  break;
                 }
               }
-              i++;
-            }
+            i++;}
+
             if (singlepage.INSTANCE.selectedTour() != null && !test) {
               lv.collapseGroup(singlepage.INSTANCE.selectedTour().trkid()-1);
               lv.smoothScrollToPosition(0);
@@ -445,6 +465,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
       @Override
       public boolean onMarkerClick(Marker marker) {
+        System.out.println("onmarkerclick" + marker.getPosition());
         listener.onMapClick(marker.getPosition());
         return true;    // false: OnMarkerClick aktiv und zoomt zum Marker
       }
@@ -2323,17 +2344,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   int id,numbermarker=0;
   TextView markertxt = (TextView)markerlayout.findViewById(R.id.markernumber);
   ImageView markerimage = (ImageView) markerlayout.findViewById(R.id.marker);
- //Excluded: Audio to hear between two Stations
-  /* if(!text.isEmpty() && singlepage.INSTANCE.selectedTour().stations().get(Integer.parseInt(text)).description().contains("Hören Sie den folgenden Text während Sie von hier aus zu der nächsten Station gehen."))
-  {if(!singlepage.INSTANCE.countWaypoints().contains(Integer.parseInt(text))){singlepage.INSTANCE.countWaypoints().add(Integer.parseInt(text));}
-    id = getResources().getIdentifier("pin_"+tour.trkid()+"_weg", "drawable", getPackageName());
-    int countnumber=0;
-    try{while(singlepage.INSTANCE.countWaypoints().get(countnumber)<Integer.parseInt(text))countnumber++;}catch (Exception e){}
-    markertxt.setText("W"+(countnumber+1)+"");}
-  else {*/
   if(!text.isEmpty()){numbermarker=Integer.parseInt(text);
-    //  int countnumber=0;
-  //    try{while(singlepage.INSTANCE.countWaypoints().get(countnumber)<Integer.parseInt(text))countnumber++;}catch (Exception e){}
       markertxt.setText((numbermarker/*-countnumber*/)+"");}
     else {markertxt.setText("");}
 
