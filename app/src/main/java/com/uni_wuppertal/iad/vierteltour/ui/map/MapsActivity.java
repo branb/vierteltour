@@ -390,19 +390,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       @Override
       public void onMapClick(LatLng clickCoords) {
         if (tourdataAvailable) {
-          if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+          if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED && slidingLayout.getVisibility() == View.VISIBLE) {
 
             boolean test = false;
             int i=0;
             for (Tour tour : tourlist.city(visibleCity).tours()) {
-
-              if (PolyUtil.isLocationOnPath(clickCoords, tour.route().latLngs(), false, 10)) {
-                test = true;
+              if(tour.station(1).latlng()==clickCoords || tour.station(2).latlng()==clickCoords)
+              {test = true;
                 if (singlepage.INSTANCE.selectedTour() != tour) {
                   lv.expandGroup(i);
                   lv.smoothScrollToPosition(i);
                   suplInfo("showall");
                   break;
+                }}
+              else if(PolyUtil.isLocationOnPath(clickCoords, tour.route().latLngs(), false, 10)) {
+                test = true;
+                if (singlepage.INSTANCE.selectedTour() != tour) {
+                  lv.expandGroup(i);
+                  lv.smoothScrollToPosition(i);
+                  suplInfo("showall");
                 }
               }
               i++;
@@ -414,7 +420,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
           }
           //Stationenübersicht
-          else if (supl.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
+          else if (slidingLayout.getVisibility() == View.GONE) {
             Boolean onMapClicked = false;       //unselect Stations
             Tour tour = singlepage.INSTANCE.selectedTour();
             for (Station station : tour.stations()) {
@@ -430,8 +436,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
           }
         }
-
-
       }
     };
 
@@ -1460,7 +1464,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     mMap.moveCamera( CameraUpdateFactory.newCameraPosition(cameraPosition));
     slidingLayout.setVisibility(View.GONE);
     supl.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
-    //slidingLayout.setVisibility(View.GONE);
+    System.out.println(supl.getPanelState());
+    //slidingLayout.setVisibility(View.GONE);    //Causing SUPL Problems (SUPL stays "collapsed" instead of hidden)
 
     xbtn.setVisibility( View.VISIBLE );
     title.setText( singlepage.INSTANCE.selectedTour().name() );
