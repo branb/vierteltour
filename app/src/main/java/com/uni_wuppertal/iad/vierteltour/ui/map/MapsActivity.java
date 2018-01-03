@@ -398,31 +398,64 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if(tour.station(1).latlng()!=null)
                 {if(tour.station(1).latlng().longitude==clickCoords.longitude && tour.station(1).latlng().latitude==clickCoords.latitude)
                   {markerClicked=true;
-                    System.out.println("Map Click1");
                     test = true;
-                    if (singlepage.INSTANCE.selectedTour() != tour) {
-                      lv.expandGroup(i);
+                    if (singlepage.INSTANCE.selectedTour() == tour) {
+                      for (Tour tourMarker : tourlist.city(visibleCity).tours())     //Check Marker Distance with +/- 0.0003 tolerance to swap markers
+                      {if(tourMarker.station(1).latlng()!=null && singlepage.INSTANCE.selectedTour()!=tourMarker)
+                      {if((tourMarker.station(1).latlng().longitude > (clickCoords.longitude-0.00025) && tourMarker.station(1).latlng().longitude < (clickCoords.longitude+0.00025)) && (tourMarker.station(1).latlng().latitude > (clickCoords.latitude-0.00025) && tourMarker.station(1).latlng().latitude < (clickCoords.latitude+0.00025)))
+                      {
+                        lv.expandGroup(tourMarker.trkid()-1);
+                        lv.smoothScrollToPosition(tourMarker.trkid()-1);
+                        suplInfo("showall");
+                        break;}
+                      }
+                        else if(singlepage.INSTANCE.selectedTour()!=tourMarker)
+                        {if((tourMarker.station(2).latlng().longitude > (clickCoords.longitude-0.00025) && tourMarker.station(2).latlng().longitude < (clickCoords.longitude+0.00025)) && (tourMarker.station(2).latlng().latitude > (clickCoords.latitude-0.00025) && tourMarker.station(2).latlng().latitude < (clickCoords.latitude+0.00025)))
+                        {
+                          lv.expandGroup(tourMarker.trkid()-1);
+                          lv.smoothScrollToPosition(tourMarker.trkid()-1);
+                          suplInfo("showall");
+                          break;}
+                        }}}
+                  else
+                    {lv.expandGroup(i);
                       lv.smoothScrollToPosition(i);
                       suplInfo("showall");
-                      break;
-                    }}}
-                  else if(tour.station(2).latlng().longitude==clickCoords.longitude && tour.station(2).latlng().latitude==clickCoords.latitude)
-                  {markerClicked=true;
-                    System.out.println("Map Click4");
-                    test = true;
-                    if (singlepage.INSTANCE.selectedTour() != tour) {
-                      lv.expandGroup(i);
-                      lv.smoothScrollToPosition(i);
-                      suplInfo("showall");
-                      break;
+                      break;}
                     }}
+                  else if(tour.station(2).latlng().longitude==clickCoords.longitude && tour.station(2).latlng().latitude==clickCoords.latitude)
+                  {
+                    markerClicked=true;
+                    test = true;
+                    if (singlepage.INSTANCE.selectedTour() == tour) {
+                      for (Tour tourMarker : tourlist.city(visibleCity).tours())     //Check Marker Distance with +/- 0.0003 tolerance to swap markers
+                      {if(tourMarker.station(1).latlng()!=null && singlepage.INSTANCE.selectedTour()!=tourMarker)
+                      {if((tourMarker.station(1).latlng().longitude > (clickCoords.longitude-0.00025) && tourMarker.station(1).latlng().longitude < (clickCoords.longitude+0.00025)) && (tourMarker.station(1).latlng().latitude > (clickCoords.latitude-0.00025) && tourMarker.station(1).latlng().latitude < (clickCoords.latitude+0.00025)))
+                      {
+                        lv.expandGroup(tourMarker.trkid()-1);
+                        lv.smoothScrollToPosition(tourMarker.trkid()-1);
+                        suplInfo("showall");
+                        break;}
+                      }
+                        else if(singlepage.INSTANCE.selectedTour()!=tourMarker)
+                        {if((tourMarker.station(2).latlng().longitude > (clickCoords.longitude-0.00025) && tourMarker.station(2).latlng().longitude < (clickCoords.longitude+0.00025)) && (tourMarker.station(2).latlng().latitude > (clickCoords.latitude-0.00025) && tourMarker.station(2).latlng().latitude < (clickCoords.latitude+0.00025)))
+                        {
+                          lv.expandGroup(tourMarker.trkid()-1);
+                          lv.smoothScrollToPosition(tourMarker.trkid()-1);
+                          suplInfo("showall");
+                          break;}
+                        }}}
+                    else
+                    {lv.expandGroup(i);
+                      lv.smoothScrollToPosition(i);
+                      suplInfo("showall");
+                      break;}}
                 i++;
               }
             i=0;
             if(!markerClicked)
             for (Tour tour : tourlist.city(visibleCity).tours()) {
               if(PolyUtil.isLocationOnPath(clickCoords, tour.route().latLngs(), false, 10)) {
-                System.out.println("Map Click2");
                 test = true;
                 if (singlepage.INSTANCE.selectedTour() != tour) {
                   lv.expandGroup(i);
@@ -465,7 +498,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
       @Override
       public boolean onMarkerClick(Marker marker) {
-        System.out.println("onmarkerclick" + marker.getPosition());
         listener.onMapClick(marker.getPosition());
         return true;    // false: OnMarkerClick aktiv und zoomt zum Marker
       }
@@ -1485,7 +1517,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     mMap.moveCamera( CameraUpdateFactory.newCameraPosition(cameraPosition));
     slidingLayout.setVisibility(View.GONE);
     supl.setPanelState( SlidingUpPanelLayout.PanelState.HIDDEN );   //Hide Slider
-    System.out.println(supl.getPanelState());
     //slidingLayout.setVisibility(View.GONE);    //Causing SUPL Problems (SUPL stays "collapsed" instead of hidden)
 
     xbtn.setVisibility( View.VISIBLE );
@@ -1526,7 +1557,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     singlepage.INSTANCE.setId(0);
     //slidingLayout.setVisibility(View.VISIBLE);
     //supl.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-    System.out.println(supl.getPanelState() + " " + slidingLayout.getVisibility());
   }
 
   /**
