@@ -765,7 +765,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     lv.setVisibility(View.VISIBLE);
     supl.setScrollableView(lv);
     stationLayout.setVisibility(View.GONE);
-    slidingLayout.setVisibility(View.GONE);
+    slidingLayout.setVisibility(View.VISIBLE);
     if (imagePager != null) {
       imagePager.removeAllViews();
       imagePager.getAdapter().notifyDataSetChanged();
@@ -2034,7 +2034,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
       @Override
       public void onPanelCollapsed( View view ){
-        if(stationActivityRunning && !player.isPlaying())endStationLayout();
+        if(stationActivityRunning && !player.isPlaying()) endStationLayout();
         panel_top.setClickable(false);
         //ändere Pfeilrichtung nach oben
         if(singlepage.INSTANCE.selectedStation()==null)
@@ -2068,7 +2068,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         else if(activeAudio)
         {}
         else{slidingLayout.setVisibility(View.GONE);
-          supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);}//Setze supl höhe, nur wenn audio läuft
+          supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        }//Setze supl höhe nur wenn audio läuft
 
         pager_layout.setVisibility(View.VISIBLE);
         //zeige Viewpager
@@ -2092,8 +2093,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
       @Override
       public void onPanelHidden( View view ){
-        if(!player.isPlaying()){slidingLayout.setVisibility(View.GONE);
-        if(stationActivityRunning)endStationLayout();}
+
+        if(!player.isPlaying()){
+        if(stationActivityRunning)endStationLayout(); slidingLayout.setVisibility(View.GONE);}
         else slidingLayout.setVisibility(View.VISIBLE);
         if(singlepage.INSTANCE.selectedStation()==null)
         {
@@ -2196,7 +2198,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     {slidingLayout.setVisibility(View.VISIBLE);supl.setPanelState( SlidingUpPanelLayout.PanelState.COLLAPSED );}
     else if( supl != null && supl.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED && singlepage.INSTANCE.selectedStation()!=null )    //Wenn Station geöffnet ist, schließe nur Station mit SUPL
     { if(player.isPlaying()){suplInfo("s_seekbar");}
-    else{slidingLayout.setVisibility(View.GONE);supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}}   //TODO
+    else{ slidingLayout.setVisibility(View.GONE);supl.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);pager_layout.setVisibility(View.VISIBLE);}}   //TODO
 
     else if( pager_layout.getVisibility() == View.VISIBLE ){
       Message message = new Message();
@@ -2235,7 +2237,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   else
       dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem));}
   if(resultCode == STATION_BEENDET_GALLERY)
-  { endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}
+  {  endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}
 
   if(resultCode==9)
   {resetActivity();}
@@ -2248,7 +2250,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         public void onCompletion(MediaPlayer player) {audioFinished();}});
       if(resultCode == RESULT_OK){}
-    else if(resultCode == RESULT_NEXT){endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}
+    else if(resultCode == RESULT_NEXT){
+        endStationLayout();mPager.setCurrentItem(mPager.getCurrentItem()+1);startStationLayout();}
 
       if(resultCode==9)
       {resetActivity();}
