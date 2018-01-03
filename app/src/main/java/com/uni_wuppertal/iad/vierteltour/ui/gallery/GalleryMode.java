@@ -253,7 +253,7 @@ public class GalleryMode extends Activity {
       }
 
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
-      {seekbar_layout_bot.setVisibility(View.GONE);hideSeekbarTop();}}
+      {seekbar_layout_bot.setVisibility(View.GONE);showSeekbarTop();}}
     else if (getResources().getConfiguration().orientation  == Configuration.ORIENTATION_PORTRAIT){
       int sdk = android.os.Build.VERSION.SDK_INT;
       if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
