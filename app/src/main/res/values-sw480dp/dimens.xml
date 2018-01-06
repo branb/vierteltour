@@ -14,6 +14,24 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-  <dimen name="intro_desc_text_size">40sp</dimen>
+  <!-- Dimensions for IntroActicity -->
+  <dimen name="intro_x_margin_top">0dp</dimen>
+  <dimen name="intro_x_margin_right">20dp</dimen>
+  <dimen name="intro_finish_width">83dp</dimen>
+  <dimen name="intro_viewpager_margin_top">35dp</dimen>
+  <dimen name="intro_viewpager_margin_bot">10dp</dimen>
+  <dimen name="intro_desc_text_size">20sp</dimen>
   <dimen name="intro_padding_bottom">30dp</dimen>
+
+  <!-- Dimensions for MapsActivity -->
+  <dimen name="maps_polyline_width">4dp</dimen>
+  <integer name="maps_marker_size">13</integer>
+  <integer name="maps_marker_textsize">18</integer>
+  <dimen name="maps_own_Location_size">1dp</dimen>
+  <dimen name="maps_nav_btn_width">1dp</dimen>
+  <dimen name="maps_nav_btn_pos">1dp</dimen>
+  <dimen name="maps_toolbar_margin">1dp</dimen>
+
+  <!-- Dimensions for Drawer -->
+  <dimen name="drawer_icon_width">27dp</dimen>
 </resources>

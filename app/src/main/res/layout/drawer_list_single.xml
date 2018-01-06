@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="12dp"
     android:paddingTop="12dp"
@@ -8,12 +8,12 @@
 
     <ImageView
         android:id="@+id/menuimg"
-        android:layout_width="wrap_content"
-        android:layout_height="27dp"
+        android:layout_width="@dimen/drawer_icon_width"
+        android:layout_height="@dimen/drawer_icon_width"
         android:layout_alignParentLeft="true"
       android:layout_centerVertical="true"
-        android:paddingLeft="15dp"
-      android:paddingRight="15dp"
+      android:layout_marginLeft="15dp"
+      android:layout_marginRight="15dp"
       android:scaleType="fitCenter"
       />
     <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView

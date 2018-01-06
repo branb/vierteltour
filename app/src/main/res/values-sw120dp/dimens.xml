@@ -15,5 +15,5 @@
     <dimen name="fab_margin">16dp</dimen>
 
   <dimen name="intro_desc_text_size">40sp</dimen>
-  <dimen name="intro_padding_bottom">30dp</dimen>
+  <dimen name="intro_padding_bottom">4dp</dimen>
 </resources>

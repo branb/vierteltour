@@ -254,6 +254,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     mFragmentShadowTransformer = new ShadowTransformer(mPager, fragmentAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
+    DisplayMetrics metrics = new DisplayMetrics();
+    getWindowManager().getDefaultDisplay().getMetrics(metrics);
+    System.out.println(metrics.widthPixels + "   " + metrics.heightPixels+ "   " + metrics.densityDpi + "   " + metrics.density);
+
+      int density = metrics.densityDpi;
+
+      if (density==DisplayMetrics.DENSITY_HIGH) {
+        Toast.makeText(this, "DENSITY_HIGH: " + String.valueOf(density),  Toast.LENGTH_LONG).show();
+      }
+      else if (density==DisplayMetrics.DENSITY_MEDIUM) {
+        Toast.makeText(this, "DENSITY_MEDIUM: " + String.valueOf(density),  Toast.LENGTH_LONG).show();
+      }
+      else if (density==DisplayMetrics.DENSITY_LOW) {
+        Toast.makeText(this, "DENSITY_LOW:" + String.valueOf(density),  Toast.LENGTH_LONG).show();
+      }
+      else {
+        Toast.makeText(this, "Density is neither HIGH, MEDIUM OR LOW: " + String.valueOf(density),  Toast.LENGTH_LONG).show();
+
+    }
   }
 
   @Override
@@ -539,6 +558,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Lösche neue Station und setze vergrößerten Pin
     if (!singlepage.INSTANCE.selectedStation().slug().contains("einleitung")) {// Setze Kreis auf neue Station
       circle.center(station.latlng()).radius(radius).fillColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color().substring(0, 1) + "75" + singlepage.INSTANCE.selectedTour().color().substring(1, singlepage.INSTANCE.selectedTour().color().length()))).strokeColor(Color.parseColor(singlepage.INSTANCE.selectedTour().color())).strokeWidth(8).visible(true);
+      circle.strokeWidth(getResources().getDimension(R.dimen.maps_polyline_width));
       mapCircle = mMap.addCircle(circle);
       mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(station.latlng(), mMap.getCameraPosition().zoom));
 
@@ -2317,7 +2337,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       for( RouteWaypoint waypoint : tour.route().waypoints() ){
         polyline.add( new LatLng( waypoint.latitude(), waypoint.longitude() ) );
       }
-
+      polyline.width(getResources().getDimension(R.dimen.maps_polyline_width));
       polyline.color( Color.parseColor( tour.color() ) );
       polylines.put( tour.slug(), polyline );
 
@@ -2389,8 +2409,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   //Text und Bild wird festgelegt
   path = OurStorage.get(this).storagePath() + "/" + OurStorage.get(this).lookForTourFile(tourlist(), tour.image())+"pin.svg";
   if(bigger) {
-     markerimage.setLayoutParams(new RelativeLayout.LayoutParams((int)(markerimage.getLayoutParams().width*1.3), (int)(markerimage.getLayoutParams().height*1.3)));
-    markertxt.setTextSize(18);
+     markerimage.setLayoutParams(new RelativeLayout.LayoutParams((int)(markerimage.getLayoutParams().width*((float)(getResources().getInteger(R.integer.maps_marker_size)/10))), (int)(markerimage.getLayoutParams().height*((float)(getResources().getInteger(R.integer.maps_marker_size))/10))));
+    markertxt.setTextSize(getResources().getInteger(R.integer.maps_marker_textsize));
   }
   markerimage.setImageDrawable(Sharp.loadFile(new File(path)).getDrawable());
 

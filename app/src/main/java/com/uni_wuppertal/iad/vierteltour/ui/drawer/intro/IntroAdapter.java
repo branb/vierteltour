@@ -62,7 +62,7 @@ public class IntroAdapter extends PagerAdapter {
 
     else if(position==2)
     { welcome.setText("Tourdaten herunterladen");
-      desc.setText("Um eine Tour zu erleben, muss diese erst heruntergeladen werden. Am besten laaden Sie sich die Touren im WLAN-Netzwerk herunter bevor Sie losgehen. Es werden pro Tour etwa 20-100 MB Daten geladen.");
+      desc.setText("Um eine Tour zu erleben, muss diese erst heruntergeladen werden. Am besten laden Sie sich die Touren im WLAN-Netzwerk herunter bevor Sie losgehen. Es werden pro Tour etwa 20-100 MB Daten geladen.");
       img.setImageResource(R.drawable.laden_03);}
 
     container.addView(itemView);
