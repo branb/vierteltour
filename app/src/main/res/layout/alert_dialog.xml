@@ -11,13 +11,15 @@
 
   <ImageButton
     android:id="@+id/btn_x_dialog"
-    android:layout_width="wrap_content"
-    android:layout_height="30dp"
+    android:layout_width="@dimen/dialog_xbtn_width"
+    android:layout_height="@dimen/dialog_xbtn_width"
     android:layout_alignParentTop="true"
     android:layout_alignParentRight="true"
     android:scaleType="fitCenter"
+    android:paddingTop="5dp"
+    android:paddingRight="5dp"
+    android:layout_marginRight="5dp"
     android:background="@color/transparent"
-    android:padding="5dp"
     />
 
   <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
@@ -26,7 +28,7 @@
     android:layout_height="wrap_content"
     android:textColor="@color/black"
     android:textStyle="bold"
-    android:textSize="20sp"
+    android:textSize="@dimen/dialog_title"
     android:layout_centerHorizontal="true"
     android:gravity="center"
     android:layout_below="@+id/btn_x_dialog"
@@ -39,6 +41,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:textColor="@color/black"
+      android:textSize="@dimen/dialog_text"
       android:text="A"
       android:textStyle="italic"
       android:layout_centerHorizontal="true"
@@ -50,11 +53,11 @@
       />
 
   <ImageButton
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/dialog_laden_height"
     android:id="@+id/button_dialog"
     android:layout_below="@+id/text_dialog"
     android:background="@color/transparent"
-    android:layout_width="wrap_content"
-    android:layout_height="25dp"
     android:scaleType="fitCenter"
     android:layout_centerHorizontal="true"
     android:gravity="center"

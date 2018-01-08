@@ -6,15 +6,15 @@
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html STANDARD 240dp-->
     <dimen name="navigation_drawer_width">180dp</dimen>
-    <dimen name="tourenliste">117dip</dimen>
-    <dimen name="tourenlistedown">82dip</dimen>
-    <dimen name="tourenlisteup">35dip</dimen>
+    <dimen name="tourenliste">142dip</dimen>
+    <dimen name="tourenlistedown">105dip</dimen>
+    <dimen name="tourenlisteup">37dip</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-  <!-- Dimensions for IntroActicity -->
+  <!-- Dimensions for IntroActivity -->
   <dimen name="intro_x_margin_top">0dp</dimen>
   <dimen name="intro_x_margin_right">20dp</dimen>
   <dimen name="intro_finish_width">83dp</dimen>
@@ -28,9 +28,32 @@
   <integer name="maps_marker_size">13</integer>
   <integer name="maps_marker_textsize">18</integer>
   <dimen name="maps_own_Location_size">1dp</dimen>
-  <dimen name="maps_nav_btn_width">1dp</dimen>
-  <dimen name="maps_nav_btn_pos">1dp</dimen>
-  <dimen name="maps_toolbar_margin">1dp</dimen>
+  <dimen name="maps_navbtn_height">60dp</dimen>
+  <dimen name="maps_navbtn_width">42dp</dimen>
+  <dimen name="maps_navbtn_padding">8dp</dimen>
+  <dimen name="maps_tarbtn_padding">6dp</dimen>
+  <dimen name="maps_navbtn_pos_top">235dp</dimen>
+  <dimen name="maps_toolbar_menu_width">50dp</dimen>
+  <dimen name="maps_toolbar_xbtn_width">47dp</dimen>
+  <dimen name="maps_supl_xbtn_width">50dp</dimen>
+  <dimen name="maps_supl_xbtn_padding">9dp</dimen>
+  <dimen name="maps_supl_zumstart_height">45dp</dimen>
+  <dimen name="maps_supl_zumstart_width">110dp</dimen>
+  <dimen name="maps_supl_zumstart_paddingRight">20dp</dimen>
+  <dimen name="maps_supl_subinfo1_text">16sp</dimen>
+  <dimen name="maps_supl_subinfo2_text">16sp</dimen>
+  <dimen name="maps_supl_tourenliste_text">23sp</dimen>
+
+  <!-- Dimensions for TourList -->
+  <dimen name="dialog_title">24sp</dimen>
+  <dimen name="dialog_text">19sp</dimen>
+  <dimen name="dialog_xbtn_width">35dp</dimen>
+  <dimen name="dialog_laden_height">30dp</dimen>
+
+  <!-- Dimensions for TourList -->
+
+
+
 
   <!-- Dimensions for Drawer -->
   <dimen name="drawer_icon_width">27dp</dimen>
