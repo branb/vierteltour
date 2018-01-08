@@ -27,7 +27,7 @@
   <dimen name="maps_polyline_width">4dp</dimen>
   <integer name="maps_marker_size">13</integer>
   <integer name="maps_marker_textsize">18</integer>
-  <dimen name="maps_own_Location_size">1dp</dimen>
+  <integer name="maps_own_Location_size">5</integer>
   <dimen name="maps_navbtn_height">60dp</dimen>
   <dimen name="maps_navbtn_width">42dp</dimen>
   <dimen name="maps_navbtn_padding">8dp</dimen>
@@ -51,9 +51,14 @@
   <dimen name="dialog_laden_height">30dp</dimen>
 
   <!-- Dimensions for TourList -->
-
-
-
+  <dimen name="tourlist_laden_width">95dp</dimen>
+  <dimen name="tourlist_laden_height">45dp</dimen>
+  <dimen name="tourlist_geladen_width">30dp</dimen>
+  <dimen name="tourlist_geladen_height">30dp</dimen>
+  <dimen name="tourlist_geladen_text">18sp</dimen>
+  <dimen name="tourlist_image">60dp</dimen>
+  <dimen name="tourlist_title">26sp</dimen>
+  <dimen name="tourlist_text">20sp</dimen>
 
   <!-- Dimensions for Drawer -->
   <dimen name="drawer_icon_width">27dp</dimen>

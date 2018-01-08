@@ -1389,7 +1389,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       MarkerOptions marker = new MarkerOptions();
       marker.position(pos);
 
-      marker.icon(BitmapDescriptorFactory.fromBitmap(createBitmapFromSharp(this, Sharp.loadResource(getResources(), R.raw.standort_blau).getDrawable(), 2.6)));
+      marker.icon(BitmapDescriptorFactory.fromBitmap(createBitmapFromSharp(this, Sharp.loadResource(getResources(), R.raw.standort_blau).getDrawable(), getResources().getInteger(R.integer.maps_own_Location_size))));
 
       if (mMap != null){
         if(curLocation!=null)curLocation.remove();

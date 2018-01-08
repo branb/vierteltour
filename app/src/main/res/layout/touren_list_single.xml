@@ -16,8 +16,8 @@
 
   <ImageView
     android:id="@+id/img"
-    android:layout_width="50dp"
-    android:layout_height="50dp"
+    android:layout_width="@dimen/tourlist_image"
+    android:layout_height="@dimen/tourlist_image"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:layout_centerVertical="true"
@@ -27,6 +27,7 @@
     android:id="@+id/downloadtext"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:textSize="@dimen/tourlist_geladen_text"
     android:text="geladen"
     android:paddingRight="3dp"
     android:textColor="@color/black"
@@ -37,8 +38,8 @@
 
   <ImageView
     android:id="@+id/geladen"
-    android:layout_width="wrap_content"
-    android:layout_height="26dp"
+    android:layout_width="@dimen/tourlist_geladen_width"
+    android:layout_height="@dimen/tourlist_geladen_height"
     android:scaleType="fitCenter"
     android:layout_alignParentBottom="true"
     android:layout_alignParentRight="true"
@@ -50,8 +51,8 @@
 
     <ImageView
       android:id="@+id/laden"
-      android:layout_width="85dp"
-      android:layout_height="wrap_content"
+      android:layout_width="@dimen/tourlist_laden_width"
+      android:layout_height="@dimen/tourlist_laden_height"
       android:layout_alignParentRight="true"
       android:layout_alignParentBottom="true"
       android:scaleType="fitCenter"
@@ -77,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="@dimen/tourlist_title"
             />
     <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
             android:layout_width="wrap_content"
@@ -85,6 +86,7 @@
             android:id="@+id/subtxt1"
             android:textStyle="italic"
             android:textColor="@color/black"
+            android:textSize="@dimen/tourlist_text"
             android:layout_below="@+id/txt"/>
 
 
@@ -94,6 +96,7 @@
         android:id="@+id/subtxt2"
         android:textStyle="italic"
         android:textColor="@color/black"
+        android:textSize="@dimen/tourlist_text"
         android:layout_below="@+id/subtxt1"/>
 </RelativeLayout>
 </RelativeLayout>
