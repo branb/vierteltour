@@ -69,8 +69,8 @@
 
                 <ImageView
                   android:id="@+id/arrowwhite"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
+                  android:layout_width="@dimen/station_pfeilhell_width"
+                  android:layout_height="@dimen/station_pfeilhell_height"
                   android:scaleType="fitCenter"
                   android:paddingBottom="5dp"
                   android:layout_centerHorizontal="true"
@@ -329,7 +329,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:text="Stationenname (x/y)"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/tourlist_title"
                         android:textColor="@color/black"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
@@ -355,8 +355,8 @@
                         android:layout_marginRight="30dp">
                         <ImageView
                           android:id="@+id/routenbild"
-                          android:layout_width="50dp"
-                          android:layout_height="50dp"
+                          android:layout_width="@dimen/tourlist_image"
+                          android:layout_height="@dimen/tourlist_image"
                           android:layout_marginLeft="10dp"
                           android:layout_marginRight="20dp"
                           android:layout_centerVertical="true"
@@ -378,7 +378,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:textColor="@color/black"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/tourlist_title"
 
                             />
                           <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
@@ -386,6 +386,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/routeninfo1"
                             android:paddingRight="2dp"
+                            android:textSize="@dimen/tourlist_text"
                             android:textStyle="italic"
                             android:textColor="@color/black"
                             android:layout_below="@+id/routenname"/>
@@ -395,6 +396,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/routeninfo2"
+                            android:textSize="@dimen/tourlist_text"
                             android:textStyle="italic"
                             android:textColor="@color/black"
                             android:layout_below="@+id/routeninfo1"/>
@@ -422,6 +424,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/tourlist_text"
                         android:text="Hören Sie diesen Text während Sie von hier aus zur nächsten Station gehen."
                         android:textStyle="bold"
                         android:layout_marginTop="13dp"
@@ -438,6 +441,7 @@
                         android:hyphenationFrequency="full"
                         android:textColorLink="@color/black"
                         android:text="Hier kommt die Stationenbeschreibung hin!"
+                        android:textSize="@dimen/tourlist_text"
                         android:layout_below="@+id/stopover"
                         android:textColor="@color/black"
                         android:lineSpacingExtra="3dp"
@@ -448,6 +452,7 @@
                         android:layout_below="@+id/stationenbeschreibung"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/tourlist_text"
                         android:text="Anmerkung zum Audiofile:"
                         android:textStyle="bold"
                         android:lineSpacingExtra="3dp"
@@ -460,6 +465,7 @@
                         android:layout_below="@+id/note_headline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/tourlist_text"
                         android:text=""
                         android:lineSpacingExtra="3dp"
                         android:textColor="@color/black"
@@ -510,8 +516,8 @@
                           />
 
                         <ImageButton
-                          android:layout_width="wrap_content"
-                          android:layout_height="30dp"
+                          android:layout_width="@dimen/station_play_width"
+                          android:layout_height="@dimen/station_play_width"
                           android:id="@+id/play_button"
                           android:scaleType="fitCenter"
                           android:background="#00000000"
@@ -523,7 +529,7 @@
                           android:layout_height="wrap_content"
                           android:text="0:00"
                           android:textColor="#ffffff"
-                          android:textSize="13dp"
+                          android:textSize="@dimen/tourlist_text"
                           android:layout_centerVertical="true"
                           android:layout_marginRight="5dp"
                           android:layout_alignParentRight="true"
@@ -557,11 +563,11 @@
                         <ImageView
                           android:id="@+id/pfeilhell"
                           android:scaleType="fitCenter"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
+                          android:layout_width="@dimen/station_pfeilhell_width"
+                          android:layout_height="@dimen/station_pfeilhell_height"
                           android:layout_centerHorizontal="true"
                           android:layout_below="@+id/navtext2"
-                          android:paddingTop="15dp"
+                          android:layout_marginTop="15dp"
                           />
 
                         <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
@@ -570,7 +576,7 @@
                           android:layout_height="wrap_content"
                           android:layout_centerHorizontal="true"
                           android:text="Bitte begib dich in die Nähe der Station, um diese Inhalte einsehen zu können."
-                          android:textSize="17dp"
+                          android:textSize="@dimen/tourlist_text"
                           android:textColor="@color/white"
                           android:layout_marginLeft="80dp"
                           android:layout_marginRight="80dp"
@@ -583,7 +589,7 @@
                           android:layout_height="wrap_content"
                           android:layout_centerHorizontal="true"
                           android:text="Vergleiche Deinen aktuellen Standpunkt mit dem Stationspunkt auf der Karte im Hintergrund. Über die Aktivierung der Navigation (Pfeilsymbol am rechten Kartenrand) kannst Du dort hin navigieren."
-                          android:textSize="17dp"
+                          android:textSize="@dimen/tourlist_text"
                           android:layout_below="@+id/navtext"
                           android:textColor="@color/white"
                           android:layout_marginLeft="40dp"

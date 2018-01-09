@@ -14,10 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -165,6 +167,11 @@ public class Einstellungen extends AppCompatActivity {
     dialog.setContentView(R.layout.alert_dialog);
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     dialog.show();
+
+    DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
+    RelativeLayout dialogWindow = (RelativeLayout) dialog.findViewById(R.id.dialog);
+    dialogWindow.setLayoutParams(new FrameLayout.LayoutParams((int) (displayMetrics.widthPixels*0.85), FrameLayout.LayoutParams.WRAP_CONTENT));
     // set values for custom dialog components - text, image and button
     TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
     SpannableString dialogtext = new SpannableString(txt+" ");
@@ -234,6 +241,11 @@ public class Einstellungen extends AppCompatActivity {
     dialog.setContentView(R.layout.alert_dialog);
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     dialog.show();
+
+    DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
+    RelativeLayout dialogWindow = (RelativeLayout) dialog.findViewById(R.id.dialog);
+    dialogWindow.setLayoutParams(new FrameLayout.LayoutParams((int) (displayMetrics.widthPixels*0.85), FrameLayout.LayoutParams.WRAP_CONTENT));
     // set values for custom dialog components - text, image and button
     TextView text = (TextView) dialog.findViewById(R.id.text_dialog);
     SpannableString dialogtext = new SpannableString(txt+" ");

@@ -167,6 +167,7 @@ public class TourAdapter extends BaseExpandableListAdapter {
       holder.laden.setVisibility(View.GONE);
       holder.downloadtext.setText("geladen");
       holder.downloadtext.setVisibility(View.VISIBLE);
+      holder.downloadtext.setVisibility(View.VISIBLE);
       holder.laden.setImageURI(null);
     }
     else{

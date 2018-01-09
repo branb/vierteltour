@@ -13,8 +13,11 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.StatFs;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -25,6 +28,7 @@ import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListenerV1;
 import com.thin.downloadmanager.ThinDownloadManager;
 
+import com.uni_wuppertal.iad.vierteltour.R;
 import com.uni_wuppertal.iad.vierteltour.ui.map.MapsActivity;
 import com.uni_wuppertal.iad.vierteltour.utility.storage.Singletonint;
 import com.uni_wuppertal.iad.vierteltour.utility.xml.Region;
@@ -662,6 +666,12 @@ public class Updater extends ContextWrapper{
     // declare the dialog as a member field of your activity
     progressDialog = new CustomProgressDialog(context, downloadManager);
     progressDialog.show();
+
+    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+
+    RelativeLayout dialogWindow = (RelativeLayout) progressDialog.findViewById(R.id.dialog);
+    dialogWindow.setLayoutParams(new FrameLayout.LayoutParams((int) (displayMetrics.widthPixels*0.85), FrameLayout.LayoutParams.WRAP_CONTENT));
+
     progressDialog.setText(text);
     progressDialog.setTextTitle("Laden der Tour");
     progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);

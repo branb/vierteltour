@@ -44,7 +44,7 @@
   <dimen name="maps_supl_subinfo2_text">16sp</dimen>
   <dimen name="maps_supl_tourenliste_text">23sp</dimen>
 
-  <!-- Dimensions for TourList -->
+  <!-- Dimensions for Dialog -->
   <dimen name="dialog_title">24sp</dimen>
   <dimen name="dialog_text">19sp</dimen>
   <dimen name="dialog_xbtn_width">35dp</dimen>
@@ -57,9 +57,28 @@
   <dimen name="tourlist_geladen_height">30dp</dimen>
   <dimen name="tourlist_geladen_text">18sp</dimen>
   <dimen name="tourlist_image">60dp</dimen>
-  <dimen name="tourlist_title">26sp</dimen>
-  <dimen name="tourlist_text">20sp</dimen>
+  <dimen name="tourlist_title">24sp</dimen>
+  <dimen name="tourlist_text">18sp</dimen>
 
   <!-- Dimensions for Drawer -->
   <dimen name="drawer_icon_width">27dp</dimen>
+
+  <!-- Dimensions for StationFragments -->
+  <dimen name="station_padding">12dp</dimen>
+  <dimen name="station_image_height">95dp</dimen>
+  <dimen name="station_textsize">16sp</dimen>
+  <dimen name="station_icon_height">25dp</dimen>
+  <dimen name="station_numberlayout_width">22dp</dimen>
+  <dimen name="station_numberlayout_height">38dp</dimen>
+  <dimen name="station_number_marginTop">20dp</dimen>
+  <dimen name="station_pfeilhell_width">35dp</dimen>
+  <dimen name="station_pfeilhell_height">45dp</dimen>
+  <dimen name="station_play_width">40dp</dimen>
+
+  <!-- Dimensions for Gallery -->
+  <dimen name="gallery_xbtn_width">50dp</dimen>
+  <dimen name="gallery_xbtn_padding">12dp</dimen>
+  <dimen name="gallery_play_width">50dp</dimen>
+  <dimen name="gallery_play_padding">10dp</dimen>
+  <dimen name="gallery_textsize">20sp</dimen>
 </resources>

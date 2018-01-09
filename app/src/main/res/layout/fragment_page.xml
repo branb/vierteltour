@@ -8,8 +8,8 @@
         android:id="@+id/vg_cover"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingLeft="@dimen/station_padding"
+        android:paddingRight="@dimen/station_padding">
 
 
       <RelativeLayout
@@ -29,7 +29,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/station_image_height"
         android:layout_alignParentTop="true"
         android:gravity="top"
         android:layout_centerHorizontal="true">
@@ -50,7 +50,7 @@
       <ImageView
         android:id="@+id/nav_icon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/station_icon_height"
         android:scaleType="fitCenter"
         android:visibility="gone"
         android:layout_centerVertical="true"
@@ -65,15 +65,15 @@
         android:layout_width="match_parent"
         android:textColor="@color/black"
         android:layout_below="@+id/image_layout"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="@dimen/station_padding"
+        android:paddingRight="@dimen/station_padding"
         ext:documentView_cacheConfig="auto_quality"
         ext:documentView_hyphen="-"
-        ext:documentView_insetPaddingLeft="10dp"
-        ext:documentView_insetPaddingRight="10dp"
+        ext:documentView_insetPaddingLeft="@dimen/station_padding"
+        ext:documentView_insetPaddingRight="@dimen/station_padding"
         ext:documentView_insetPaddingTop="5dp"
         ext:documentView_reverse="false"
-        ext:documentView_textSize="12sp"
+        ext:documentView_textSize="@dimen/station_textsize"
         ext:documentView_textSubPixel="true"
         ext:documentView_textTypefacePath="Bariol_Regular.ttf"/>
         <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
@@ -89,8 +89,8 @@
 
       <RelativeLayout
         android:id="@+id/numberlayout"
-        android:layout_width="20dp"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/station_numberlayout_width"
+        android:layout_height="@dimen/station_numberlayout_height"
         android:background="@drawable/pagefragmentnumber"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -106,7 +106,7 @@
           android:layout_centerHorizontal="true"
           android:layout_centerVertical="true"
           android:gravity="center"
-          android:layout_marginTop="15dp"
+          android:layout_marginTop="@dimen/station_number_marginTop"
           android:paddingTop="5dp"
           android:textStyle="bold"
           />

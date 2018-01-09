@@ -22,8 +22,8 @@
     android:visibility="gone"/>
 
   <ImageView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="@dimen/station_play_width"
+    android:layout_height="@dimen/station_play_width"
     android:id="@+id/img_play_button"
     android:scaleType="fitCenter"
     android:layout_centerHorizontal="true"
