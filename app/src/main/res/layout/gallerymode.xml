@@ -27,7 +27,6 @@
       android:id="@+id/x_button_bar"
       android:layout_alignParentRight="true"
       android:padding="@dimen/gallery_xbtn_padding"
-
       android:layout_centerVertical="true"
       android:scaleType="fitCenter"
       android:background="@color/transparent"

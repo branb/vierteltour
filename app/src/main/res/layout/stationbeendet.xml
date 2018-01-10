@@ -7,15 +7,13 @@ android:background="@color/transparentblack"
 android:id="@+id/stationbeendet">
 
   <ImageButton
-    android:layout_width="60dp"
-    android:layout_height="wrap_content"
+    android:layout_width="@dimen/gallery_xbtn_width"
+    android:layout_height="@dimen/gallery_xbtn_width"
     android:id="@+id/station_x_button"
     android:layout_alignParentRight="true"
+    android:padding="@dimen/gallery_xbtn_padding"
     android:layout_alignParentTop="true"
     android:scaleType="fitCenter"
-    android:paddingTop="10dp"
-    android:paddingRight="20dp"
-    android:paddingLeft="20dp"
     android:background="@color/transparent"
     />
 
@@ -27,7 +25,7 @@ android:id="@+id/stationbeendet">
   android:text="Sie haben diese Station\nbeendet!"
   android:layout_centerHorizontal="true"
   android:gravity="center"
-  android:textSize="18sp"
+  android:textSize="@dimen/gallery_textsize"
   android:layout_above="@+id/zur_naechsten_station"
   android:layout_marginBottom="20dp"/>
 

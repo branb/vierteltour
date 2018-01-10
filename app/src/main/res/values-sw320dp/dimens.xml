@@ -73,4 +73,12 @@
   <dimen name="station_number_marginTop">15dp</dimen>
   <dimen name="station_pfeilhell_width">30dp</dimen>
   <dimen name="station_pfeilhell_height">40dp</dimen>
+  <dimen name="station_play_width">30dp</dimen>
+
+  <!-- Dimensions for Gallery -->
+  <dimen name="gallery_xbtn_width">45dp</dimen>
+  <dimen name="gallery_xbtn_padding">12dp</dimen>
+  <dimen name="gallery_play_width">50dp</dimen>
+  <dimen name="gallery_play_padding">10dp</dimen>
+  <dimen name="gallery_textsize">16sp</dimen>
 </resources>
