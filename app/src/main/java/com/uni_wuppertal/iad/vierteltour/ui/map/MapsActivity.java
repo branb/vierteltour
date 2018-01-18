@@ -1342,6 +1342,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if((station.number()-1)==mPager.getCurrentItem())
                 {
+                  gesperrt.setVisibility(View.GONE);
                   gpsbtn_layout.setVisibility(View.GONE);}
               }
             }
