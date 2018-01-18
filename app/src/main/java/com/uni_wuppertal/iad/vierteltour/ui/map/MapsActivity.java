@@ -1205,13 +1205,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    * Reset all tours, make all markers and polylines visible again
    */
   public void resetTour() {
-    singlepage.INSTANCE.selectedOldTour(singlepage.INSTANCE.selectedTour());
+    singlepage.INSTANCE.selectedOldTour(null);
     singlepage.INSTANCE.selectedTour(null);
 
     for (Tour tour : tourlist.city(visibleCity).tours()) {
       unfadeTour(tour);
     }
     suplInfo("invisible");
+
     drawRoutes();
   }
 
@@ -1453,8 +1454,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     {addFirstMarkerTour();}
 
     else {for(Map.Entry<String, Map<String, Marker>> marker1 : marks.entrySet())
-      {if(singlepage.INSTANCE.selectedOldTour()!=null && marker1.getKey()!=singlepage.INSTANCE.selectedOldTour().slug())
-      {addFirstMarkerTour();}}}}
+    {removeMarkerTour(marker1.getValue());}
+      addFirstMarkerTour();}}
 
   public void removeMarker(String tourslug, String stationslug)
   {if(marks.get(tourslug).get(stationslug)!=null)

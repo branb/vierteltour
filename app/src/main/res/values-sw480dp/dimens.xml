@@ -37,9 +37,10 @@
   <dimen name="maps_toolbar_xbtn_width">47dp</dimen>
   <dimen name="maps_supl_xbtn_width">50dp</dimen>
   <dimen name="maps_supl_xbtn_padding">9dp</dimen>
-  <dimen name="maps_supl_zumstart_height">45dp</dimen>
+  <dimen name="maps_supl_zumstart_height">55dp</dimen>
   <dimen name="maps_supl_zumstart_width">110dp</dimen>
   <dimen name="maps_supl_zumstart_paddingRight">20dp</dimen>
+  <dimen name="maps_supl_zumstart_paddingBottom">15dp</dimen>
   <dimen name="maps_supl_subinfo1_text">16sp</dimen>
   <dimen name="maps_supl_subinfo2_text">16sp</dimen>
   <dimen name="maps_supl_tourenliste_text">23sp</dimen>
@@ -59,6 +60,11 @@
   <dimen name="tourlist_image">60dp</dimen>
   <dimen name="tourlist_title">24sp</dimen>
   <dimen name="tourlist_text">18sp</dimen>
+  <dimen name="tourlist_zumstart_width">110dp</dimen>
+  <dimen name="tourlist_zumstart_height">45dp</dimen>
+  <dimen name="tourlist_zumstart_paddingRight">20dp</dimen>
+  <dimen name="tourlist_zumstart_paddingTop">5dp</dimen>
+  <dimen name="tourlist_zumstart_paddingBottom">15dp</dimen>
 
   <!-- Dimensions for Drawer -->
   <dimen name="drawer_icon_width">27dp</dimen>

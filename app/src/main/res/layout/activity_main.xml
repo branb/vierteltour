@@ -241,7 +241,7 @@
                         android:layout_alignParentRight="true"
                         android:scaleType="fitCenter"
                       android:paddingRight="@dimen/maps_supl_zumstart_paddingRight"
-                        android:paddingBottom="10dp"
+                        android:paddingBottom="@dimen/maps_supl_zumstart_paddingBottom"
                         android:layout_alignParentBottom="true"
                         android:background="@color/transparent"
                         android:visibility="invisible"    />

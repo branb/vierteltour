@@ -25,14 +25,15 @@
     android:paddingRight="20dp"
     android:layout_marginTop="10dp"/>
   <ImageButton
-    android:layout_width="@dimen/maps_supl_zumstart_width"
-    android:layout_height="@dimen/maps_supl_zumstart_height"
+    android:layout_width="@dimen/tourlist_zumstart_width"
+    android:layout_height="@dimen/tourlist_zumstart_height"
     android:id="@+id/zumstartlist"
     android:layout_below="@+id/addinfo"
     android:layout_alignParentRight="true"
     android:scaleType="fitCenter"
-    android:paddingRight="@dimen/maps_supl_zumstart_paddingRight"
-    android:paddingBottom="10dp"
+    android:paddingRight="@dimen/tourlist_zumstart_paddingRight"
+    android:paddingBottom="@dimen/tourlist_zumstart_paddingBottom"
+    android:paddingTop="@dimen/tourlist_zumstart_paddingTop"
     android:visibility="invisible"
     android:background="@color/transparent"
     android:onClick="swapToViewPager"/>
