@@ -32,14 +32,14 @@
     android:layout_height="1.5dp"
     android:background="@color/white"
     android:layout_below="@+id/welcome"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"/>
+    android:layout_marginTop="@dimen/intro_divider_margin"
+    android:layout_marginBottom="@dimen/intro_divider_margin"/>
 
   <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
     android:id="@+id/description"
     android:textColor="@color/white"
     android:textSize="@dimen/intro_desc_text_size"
-    android:lineSpacingExtra="2sp"
+    android:lineSpacingExtra="@dimen/intro_desc_linespacing"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@+id/divider"

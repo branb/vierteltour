@@ -110,7 +110,7 @@ public class IntroActivity extends Activity {
           LinearLayout.LayoutParams.WRAP_CONTENT
         );
 
-        params.setMargins(10, 0, 10, finish.getHeight()/2);
+        params.setMargins(getResources().getInteger(R.integer.intro_dots_margin), 0,getResources().getInteger(R.integer.intro_dots_margin), finish.getHeight()/2);
         params.gravity= Gravity.CENTER;
 
         pager_indicator.addView(dots[i], params);

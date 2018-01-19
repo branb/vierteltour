@@ -26,9 +26,9 @@
       <RelativeLayout
         android:id="@+id/image_layout"
         android:layout_width="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginTop="@dimen/station_image_margin"
+        android:layout_marginRight="@dimen/station_image_margin"
+        android:layout_marginLeft="@dimen/station_image_margin"
         android:layout_height="@dimen/station_image_height"
         android:layout_alignParentTop="true"
         android:gravity="top"
