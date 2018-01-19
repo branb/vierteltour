@@ -15,6 +15,7 @@
     <dimen name="fab_margin">16dp</dimen>
 
   <!-- Dimensions for Intro Activity -->
+  <dimen name="intro_x_width">30dp</dimen>
   <dimen name="intro_x_margin_top">10dp</dimen>
   <dimen name="intro_x_margin_right">10dp</dimen>
   <dimen name="intro_finish_width">73dp</dimen>

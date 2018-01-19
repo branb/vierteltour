@@ -20,7 +20,7 @@
   <dimen name="intro_finish_width">73dp</dimen>
   <dimen name="intro_viewpager_margin_top">10dp</dimen>
   <dimen name="intro_viewpager_margin_bot">25dp</dimen>
-  <dimen name="intro_desc_text_size">16sp</dimen>
+  <dimen name="intro_desc_text_size">2sp</dimen>
   <dimen name="intro_padding_bottom">30dp</dimen>
 
   <!-- Dimensions for MapsActivity -->

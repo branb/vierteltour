@@ -19,8 +19,8 @@
 
   <ImageButton
     android:id="@+id/x_intro"
-    android:layout_width="30dp"
-    android:layout_height="wrap_content"
+    android:layout_width="@dimen/intro_x_width"
+    android:layout_height="@dimen/intro_x_width"
     android:background="@color/transparent"
     android:scaleType="fitCenter"
     android:layout_alignParentRight="true"
