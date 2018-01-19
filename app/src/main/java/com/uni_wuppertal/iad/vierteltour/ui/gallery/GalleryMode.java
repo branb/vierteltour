@@ -51,7 +51,7 @@ public class GalleryMode extends Activity {
   int dotsCount, number, STATION_BEENDET=4;
   LinearLayout pager_indicator;
   RelativeLayout relGalleryTop, seekbar_layout_top, seekbar_layout_bot;
-  LinearLayout relGalleryBot;
+  RelativeLayout relGalleryBot;
   Boolean startvideo = true;
   double timeElapsedGallery = 0;
   Handler seekHandlerGallery = new Handler();
@@ -152,7 +152,7 @@ public class GalleryMode extends Activity {
   gallerytitle = (TextView) findViewById( R.id.titleGallery );
   durationGallery = (TextView) findViewById( R.id.durationGallery );
   durationGallery_bar = (TextView) findViewById( R.id.durationGallery_bar );
-  relGalleryBot = (LinearLayout) findViewById(R.id.relativeBot);
+  relGalleryBot = (RelativeLayout) findViewById(R.id.relativeBot);
   relGalleryTop = (RelativeLayout) findViewById(R.id.relativeTop);
   pager_indicator = (LinearLayout) findViewById( R.id.viewPagerCountDots );
   //Adapter for ViewPager which contains media
@@ -199,7 +199,8 @@ public class GalleryMode extends Activity {
 
       if(res.get(singlepage.INSTANCE.position()).getSource().endsWith("mp4"))
       {seekbar_layout_bot.setVisibility(View.GONE);
-        showSeekbarTop();}
+        showSeekbarTop();
+       }
 
     }
 
@@ -222,7 +223,7 @@ public class GalleryMode extends Activity {
 
 
     }
-    //relGalleryBot.setLayoutTransition(new LayoutTransition());
+
   }
 
   public void hideSeekbarTop()

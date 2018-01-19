@@ -14,7 +14,7 @@
 
   <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?attr/actionBarSize"
     android:layout_alignParentTop="true"
     android:background="@drawable/gallerytoplayout"
     android:animateLayoutChanges="true"
@@ -82,59 +82,61 @@
   </RelativeLayout>
 
 
-  <LinearLayout
+  <RelativeLayout
+    android:id="@+id/seekbar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/blacktransparentlayout"
+    android:layout_above="@+id/relativeBot"
+    android:visibility="gone">
+
+    <SeekBar
+      android:id="@+id/seek_barGallery_bar"
+      android:layout_width="200dp"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
+      android:minHeight="2dip"
+      android:maxHeight="2dip"
+      android:thumbOffset="0dp"
+      android:thumb="@drawable/thumb"
+      android:visibility="visible"
+      />
+
+    <ImageButton
+      android:layout_width="@dimen/gallery_play_width"
+      android:layout_height="@dimen/gallery_play_width"
+      android:id="@+id/play_buttonGallery_bar"
+      android:background="@color/transparent"
+      android:layout_centerVertical="true"
+      android:layout_toLeftOf="@+id/seek_barGallery_bar"
+      android:paddingTop="@dimen/gallery_play_padding"
+      android:paddingBottom="@dimen/gallery_play_padding"
+      android:scaleType="fitCenter"
+      android:visibility="visible"/>
+
+    <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="0:00"
+      android:textColor="@color/white"
+      android:textSize="@dimen/gallery_textsize"
+      android:id="@+id/durationGallery_bar"
+      android:layout_toRightOf="@+id/seek_barGallery_bar"
+      android:layout_centerVertical="true"
+      android:visibility="visible"
+      />
+  </RelativeLayout>
+
+  <RelativeLayout
     android:id="@+id/relativeBot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_alignParentBottom="true"
     android:visibility="visible"
     >
 
-    <RelativeLayout
-      android:id="@+id/seekbar_layout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:animateLayoutChanges="true"
-      android:visibility="gone">
 
-      <SeekBar
-        android:id="@+id/seek_barGallery_bar"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:minHeight="2dip"
-        android:maxHeight="2dip"
-        android:thumbOffset="0dp"
-        android:thumb="@drawable/thumb"
-        android:visibility="visible"
-        />
-
-      <ImageButton
-        android:layout_width="@dimen/gallery_play_width"
-        android:layout_height="@dimen/gallery_play_width"
-        android:id="@+id/play_buttonGallery_bar"
-        android:background="@color/transparent"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/seek_barGallery_bar"
-        android:paddingTop="@dimen/gallery_play_padding"
-        android:paddingBottom="@dimen/gallery_play_padding"
-        android:scaleType="fitCenter"
-        android:visibility="visible"/>
-
-      <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0:00"
-        android:textColor="@color/white"
-        android:textSize="@dimen/gallery_textsize"
-        android:id="@+id/durationGallery_bar"
-        android:layout_toRightOf="@+id/seek_barGallery_bar"
-        android:layout_centerVertical="true"
-        android:visibility="visible"
-        />
-    </RelativeLayout>
 
     <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
       android:id="@+id/titleGallery"
@@ -147,9 +149,11 @@
       android:layout_marginTop="5dp"
       android:layout_marginBottom="5dp"
       android:textColor="@color/white"
+
       />
 
         <LinearLayout
+          android:layout_below="@+id/titleGallery"
           android:id="@+id/viewPagerCountDots"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -162,7 +166,7 @@
           />
 
 
-  </LinearLayout>
+  </RelativeLayout>
 
 
 </RelativeLayout>

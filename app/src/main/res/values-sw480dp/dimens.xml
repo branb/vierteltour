@@ -40,10 +40,10 @@
   <dimen name="maps_tarbtn_padding">6dp</dimen>
   <dimen name="maps_navbtn_pos_top">235dp</dimen>
   <dimen name="maps_toolbar_menu_width">50dp</dimen>
-  <dimen name="maps_toolbar_xbtn_width">47dp</dimen>
+  <dimen name="maps_toolbar_xbtn_width">50dp</dimen>
   <dimen name="maps_supl_xbtn_width">50dp</dimen>
   <dimen name="maps_supl_xbtn_padding">9dp</dimen>
-  <dimen name="maps_supl_zumstart_height">55dp</dimen>
+  <dimen name="maps_supl_zumstart_height">65dp</dimen>
   <dimen name="maps_supl_zumstart_width">110dp</dimen>
   <dimen name="maps_supl_zumstart_paddingRight">20dp</dimen>
   <dimen name="maps_supl_zumstart_paddingBottom">15dp</dimen>
