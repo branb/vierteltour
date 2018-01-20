@@ -271,17 +271,17 @@
                       />
 
                     <ImageButton
-                      android:layout_width="wrap_content"
-                      android:layout_height="40dp"
+                      android:layout_width="@dimen/maps_supl_playbutton_width"
+                      android:layout_height="@dimen/maps_supl_playbutton_width"
                       android:id="@+id/play_button_supl"
                       android:background="#00000000"
                       android:scaleType="fitCenter"
                       android:layout_alignParentLeft="true"
                       android:layout_alignParentStart="true"
                       android:layout_centerVertical="true"
-                      android:paddingBottom="5dp"
-                      android:paddingRight="5dp"
-                      android:paddingLeft="35dp"/>
+                      android:paddingBottom="@dimen/maps_supl_playbutton_padding"
+                      android:paddingLeft="@dimen/maps_supl_playbutton_padding"
+                      android:layout_marginLeft="10dp"/>
 
                     <com.uni_wuppertal.iad.vierteltour.utility.font.CustomFontTextView
                       android:layout_width="wrap_content"

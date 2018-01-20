@@ -44,12 +44,14 @@
   <dimen name="maps_supl_xbtn_width">50dp</dimen>
   <dimen name="maps_supl_xbtn_padding">9dp</dimen>
   <dimen name="maps_supl_zumstart_width">115dp</dimen>
-  <dimen name="maps_supl_zumstart_height">35dp</dimen>
+  <dimen name="maps_supl_zumstart_height">45dp</dimen>
   <dimen name="maps_supl_zumstart_paddingRight">15dp</dimen>
   <dimen name="maps_supl_zumstart_paddingBottom">10dp</dimen>
   <dimen name="maps_supl_subinfo1_text">13sp</dimen>
   <dimen name="maps_supl_subinfo2_text">13sp</dimen>
   <dimen name="maps_supl_tourenliste_text">20sp</dimen>
+  <dimen name="maps_supl_playbutton_width">40dp</dimen>
+  <dimen name="maps_supl_playbutton_padding">5dp</dimen>
 
   <!-- Dimensions for Dialog -->
   <dimen name="dialog_title">20sp</dimen>
@@ -89,7 +91,7 @@
   <dimen name="station_image_margin">10dp</dimen>
 
   <!-- Dimensions for Gallery -->
-  <dimen name="gallery_xbtn_width">45dp</dimen>
+  <dimen name="gallery_xbtn_width">47dp</dimen>
   <dimen name="gallery_xbtn_padding">12dp</dimen>
   <dimen name="gallery_play_width">50dp</dimen>
   <dimen name="gallery_play_padding">10dp</dimen>

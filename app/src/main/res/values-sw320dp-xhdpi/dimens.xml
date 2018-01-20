@@ -21,7 +21,7 @@
   <dimen name="intro_finish_width">73dp</dimen>
   <dimen name="intro_viewpager_margin_top">0dp</dimen>
   <dimen name="intro_viewpager_margin_bot">0dp</dimen>
-  <dimen name="intro_desc_text_size">14sp</dimen>
+  <dimen name="intro_desc_text_size">16sp</dimen>
   <dimen name="intro_desc_linespacing">1sp</dimen>
   <dimen name="intro_padding_bottom">0dp</dimen>
   <dimen name="intro_layout_margin">25dp</dimen>
@@ -33,7 +33,7 @@
   <dimen name="maps_polyline_width">4dp</dimen>
   <integer name="maps_marker_size">13</integer>
   <integer name="maps_marker_textsize">18</integer>
-  <integer name="maps_own_Location_size">8</integer>
+  <integer name="maps_own_Location_size">2</integer>
   <dimen name="maps_navbtn_height">50dp</dimen>
   <dimen name="maps_navbtn_width">35dp</dimen>
   <dimen name="maps_navbtn_padding">7dp</dimen>

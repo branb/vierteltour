@@ -50,6 +50,8 @@
   <dimen name="maps_supl_subinfo1_text">13sp</dimen>
   <dimen name="maps_supl_subinfo2_text">13sp</dimen>
   <dimen name="maps_supl_tourenliste_text">20sp</dimen>
+  <dimen name="maps_supl_playbutton_width">40dp</dimen>
+  <dimen name="maps_supl_playbutton_padding">5dp</dimen>
 
   <!-- Dimensions for Dialog -->
   <dimen name="dialog_title">20sp</dimen>
