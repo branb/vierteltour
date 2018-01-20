@@ -254,25 +254,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     mFragmentShadowTransformer = new ShadowTransformer(mPager, fragmentAdapter, this);
     mPager.setPageTransformer(false, mFragmentShadowTransformer);
-    DisplayMetrics metrics = new DisplayMetrics();
-    getWindowManager().getDefaultDisplay().getMetrics(metrics);
-    System.out.println(metrics.widthPixels + "   " + metrics.heightPixels+ "   " + metrics.densityDpi + "   " + metrics.density);
 
-      int density = metrics.densityDpi;
-
-      if (density==DisplayMetrics.DENSITY_HIGH) {
-        Toast.makeText(this, "DENSITY_HIGH: " + String.valueOf(density),  Toast.LENGTH_LONG).show();
-      }
-      else if (density==DisplayMetrics.DENSITY_MEDIUM) {
-        Toast.makeText(this, "DENSITY_MEDIUM: " + String.valueOf(density),  Toast.LENGTH_LONG).show();
-      }
-      else if (density==DisplayMetrics.DENSITY_LOW) {
-        Toast.makeText(this, "DENSITY_LOW:" + String.valueOf(density),  Toast.LENGTH_LONG).show();
-      }
-      else {
-        Toast.makeText(this, "Density is neither HIGH, MEDIUM OR LOW: " + String.valueOf(density),  Toast.LENGTH_LONG).show();
-
-    }
   }
 
   @Override
