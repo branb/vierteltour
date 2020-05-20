@@ -1250,6 +1250,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    */
   public void initLocationServices() {
     locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+    initGoogleApiClient();
 
     GpsStatus.Listener gpsStatus = new GpsStatus.Listener() {
       @Override
@@ -1342,7 +1343,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           }
         }
     };
-    initGoogleApiClient();
+
   }
 
   /**
@@ -1739,6 +1740,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   private void enableGPSMessage()
   {if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))  {
     if(googleApiClient!=null) googleApiClient.disconnect();
+    LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
     PendingResult<LocationSettingsResult> result =
       LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
     result.setResultCallback(new ResultCallback<LocationSettingsResult>() {

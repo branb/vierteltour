@@ -1,9 +1,11 @@
 package com.uni_wuppertal.iad.vierteltour.ui.splash;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +13,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.View;
@@ -49,6 +54,15 @@ public class Splash extends Activity implements UpdateListener {
     vid.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.animation));
     vid.requestFocus();
     vid.start();*/
+
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+      != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+      != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+      != PackageManager.PERMISSION_GRANTED) {
+      ActivityCompat.requestPermissions(this,
+        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+    }
+    else{
     myintent = new Intent(this, MapsActivity.class);
 
     try{checkForUpdates();}
@@ -59,9 +73,29 @@ public class Splash extends Activity implements UpdateListener {
 
 
     //checkForUpdates();
-    startActivity(myintent);
+    startActivity(myintent);}
+
   }
 
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    if (requestCode == 101)  {
+      if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        myintent = new Intent(this, MapsActivity.class);
+
+        try{checkForUpdates();}
+        catch(Exception e){
+          Toast.makeText(this, "Die Tourdaten konnten nicht geladen werden", Toast.LENGTH_LONG);}
+        //IntentLauncher launcher = new IntentLauncher();
+
+
+
+        //checkForUpdates();
+        startActivity(myintent);
+      }
+      else{Toast.makeText(this, "Die ViertelTour App funktioniert nur mit erteilten Berechtigungen.", Toast.LENGTH_LONG).show();}
+    }
+  }
  /* private void initTypeface() {
     Typeface font = Typeface.createFromAsset(getAssets(), "Bariol_Regular.ttf");
     TextView tv = (TextView) findViewById(R.id.textView);
