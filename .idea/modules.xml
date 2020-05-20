@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/libs/j4gpx-master/j4gpx-master.iml" filepath="$PROJECT_DIR$/app/libs/j4gpx-master/j4gpx-master.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/libs/libs.iml" filepath="$PROJECT_DIR$/app/libs/libs.iml" />
-      <module fileurl="file://$PROJECT_DIR$/vierteltour.iml" filepath="$PROJECT_DIR$/vierteltour.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="vierteltour/app" />
+      <module fileurl="file://$PROJECT_DIR$/app/libs/j4gpx-master/j4gpx-master.iml" filepath="$PROJECT_DIR$/app/libs/j4gpx-master/j4gpx-master.iml" group="vierteltour/app/libs/j4gpx-master" />
+      <module fileurl="file://$PROJECT_DIR$/app/libs/libs.iml" filepath="$PROJECT_DIR$/app/libs/libs.iml" group="vierteltour/app/libs" />
+      <module fileurl="file://$PROJECT_DIR$/vierteltour.iml" filepath="$PROJECT_DIR$/vierteltour.iml" group="vierteltour" />
     </modules>
   </component>
 </project>
