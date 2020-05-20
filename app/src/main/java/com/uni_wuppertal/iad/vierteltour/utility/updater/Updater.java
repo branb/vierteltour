@@ -291,7 +291,7 @@ public class Updater extends ContextWrapper{
 
     Log.d( DEBUG_TAG, "Starting download of tourlist..." );
 
-    String url = updateServerUrl + "/tourlist";
+    String url = updateServerUrl + "tourlist";
     String destination = new File( OurStorage.get( this ).storagePath() )  + "/tourlist.xml";
 
     Uri downloadUri = Uri.parse( url );

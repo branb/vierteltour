@@ -85,7 +85,7 @@ public class OurStorage extends ContextWrapper{
       Log.d( "OurStorage", "File found: " + file.toString() );
     } catch( FileNotFoundException ex ){
       // If - for whatever reason - our previous check failed and the file REALLY can't be found
-      Log.wtf( "OurStorage|Exception", "File '" + file.toString() + "' REALLY not found! DaFUQ?" );
+      Log.wtf( "OurStorage|Exception", "File '" + file.toString() + "' REALLY not found!" );
     }
 
     return stream;

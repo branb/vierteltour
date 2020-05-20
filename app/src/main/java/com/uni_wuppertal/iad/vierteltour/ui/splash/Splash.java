@@ -59,7 +59,7 @@ public class Splash extends Activity implements UpdateListener {
 
 
     //checkForUpdates();
-   // launcher.start();
+    startActivity(myintent);
   }
 
  /* private void initTypeface() {

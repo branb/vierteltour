@@ -1,12 +1,14 @@
 package com.uni_wuppertal.iad.vierteltour.ui.map;
 
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -23,6 +25,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -139,9 +143,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   String[] drawertitles = new String[]{"Touren löschen",
     "Einführung",
     "About",
-    "Updates suchen",
+    "Updates suchen"/*,
     "Touren freischalten",
-    "Touren sperren"
+    "Touren sperren"*/
   };
   protected static final int TINY_BAR = 0x101, BIG_BAR = 0x102, SEEK_BAR = 0x103, ZERO_BAR = 0x104;
   private final double radius = 25;
@@ -378,7 +382,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     mMap.setPadding(0, 0, 0, slidingLayoutHeight);
 
     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wuppertal, CurrentZoom));
-    try{loadTourdata();}
+    try{
+      loadTourdata();}
     catch(Exception e){Toast.makeText(this, "Die Tourdaten konnten nicht geladen werden", Toast.LENGTH_LONG);}
 
     /**
@@ -1257,7 +1262,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
       }
     };
-    locationManager.addGpsStatusListener(gpsStatus);
+    if ( ContextCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+      enableGPSMessage();
+    }
+    else
+    {locationManager.addGpsStatusListener(gpsStatus);}
+
+
 
     locationListener = new LocationListener() {
       @Override
@@ -1773,7 +1784,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           .addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
         //Verknüpft Client, GPS Konfigurationen und LocationListener
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,locationRequest,locationListener);}
+        if ( ContextCompat.checkSelfPermission( getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED ) {
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,locationRequest,locationListener);}}
       @Override
       public void onConnectionSuspended(int i) {
         googleApiClient.connect();
@@ -1954,7 +1966,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           else{createDialog("Nach Updates Suchen", "Die Touren sind bereits aktuell.");}}
         //TMP INSERT START
           //i==4 equals "Touren freischalten". Function only for testing
-        else if(position == 4){
+        /*else if(position == 4){
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             SharedPreferences.Editor e = sharedPreferences.edit();
             for(int k=0;k<tourlist.tours().size();k++)
@@ -1968,7 +1980,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
           for(int k=0;k<tourlist.tours().size();k++)
         {for(int j=1;j<=tourlist.tours().get(k).stations().size();j++)
         {e.remove(tourlist.tours().get(k).station(j).slug());}}
-          e.apply(); }
+          e.apply(); }*/
         //TMP INSERT END
         //  ftx.commit();
       }
